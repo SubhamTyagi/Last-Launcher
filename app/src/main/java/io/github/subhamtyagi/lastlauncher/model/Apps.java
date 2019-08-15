@@ -2,7 +2,6 @@ package io.github.subhamtyagi.lastlauncher.model;
 
 import android.graphics.Color;
 
-import androidx.annotation.NonNull;
 
 public class Apps {
 
@@ -13,16 +12,16 @@ public class Apps {
     }
 
     private int id;
-    @NonNull
+
     final private CharSequence packageName;
 
-    @NonNull
+
     final private CharSequence appName;
 
     private Color appTextColor;
     private int appTextSize;
 
-    public Apps(int id,@NonNull String packageName, @NonNull String appName) {
+    public Apps(int id, String packageName,  String appName) {
         this.id=id;
         this.packageName = packageName;
         this.appName = appName;
