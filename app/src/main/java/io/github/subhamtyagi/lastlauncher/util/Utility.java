@@ -1,29 +1,42 @@
+/*
+ * Last Launcher
+ * Copyright (C) 2019 Shubham Tyagi
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package io.github.subhamtyagi.lastlauncher.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Locale;
-
 public class Utility {
 
-public static int getRandomColor(String typeColor, Context context) {
+    public static int getRandomColor(String typeColor, Context context) {
 
-    int returnColor = Color.BLACK;
-    int arrayId = context.getResources().getIdentifier("mdcolor_" + typeColor, "array", context.getPackageName());
+        int returnColor = Color.BLACK;
+        int arrayId = context.getResources().getIdentifier("mdcolor_" + typeColor, "array", context.getPackageName());
 
-    if (arrayId != 0)
-    {
-        TypedArray colors = context.getResources().obtainTypedArray(arrayId);
-        int index = (int) (Math.random() * colors.length());
-        returnColor = colors.getColor(index, Color.BLACK);
-        colors.recycle();
+        if (arrayId != 0) {
+            TypedArray colors = context.getResources().obtainTypedArray(arrayId);
+            int index = (int) (Math.random() * colors.length());
+            returnColor = colors.getColor(index, Color.BLACK);
+            colors.recycle();
+        }
+        return returnColor;
     }
-    return returnColor;
-}
 
 
     public static int getSize(long duration) {
@@ -41,5 +54,11 @@ public static int getRandomColor(String typeColor, Context context) {
 
         return 20;
     }
+
+
+    public static String getSizePrefs(String packageName){
+        return packageName.replaceAll("\\.","_")+"_size";
+    }
+
 
 }

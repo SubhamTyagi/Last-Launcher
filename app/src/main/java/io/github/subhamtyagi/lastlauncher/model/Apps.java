@@ -1,31 +1,51 @@
+/*
+ * Last Launcher
+ * Copyright (C) 2019 Shubham Tyagi
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package io.github.subhamtyagi.lastlauncher.model;
 
-import android.graphics.Color;
+import android.widget.TextView;
 
 
 public class Apps {
 
-    //in future may be useful for search etc...
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    private int id;
+    final private int id;
 
     final private CharSequence packageName;
-
-
     final private CharSequence appName;
+    final private TextView textView;
+    private int color;
+    private int size;
 
-    private Color appTextColor;
-    private int appTextSize;
-
-    public Apps(int id, String packageName,  String appName) {
-        this.id=id;
+    /**
+     * @param id          a auto increment id
+     * @param packageName apps package name
+     * @param appName     App name
+     * @param tv          a text view corresponding to App
+     * @param color       Text color
+     * @param size        Text Size
+     */
+    public Apps(int id, String packageName, String appName, TextView tv, int color, int size) {
+        this.id = id;
         this.packageName = packageName;
         this.appName = appName;
-        //currently color and size not consider for MVP
+        this.textView = tv;
+        this.color = color;
+        this.size = size;
     }
 
     public CharSequence getPackageName() {
@@ -38,20 +58,23 @@ public class Apps {
     }
 
 
-
-    public Color getAppTextColor() {
-        return appTextColor;
+    public TextView getTextView() {
+        return textView;
     }
 
-    public void setAppTextColor(Color appTextColor) {
-        this.appTextColor = appTextColor;
+    public int getColor() {
+        return color;
     }
 
-    public int getAppTextSize() {
-        return appTextSize;
+    public void setColor(int color) {
+        this.color = color;
     }
 
-    public void setAppTextSize(int appTextSize) {
-        this.appTextSize = appTextSize;
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

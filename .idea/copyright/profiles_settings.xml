@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="" />
+  <settings default="shubham Last Launcher">
+    <module2copyright>
+      <element module="Project Files" copyright="shubham Last Launcher" />
+    </module2copyright>
+  </settings>
 </component>

@@ -13,12 +13,36 @@ i fed-up by all Android Launcher that are available on F-DROID and Play store(al
 * Resizable and colourful app names
 * and much more... in subsequent releases
 ## To do
-* [ ] Search apps
+* [ ] Search app.
+* [ ]  App Layout improvements.
 ## Screenshots
-*  just wait...
-*
+| Color 1| Color 2 |
+|:-:|:-:|
+| ![home1](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg?raw=true "home1") | ![home2](/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg?raw=true "home2") |
 ## Download
-* Exclusively on F-DROID(coming soon..)
+[<img src="https://f-droid.org/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/io.github.subhamtyagi.lastlauncher/)
 ## Copyright
-*  GNU v3 (Shubham Tyagi)
+
+      Last Launcher
+      Copyright (C) 2019 Shubham Tyagi
+
+     This program is free software: you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by
+     the Free Software Foundation, either version 3 of the License, or
+     (at your option) any later version.
+
+     This program is distributed in the hope that it will be useful,
+     but WITHOUT ANY WARRANTY; without even the implied warranty of
+     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     GNU General Public License for more details.
+
+     You should have received a copy of the GNU General Public     License
+     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+
+
 
