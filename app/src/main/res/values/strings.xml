@@ -10,11 +10,10 @@
     <!--App information related strings-->
     <string name="app_usage_permission_title">Optional Usage Stats Permission </string>
     <string name="app_usage_permission_message">This permission is required for variable size of Apps Name\nThis permission is optional.\nDo you want to proceed for permission request?</string>
-
-
-
+    <string name="size_for_this_entry">Size for this Entry</string>
+    <string name="color_for_this_entry">Color for this Entry</string>
 
 
     <!--constants-->
-   <!-- <color name="default_app_text_color">>#ff7043</color>-->
+    <!-- <color name="default_app_text_color">>#ff7043</color>-->
 </resources>

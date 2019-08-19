@@ -19,6 +19,7 @@
 package io.github.subhamtyagi.lastlauncher;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -203,6 +204,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 apps.setSize(TEXT_SIZE);
             }
         }
+        Dialog settings=new Settings(this);
+        settings.show();
     }
 
     @Override

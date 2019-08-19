@@ -7,27 +7,25 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
 
-    <!--android:icon="@mipmap/ic_launcher"-->
     <application
         android:allowBackup="true"
         android:clearTaskOnLaunch="true"
-
         android:label="@string/app_name"
         android:launchMode="singleTask"
-
         android:stateNotNeeded="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
+        <activity android:name=".Settings"></activity>
         <activity
-            android:name="io.github.subhamtyagi.lastlauncher.LauncherActivity"
+            android:name=".LauncherActivity"
             android:excludeFromRecents="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
