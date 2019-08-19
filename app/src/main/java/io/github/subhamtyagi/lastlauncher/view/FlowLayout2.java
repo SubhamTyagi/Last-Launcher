@@ -35,9 +35,11 @@ public class FlowLayout2 extends ViewGroup {
         int childLeft = getPaddingLeft();
         int childTop = getPaddingTop();
         int lineHeight = 0;
+
         // 100 is a dummy number, widthMeasureSpec should always be EXACTLY for FlowLayout
         int myWidth = resolveSize(100, widthMeasureSpec);
         int wantedHeight = 0;
+
         for (int i = 0; i < getChildCount(); i++) {
             final View child = getChildAt(i);
             if (child.getVisibility() == View.GONE) {
@@ -63,12 +65,19 @@ public class FlowLayout2 extends ViewGroup {
         setMeasuredDimension(myWidth, resolveSize(wantedHeight, heightMeasureSpec));
     }
 
-    @Override
+   @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        int childLeft = getPaddingLeft();
-        int childTop = getPaddingTop();
+        int childLeft = getPaddingLeft();//x
+        int childTop = getPaddingTop();//y
         int lineHeight = 0;
-        int myWidth = right - left;
+
+        int myWidth = right - left;//d
+
+        ///in
+        int lastHorizontalSpacing = 0;
+        int rowStartIdx = 0;
+        ///
+
         for (int i = 0; i < getChildCount(); i++) {
             final View child = getChildAt(i);
             if (child.getVisibility() == View.GONE) {
@@ -86,4 +95,58 @@ public class FlowLayout2 extends ViewGroup {
             childLeft += childWidth + paddingHorizontal;
         }
     }
+
+
+    /*@Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        final int count = getChildCount();
+        final int width = r - l;
+        int xpos = getPaddingLeft();
+        int ypos = getPaddingTop();
+
+        int lineHeight = 0;
+        int lastHorizontalSpacing = 0;
+        int rowStartIdx = 0;
+
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
+            if (child.getVisibility() != GONE) {
+                final int childw = child.getMeasuredWidth();
+                final int childh = child.getMeasuredHeight();
+                lineHeight = Math.max(childh, lineHeight);
+                if (xpos + childw > width) {
+                    final int freeSpace = width - xpos + lastHorizontalSpacing;
+                    xpos = getPaddingLeft() + freeSpace / 2;
+
+                    for (int j = rowStartIdx; j < i; ++j) {
+                        final View drawChild = getChildAt(j);
+                        drawChild.layout(xpos, ypos, xpos + drawChild.getMeasuredWidth(), ypos + drawChild.getMeasuredHeight());
+                        xpos += drawChild.getMeasuredWidth() +paddingHorizontal;
+                    }
+
+                    lastHorizontalSpacing = 0;
+
+                    xpos = getPaddingLeft();
+                    ypos += lineHeight;
+
+                    rowStartIdx = i;
+                }
+                // lineHeight = child.getMeasuredHeight() + lp.vertical_spacing;
+                child.layout(xpos, ypos, xpos + childw, ypos + childh);
+                xpos += childw + paddingHorizontal;
+                lastHorizontalSpacing = paddingHorizontal;
+
+            }
+        }
+        if (rowStartIdx < count) {
+            final int freeSpace = width - xpos + lastHorizontalSpacing;
+            xpos = getPaddingLeft() + freeSpace / 2;
+
+            for (int j = rowStartIdx; j < count; ++j) {
+                final View drawChild = getChildAt(j);
+                drawChild.layout(xpos, ypos, xpos + drawChild.getMeasuredWidth(), ypos + drawChild.getMeasuredHeight());
+                xpos += drawChild.getMeasuredWidth() + paddingHorizontal;
+            }
+        }
+    }*/
 }

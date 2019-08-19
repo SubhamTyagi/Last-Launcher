@@ -18,40 +18,31 @@
 
 package io.github.subhamtyagi.lastlauncher;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.usage.UsageStats;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.TextView;
+
+import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import io.github.subhamtyagi.lastlauncher.model.Apps;
-
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 import io.github.subhamtyagi.lastlauncher.util.Utility;
-import io.github.subhamtyagi.lastlauncher.view.FlowLayout2;
 
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
@@ -62,6 +53,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     //private static final int RESULT_ACTION_USAGE_ACCESS_SETTINGS = 1;
     private ArrayList<Apps> appsList;
+    private static final int TEXT_SIZE=25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +96,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void refreshAppSize(String packageName) {
-        int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), 20) + 1;
+        int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE) + 1;
         SpUtils.getInstance().putInt(Utility.getSizePrefs(packageName), size);
         for (Apps apps : appsList) {
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
@@ -113,35 +105,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         }
     }
-/*
-
-    private void refreshAllApps() {
-        //Map<String, UsageStats> usageStatsMap;
-        Random rnd = new Random();
-        TextView tv;
-        int color, size;
-        String appPackageName;
-
-        for (Apps apps : appsList) {
-            tv = apps.getTextView();
-            //color = apps.getColor();
-            size = apps.getSize();
-            appPackageName = apps.getPackageName().toString();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                usageStatsMap = MyUsageStats.getInstance(this).getUsageStats();
-                UsageStats usageStats = usageStatsMap.get((appPackageName).toLowerCase());
-                if (usageStats != null) {
-                    size = Utility.getSize(usageStats.getTotalTimeInForeground());
-                }
-            }
-            tv.setTextSize(size);
-            color = (rnd.nextInt(7) + 1) * 100;
-            tv.setTextColor(Utility.getRandomColor(String.valueOf(color), this));
-        }
-
-
-    }
-*/
 
     //this must be done in background
     private void loadApps() {
@@ -149,12 +112,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
-        // Log.i(TAG, "Found " + activities.size() + " activities");
-        //shorts these activities
+
         Collections.sort(activities, new Comparator<ResolveInfo>() {
             @Override
             public int compare(ResolveInfo a, ResolveInfo b) {
-                //PackageManager pm = getActivity().getPackageManager();
                 return String.CASE_INSENSITIVE_ORDER.compare(
                         a.loadLabel(pm).toString(),
                         b.loadLabel(pm).toString()
@@ -162,13 +123,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         });
         /////////////////////////////////////////////
-        ViewGroup homeLayout = findViewById(R.id.home_layout);
+        FlowLayout homeLayout = findViewById(R.id.home_layout);
+
         homeLayout.setOnLongClickListener(this::onLongClick);
         homeLayout.setOnClickListener(this::onClick);
+
         homeLayout.removeAllViews();
 
         int appsCount = activities.size();
-        int id = 0, size = 20;
+        int id = 0;
         String packageName, appName;
         TextView textView;
 
@@ -185,6 +148,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             textView.setTag(packageName);//tag for identification
             textView.setOnClickListener(this::onClick);
             textView.setOnLongClickListener(this::onLongClick);
+            //textView.set
+
+            textView.setPadding(10,5,5,10);
 
             //int color=getResources().getColor(R.color.default_app_text_color);
             //size=(int)getResources().getDimension(R.dimen.default_app_text_size);
@@ -192,30 +158,21 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             color = Utility.getRandomColor(String.valueOf(color), this);
             textView.setTextColor(color);
 
-            textView.setTextSize(size);
+            int textSize=SpUtils.getInstance().init(this).getInt(Utility.getSizePrefs(packageName),TEXT_SIZE);
+            textView.setTextSize(textSize);
 
             appsList.add(
                     new Apps(++id,
                             packageName,
                             appName,
                             textView,
-                            color, //default
-                            size// default
+                            color,
+                            textSize
                     )
             );
             homeLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         }
 
-        /* Collections.sort(appsList, new Comparator<Apps>() {
-            @Override
-            public int compare(Apps a, Apps b) {
-                return String.CASE_INSENSITIVE_ORDER.compare(
-                        a.getAppName().toString(),
-                        b.getAppName().toString()
-                );
-            }
-        });*/
-        //send signal to update ui
     }
 
 
@@ -233,18 +190,17 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void resetBackgroundColor() {
-        FlowLayout2 homeLayout = findViewById(R.id.home_layout);
+        FlowLayout homeLayout = findViewById(R.id.home_layout);
         homeLayout.setBackgroundColor(Color.BLACK);
         //finish();
     }
 
     private void resetAppSize(String packageName) {
-        int size = 20;
-        SpUtils.getInstance().putInt(Utility.getSizePrefs(packageName), size);
+        SpUtils.getInstance().putInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
         for (Apps apps : appsList) {
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
-                apps.getTextView().setTextSize(size);
-                apps.setSize(size);
+                apps.getTextView().setTextSize(TEXT_SIZE);
+                apps.setSize(TEXT_SIZE);
             }
         }
     }
@@ -261,10 +217,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         } else {
 
-            Random rnd = new Random();
-            int color = (rnd.nextInt(7) + 1) * 100;
-            color = Utility.getRandomColor(String.valueOf(color), this);
-            FlowLayout2 homeLayout = findViewById(R.id.home_layout);
+
+           int color = Utility.getRandomColor("900", this);
+            FlowLayout homeLayout = findViewById(R.id.home_layout);
             homeLayout.setBackgroundColor(color);
 
         }
