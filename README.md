@@ -18,7 +18,7 @@ i fed-up by all Android Launcher that are available on F-DROID and Play store(al
 ## Screenshots
 | Color 1| Color 2 |
 |:-:|:-:|
-| ![home1](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg?raw=true "home1") | ![home2](/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg?raw=true "home2") |
+| ![home1](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg?raw=true "home1") | ![home2](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg?raw=true "home2") |
 ## Download
 [<img src="https://f-droid.org/badge/get-it-on.png"
      alt="Get it on F-Droid"

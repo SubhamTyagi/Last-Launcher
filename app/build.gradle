@@ -8,7 +8,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 1
-        versionName "0.2.preview"
+        versionName "0.1"
         resConfigs "en"
     }
     buildTypes {
