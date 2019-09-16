@@ -16,7 +16,7 @@ i fed-up by all Android Launcher that are available on F-DROID and Play store(al
 * [ ] Search app.
 * [ ]  App Layout improvements.
 ## Screenshots
-| Color 1| Color 2 |
+| Home| Menu|
 |:-:|:-:|
 | ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true "Home") | ![Menu](/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true "menu") |
 ## Download
