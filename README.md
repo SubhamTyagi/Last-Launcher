@@ -9,6 +9,7 @@ i fed-up by all Android Launcher that are available on F-DROID and Play store(al
 * free and open source
 * Material design look and feel
 * Small size
+* Small apk size 
 * No icon and widgets (may be a disadvantage)
 * Resizable and colourful app names
 * and much more... in subsequent releases
@@ -16,14 +17,21 @@ i fed-up by all Android Launcher that are available on F-DROID and Play store(al
 * [ ] Search app.
 * [ ]  App Layout improvements.
 ## Screenshots
-| Color 1| Color 2 |
+| Home| Menu|
 |:-:|:-:|
 | ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true "Home") | ![Settings](/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true "Settings") |
+
+
 ## Download
 [<img src="https://f-droid.org/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/io.github.subhamtyagi.lastlauncher/)
+
 ## 
+
+## External Library 
+  * will update soon
+
 ## Copyright
 
       Last Launcher
