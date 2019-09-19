@@ -1,10 +1,8 @@
 <resources>
     <dimen name="activity_horizontal_margin">20dp</dimen>
-    <dimen name="activity_vertical_margin">10dp</dimen>
 
-    <dimen name="flowlayout_horizontal_padding">12dp</dimen>
-    <dimen name="flowlayout_vertical_padding">5dp</dimen>
-
-
+    <dimen name="flowlayout_horizontal_padding">5dp</dimen>
+    <dimen name="flowlayout_vertical_padding">0dp</dimen>
     <dimen name="default_app_text_size">20dp</dimen>
+
 </resources>

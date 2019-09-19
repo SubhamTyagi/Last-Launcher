@@ -24,55 +24,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black"
+    android:background="#00000000"
     android:orientation="vertical"
     tools:context=".Settings">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#DEDEDE" />
+
 
     <TextView
-
-        android:id="@+id/tv_app_size"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="Example Text"
+        android:id="@+id/tv_example_text"
         android:textSize="20sp"
-        android:textColor="@android:color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-
-        android:text="@string/size_for_this_entry" />
-
-    <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#DEDEDE" />
+        android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/tv_app_color"
-        android:layout_width="wrap_content"
+    <com.rtugeek.android.colorseekbar.ColorSeekBar
+        android:id="@+id/colorSlider"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+
+        android:layout_margin="6dp"
+        app:colorSeeds="@array/material_colors" />
 
 
-        android:text="@string/color_for_this_entry" />
-
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#DEDEDE" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <TextView
+            android:text="Size:"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
+        <SeekBar
+            android:id="@+id/sb_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:max="70"
+            />
+
+    </LinearLayout>
+
+    <!--<com.larswerkman.holocolorpicker.ColorPicker
+        android:id="@+id/picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <com.larswerkman.holocolorpicker.SVBar
+        android:id="@+id/svbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+-->
 </LinearLayout>

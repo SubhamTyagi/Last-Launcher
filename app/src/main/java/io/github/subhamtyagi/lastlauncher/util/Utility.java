@@ -60,5 +60,10 @@ public class Utility {
         return packageName.replaceAll("\\.","_")+"_size";
     }
 
+    public static String getColorPrefs(String packageName){
+        return packageName.replaceAll("\\.","_")+"_color";
+    }
+
+
 
 }

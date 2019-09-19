@@ -34,14 +34,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'org.apmem.tools:layouts:1.10'
+    implementation project(':flowlayout:layouts')
+    implementation project(':colorseekbar')
 
-    //implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
-    // implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    //implementation 'org.apmem.tools:layouts:1.10'
+    //implementation 'com.github.rtugeek:colorseekbar:1.7.5'
+   // implementation 'com.larswerkman:HoloColorPicker:1.5'
+
 }

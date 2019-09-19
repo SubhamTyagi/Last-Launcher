@@ -53,43 +53,20 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     // private static final String TAG = "LauncherActivity";
 
     //private static final int RESULT_ACTION_USAGE_ACCESS_SETTINGS = 1;
+
     private ArrayList<Apps> appsList;
-    private static final int TEXT_SIZE=25;
+    private static final int TEXT_SIZE = 30;
+    private static int TEXT_COLOR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+        SpUtils.getInstance().init(this);
 
-       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (!MyUsageStats.isStatAccessPermissionSet(this))
-                if (SpUtils.getInstance().init(this)
-                        .getBoolean(getString(R.string.sp_first_time_app_open), true)
-                        ||
-                        SpUtils.getInstance().init(this)
-                                .getBoolean(getString(R.string.sp_request_usage_stat), true)
-                ) {
-                    new AlertDialog.Builder(this)
-                            .setTitle(getString(R.string.app_usage_permission_title))
-                            .setMessage(R.string.app_usage_permission_message)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    SpUtils.getInstance().init(LauncherActivity.this).putBoolean(LauncherActivity.this.getString(R.string.sp_request_usage_stat), false);
-                                    requestPermission();
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    SpUtils.getInstance().init(LauncherActivity.this).putBoolean(LauncherActivity.this.getString(R.string.sp_request_usage_stat), false);
-                                }
-                            }).show();
+        TEXT_COLOR = getResources().getColor(R.color.default_apps_colors);
 
-                }
-        }
-       */
         loadApps();
         // refreshAllApps();
         registerForReceiver();
@@ -103,6 +80,20 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
                 apps.getTextView().setTextSize(size);
                 apps.setSize(size);
+            }
+        }
+    }
+
+
+    void refreshApps(String packageName) {
+        int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE) + 1;
+        int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
+        for (Apps apps : appsList) {
+            if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
+                apps.getTextView().setTextSize(size);
+                apps.getTextView().setTextColor(color);
+                apps.setSize(size);
+                apps.setColor(color);
             }
         }
     }
@@ -129,6 +120,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         homeLayout.setOnLongClickListener(this::onLongClick);
         homeLayout.setOnClickListener(this::onClick);
 
+
         homeLayout.removeAllViews();
 
         int appsCount = activities.size();
@@ -137,11 +129,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         TextView textView;
 
         appsList = new ArrayList<>(appsCount);
-        Random rnd = new Random();
+        int color, textSize;
 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
             appName = resolveInfo.loadLabel(pm).toString();
+
+            //TODO: before commit / take screen shot
+            //if (appName.equalsIgnoreCase("KD campus")||appName.equalsIgnoreCase("kanyadaan")||appName.equalsIgnoreCase("getApps")||appName.equalsIgnoreCase("feedback")||appName.equalsIgnoreCase("gradeup")||appName.equalsIgnoreCase("mi remote")||appName.equalsIgnoreCase("pnb one")||appName.equalsIgnoreCase("play store")||appName.equalsIgnoreCase("drive")||appName.equalsIgnoreCase("duo"))
+            //continue;
 
             //set text color size,weight
             textView = new TextView(this);
@@ -149,18 +145,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             textView.setTag(packageName);//tag for identification
             textView.setOnClickListener(this::onClick);
             textView.setOnLongClickListener(this::onLongClick);
-            //textView.set
 
-            textView.setPadding(10,5,5,10);
+            //TODO: move values to dimens
+            textView.setPadding(10, -5, 0, -2);
 
-            //int color=getResources().getColor(R.color.default_app_text_color);
-            //size=(int)getResources().getDimension(R.dimen.default_app_text_size);
-            int color = (rnd.nextInt(7) + 1) * 100;
-            color = Utility.getRandomColor(String.valueOf(color), this);
-            textView.setTextColor(color);
-
-            int textSize=SpUtils.getInstance().init(this).getInt(Utility.getSizePrefs(packageName),TEXT_SIZE);
+            textSize = SpUtils.getInstance().init(this).getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
+            color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
             textView.setTextSize(textSize);
+            textView.setTextColor(color);
 
             appsList.add(
                     new Apps(++id,
@@ -182,10 +174,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         //String packageName= (String) view.getTag();
         //set various setting for this app
         //TODO: Individual App Settings
-        if (view instanceof TextView)
-            resetAppSize((String) view.getTag());
-        else
-            resetBackgroundColor();
+        if (view instanceof TextView) {
+            showSettings((String) view.getTag());
+        }
 
         return true;
     }
@@ -193,19 +184,40 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private void resetBackgroundColor() {
         FlowLayout homeLayout = findViewById(R.id.home_layout);
         homeLayout.setBackgroundColor(Color.BLACK);
+        int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(BuildConfig.APPLICATION_ID), TEXT_COLOR);
+        int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(BuildConfig.APPLICATION_ID), TEXT_SIZE);
+        Settings settings = new Settings(this, BuildConfig.APPLICATION_ID,getString(R.string.app_name),color,size);
+        // settings.setLastLauncher();
+        settings.show();
         //finish();
     }
 
-    private void resetAppSize(String packageName) {
-        SpUtils.getInstance().putInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
+    private void showSettings(String packageName) {
+
         for (Apps apps : appsList) {
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
-                apps.getTextView().setTextSize(TEXT_SIZE);
-                apps.setSize(TEXT_SIZE);
+                int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
+                int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
+                Dialog settings = new Settings(this,packageName,apps.getAppName().toString(),color,size);
+                settings.show();
+                break;
             }
+
         }
-        Dialog settings=new Settings(this);
-        settings.show();
+
+        // SpUtils.getInstance().putInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
+        for (Apps apps : appsList) {
+            if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
+                int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
+                int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
+                apps.getTextView().setTextSize(size);
+                apps.getTextView().setTextColor(color);
+                apps.setColor(color);
+                apps.setSize(size);
+                break;
+            }
+
+        }
     }
 
     @Override
@@ -218,55 +230,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             } catch (Exception e) {
                 //Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
-        } else {
-
-
-           int color = Utility.getRandomColor("900", this);
-            FlowLayout homeLayout = findViewById(R.id.home_layout);
-            homeLayout.setBackgroundColor(color);
-
         }
     }
 
-    /*
-
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESULT_ACTION_USAGE_ACCESS_SETTINGS) {
-            if (!MyUsageStats.isStatAccessPermissionSet(this)) {
-               // Log.d(TAG, "onActivityResult: permission is not set");
-                if (SpUtils.getInstance().init(this).getBoolean(getString(R.string.sp_request_usage_stat), true))
-                    requestPermission();
-            } else {
-                SpUtils.getInstance().init(LauncherActivity.this).putBoolean(LauncherActivity.this.getString(R.string.sp_request_usage_stat), false);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
- @Override
-    protected void onRestart() {
-        super.onRestart();
-        //refreshAllApps();
-
-    }
-@Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //unregisterReceiver();
-    }*/
 
     //Launcher hack
     @Override
     public void onBackPressed() {
     }
-
-    /*private void requestPermission() {
-        if (!MyUsageStats.isStatAccessPermissionSet(this)) {
-            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-            startActivityForResult(intent, RESULT_ACTION_USAGE_ACCESS_SETTINGS);
-        }
-    }*/
 
     private void registerForReceiver() {
         IntentFilter intentFilter = new IntentFilter();
@@ -281,6 +252,5 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         }, intentFilter);
     }
-
 
 }
