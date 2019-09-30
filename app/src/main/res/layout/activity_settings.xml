@@ -20,7 +20,6 @@
 <LinearLayout
 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,7 +31,6 @@
     <TextView
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:text="Example Text"
         android:id="@+id/tv_example_text"
         android:textSize="20sp"
         android:layout_width="match_parent"
@@ -42,9 +40,7 @@
         android:id="@+id/colorSlider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_margin="6dp"
-        app:colorSeeds="@array/material_colors" />
+        android:layout_margin="6dp" />
 
 
     <LinearLayout

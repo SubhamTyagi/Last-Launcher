@@ -43,7 +43,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':flowlayout:layouts')
-    implementation project(':colorseekbar')
 
     //implementation 'org.apmem.tools:layouts:1.10'
     //implementation 'com.github.rtugeek:colorseekbar:1.7.5'

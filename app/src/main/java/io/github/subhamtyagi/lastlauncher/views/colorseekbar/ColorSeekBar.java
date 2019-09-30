@@ -1,4 +1,9 @@
-package com.rtugeek.android.colorseekbar;
+/*
+ * created by https://github.com/rtugeek/ColorSeekBar
+ */
+
+package io.github.subhamtyagi.lastlauncher.views.colorseekbar;
+
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,11 +14,9 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build;
-
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,10 +24,19 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.subhamtyagi.lastlauncher.R;
+
+
+//https://github.com/rtugeek/ColorSeekBar
+
 
 public class ColorSeekBar extends View {
-    private int[] mColorSeeds = new int[]{0xFF000000, 0xFF9900FF, 0xFF0000FF, 0xFF00FF00, 0xFF00FFFF,
-            0xFFFF0000, 0xFFFF00FF, 0xFFFF6600, 0xFFFFFF00, 0xFFFFFFFF, 0xFF000000};
+
+    private int[] mColorSeeds = new int[]{
+            0xFF000000, 0xFF9900FF, 0xFF0000FF, 0xFF00FF00, 0xFF00FFFF,
+            0xFFFF0000, 0xFFFF00FF, 0xFFFF6600, 0xFFFFFF00, 0xFFFFFFFF,
+            0xFF000000};
+
     private int mAlpha;
     private OnColorChangeListener mOnColorChangeLister;
     private Context mContext;
@@ -95,7 +107,7 @@ public class ColorSeekBar extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        Logger.i("onMeasure");
+
         int mViewWidth = widthMeasureSpec;
         int mViewHeight = heightMeasureSpec;
 
@@ -105,10 +117,6 @@ public class ColorSeekBar extends View {
         int barHeight = mIsShowAlphaBar ? mBarHeight * 2 : mBarHeight;
         int thumbHeight = mIsShowAlphaBar ? mThumbHeight * 2 : mThumbHeight;
 
-        Logger.i("widthSpeMode:");
-        Logger.spec(widthSpeMode);
-        Logger.i("heightSpeMode:");
-        Logger.spec(heightSpeMode);
 
         if (isVertical()) {
             if (widthSpeMode == MeasureSpec.AT_MOST || widthSpeMode == MeasureSpec.UNSPECIFIED) {
@@ -178,7 +186,7 @@ public class ColorSeekBar extends View {
     }
 
     private void init() {
-        Logger.i("init");
+
         //init size
         mThumbRadius = mThumbHeight / 2;
         int mPaddingSize = (int) mThumbRadius;
@@ -206,7 +214,7 @@ public class ColorSeekBar extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        Logger.i("onSizeChanged");
+
         if (mIsVertical) {
             mTransparentBitmap = Bitmap.createBitmap(h, w, Bitmap.Config.ARGB_4444);
         } else {
@@ -234,7 +242,7 @@ public class ColorSeekBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Logger.i("onDraw");
+
 
         if (mIsVertical) {
             canvas.rotate(-90);
@@ -254,9 +262,9 @@ public class ColorSeekBar extends View {
         canvas.drawBitmap(mTransparentBitmap, 0, 0, null);
 
         //draw color bar
-        canvas.drawRoundRect(mColorRect,mBarRadius,mBarRadius, isEnabled() ? mColorRectPaint : mDisabledPaint);
+        canvas.drawRoundRect(mColorRect, mBarRadius, mBarRadius, isEnabled() ? mColorRectPaint : mDisabledPaint);
         //draw color bar thumb
-        if(mShowThumb){
+        if (mShowThumb) {
             float thumbX = colorPosition + realLeft;
             float thumbY = mColorRect.top + mColorRect.height() / 2;
             canvas.drawCircle(thumbX, thumbY, mBarHeight / 2 + 5, colorPaint);
@@ -280,7 +288,7 @@ public class ColorSeekBar extends View {
             canvas.drawRect(mAlphaRect, alphaBarPaint);
 
             //draw alpha bar thumb
-            if(mShowThumb){
+            if (mShowThumb) {
                 float alphaPosition = (float) (mAlphaBarPosition - mAlphaMinPosition) / (mAlphaMaxPosition - mAlphaMinPosition) * mBarWidth;
                 float alphaThumbX = alphaPosition + realLeft;
                 float alphaThumbY = mAlphaRect.top + mAlphaRect.height() / 2;
@@ -760,6 +768,7 @@ public class ColorSeekBar extends View {
 
     /**
      * Set bar radius with px unit
+     *
      * @param barRadiusInPx
      */
     public void setBarRadius(int barRadiusInPx) {

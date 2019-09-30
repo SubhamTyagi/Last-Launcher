@@ -26,20 +26,20 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
@@ -50,12 +50,10 @@ import static android.content.Intent.ACTION_PACKAGE_REMOVED;
 import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
 public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
-    // private static final String TAG = "LauncherActivity";
-
-    //private static final int RESULT_ACTION_USAGE_ACCESS_SETTINGS = 1;
-
     private ArrayList<Apps> appsList;
+    //Typeface mTypeface;
     private static final int TEXT_SIZE = 30;
+    FlowLayout homeLayout;
     private static int TEXT_COLOR;
 
     @Override
@@ -63,12 +61,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+
         SpUtils.getInstance().init(this);
+
+        //TODO: check the memory footprint
+        // mTypeface = Typeface.createFromAsset(getAssets(),"fonts/Comfortaa.ttf");
 
         TEXT_COLOR = getResources().getColor(R.color.default_apps_colors);
 
         loadApps();
-        // refreshAllApps();
+
         registerForReceiver();
         SpUtils.getInstance().init(this).putBoolean(getString(R.string.sp_first_time_app_open), false);
     }
@@ -80,10 +82,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
                 apps.getTextView().setTextSize(size);
                 apps.setSize(size);
+                break;
             }
         }
     }
-
 
     void refreshApps(String packageName) {
         int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE) + 1;
@@ -105,22 +107,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
 
-        Collections.sort(activities, new Comparator<ResolveInfo>() {
-            @Override
-            public int compare(ResolveInfo a, ResolveInfo b) {
-                return String.CASE_INSENSITIVE_ORDER.compare(
-                        a.loadLabel(pm).toString(),
-                        b.loadLabel(pm).toString()
-                );
-            }
-        });
-        /////////////////////////////////////////////
-        FlowLayout homeLayout = findViewById(R.id.home_layout);
+        Collections.sort(activities, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
+                a.loadLabel(pm).toString(),
+                b.loadLabel(pm).toString()
+        ));
 
-        homeLayout.setOnLongClickListener(this::onLongClick);
-        homeLayout.setOnClickListener(this::onClick);
-
-
+        homeLayout = findViewById(R.id.home_layout);
+        homeLayout.setOnLongClickListener(this);
         homeLayout.removeAllViews();
 
         int appsCount = activities.size();
@@ -143,8 +136,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             textView = new TextView(this);
             textView.setText(appName);
             textView.setTag(packageName);//tag for identification
-            textView.setOnClickListener(this::onClick);
-            textView.setOnLongClickListener(this::onLongClick);
+
+            textView.setOnClickListener(this);
+            textView.setOnLongClickListener(this);
+            //textView.setTypeface(mTypeface);
 
             //TODO: move values to dimens
             textView.setPadding(10, -5, 0, -2);
@@ -171,26 +166,90 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     @Override
     public boolean onLongClick(View view) {
-        //String packageName= (String) view.getTag();
-        //set various setting for this app
-        //TODO: Individual App Settings
         if (view instanceof TextView) {
-            showSettings((String) view.getTag());
+            //showSettings((String) view.getTag());
+            showPopup((String) view.getTag(), (TextView) view);
+        } else if (view instanceof FlowLayout) {
+            showGlobalSettings();
+            // showSettings(BuildConfig.APPLICATION_ID);
         }
-
         return true;
     }
 
-    private void resetBackgroundColor() {
-        FlowLayout homeLayout = findViewById(R.id.home_layout);
-        homeLayout.setBackgroundColor(Color.BLACK);
-        int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(BuildConfig.APPLICATION_ID), TEXT_COLOR);
-        int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(BuildConfig.APPLICATION_ID), TEXT_SIZE);
-        Settings settings = new Settings(this, BuildConfig.APPLICATION_ID,getString(R.string.app_name),color,size);
-        // settings.setLastLauncher();
-        settings.show();
-        //finish();
+    private void showGlobalSettings() {
+        PopupMenu popupMenu = new PopupMenu(this, homeLayout);
+        popupMenu.getMenuInflater().inflate(R.menu.menu_setting_global, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_fonts://change fonts
+                        break;
+                    case R.id.menu_background: //change background color
+                        break;
+                    case R.id.menu_primary_colors: //set primary colors;
+                        break;
+                    case R.id.menu_backup://backup
+                        break;
+                    case R.id.menu_reset: //reset
+                        break;
+                }
+                return true;
+            }
+        });
+        popupMenu.show();
     }
+
+    private void showPopup(String packageName, TextView view) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_color:
+                        changeColor(packageName);
+                        break;
+                    case R.id.menu_size:
+                        changeSize(packageName);
+                        break;
+                    case R.id.menu_rename:
+                        renameApp(packageName);
+                        break;
+                    case R.id.menu_uninstall:
+                        uninstallApp(packageName);
+                        break;
+
+                    default:
+                        return true;
+                }
+                return true;
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void uninstallApp(String packageName) {
+        Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
+        intent.setData(Uri.parse("package:" + packageName));
+        intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
+        startActivityForResult(intent, 97);
+    }
+
+    private void renameApp(String packageName) {
+        // show input dialog
+        //resets apps list
+        //save changes to prefs
+    }
+
+    private void changeSize(String packageName) {
+        showSettings(packageName);
+    }
+
+    private void changeColor(String packageName) {
+        showSettings(packageName);
+    }
+
 
     private void showSettings(String packageName) {
 
@@ -198,7 +257,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
                 int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
                 int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
-                Dialog settings = new Settings(this,packageName,apps.getAppName().toString(),color,size);
+                Dialog settings = new Settings(this, packageName, apps.getAppName().toString(), color, size);
                 settings.show();
                 break;
             }
@@ -252,5 +311,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         }, intentFilter);
     }
+
 
 }

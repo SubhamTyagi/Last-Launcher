@@ -10,10 +10,28 @@
     <!--App information related strings-->
     <string name="app_usage_permission_title">Optional Usage Stats Permission </string>
     <string name="app_usage_permission_message">This permission is required for variable size of Apps Name\nThis permission is optional.\nDo you want to proceed for permission request?</string>
-    <string name="size_for_this_entry">Size for this Entry</string>
-    <string name="color_for_this_entry">Color for this Entry</string>
+    <!--app menu-->
+    <array name="colors">
+        <item>#3F51B5</item>
+        <item>#303F9F</item>
+        <item>#FF4081</item>
+    </array>
+    <string name="size_for_this_entry">Size</string>
+    <string name="color_for_this_entry">Color</string>
+    <string name="rename">Rename</string>
+    <!--launcher menu-->
+    <string name="uninstall">Uninstall</string>
+    <string name="fonts">Fonts</string>
+    <string name="background_color">Background color</string>
+    <string name="set_to_primary_colors">Set to Primary Colors</string>
+    <string name="backup_restore">Backup/Restore</string>
 
 
     <!--constants-->
     <!-- <color name="default_app_text_color">>#ff7043</color>-->
+
+
+    <string name="reset_to_default_settings">Reset to Default Settings</string>
+
+
 </resources>

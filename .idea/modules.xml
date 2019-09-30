@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Launcher.iml" filepath="$PROJECT_DIR$/Launcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/colorseekbar/colorseekbar.iml" filepath="$PROJECT_DIR$/colorseekbar/colorseekbar.iml" />
       <module fileurl="file://$PROJECT_DIR$/flowlayout/flowlayout.iml" filepath="$PROJECT_DIR$/flowlayout/flowlayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/flowlayout/layouts/layouts.iml" filepath="$PROJECT_DIR$/flowlayout/layouts/layouts.iml" />
     </modules>

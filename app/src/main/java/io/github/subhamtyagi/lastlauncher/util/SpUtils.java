@@ -24,6 +24,15 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Map;
+
 
 public class SpUtils {
     private volatile static SpUtils mInstance;
@@ -157,6 +166,81 @@ public class SpUtils {
             editor.clear();
             editor.apply();
         } else throw new RuntimeException("First Initialize context");
+    }
+
+
+    //stub
+    private File saveSharedPreferencesToFile() {
+        boolean res = false;
+        File dst = new File("abc");
+        ObjectOutputStream output = null;
+        try {
+            output = new ObjectOutputStream(new FileOutputStream(dst));
+
+            output.writeObject(mPref.getAll());
+
+            res = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (output != null) {
+                    output.flush();
+                    output.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return dst;
+    }
+
+
+    //stub
+    private boolean loadSharedPreferencesFromFile(File src) {
+        boolean res = false;
+        ObjectInputStream input = null;
+        try {
+            input = new ObjectInputStream(new FileInputStream(src));
+
+
+            clear();
+
+
+            Map<String, ?> entries = (Map<String, ?>) input.readObject();
+            for (Map.Entry<String, ?> entry : entries.entrySet()) {
+                Object v = entry.getValue();
+                String key = entry.getKey();
+
+                if (v instanceof Boolean)
+                    putBoolean(key, (Boolean) v);
+                else if (v instanceof Integer)
+                    putInt(key, (Integer) v);
+                else if (v instanceof Long)
+                    putLong(key, (Long) v);
+                else if (v instanceof String)
+                    putString(key, ((String) v));
+            }
+
+            res = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return res;
     }
 
 

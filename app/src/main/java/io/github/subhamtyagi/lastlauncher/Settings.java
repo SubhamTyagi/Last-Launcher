@@ -20,19 +20,17 @@ package io.github.subhamtyagi.lastlauncher;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.rtugeek.android.colorseekbar.ColorSeekBar;
-
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 import io.github.subhamtyagi.lastlauncher.util.Utility;
+import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
 public class Settings extends Dialog {
-    final private String appPackage,appName;
+    final private String appPackage, appName;
     final private Context context;
     final private int appColor;
     final private int appSize;
@@ -43,8 +41,8 @@ public class Settings extends Dialog {
         this.context = context;
         this.appPackage = appPackage;
         this.appColor = appColor;
-        this.appName=appName;
-        this.appSize=appSize;
+        this.appName = appName;
+        this.appSize = appSize;
     }
 
     @Override
@@ -58,7 +56,10 @@ public class Settings extends Dialog {
         textView.setTextColor(appColor);
         ColorSeekBar colorSeekBar = findViewById(R.id.colorSlider);
         colorSeekBar.setMaxPosition(100);
-        //colorSeekBar.setColorSeeds(R.array.material_colors);
+        colorSeekBar.setColorSeeds(R.array.material_colors);
+        //TODO: TEST
+        colorSeekBar.setShowAlphaBar(true);
+
         colorSeekBar.setBarHeight(5);
         colorSeekBar.setColor(appColor);
 

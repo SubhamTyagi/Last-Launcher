@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Last Launcher
   ~ Copyright (C) 2019 Shubham Tyagi
   ~
@@ -17,23 +16,22 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
-    <color name="default_apps_colors">#8F8C8C</color>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@+id/menu_fonts"
+        android:title="@string/fonts" />
 
-    <array name="material_colors">
-        <item>#F44336</item>
-        <item>#9C27B0</item>
-        <item>#3F51B5</item>
-        <item>#03A9F4</item>
-        <item>#009688</item>
-        <item>#8BC34A</item>
-        <item>#FFEB3B</item>
-        <item>#FF9800</item>
-        <item>#795548</item>
-        <item>#607D8B</item>
-        <item>#8F8C8C</item>
-
-    </array>
-
-</resources>
+    <item
+        android:id="@+id/menu_background"
+        android:title="@string/background_color" />
+    <item
+        android:id="@+id/menu_primary_colors"
+        android:title="@string/set_to_primary_colors" />
+    <item
+        android:id="@+id/menu_backup"
+        android:title="@string/backup_restore" />
+    <item
+        android:id="@+id/menu_reset"
+        android:title="@string/reset_to_default_settings" />
+</menu>

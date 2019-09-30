@@ -1,33 +1,42 @@
+
 # Last Launcher
-Last Launcher is Simple, Minimalist, Customisable open source Android launcher. It aims to provide faster and simplest user experience. 
+
+Last Launcher is Simple, Minimalist, Customizable open source Android launcher. It aims to provide faster and simplest user experience.  
+
+[<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="60">](https://f-droid.org/packages/io.github.subhamtyagi.lastlauncher/)
 
 ### Short description:
-i fed-up by all Android Launcher that are available on F-DROID and Play store(although some are great). i always in quest of simple launcher that is light weight on RAM and also on Device battery. Ap15 is simple and fast but it full of trackrs and paid features. So i try to develop this launcher.
+I fed-up by all Android Launcher that are available on F-DROID and Play store(although some are great). I always in quest of simple launcher that is light weight on RAM and also on Device battery. Ap15 is simple and fast but it full of trackers and paid features. So i try to develop this launcher.
 ## Features
 * Faster than any other:)
 * Smart and smarter.
-* free and open source
-* Material design look and feel
-* Small size
-* Small apk size 
-* No icon and widgets (may be a disadvantage)
-* Resizable and colourful app names
-* and much more... in subsequent releases
+* free and open source.
+* Material design look and feel.
+* Small size.
+* No icon and widgets (may be a disadvantage).
+* Resizable and colorful app names.
+* and much more... in subsequent releases.
+## Contribution and Donation Guide
+1.  Star this Repository or
+2. Create a Pull Request.
 ## To do
-* [ ] Search app.
-* [ ]  App Layout improvements.
+* [ ] Search through Apps.
+* [ ] App Layout improvements.
+* [ ] Backup store/restore, Default setting in one click.
+* [ ] Background color scheme.
+* [ ] Custom Fonts.
+* [ ] Simple swipe gestures.
+* [ ] Color slider improvement.
+* [ ] [Primary app icon like color support](https://github.com/SubhamTyagi/Last-Launcher/issues/2)
+* [ ] [Edit App Name](https://github.com/SubhamTyagi/Last-Launcher/issues/3).
+* [ ]  [App Settings Dialog](https://github.com/SubhamTyagi/Last-Launcher/issues/4).
+* [ ] External library independence.
 ## Screenshots
 | Home| Menu|
 |:-:|:-:|
 | ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true "Home") | ![Settings](/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true "Settings") |
 
 
-## Download
-[<img src="https://f-droid.org/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/io.github.subhamtyagi.lastlauncher/)
-
-## 
 
 ## External Library 
   * will update soon
@@ -49,7 +58,6 @@ i fed-up by all Android Launcher that are available on F-DROID and Play store(al
 
      You should have received a copy of the GNU General Public     License
      along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 
 
