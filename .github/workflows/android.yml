@@ -1,0 +1,16 @@
+name: Build & Publish Debug APK
+on:
+ push:
+  branches:
+   - master
+jobs:
+ build:
+  runs-on: ubuntu-latest
+  steps:
+   - uses: actions/checkout@master
+   - name: Publish Debug APK
+     uses: ShaunLWM/action-release-debugapk@master
+     env:
+      GITHUB_TOKEN: ${{secrets.secret_key_build}}
+      APP_FOLDER: app
+      RELEASE_TITLE: "New debug Build"

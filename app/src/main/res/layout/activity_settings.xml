@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.rtugeek.android.colorseekbar.ColorSeekBar
+    <io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar
         android:id="@+id/colorSlider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
