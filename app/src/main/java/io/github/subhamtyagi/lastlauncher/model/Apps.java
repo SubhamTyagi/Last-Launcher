@@ -26,7 +26,7 @@ public class Apps {
     final private int id;
 
     final private CharSequence packageName;
-    final private CharSequence appName;
+    private CharSequence appName;
     final private TextView textView;
     private int color;
     private int size;
@@ -52,11 +52,9 @@ public class Apps {
         return packageName;
     }
 
-
     public CharSequence getAppName() {
         return appName;
     }
-
 
     public TextView getTextView() {
         return textView;

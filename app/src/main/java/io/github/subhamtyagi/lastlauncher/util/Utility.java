@@ -28,6 +28,10 @@ public class Utility {
         return packageName.replaceAll("\\.","_")+"_color";
     }
 
+    public static String getAppNamePrefs(String packageName){
+        return packageName.replaceAll("\\.","_")+"_app_name";
+    }
+
 
 
 }

@@ -20,6 +20,7 @@ package io.github.subhamtyagi.lastlauncher;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +36,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apmem.tools.layouts.FlowLayout;
 
@@ -166,15 +168,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
-
     @Override
     public boolean onLongClick(View view) {
         if (view instanceof TextView) {
-            //showSettings((String) view.getTag());
             showPopup((String) view.getTag(), (TextView) view);
         } else if (view instanceof FlowLayout) {
             showGlobalSettings();
-            // showSettings(BuildConfig.APPLICATION_ID);
         }
         return true;
     }
@@ -222,6 +221,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     case R.id.menu_uninstall:
                         uninstallApp(packageName);
                         break;
+                    case R.id.menu_app_info:
+                        showAppInfo(packageName);
 
                     default:
                         return true;
@@ -230,6 +231,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         });
         popupMenu.show();
+    }
+
+    private void showAppInfo(String packageName) {
+        Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + packageName));
+        startActivity(intent);
     }
 
     private void uninstallApp(String packageName) {
@@ -243,6 +250,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         // show input dialog
         //resets apps list
         //save changes to prefs
+        Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
     }
 
     private void changeColor(String packageName, TextView view) {
@@ -253,17 +261,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
 
-         }
+    }
 
     private void changeSize(String packageName, TextView view) {
         int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
-
         Dialog dialog = new ChooseSize(this, packageName, size, view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
-        }
+    }
 
 
     @Override
