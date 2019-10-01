@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="io.github.subhamtyagi.lastlauncher">
 
-    <uses-permission
-        android:name="android.permission.PACKAGE_USAGE_STATS"
-        tools:ignore="ProtectedPermissions" />
-
     <application
         android:allowBackup="true"
         android:clearTaskOnLaunch="true"
@@ -15,6 +11,7 @@
         android:stateNotNeeded="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ChooseColor"></activity>
         <activity android:name=".Settings" />
         <activity
             android:name=".LauncherActivity"
@@ -31,5 +28,9 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
 </manifest>

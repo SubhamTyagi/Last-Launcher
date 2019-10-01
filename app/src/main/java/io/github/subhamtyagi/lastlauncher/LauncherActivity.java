@@ -28,6 +28,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -50,6 +51,7 @@ import static android.content.Intent.ACTION_PACKAGE_REMOVED;
 import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
 public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
+
     private ArrayList<Apps> appsList;
     //Typeface mTypeface;
     private static final int TEXT_SIZE = 30;
@@ -65,6 +67,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         SpUtils.getInstance().init(this);
 
         //TODO: check the memory footprint
+
         // mTypeface = Typeface.createFromAsset(getAssets(),"fonts/Comfortaa.ttf");
 
         TEXT_COLOR = getResources().getColor(R.color.default_apps_colors);
@@ -208,10 +211,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.menu_color:
-                        changeColor(packageName);
+                        changeColor(packageName, view);
                         break;
                     case R.id.menu_size:
-                        changeSize(packageName);
+                        changeSize(packageName, view);
                         break;
                     case R.id.menu_rename:
                         renameApp(packageName);
@@ -242,42 +245,26 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         //save changes to prefs
     }
 
-    private void changeSize(String packageName) {
-        showSettings(packageName);
-    }
+    private void changeColor(String packageName, TextView view) {
+        int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
+        Dialog dialog = new ChooseColor(this, packageName, color, view);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        dialog.show();
 
-    private void changeColor(String packageName) {
-        showSettings(packageName);
-    }
+         }
 
+    private void changeSize(String packageName, TextView view) {
+        int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
 
-    private void showSettings(String packageName) {
-
-        for (Apps apps : appsList) {
-            if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
-                int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
-                int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
-                Dialog settings = new Settings(this, packageName, apps.getAppName().toString(), color, size);
-                settings.show();
-                break;
-            }
-
+        Dialog dialog = new ChooseSize(this, packageName, size, view);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        dialog.show();
         }
 
-        // SpUtils.getInstance().putInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
-        for (Apps apps : appsList) {
-            if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
-                int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
-                int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
-                apps.getTextView().setTextSize(size);
-                apps.getTextView().setTextColor(color);
-                apps.setColor(color);
-                apps.setSize(size);
-                break;
-            }
-
-        }
-    }
 
     @Override
     public void onClick(View view) {

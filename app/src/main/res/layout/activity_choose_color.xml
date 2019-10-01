@@ -16,23 +16,18 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llcolor"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/black">
 
+    <io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar
+        android:id="@+id/colorSlider1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        app:bgColor="@android:color/black" />
 
-    <item
-        android:id="@+id/menu_color"
-        android:title="@string/color_for_this_entry" />
-    <item
-        android:id="@+id/menu_size"
-        android:title="@string/size_for_this_entry" />
-
-    <item
-        android:id="@+id/menu_rename"
-        android:title="@string/rename" />
-    <item
-        android:id="@+id/menu_uninstall"
-        android:title="@string/uninstall" />
-    <item android:id="@+id/menu_app_info"
-        android:title="@string/app_info"/>
-
-</menu>
+</LinearLayout>

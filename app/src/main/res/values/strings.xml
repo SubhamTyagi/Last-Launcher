@@ -1,21 +1,21 @@
 <resources>
     <!--Navigation related strings-->
-    <string name="app_name">Last Launcher</string>
-    <string name="action_settings">Settings</string>
-
-    <!--Shared preference strings  -->
-    <string name="sp_request_usage_stat">sp_request_usage_stat</string>
-    <string name="sp_first_time_app_open">sp_first_time_app_open</string>
-
-    <!--App information related strings-->
-    <string name="app_usage_permission_title">Optional Usage Stats Permission </string>
-    <string name="app_usage_permission_message">This permission is required for variable size of Apps Name\nThis permission is optional.\nDo you want to proceed for permission request?</string>
-    <!--app menu-->
     <array name="colors">
         <item>#3F51B5</item>
         <item>#303F9F</item>
         <item>#FF4081</item>
     </array>
+    <string name="app_name">Last Launcher</string>
+
+    <!--Shared preference strings  -->
+    <string name="action_settings">Settings</string>
+    <string name="sp_request_usage_stat">sp_request_usage_stat</string>
+
+    <!--App information related strings-->
+    <string name="sp_first_time_app_open">sp_first_time_app_open</string>
+    <string name="app_usage_permission_title">Optional Usage Stats Permission </string>
+    <!--app menu-->
+    <string name="app_usage_permission_message">This permission is required for variable size of Apps Name\nThis permission is optional.\nDo you want to proceed for permission request?</string>
     <string name="size_for_this_entry">Size</string>
     <string name="color_for_this_entry">Color</string>
     <string name="rename">Rename</string>
@@ -32,6 +32,7 @@
 
 
     <string name="reset_to_default_settings">Reset to Default Settings</string>
+    <string name="app_info">App Settings</string>
 
 
 </resources>

@@ -22,47 +22,38 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Window;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 import io.github.subhamtyagi.lastlauncher.util.Utility;
 import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
-public class Settings extends Dialog {
-    final private String appPackage, appName;
-    final private Context context;
+public class ChooseColor extends Dialog {
+
+    final private String appPackage;
     final private int appColor;
-    final private int appSize;
+    final private TextView textView;
 
-
-    public Settings(Context context, String appPackage, String appName, int appColor, int appSize) {
+    public ChooseColor(Context context, String appPackage, int appColor, TextView textView) {
         super(context);
-        this.context = context;
         this.appPackage = appPackage;
         this.appColor = appColor;
-        this.appName = appName;
-        this.appSize = appSize;
+        this.textView = textView;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_settings);
-        TextView textView = findViewById(R.id.tv_example_text);
-        textView.setText(appName);
-        textView.setTextSize(appSize);
-        textView.setTextColor(appColor);
-        ColorSeekBar colorSeekBar = findViewById(R.id.colorSlider);
-        colorSeekBar.setMaxPosition(100);
-        colorSeekBar.setColorSeeds(R.array.material_colors);
-        //TODO: TEST
-        colorSeekBar.setShowAlphaBar(true);
+        setContentView(R.layout.activity_choose_color);
 
+
+        ColorSeekBar colorSeekBar = findViewById(R.id.colorSlider1);
+        colorSeekBar.setMaxPosition(100);
+        //colorSeekBar.setColorSeeds(R.array.material_colors);
+        colorSeekBar.setShowAlphaBar(true);
         colorSeekBar.setBarHeight(5);
         colorSeekBar.setColor(appColor);
-
 
         colorSeekBar.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {
             @Override
@@ -72,43 +63,5 @@ public class Settings extends Dialog {
             }
         });
 
-        SeekBar sizeSeekBar = findViewById(R.id.sb_size);
-        sizeSeekBar.setProgress(appSize);
-
-        sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int size = 0;
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                size = i;
-                if (i < 20) {
-                    size = 20;
-                }
-                textView.setTextSize(size);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                sizeSeekBar.setProgress(size);
-                SpUtils.getInstance().putInt(Utility.getSizePrefs(appPackage), size);
-            }
-        });
-
-        /*ColorPicker picker = findViewById(R.id.picker);
-        SVBar svBar = findViewById(R.id.svbar);
-
-        picker.addSVBar(svBar);*/
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        ((LauncherActivity) context).refreshApps(appPackage);
     }
 }

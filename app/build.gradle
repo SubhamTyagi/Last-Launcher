@@ -46,6 +46,6 @@ dependencies {
 
     //implementation 'org.apmem.tools:layouts:1.10'
     //implementation 'com.github.rtugeek:colorseekbar:1.7.5'
-   // implementation 'com.larswerkman:HoloColorPicker:1.5'
+    // implementation 'com.larswerkman:HoloColorPicker:1.5'
 
 }

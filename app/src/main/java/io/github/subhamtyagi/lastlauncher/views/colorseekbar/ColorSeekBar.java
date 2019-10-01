@@ -33,9 +33,9 @@ import io.github.subhamtyagi.lastlauncher.R;
 public class ColorSeekBar extends View {
 
     private int[] mColorSeeds = new int[]{
-            0xFF000000, 0xFF9900FF, 0xFF0000FF, 0xFF00FF00, 0xFF00FFFF,
+            0xFF9900FF, 0xFF0000FF, 0xFF00FF00, 0xFF00FFFF,
             0xFFFF0000, 0xFFFF00FF, 0xFFFF6600, 0xFFFFFF00, 0xFFFFFFFF,
-            0xFF000000};
+            0xFF8F8C8C};
 
     private int mAlpha;
     private OnColorChangeListener mOnColorChangeLister;
@@ -46,6 +46,7 @@ public class ColorSeekBar extends View {
     private boolean mMovingAlphaBar;
     private Bitmap mTransparentBitmap;
     private RectF mColorRect;
+
     private int mThumbHeight = 20;
     private float mThumbRadius;
     private int mBarHeight = 2;
@@ -59,9 +60,12 @@ public class ColorSeekBar extends View {
     private int mAlphaBarPosition;
     private int mDisabledColor;
     private int mBarMargin = 5;
+
     private int mAlphaMinPosition = 0;
     private int mAlphaMaxPosition = 255;
+
     private int mBarRadius;
+
     private List<Integer> mCachedColors = new ArrayList<>();
     private int mColorsToInvoke = -1;
     private boolean mInit = false;
@@ -145,7 +149,9 @@ public class ColorSeekBar extends View {
         mIsVertical = a.getBoolean(R.styleable.ColorSeekBar_isVertical, false);
         mIsShowAlphaBar = a.getBoolean(R.styleable.ColorSeekBar_showAlphaBar, false);
         mShowThumb = a.getBoolean(R.styleable.ColorSeekBar_showAlphaBar, true);
+
         int backgroundColor = a.getColor(R.styleable.ColorSeekBar_bgColor, Color.TRANSPARENT);
+
         mBarHeight = (int) a.getDimension(R.styleable.ColorSeekBar_barHeight, (float) dp2px(2));
         mBarRadius = (int) a.getDimension(R.styleable.ColorSeekBar_barRadius, 0);
         mThumbHeight = (int) a.getDimension(R.styleable.ColorSeekBar_thumbHeight, (float) dp2px(30));
