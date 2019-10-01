@@ -68,6 +68,10 @@ public class Apps {
         this.color = color;
     }
 
+    public void setAppName(CharSequence appName) {
+        this.appName = appName;
+    }
+
     public int getSize() {
         return size;
     }

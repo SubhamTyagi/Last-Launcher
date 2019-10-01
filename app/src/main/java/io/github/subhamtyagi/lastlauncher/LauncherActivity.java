@@ -19,21 +19,25 @@
 package io.github.subhamtyagi.lastlauncher;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -93,12 +97,19 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     void refreshApps(String packageName) {
+
         int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE) + 1;
         int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
+
+        String appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), "");
+
         for (Apps apps : appsList) {
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
                 apps.getTextView().setTextSize(size);
                 apps.getTextView().setTextColor(color);
+                if (!appName.isEmpty())
+                    apps.getTextView().setText(appName);
+                apps.setAppName(appName);
                 apps.setSize(size);
                 apps.setColor(color);
             }
@@ -123,21 +134,25 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         int appsCount = activities.size();
         int id = 0;
+
         String packageName, appName;
+
         TextView textView;
 
         appsList = new ArrayList<>(appsCount);
+
         int color, textSize;
 
         for (ResolveInfo resolveInfo : activities) {
+
             packageName = resolveInfo.activityInfo.packageName;
-            appName = resolveInfo.loadLabel(pm).toString();
+
+            appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), resolveInfo.loadLabel(pm).toString());
 
             //TODO: before commit / take screen shot
             //if (appName.equalsIgnoreCase("KD campus")||appName.equalsIgnoreCase("kanyadaan")||appName.equalsIgnoreCase("getApps")||appName.equalsIgnoreCase("feedback")||appName.equalsIgnoreCase("gradeup")||appName.equalsIgnoreCase("mi remote")||appName.equalsIgnoreCase("pnb one")||appName.equalsIgnoreCase("play store")||appName.equalsIgnoreCase("drive")||appName.equalsIgnoreCase("duo"))
             //continue;
 
-            //set text color size,weight
             textView = new TextView(this);
             textView.setText(appName);
             textView.setTag(packageName);//tag for identification
@@ -147,10 +162,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             //textView.setTypeface(mTypeface);
 
             //TODO: move values to dimens
-            textView.setPadding(10, -5, 0, -2);
+            textView.setPadding(10, -6, 0, -4);
 
             textSize = SpUtils.getInstance().init(this).getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
             color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
+
             textView.setTextSize(textSize);
             textView.setTextColor(color);
 
@@ -216,7 +232,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                         changeSize(packageName, view);
                         break;
                     case R.id.menu_rename:
-                        renameApp(packageName);
+                        renameApp(packageName, view);
                         break;
                     case R.id.menu_uninstall:
                         uninstallApp(packageName);
@@ -246,11 +262,29 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         startActivityForResult(intent, 97);
     }
 
-    private void renameApp(String packageName) {
-        // show input dialog
-        //resets apps list
-        //save changes to prefs
-        Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
+    private void renameApp(String packageName, TextView textView) {
+        EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Rename").setView(input).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String temp=input.getText().toString();
+                if (!temp.isEmpty()) {
+                    textView.setText(input.getText().toString());
+                    SpUtils.getInstance().putString(Utility.getAppNamePrefs(packageName), temp);
+                    refreshApps(packageName);
+                }
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        }).show();
+
+
+        //Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
     }
 
     private void changeColor(String packageName, TextView view) {
@@ -281,7 +315,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 startActivity(getPackageManager().getLaunchIntentForPackage(packageName));
                 refreshAppSize(packageName);
             } catch (Exception e) {
-                //Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
