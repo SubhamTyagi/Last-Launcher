@@ -33,6 +33,8 @@
 
     <string name="reset_to_default_settings">Reset to Default Settings</string>
     <string name="app_info">App Info</string>
+    <string name="random_colors">Random Colors</string>
+    <string name="reset_to_default">Reset To default</string>
 
 
 </resources>

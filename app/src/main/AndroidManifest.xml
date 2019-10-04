@@ -11,8 +11,9 @@
         android:stateNotNeeded="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ChooseColor"></activity>
-        <activity android:name=".Settings" />
+        <activity android:name=".dialogs.GlobalSettings"/>
+        <activity android:name=".dialogs.ChooseColor" />
+        <activity android:name=".dialogs.ChooseSize" />
         <activity
             android:name=".LauncherActivity"
             android:excludeFromRecents="true"
@@ -28,9 +29,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-permission
-        android:name="android.permission.PACKAGE_USAGE_STATS"
-        tools:ignore="ProtectedPermissions" />
 
 </manifest>

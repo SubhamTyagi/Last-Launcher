@@ -21,7 +21,6 @@ package io.github.subhamtyagi.lastlauncher;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -40,7 +39,6 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apmem.tools.layouts.FlowLayout;
 
@@ -48,6 +46,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
+import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
+import io.github.subhamtyagi.lastlauncher.dialogs.GlobalSettings;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 import io.github.subhamtyagi.lastlauncher.util.Utility;
@@ -144,9 +145,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         int color, textSize;
 
         for (ResolveInfo resolveInfo : activities) {
-
             packageName = resolveInfo.activityInfo.packageName;
-
             appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), resolveInfo.loadLabel(pm).toString());
 
             //TODO: before commit / take screen shot
@@ -161,7 +160,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             textView.setOnLongClickListener(this);
             //textView.setTypeface(mTypeface);
 
-            //TODO: move values to dimens
+            //TODO: move values to dimens/ improve this in @FlowLayout: Temp fix
             textView.setPadding(10, -6, 0, -4);
 
             textSize = SpUtils.getInstance().init(this).getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
@@ -195,27 +194,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void showGlobalSettings() {
-        PopupMenu popupMenu = new PopupMenu(this, homeLayout);
-        popupMenu.getMenuInflater().inflate(R.menu.menu_setting_global, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.menu_fonts://change fonts
-                        break;
-                    case R.id.menu_background: //change background color
-                        break;
-                    case R.id.menu_primary_colors: //set primary colors;
-                        break;
-                    case R.id.menu_backup://backup
-                        break;
-                    case R.id.menu_reset: //reset
-                        break;
-                }
-                return true;
-            }
-        });
-        popupMenu.show();
+        new GlobalSettings(this).show();
     }
 
     private void showPopup(String packageName, TextView view) {
@@ -269,7 +248,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         builder.setTitle("Rename").setView(input).setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                String temp=input.getText().toString();
+                String temp = input.getText().toString();
                 if (!temp.isEmpty()) {
                     textView.setText(input.getText().toString());
                     SpUtils.getInstance().putString(Utility.getAppNamePrefs(packageName), temp);
@@ -314,7 +293,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             try {
                 startActivity(getPackageManager().getLaunchIntentForPackage(packageName));
                 refreshAppSize(packageName);
-            } catch (Exception e) {
+            } catch (Exception ignore) {
             }
         }
     }

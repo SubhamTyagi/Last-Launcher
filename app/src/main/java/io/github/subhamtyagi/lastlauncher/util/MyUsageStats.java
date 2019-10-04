@@ -29,6 +29,8 @@ import android.os.Build;
 
 import java.util.Map;
 
+
+//Not in use
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class MyUsageStats {
     private static MyUsageStats myUsageStats;
