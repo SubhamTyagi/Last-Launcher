@@ -20,19 +20,19 @@ package io.github.subhamtyagi.lastlauncher.util;
 
 public class Utility {
 
-    public static String getSizePrefs(String packageName){
-        return packageName.replaceAll("\\.","_")+"_size";
+    public static String getSizePrefs(String packageName) {
+        return packageName.replaceAll("\\.", "_") + "_size";
     }
 
-    public static String getColorPrefs(String packageName){
-        return packageName.replaceAll("\\.","_")+"_color";
+    public static String getColorPrefs(String packageName) {
+        return packageName.replaceAll("\\.", "_") + "_color";
     }
 
-    public static String getAppNamePrefs(String packageName){
-        return packageName.replaceAll("\\.","_")+"_app_name";
+    public static String getAppNamePrefs(String packageName) {
+        return packageName.replaceAll("\\.", "_") + "_app_name";
     }
 
     public static String getAppsOriginalNamePrefs(String packageName) {
-        return packageName.replaceAll("\\.","_")+"_app_original_name";
+        return packageName.replaceAll("\\.", "_") + "_app_original_name";
     }
 }

@@ -28,8 +28,6 @@ I fed-up by all Android Launcher that are available on F-DROID and Play store(al
 * [ ] Simple swipe gestures.
 * [ ] Color slider improvement.
 * [ ] [Primary app icon like color support](https://github.com/SubhamTyagi/Last-Launcher/issues/2)
-* [ ] [Edit App Name](https://github.com/SubhamTyagi/Last-Launcher/issues/3).
-* [ ]  [App Settings Dialog](https://github.com/SubhamTyagi/Last-Launcher/issues/4).
 * [ ] External library independence.
 ## Screenshots
 | Home| Menu|

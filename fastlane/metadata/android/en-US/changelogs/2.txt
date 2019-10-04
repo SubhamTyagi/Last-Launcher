@@ -1,0 +1,10 @@
+*Preview release 2*
+
+- Rename App Name
+- Get App info in single Click
+- Uninstall option
+- More Colors controls
+- Color and Size UI refinement
+
+- Global Settings Stub (not implemented)
+   To access long click on background area

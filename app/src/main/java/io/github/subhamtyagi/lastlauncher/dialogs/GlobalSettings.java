@@ -87,6 +87,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
     private void backup() {
 
     }
+
     private void setFonts() {
         Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
     }

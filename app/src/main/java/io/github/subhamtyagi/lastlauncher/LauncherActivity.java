@@ -19,24 +19,20 @@
 package io.github.subhamtyagi.lastlauncher;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
-import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -152,8 +148,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), resolveInfo.loadLabel(pm).toString());
 
             //TODO: before commit / take screen shot
-            if (appName.equalsIgnoreCase("KD campus") || appName.equalsIgnoreCase("kanyadaan") || appName.equalsIgnoreCase("getApps") || appName.equalsIgnoreCase("feedback") || appName.equalsIgnoreCase("gradeup") || appName.equalsIgnoreCase("mi remote") || appName.equalsIgnoreCase("pnb one") || appName.equalsIgnoreCase("play store") || appName.equalsIgnoreCase("drive") || appName.equalsIgnoreCase("duo"))
-                continue;
+            //if (appName.equalsIgnoreCase("KD campus") || appName.equalsIgnoreCase("kanyadaan") || appName.equalsIgnoreCase("getApps") || appName.equalsIgnoreCase("feedback") || appName.equalsIgnoreCase("gradeup") || appName.equalsIgnoreCase("mi remote") || appName.equalsIgnoreCase("pnb one") || appName.equalsIgnoreCase("play store") || appName.equalsIgnoreCase("drive") || appName.equalsIgnoreCase("duo"))
+            //    continue;
 
             textView = new TextView(this);
             textView.setText(appName);
@@ -231,8 +227,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void renameApp(String packageName, TextView view) {
-        //SpUtils.getInstance().putString(Utility.getAppsOriginalNamePrefs(packageName), view.getText().toString());
-
         Dialog dialog = new RenameInput(this, packageName, view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
