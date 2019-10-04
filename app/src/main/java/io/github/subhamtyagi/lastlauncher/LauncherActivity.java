@@ -49,6 +49,7 @@ import java.util.List;
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
 import io.github.subhamtyagi.lastlauncher.dialogs.GlobalSettings;
+import io.github.subhamtyagi.lastlauncher.dialogs.RenameInput;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 import io.github.subhamtyagi.lastlauncher.util.Utility;
@@ -101,7 +102,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE) + 1;
         int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
-        String appOriginalName=SpUtils.getInstance().getString(Utility.getAppsOriginalNamePrefs(packageName),"");
+        String appOriginalName = SpUtils.getInstance().getString(Utility.getAppsOriginalNamePrefs(packageName), "");
         String appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), appOriginalName);
 
         for (Apps apps : appsList) {
@@ -147,12 +148,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
 
-            //SpUtils.getInstance().putString(Utility.getAppsOriginalNamePrefs(packageName), resolveInfo.loadLabel(pm).toString());
+            SpUtils.getInstance().putString(Utility.getAppsOriginalNamePrefs(packageName), resolveInfo.loadLabel(pm).toString());
             appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), resolveInfo.loadLabel(pm).toString());
 
             //TODO: before commit / take screen shot
-            if (appName.equalsIgnoreCase("KD campus")||appName.equalsIgnoreCase("kanyadaan")||appName.equalsIgnoreCase("getApps")||appName.equalsIgnoreCase("feedback")||appName.equalsIgnoreCase("gradeup")||appName.equalsIgnoreCase("mi remote")||appName.equalsIgnoreCase("pnb one")||appName.equalsIgnoreCase("play store")||appName.equalsIgnoreCase("drive")||appName.equalsIgnoreCase("duo"))
-            continue;
+            if (appName.equalsIgnoreCase("KD campus") || appName.equalsIgnoreCase("kanyadaan") || appName.equalsIgnoreCase("getApps") || appName.equalsIgnoreCase("feedback") || appName.equalsIgnoreCase("gradeup") || appName.equalsIgnoreCase("mi remote") || appName.equalsIgnoreCase("pnb one") || appName.equalsIgnoreCase("play store") || appName.equalsIgnoreCase("drive") || appName.equalsIgnoreCase("duo"))
+                continue;
 
             textView = new TextView(this);
             textView.setText(appName);
@@ -229,6 +230,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         popupMenu.show();
     }
 
+    private void renameApp(String packageName, TextView view) {
+        //SpUtils.getInstance().putString(Utility.getAppsOriginalNamePrefs(packageName), view.getText().toString());
+
+        Dialog dialog = new RenameInput(this, packageName, view);
+        Window window = dialog.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        dialog.show();
+    }
+
     private void resetApp(String packageName, TextView view) {
         SpUtils.getInstance().remove(Utility.getAppNamePrefs(packageName));
         SpUtils.getInstance().remove(Utility.getColorPrefs(packageName));
@@ -247,34 +258,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         intent.setData(Uri.parse("package:" + packageName));
         intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
         startActivityForResult(intent, 97);
-    }
-
-    private void renameApp(String packageName, TextView textView) {
-        SpUtils.getInstance().putString(Utility.getAppsOriginalNamePrefs(packageName), textView.getText().toString());
-
-        EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Rename").setView(input).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String temp = input.getText().toString();
-                if (!temp.isEmpty()) {
-                    textView.setText(input.getText().toString());
-                    SpUtils.getInstance().putString(Utility.getAppNamePrefs(packageName), temp);
-                    refreshApps(packageName);
-                }
-            }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        }).show();
-        input.setFocusable(true);
-
-
-        //Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
     }
 
     private void changeColor(String packageName, TextView view) {

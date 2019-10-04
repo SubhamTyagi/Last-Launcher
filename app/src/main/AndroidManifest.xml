@@ -11,9 +11,7 @@
         android:stateNotNeeded="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".dialogs.GlobalSettings"/>
-        <activity android:name=".dialogs.ChooseColor" />
-        <activity android:name=".dialogs.ChooseSize" />
+
         <activity
             android:name=".LauncherActivity"
             android:excludeFromRecents="true"
