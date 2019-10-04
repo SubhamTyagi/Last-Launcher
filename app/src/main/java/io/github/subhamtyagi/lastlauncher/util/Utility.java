@@ -32,6 +32,7 @@ public class Utility {
         return packageName.replaceAll("\\.","_")+"_app_name";
     }
 
-
-
+    public static String getAppsOriginalNamePrefs(String packageName) {
+        return packageName.replaceAll("\\.","_")+"_app_original_name";
+    }
 }

@@ -23,18 +23,14 @@
     <string name="uninstall">Uninstall</string>
     <string name="fonts">Fonts</string>
     <string name="background_color">Background color</string>
-    <string name="set_to_primary_colors">Set to Primary Colors</string>
+    <string name="set_to_primary_colors">Set Primary Colors</string>
     <string name="backup_restore">Backup/Restore</string>
-
-
-    <!--constants-->
-    <!-- <color name="default_app_text_color">>#ff7043</color>-->
 
 
     <string name="reset_to_default_settings">Reset to Default Settings</string>
     <string name="app_info">App Info</string>
     <string name="random_colors">Random Colors</string>
-    <string name="reset_to_default">Reset To default</string>
+    <string name="reset_to_default">Reset</string>
 
 
 </resources>

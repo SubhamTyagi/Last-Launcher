@@ -101,8 +101,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE) + 1;
         int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
-
-        String appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), "");
+        String appOriginalName=SpUtils.getInstance().getString(Utility.getAppsOriginalNamePrefs(packageName),"");
+        String appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), appOriginalName);
 
         for (Apps apps : appsList) {
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
@@ -146,11 +146,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
+
+            //SpUtils.getInstance().putString(Utility.getAppsOriginalNamePrefs(packageName), resolveInfo.loadLabel(pm).toString());
             appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), resolveInfo.loadLabel(pm).toString());
 
             //TODO: before commit / take screen shot
-            //if (appName.equalsIgnoreCase("KD campus")||appName.equalsIgnoreCase("kanyadaan")||appName.equalsIgnoreCase("getApps")||appName.equalsIgnoreCase("feedback")||appName.equalsIgnoreCase("gradeup")||appName.equalsIgnoreCase("mi remote")||appName.equalsIgnoreCase("pnb one")||appName.equalsIgnoreCase("play store")||appName.equalsIgnoreCase("drive")||appName.equalsIgnoreCase("duo"))
-            //continue;
+            if (appName.equalsIgnoreCase("KD campus")||appName.equalsIgnoreCase("kanyadaan")||appName.equalsIgnoreCase("getApps")||appName.equalsIgnoreCase("feedback")||appName.equalsIgnoreCase("gradeup")||appName.equalsIgnoreCase("mi remote")||appName.equalsIgnoreCase("pnb one")||appName.equalsIgnoreCase("play store")||appName.equalsIgnoreCase("drive")||appName.equalsIgnoreCase("duo"))
+            continue;
 
             textView = new TextView(this);
             textView.setText(appName);
@@ -188,13 +190,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         if (view instanceof TextView) {
             showPopup((String) view.getTag(), (TextView) view);
         } else if (view instanceof FlowLayout) {
-            showGlobalSettings();
+            new GlobalSettings(this).show();
         }
         return true;
-    }
-
-    private void showGlobalSettings() {
-        new GlobalSettings(this).show();
     }
 
     private void showPopup(String packageName, TextView view) {
@@ -218,6 +216,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                         break;
                     case R.id.menu_app_info:
                         showAppInfo(packageName);
+                        break;
+                    case R.id.menu_reset_to_default:
+                        resetApp(packageName, view);
 
                     default:
                         return true;
@@ -226,6 +227,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         });
         popupMenu.show();
+    }
+
+    private void resetApp(String packageName, TextView view) {
+        SpUtils.getInstance().remove(Utility.getAppNamePrefs(packageName));
+        SpUtils.getInstance().remove(Utility.getColorPrefs(packageName));
+        SpUtils.getInstance().remove(Utility.getSizePrefs(packageName));
+        refreshApps(packageName);
     }
 
     private void showAppInfo(String packageName) {
@@ -242,6 +250,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void renameApp(String packageName, TextView textView) {
+        SpUtils.getInstance().putString(Utility.getAppsOriginalNamePrefs(packageName), textView.getText().toString());
+
         EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -261,6 +271,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 dialogInterface.cancel();
             }
         }).show();
+        input.setFocusable(true);
 
 
         //Toast.makeText(this, "Not implemented yet", Toast.LENGTH_SHORT).show();
