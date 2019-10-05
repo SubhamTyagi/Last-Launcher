@@ -35,12 +35,17 @@
         android:title="@string/reset_to_default" />
 
     <item
+        android:id="@+id/menu_freeze_size"
+        android:title="@string/freeze_size" />
+    <item
+        android:id="@+id/menu_hide"
+        android:title="@string/hide" />
+    <item
         android:id="@+id/menu_uninstall"
         android:title="@string/uninstall" />
     <item
         android:id="@+id/menu_app_info"
         android:title="@string/app_info" />
-
 
 
 </menu>

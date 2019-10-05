@@ -31,6 +31,25 @@ public class Apps {
     private int color;
     private int size;
 
+    private boolean freezeSize;
+    private boolean hide;
+
+    public boolean isFreezeSize() {
+        return freezeSize;
+    }
+
+    public void setFreezeSize(boolean freezeSize) {
+        this.freezeSize = freezeSize;
+    }
+
+    public boolean isHide() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
+    }
+
     /**
      * @param id          a auto increment id
      * @param packageName apps package name
@@ -38,14 +57,19 @@ public class Apps {
      * @param tv          a text view corresponding to App
      * @param color       Text color
      * @param size        Text Size
+     * @param hide        boolean to tell 'is app hide
+     * @param freezeSize  is app size to freeze
      */
-    public Apps(int id, String packageName, String appName, TextView tv, int color, int size) {
+    public Apps(int id, String packageName, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
         this.id = id;
         this.packageName = packageName;
         this.appName = appName;
         this.textView = tv;
         this.color = color;
         this.size = size;
+        this.freezeSize = freezeSize;
+        this.hide = hide;
+
     }
 
     public CharSequence getPackageName() {

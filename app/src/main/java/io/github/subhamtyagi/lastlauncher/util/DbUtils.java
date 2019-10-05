@@ -34,13 +34,13 @@ public class DbUtils {
         SpUtils.getInstance().putString(packageName, value);
     }
 
-    public static void putAppSize(String packageName,int size) {
+    public static void putAppSize(String packageName, int size) {
         packageName = packageName.replaceAll("\\.", "_") + "_size";
         SpUtils.getInstance().putInt(packageName, size);
 
     }
 
-    public static void putAppColor(String packageName,int color) {
+    public static void putAppColor(String packageName, int color) {
         packageName = packageName.replaceAll("\\.", "_") + "_color";
         SpUtils.getInstance().putInt(packageName, color);
     }
@@ -66,9 +66,28 @@ public class DbUtils {
         return SpUtils.getInstance().getInt(packageName, TEXT_COLOR);
     }
 
+    public static void hideApp(String packageName, boolean value) {
+        packageName = packageName.replaceAll("\\.", "_") + "_hide";
+        SpUtils.getInstance().putBoolean(packageName, value);
+    }
 
 
+    public static void freezeAppSize(String packageName, boolean value) {
+        packageName = packageName.replaceAll("\\.", "_") + "_freeze";
+        SpUtils.getInstance().putBoolean(packageName, value);
+    }
 
+    public static boolean isAppFreezed(String packageName) {
+        packageName = packageName.replaceAll("\\.", "_") + "_freeze";
+        return SpUtils.getInstance().getBoolean(packageName, false);
+
+    }
+
+    public static boolean isAppHidden(String packageName) {
+        packageName = packageName.replaceAll("\\.", "_") + "_hide";
+        return SpUtils.getInstance().getBoolean(packageName, false);
+
+    }
 
     public static void removeColor(String packageName) {
         packageName = packageName.replaceAll("\\.", "_") + "_color";

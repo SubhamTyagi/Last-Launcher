@@ -31,6 +31,9 @@
     <string name="app_info">App Info</string>
     <string name="random_colors">Random Colors</string>
     <string name="reset_to_default">Reset</string>
+    <string name="freeze_size">Freeze Size</string>
+    <string name="hide">Hide</string>
+    <string name="unfreeze">Unfreeze</string>
 
 
 </resources>

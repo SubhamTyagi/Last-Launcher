@@ -74,8 +74,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         loadApps();
         registerForReceiver();
-
-
         SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
     }
 
@@ -93,7 +91,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     void refreshApps(String packageName) {
-
 
         int size = DbUtils.getAppSize(packageName);
         int color = DbUtils.getAppColor(packageName);
@@ -115,7 +112,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     //this must be done in background
     private void loadApps() {
-        Intent startupIntent = new Intent(Intent.ACTION_MAIN);
+        Intent startupIntent = new Intent(Intent.ACTION_MAIN,null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
@@ -150,6 +147,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             //if (appName.equalsIgnoreCase("KD campus") || appName.equalsIgnoreCase("kanyadaan") || appName.equalsIgnoreCase("getApps") || appName.equalsIgnoreCase("feedback") || appName.equalsIgnoreCase("gradeup") || appName.equalsIgnoreCase("mi remote") || appName.equalsIgnoreCase("pnb one") || appName.equalsIgnoreCase("play store") || appName.equalsIgnoreCase("drive") || appName.equalsIgnoreCase("duo"))
             //    continue;
 
+            boolean hide = DbUtils.isAppHidden(packageName);
+
+            if (hide) continue;
+
             textView = new TextView(this);
             textView.setText(appName);
             textView.setTag(packageName);//tag for identification
@@ -173,7 +174,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                             appName,
                             textView,
                             color,
-                            textSize
+                            textSize,
+                            false,
+                            false
                     )
             );
             homeLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -194,6 +197,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private void showPopup(String packageName, TextView view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+        if (DbUtils.isAppFreezed(packageName)){
+            popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze);
+        }
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -206,6 +212,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                         break;
                     case R.id.menu_rename:
                         renameApp(packageName, view);
+                        break;
+                    case R.id.menu_freeze_size: {
+                        freezeSize(packageName);
+                    }
+                        break;
+                    case R.id.menu_hide:
+                        hideApp(packageName, view);
                         break;
                     case R.id.menu_uninstall:
                         uninstallApp(packageName);
@@ -223,6 +236,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         });
         popupMenu.show();
+    }
+
+    private void hideApp(String packageName, TextView view) {
+        //DbUtils.hideApp(packageName, true);
+        view.setVisibility(View.GONE);
+        //refreshApps(packageName);
+    }
+
+    private void freezeSize(String packageName) {
+        DbUtils.freezeAppSize(packageName, true);
     }
 
     private void renameApp(String packageName, TextView view) {
@@ -280,7 +303,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             String packageName = (String) view.getTag();
             try {
                 startActivity(getPackageManager().getLaunchIntentForPackage(packageName));
-                refreshAppSize(packageName);
+                if (!DbUtils.isAppFreezed(packageName)) {
+                    refreshAppSize(packageName);
+                }
             } catch (Exception ignore) {
             }
         }
