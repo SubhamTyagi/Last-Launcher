@@ -26,8 +26,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.R;
+import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
-import io.github.subhamtyagi.lastlauncher.util.Utility;
 
 public class ChooseSize extends Dialog {
     final private String appPackage;
@@ -70,7 +70,7 @@ public class ChooseSize extends Dialog {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 sizeSeekBar.setProgress(size);
-                SpUtils.getInstance().putInt(Utility.getSizePrefs(appPackage), size);
+                DbUtils.putAppSize(appPackage, size);
             }
         });
     }

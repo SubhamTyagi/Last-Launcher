@@ -47,8 +47,8 @@ import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
 import io.github.subhamtyagi.lastlauncher.dialogs.GlobalSettings;
 import io.github.subhamtyagi.lastlauncher.dialogs.RenameInput;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
+import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
-import io.github.subhamtyagi.lastlauncher.util.Utility;
 
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
@@ -58,33 +58,31 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     private ArrayList<Apps> appsList;
     //Typeface mTypeface;
-    private static final int TEXT_SIZE = 30;
+
     FlowLayout homeLayout;
-    private static int TEXT_COLOR;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-
         SpUtils.getInstance().init(this);
-
         //TODO: check the memory footprint
-
         // mTypeface = Typeface.createFromAsset(getAssets(),"fonts/Comfortaa.ttf");
-
-        TEXT_COLOR = getResources().getColor(R.color.default_apps_colors);
+        DbUtils.TEXT_COLOR = getResources().getColor(R.color.default_apps_colors);
 
         loadApps();
-
         registerForReceiver();
-        SpUtils.getInstance().init(this).putBoolean(getString(R.string.sp_first_time_app_open), false);
+
+
+        SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
     }
 
     private void refreshAppSize(String packageName) {
-        int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE) + 1;
-        SpUtils.getInstance().putInt(Utility.getSizePrefs(packageName), size);
+        int size = DbUtils.getAppSize(packageName) + 1;
+        DbUtils.putAppSize(packageName, size);
+
         for (Apps apps : appsList) {
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
                 apps.getTextView().setTextSize(size);
@@ -96,10 +94,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     void refreshApps(String packageName) {
 
-        int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE) + 1;
-        int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
-        String appOriginalName = SpUtils.getInstance().getString(Utility.getAppsOriginalNamePrefs(packageName), "");
-        String appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), appOriginalName);
+
+        int size = DbUtils.getAppSize(packageName);
+        int color = DbUtils.getAppColor(packageName);
+        String appOriginalName = DbUtils.getAppOriginalName(packageName, "");
+        String appName = DbUtils.getAppName(packageName, appOriginalName);
 
         for (Apps apps : appsList) {
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
@@ -144,8 +143,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
 
-            SpUtils.getInstance().putString(Utility.getAppsOriginalNamePrefs(packageName), resolveInfo.loadLabel(pm).toString());
-            appName = SpUtils.getInstance().getString(Utility.getAppNamePrefs(packageName), resolveInfo.loadLabel(pm).toString());
+            DbUtils.putAppOriginalName(packageName, resolveInfo.loadLabel(pm).toString());
+            appName = DbUtils.getAppName(packageName, resolveInfo.loadLabel(pm).toString());
 
             //TODO: before commit / take screen shot
             //if (appName.equalsIgnoreCase("KD campus") || appName.equalsIgnoreCase("kanyadaan") || appName.equalsIgnoreCase("getApps") || appName.equalsIgnoreCase("feedback") || appName.equalsIgnoreCase("gradeup") || appName.equalsIgnoreCase("mi remote") || appName.equalsIgnoreCase("pnb one") || appName.equalsIgnoreCase("play store") || appName.equalsIgnoreCase("drive") || appName.equalsIgnoreCase("duo"))
@@ -162,8 +161,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             //TODO: move values to dimens/ improve this in @FlowLayout: Temp fix
             textView.setPadding(10, -6, 0, -4);
 
-            textSize = SpUtils.getInstance().init(this).getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
-            color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
+            textSize = DbUtils.getAppSize(packageName);
+            color = DbUtils.getAppColor(packageName);
 
             textView.setTextSize(textSize);
             textView.setTextColor(color);
@@ -235,9 +234,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void resetApp(String packageName, TextView view) {
-        SpUtils.getInstance().remove(Utility.getAppNamePrefs(packageName));
-        SpUtils.getInstance().remove(Utility.getColorPrefs(packageName));
-        SpUtils.getInstance().remove(Utility.getSizePrefs(packageName));
+
+        DbUtils.removeAppName(packageName);
+        DbUtils.removeColor(packageName);
+        DbUtils.removeSize(packageName);
         refreshApps(packageName);
     }
 
@@ -255,7 +255,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void changeColor(String packageName, TextView view) {
-        int color = SpUtils.getInstance().getInt(Utility.getColorPrefs(packageName), TEXT_COLOR);
+        int color = DbUtils.getAppColor(packageName);
         Dialog dialog = new ChooseColor(this, packageName, color, view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
@@ -265,7 +265,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void changeSize(String packageName, TextView view) {
-        int size = SpUtils.getInstance().getInt(Utility.getSizePrefs(packageName), TEXT_SIZE);
+        int size = DbUtils.getAppSize(packageName);
         Dialog dialog = new ChooseSize(this, packageName, size, view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);

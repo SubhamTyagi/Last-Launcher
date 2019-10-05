@@ -25,8 +25,8 @@ import android.view.Window;
 import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.R;
+import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
-import io.github.subhamtyagi.lastlauncher.util.Utility;
 import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
 public class ChooseColor extends Dialog {
@@ -60,7 +60,7 @@ public class ChooseColor extends Dialog {
             @Override
             public void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color) {
                 textView.setTextColor(color);
-                SpUtils.getInstance().putInt(Utility.getColorPrefs(appPackage), color);
+                DbUtils.putAppColor(appPackage,color);
             }
         });
 
