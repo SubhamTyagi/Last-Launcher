@@ -64,13 +64,17 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        SpUtils.getInstance().init(this);
+        int theme = DbUtils.getTheme();
+
+        setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-        SpUtils.getInstance().init(this);
-        //TODO: check the memory footprint
+
+        //TOD O: check the memory footprint
         // mTypeface = Typeface.createFromAsset(getAssets(),"fonts/Comfortaa.ttf");
-        DbUtils.TEXT_COLOR = getResources().getColor(R.color.default_apps_colors);
+        //DbUtils.TEXT_COLOR = getResources().getColor(R.color.default_apps_colors);
 
         loadApps();
         registerForReceiver();
@@ -112,7 +116,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     //this must be done in background
     private void loadApps() {
-        Intent startupIntent = new Intent(Intent.ACTION_MAIN,null);
+        Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
@@ -166,14 +170,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             color = DbUtils.getAppColor(packageName);
 
             textView.setTextSize(textSize);
-            textView.setTextColor(color);
+
+            if (color != -1)
+                textView.setTextColor(color);
 
             appsList.add(
                     new Apps(++id,
                             packageName,
                             appName,
                             textView,
-                            color,
+                            0xFFFFFF,
                             textSize,
                             false,
                             false
@@ -189,15 +195,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         if (view instanceof TextView) {
             showPopup((String) view.getTag(), (TextView) view);
         } else if (view instanceof FlowLayout) {
-            new GlobalSettings(this).show();
+            new GlobalSettings(this, this).show();
         }
         return true;
     }
 
+
     private void showPopup(String packageName, TextView view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
-        if (DbUtils.isAppFreezed(packageName)){
+        if (DbUtils.isAppFreezed(packageName)) {
             popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze);
         }
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -216,7 +223,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     case R.id.menu_freeze_size: {
                         freezeSize(packageName);
                     }
-                        break;
+                    break;
                     case R.id.menu_hide:
                         hideApp(packageName, view);
                         break;

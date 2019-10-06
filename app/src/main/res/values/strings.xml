@@ -34,6 +34,9 @@
     <string name="freeze_size">Freeze Size</string>
     <string name="hide">Hide</string>
     <string name="unfreeze">Unfreeze</string>
+    <string name="hidden_apps">Hidden Apps</string>
+    <string name="freezed_apps">Freezed Apps</string>
+    <string name="example_of_text">Example of text</string>
 
 
 </resources>

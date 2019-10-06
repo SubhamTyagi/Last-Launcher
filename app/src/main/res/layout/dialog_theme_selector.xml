@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Last Launcher
+  ~ Copyright (C) 2019 Shubham Tyagi
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/theme_linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/t1"
+            style="@style/AppTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="AppTheme"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t2"
+            style="@style/Wallpaper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/Wallpaper"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t3"
+            style="@style/Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/Black"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t4"
+            style="@style/White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/White"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t5"
+            style="@style/BlackonGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/BlackonGrey"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t6"
+            style="@style/A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/A"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t7"
+            style="@style/B"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/B"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t8"
+            style="@style/C"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/C"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t9"
+            style="@style/D"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/D"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t10"
+            style="@style/E"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/E"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t11"
+            style="@style/F"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/F"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t12"
+            style="@style/G"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/G"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t13"
+            style="@style/H"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/H"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t14"
+            style="@style/I"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/I"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t15"
+            style="@style/J"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/J"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t16"
+            style="@style/K"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/K"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t17"
+            style="@style/L"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/L"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t18"
+            style="@style/M"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/M"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t19"
+            style="@style/N"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/N"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t20"
+            style="@style/O"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/O"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t21"
+            style="@style/P"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/P"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t22"
+            style="@style/Q"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/Q"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t23"
+            style="@style/R"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/R"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t24"
+            style="@style/S"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/S"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t25"
+            style="@style/T"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/T"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t26"
+            style="@style/U"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/U"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t27"
+            style="@style/V"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/V"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t28"
+            style="@style/W"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/W"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t29"
+            style="@style/X"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/X"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t30"
+            style="@style/Y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/Y"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t31"
+            style="@style/Z"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/Z"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t32"
+            style="@style/AA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/AA"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t33"
+            style="@style/AB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/AB"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t34"
+            style="@style/AC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/AC"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t35"
+            style="@style/Hacker.green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/Hacker.green"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/t36"
+            style="@style/Hacker.red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:tag="@style/Hacker.red"
+            android:text="@string/example_of_text"
+            android:textSize="22sp" />
+
+
+    </LinearLayout>
+</ScrollView>

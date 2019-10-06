@@ -25,13 +25,16 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 
 public class GlobalSettings extends Dialog implements View.OnClickListener {
 
 
-    public GlobalSettings(Context context) {
+    LauncherActivity launcherActivity;
+    public GlobalSettings(Context context, LauncherActivity launcherActivity) {
         super(context);
+        this.launcherActivity=launcherActivity;
     }
 
     @Override
@@ -76,7 +79,10 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
     }
 
     private void bgColor() {
+        cancel();
+        new ThemeSelector(getContext(),launcherActivity).show();
     }
+
 
     private void defaultSettings() {
     }
