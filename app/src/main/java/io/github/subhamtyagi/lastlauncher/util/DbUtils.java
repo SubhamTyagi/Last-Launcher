@@ -18,10 +18,12 @@
 
 package io.github.subhamtyagi.lastlauncher.util;
 
+import io.github.subhamtyagi.lastlauncher.R;
+
 public class DbUtils {
 
     private static final int TEXT_SIZE = 30;
-    public static int TEXT_COLOR;
+    private static int TEXT_COLOR=-1;
 
 
     public static void putAppOriginalName(String packageName, String value) {
@@ -103,5 +105,14 @@ public class DbUtils {
         packageName = packageName.replaceAll("\\.", "_") + "_app_name";
         SpUtils.getInstance().remove(packageName);
     }
+
+    public static void setTheme(int id){
+        SpUtils.getInstance().putInt("launcher_theme",id);
+    }
+
+    public static int getTheme(){
+       return SpUtils.getInstance().getInt("launcher_theme", R.style.AppTheme);
+    }
+
 
 }

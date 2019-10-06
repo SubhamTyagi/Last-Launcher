@@ -22,18 +22,20 @@
     <!--launcher menu-->
     <string name="uninstall">Uninstall</string>
     <string name="fonts">Fonts</string>
-    <string name="background_color">Background color</string>
+    <string name="themes">Themes</string>
     <string name="set_to_primary_colors">Set Primary Colors</string>
     <string name="backup_restore">Backup/Restore</string>
 
-
-    <string name="reset_to_default_settings">Reset to Default Settings</string>
+    <string name="reset_to_default_settings">Reset to default</string>
     <string name="app_info">App Info</string>
     <string name="random_colors">Random Colors</string>
     <string name="reset_to_default">Reset</string>
     <string name="freeze_size">Freeze Size</string>
     <string name="hide">Hide</string>
     <string name="unfreeze">Unfreeze</string>
+    <string name="hidden_apps">Hidden Apps</string>
+    <string name="freezed_apps">Freezed Apps</string>
+    <string name="example_of_text">Example of text</string>
 
 
 </resources>

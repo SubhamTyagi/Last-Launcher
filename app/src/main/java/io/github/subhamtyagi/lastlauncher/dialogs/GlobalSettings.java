@@ -25,13 +25,16 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 
 public class GlobalSettings extends Dialog implements View.OnClickListener {
 
 
-    public GlobalSettings(Context context) {
+    LauncherActivity launcherActivity;
+    public GlobalSettings(Context context, LauncherActivity launcherActivity) {
         super(context);
+        this.launcherActivity=launcherActivity;
     }
 
     @Override
@@ -40,7 +43,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_global_settings);
         findViewById(R.id.settings_fonts).setOnClickListener(this);
-        findViewById(R.id.settings_bg_color).setOnClickListener(this);
+        findViewById(R.id.settings_themes).setOnClickListener(this);
         findViewById(R.id.settings_reset_to_defaults).setOnClickListener(this);
         findViewById(R.id.settings_backup).setOnClickListener(this);
         findViewById(R.id.settings_primary_color).setOnClickListener(this);
@@ -54,7 +57,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
             case R.id.settings_fonts:
                 setFonts();
                 break;
-            case R.id.settings_bg_color:
+            case R.id.settings_themes:
                 bgColor();
                 break;
             case R.id.settings_backup:
@@ -76,7 +79,10 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
     }
 
     private void bgColor() {
+        cancel();
+        new ThemeSelector(getContext(),launcherActivity).show();
     }
+
 
     private void defaultSettings() {
     }

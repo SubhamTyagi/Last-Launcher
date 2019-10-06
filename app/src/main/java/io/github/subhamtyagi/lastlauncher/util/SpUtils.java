@@ -171,6 +171,7 @@ public class SpUtils {
 
     //stub
     private File saveSharedPreferencesToFile() {
+
         boolean res = false;
         File dst = new File("abc");
         ObjectOutputStream output = null;
@@ -204,11 +205,7 @@ public class SpUtils {
         ObjectInputStream input = null;
         try {
             input = new ObjectInputStream(new FileInputStream(src));
-
-
             clear();
-
-
             Map<String, ?> entries = (Map<String, ?>) input.readObject();
             for (Map.Entry<String, ?> entry : entries.entrySet()) {
                 Object v = entry.getValue();
