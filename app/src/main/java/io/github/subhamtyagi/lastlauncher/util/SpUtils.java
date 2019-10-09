@@ -171,7 +171,7 @@ public class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public File saveSharedPreferencesToFile() {
+    public boolean saveSharedPreferencesToFile() {
         SimpleDateFormat df = new SimpleDateFormat("YYYY_MM_dd_HHSS");
         df.format(new Date());
         String date = df.format(new Date());
@@ -180,9 +180,7 @@ public class SpUtils {
         ObjectOutputStream output = null;
         try {
             output = new ObjectOutputStream(new FileOutputStream(dst));
-
             output.writeObject(mPref.getAll());
-
             res = true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -198,7 +196,7 @@ public class SpUtils {
                 ex.printStackTrace();
             }
         }
-        return dst;
+        return res;
     }
 
 

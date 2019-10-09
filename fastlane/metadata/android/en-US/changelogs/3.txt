@@ -1,0 +1,13 @@
+*Preview release 3*
+
+-Freeze/unfreeze app size
+-Hide apps(temporary)
+
+-To access Global settings long click on empty area
+
+-Multiple Themes
+-Reset to default 
+-Backup and restore settings
+-Random colors
+
+

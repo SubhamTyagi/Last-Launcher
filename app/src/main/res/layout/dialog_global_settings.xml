@@ -67,10 +67,12 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:layout_height="wrap_content"
+        android:visibility="gone"
 
         android:text="@string/set_to_primary_colors"
         android:textSize="20sp"/>
     <View
+        android:visibility="gone"
         android:layout_width="150dp"
         android:layout_height="1dp"
         android:layout_gravity="center|center_horizontal|center_vertical"

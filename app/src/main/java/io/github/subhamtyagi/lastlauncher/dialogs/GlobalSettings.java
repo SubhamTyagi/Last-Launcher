@@ -34,8 +34,8 @@ import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 public class GlobalSettings extends Dialog implements View.OnClickListener {
 
 
-    LauncherActivity launcherActivity;
-    TextView randomColors;
+    private LauncherActivity launcherActivity;
+    private TextView randomColors;
 
     public GlobalSettings(Context context, LauncherActivity launcherActivity) {
         super(context);
@@ -53,7 +53,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         findViewById(R.id.settings_reset_to_defaults).setOnClickListener(this);
         findViewById(R.id.settings_backup).setOnClickListener(this);
         findViewById(R.id.settings_restore).setOnClickListener(this);
-        findViewById(R.id.settings_primary_color).setOnClickListener(this);
+        //findViewById(R.id.settings_primary_color).setOnClickListener(this);
         randomColors = findViewById(R.id.settings_setup_random_colors);
         randomColors.setOnClickListener(this);
         findViewById(R.id.settings_freezed_apps).setOnClickListener(this);
@@ -132,9 +132,9 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         if (launcherActivity.isPermissionRequired())
             launcherActivity.requestPermission();
         else {
-            SpUtils.getInstance().saveSharedPreferencesToFile();
+            boolean b = SpUtils.getInstance().saveSharedPreferencesToFile();
             cancel();
-            Toast.makeText(getContext(), "Backup saved to Download", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), b ? "Backup saved to Download" : "Some error occurred", Toast.LENGTH_SHORT).show();
         }
     }
 
