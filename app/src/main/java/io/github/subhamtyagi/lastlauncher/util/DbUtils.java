@@ -120,7 +120,13 @@ public class DbUtils {
 
 
     public static void permissionRequired(boolean b){
-         SpUtils.getInstance().putBoolean("read_write_permission",true);
+         SpUtils.getInstance().putBoolean("read_write_permission",b);
     }
 
+    public static boolean isRandomColor() {
+        return SpUtils.getInstance().getBoolean("random_color_for_apps",false);
+    }
+    public static void randomColor(boolean b) {
+        SpUtils.getInstance().putBoolean("random_color_for_apps",b);
+    }
 }

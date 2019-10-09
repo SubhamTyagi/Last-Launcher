@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
@@ -175,6 +177,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             color = DbUtils.getAppColor(packageName);
 
             textView.setTextSize(textSize);
+
+            if (DbUtils.isRandomColor() && color == -1) {
+                Random rnd = new Random();
+                color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            }
+
 
             if (color != -1)
                 textView.setTextColor(color);
@@ -388,8 +396,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             Uri uri = data.getData();
             ContentResolver cr = getContentResolver();
             try {
-                boolean b= SpUtils.getInstance().loadSharedPreferencesFromFile(cr.openInputStream(uri));
-                if (b){
+                boolean b = SpUtils.getInstance().loadSharedPreferencesFromFile(cr.openInputStream(uri));
+                if (b) {
                     recreate();
                 }
             } catch (FileNotFoundException e) {

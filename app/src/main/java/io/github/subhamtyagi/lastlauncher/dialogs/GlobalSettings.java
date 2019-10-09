@@ -23,16 +23,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
+import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 
 public class GlobalSettings extends Dialog implements View.OnClickListener {
 
 
     LauncherActivity launcherActivity;
+    TextView randomColors;
 
     public GlobalSettings(Context context, LauncherActivity launcherActivity) {
         super(context);
@@ -51,7 +54,15 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         findViewById(R.id.settings_backup).setOnClickListener(this);
         findViewById(R.id.settings_restore).setOnClickListener(this);
         findViewById(R.id.settings_primary_color).setOnClickListener(this);
-        findViewById(R.id.settings_setup_random_colors).setOnClickListener(this);
+        randomColors = findViewById(R.id.settings_setup_random_colors);
+        randomColors.setOnClickListener(this);
+        findViewById(R.id.settings_freezed_apps).setOnClickListener(this);
+        findViewById(R.id.settings_hidden_apps).setOnClickListener(this);
+
+        if (DbUtils.isRandomColor()) {
+            randomColors.setText(R.string.fixed_colors);
+        } else
+            randomColors.setText(R.string.random_colors);
 
     }
 
@@ -79,11 +90,27 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
             case R.id.settings_setup_random_colors:
                 randomColor();
                 break;
+            case R.id.settings_hidden_apps:
+                hiddenApps();
+                break;
+            case R.id.settings_freezed_apps:
+                freezedApps();
         }
     }
 
-    private void randomColor() {
+    private void freezedApps() {
         Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void hiddenApps() {
+        Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
+    }
+
+    private void randomColor() {
+        DbUtils.randomColor(!DbUtils.isRandomColor());
+        cancel();
+        launcherActivity.recreate();
     }
 
     private void bgColor() {

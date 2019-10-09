@@ -38,6 +38,7 @@
     <string name="freezed_apps">Freezed Apps</string>
     <string name="example_of_text">Example of text</string>
     <string name="restore">Restore</string>
+    <string name="fixed_colors">Fixed Colors</string>
 
 
 </resources>
