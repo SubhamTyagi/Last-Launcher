@@ -5,6 +5,7 @@
         <item>#303F9F</item>
         <item>#FF4081</item>
     </array>
+
     <string name="app_name">Last Launcher</string>
 
     <!--Shared preference strings  -->
@@ -24,7 +25,7 @@
     <string name="fonts">Fonts</string>
     <string name="themes">Themes</string>
     <string name="set_to_primary_colors">Set Primary Colors</string>
-    <string name="backup_restore">Backup/Restore</string>
+    <string name="backup">Backup</string>
 
     <string name="reset_to_default_settings">Reset to default</string>
     <string name="app_info">App Info</string>
@@ -36,6 +37,7 @@
     <string name="hidden_apps">Hidden Apps</string>
     <string name="freezed_apps">Freezed Apps</string>
     <string name="example_of_text">Example of text</string>
+    <string name="restore">Restore</string>
 
 
 </resources>

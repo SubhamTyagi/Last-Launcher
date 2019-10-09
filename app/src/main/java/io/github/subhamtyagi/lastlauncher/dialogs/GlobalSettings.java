@@ -27,14 +27,16 @@ import android.widget.Toast;
 
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
+import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 
 public class GlobalSettings extends Dialog implements View.OnClickListener {
 
 
     LauncherActivity launcherActivity;
+
     public GlobalSettings(Context context, LauncherActivity launcherActivity) {
         super(context);
-        this.launcherActivity=launcherActivity;
+        this.launcherActivity = launcherActivity;
     }
 
     @Override
@@ -42,10 +44,12 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_global_settings);
+
         findViewById(R.id.settings_fonts).setOnClickListener(this);
         findViewById(R.id.settings_themes).setOnClickListener(this);
         findViewById(R.id.settings_reset_to_defaults).setOnClickListener(this);
         findViewById(R.id.settings_backup).setOnClickListener(this);
+        findViewById(R.id.settings_restore).setOnClickListener(this);
         findViewById(R.id.settings_primary_color).setOnClickListener(this);
         findViewById(R.id.settings_setup_random_colors).setOnClickListener(this);
 
@@ -63,6 +67,9 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
             case R.id.settings_backup:
                 backup();
                 break;
+            case R.id.settings_restore:
+                restore();
+                break;
             case R.id.settings_primary_color:
                 setPrimaryColor();
                 break;
@@ -76,25 +83,46 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
     }
 
     private void randomColor() {
+        Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
     }
 
     private void bgColor() {
         cancel();
-        new ThemeSelector(getContext(),launcherActivity).show();
+        new ThemeSelector(getContext(), launcherActivity).show();
     }
 
 
     private void defaultSettings() {
+        SpUtils.getInstance().clear();
+        launcherActivity.recreate();
     }
 
     private void setPrimaryColor() {
+        Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
     }
 
     private void backup() {
+        if (launcherActivity.isPermissionRequired())
+            launcherActivity.requestPermission();
+        else {
+            SpUtils.getInstance().saveSharedPreferencesToFile();
+            cancel();
+            Toast.makeText(getContext(), "Backup saved to Download", Toast.LENGTH_SHORT).show();
+        }
+    }
 
+    private void restore() {
+        if (launcherActivity.isPermissionRequired())
+            launcherActivity.requestPermission();
+        else {
+            launcherActivity.browseFile();
+            cancel();
+            Toast.makeText(getContext(), "Choose old back file", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setFonts() {
         Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
     }
+
 }

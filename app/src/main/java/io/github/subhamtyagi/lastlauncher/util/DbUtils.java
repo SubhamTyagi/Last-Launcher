@@ -114,5 +114,13 @@ public class DbUtils {
        return SpUtils.getInstance().getInt("launcher_theme", R.style.AppTheme);
     }
 
+    public static boolean isPermissionRequired(){
+        return SpUtils.getInstance().getBoolean("read_write_permission",true);
+    }
+
+
+    public static void permissionRequired(boolean b){
+         SpUtils.getInstance().putBoolean("read_write_permission",true);
+    }
 
 }

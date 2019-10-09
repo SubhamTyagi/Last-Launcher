@@ -18,15 +18,18 @@
 
 package io.github.subhamtyagi.lastlauncher;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -38,6 +41,7 @@ import android.widget.TextView;
 
 import org.apmem.tools.layouts.FlowLayout;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,6 +83,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         loadApps();
         registerForReceiver();
         SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
+
     }
 
     private void refreshAppSize(String packageName) {
@@ -339,4 +344,57 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
 
+    public void requestPermission() {
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            requestPermissions(
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    148
+            );
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 148) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                DbUtils.permissionRequired(false);
+            }
+        }
+    }
+
+    public boolean isPermissionRequired() {
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            return checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED;
+        }
+        return true;
+    }
+
+    public void browseFile() {
+        Intent chooseFile;
+        Intent intent;
+        chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+        chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+        chooseFile.setType("file/plain");
+        intent = Intent.createChooser(chooseFile, "Choose backup file");
+        startActivityForResult(intent, 125);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) return;
+        if (requestCode == 125) {
+            Uri uri = data.getData();
+            ContentResolver cr = getContentResolver();
+            try {
+                boolean b= SpUtils.getInstance().loadSharedPreferencesFromFile(cr.openInputStream(uri));
+                if (b){
+                    recreate();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

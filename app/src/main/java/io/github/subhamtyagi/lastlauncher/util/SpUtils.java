@@ -22,15 +22,18 @@ package io.github.subhamtyagi.lastlauncher.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -164,16 +167,16 @@ public class SpUtils {
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.clear();
-            editor.apply();
+            editor.commit();
         } else throw new RuntimeException("First Initialize context");
     }
 
-
-    //stub
-    private File saveSharedPreferencesToFile() {
-
+    public File saveSharedPreferencesToFile() {
+        SimpleDateFormat df = new SimpleDateFormat("YYYY_MM_dd_HHSS");
+        df.format(new Date());
+        String date = df.format(new Date());
         boolean res = false;
-        File dst = new File("abc");
+        File dst = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Backup_LastLauncher_" + date);
         ObjectOutputStream output = null;
         try {
             output = new ObjectOutputStream(new FileOutputStream(dst));
@@ -200,11 +203,11 @@ public class SpUtils {
 
 
     //stub
-    private boolean loadSharedPreferencesFromFile(File src) {
+    public boolean loadSharedPreferencesFromFile(InputStream inputS) {
         boolean res = false;
         ObjectInputStream input = null;
         try {
-            input = new ObjectInputStream(new FileInputStream(src));
+            input = new ObjectInputStream(inputS);
             clear();
             Map<String, ?> entries = (Map<String, ?>) input.readObject();
             for (Map.Entry<String, ?> entry : entries.entrySet()) {
