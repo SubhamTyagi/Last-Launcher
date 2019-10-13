@@ -67,7 +67,7 @@ public class RenameInput extends AppCompatDialog implements TextView.OnEditorAct
             String temp = mAppName.getText().toString();
             if (!temp.isEmpty()) {
                 DbUtils.putAppName(appPackage, temp);
-                //Db my be slow to reflect this so pass app new name:editor.apply()
+                //Sp Db is slow to reflect this so pass app new name:editor.apply()
                 launcherActivity.onAppRenamed(appPackage,temp);
                 cancel();
             }
