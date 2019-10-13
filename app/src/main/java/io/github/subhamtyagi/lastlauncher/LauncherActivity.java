@@ -40,6 +40,8 @@ import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.io.FileNotFoundException;
@@ -60,24 +62,21 @@ import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
 import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
-public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
+public class LauncherActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
 
     private ArrayList<Apps> appsList;
     //Typeface mTypeface;
 
     FlowLayout homeLayout;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         SpUtils.getInstance().init(this);
         int theme = DbUtils.getTheme();
-
         setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-
         //TOD O: check the memory footprint
         // mTypeface = Typeface.createFromAsset(getAssets(),"fonts/Comfortaa.ttf");
         //DbUtils.TEXT_COLOR = getResources().getColor(R.color.default_apps_colors);
@@ -88,13 +87,56 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
-    private void refreshAppSize(String packageName) {
-        int size = DbUtils.getAppSize(packageName) + 1;
-        DbUtils.putAppSize(packageName, size);
+    //this must be done in background
+    private void loadApps() {
+        Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
+        startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        PackageManager pm = getPackageManager();
+        List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
+        /*Collections.sort(activities, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
+                a.loadLabel(pm).toString(),
+                b.loadLabel(pm).toString()
+        ));*/
 
+        homeLayout = findViewById(R.id.home_layout);
+        homeLayout.setOnLongClickListener(this);
+        homeLayout.removeAllViews();
+
+        int appsCount = activities.size();
+        String packageName, appName;
+        appsList = new ArrayList<>(appsCount);
+
+        int color, textSize;
+
+        for (ResolveInfo resolveInfo : activities) {
+            packageName = resolveInfo.activityInfo.packageName;
+            DbUtils.putAppOriginalName(packageName, resolveInfo.loadLabel(pm).toString());
+            appName = DbUtils.getAppName(packageName, resolveInfo.loadLabel(pm).toString());
+            boolean hide = DbUtils.isAppHidden(packageName);
+
+            //Temp code
+            if (hide) continue;
+            textSize = DbUtils.getAppSize(packageName);
+            color = DbUtils.getAppColor(packageName);
+            boolean freeze = DbUtils.isAppFreezed(packageName);
+
+            if (DbUtils.isRandomColor() && color == -1) {
+                Random rnd = new Random();
+                color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            }
+            appsList.add(new Apps(packageName, appName, getCustomView(), color, textSize, hide, freeze));
+            //homeLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        }
+
+        sortApps();
+    }
+
+
+    private void refreshAppSize(String packageName) {
+        int size = DbUtils.getAppSize(packageName) + 2;
+        DbUtils.putAppSize(packageName, size);
         for (Apps apps : appsList) {
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
-                apps.getTextView().setTextSize(size);
                 apps.setSize(size);
                 break;
             }
@@ -102,106 +144,46 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     void refreshApps(String packageName) {
-
-        int size = DbUtils.getAppSize(packageName);
-        int color = DbUtils.getAppColor(packageName);
-        String appOriginalName = DbUtils.getAppOriginalName(packageName, "");
-        String appName = DbUtils.getAppName(packageName, appOriginalName);
-
         for (Apps apps : appsList) {
             if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
-                apps.getTextView().setTextSize(size);
-                apps.getTextView().setTextColor(color);
-                if (!appName.isEmpty())
-                    apps.getTextView().setText(appName);
-                apps.setAppName(appName);
-                apps.setSize(size);
-                apps.setColor(color);
+                appsList.remove(apps);
+                //now add new App
+                int size = DbUtils.getAppSize(packageName);
+                int color = DbUtils.getAppColor(packageName);
+                String appOriginalName = DbUtils.getAppOriginalName(packageName, "");
+                String appName = DbUtils.getAppName(packageName, appOriginalName);
+
+                boolean hide = apps.isHide();
+                boolean freezeSize = apps.isFreezeSize();
+
+                Apps newApp = new Apps(packageName, appName, getCustomView(), color, size, hide, freezeSize);
+                appsList.add(newApp);
+                sortApps();
+                break;
             }
         }
     }
 
-    //this must be done in background
-    private void loadApps() {
-        Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
-        startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        PackageManager pm = getPackageManager();
-        List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
+    private TextView getCustomView() {
+        TextView textView = new TextView(this);
+        textView.setOnClickListener(this);
+        textView.setOnLongClickListener(this);
+        textView.setPadding(10, -6, 0, -4);
+        //textView.setTypeface(mTypeface);
+        return textView;
+    }
 
-        Collections.sort(activities, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
-                a.loadLabel(pm).toString(),
-                b.loadLabel(pm).toString()
-        ));
-
-        homeLayout = findViewById(R.id.home_layout);
-        homeLayout.setOnLongClickListener(this);
+    private void sortApps() {
         homeLayout.removeAllViews();
-
-        int appsCount = activities.size();
-        int id = 0;
-
-        String packageName, appName;
-
-        TextView textView;
-
-        appsList = new ArrayList<>(appsCount);
-
-        int color, textSize;
-
-        for (ResolveInfo resolveInfo : activities) {
-            packageName = resolveInfo.activityInfo.packageName;
-
-            DbUtils.putAppOriginalName(packageName, resolveInfo.loadLabel(pm).toString());
-            appName = DbUtils.getAppName(packageName, resolveInfo.loadLabel(pm).toString());
-
-            //TODO: before commit / take screen shot
-            //if (appName.equalsIgnoreCase("KD campus") || appName.equalsIgnoreCase("kanyadaan") || appName.equalsIgnoreCase("getApps") || appName.equalsIgnoreCase("feedback") || appName.equalsIgnoreCase("gradeup") || appName.equalsIgnoreCase("mi remote") || appName.equalsIgnoreCase("pnb one") || appName.equalsIgnoreCase("play store") || appName.equalsIgnoreCase("drive") || appName.equalsIgnoreCase("duo"))
-            //    continue;
-
-            boolean hide = DbUtils.isAppHidden(packageName);
-
-            if (hide) continue;
-
-            textView = new TextView(this);
-            textView.setText(appName);
-            textView.setTag(packageName);//tag for identification
-
-            textView.setOnClickListener(this);
-            textView.setOnLongClickListener(this);
-            //textView.setTypeface(mTypeface);
-
-            //TODO: move values to dimens/ improve this in @FlowLayout: Temp fix
-            textView.setPadding(10, -6, 0, -4);
-
-            textSize = DbUtils.getAppSize(packageName);
-            color = DbUtils.getAppColor(packageName);
-
-            textView.setTextSize(textSize);
-
-            if (DbUtils.isRandomColor() && color == -1) {
-                Random rnd = new Random();
-                color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-            }
-
-
-            if (color != -1)
-                textView.setTextColor(color);
-
-            appsList.add(
-                    new Apps(++id,
-                            packageName,
-                            appName,
-                            textView,
-                            0xFFFFFF,
-                            textSize,
-                            false,
-                            false
-                    )
-            );
-            homeLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        Collections.sort(appsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
+                a.getAppName().toString(),
+                b.getAppName().toString()
+        ));
+        for (Apps apps : appsList) {
+            homeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         }
-
     }
+
 
     @Override
     public boolean onLongClick(View view) {
@@ -231,7 +213,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                         changeSize(packageName, view);
                         break;
                     case R.id.menu_rename:
-                        renameApp(packageName, view);
+                        renameApp(packageName);
                         break;
                     case R.id.menu_freeze_size: {
                         freezeSize(packageName);
@@ -247,7 +229,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                         showAppInfo(packageName);
                         break;
                     case R.id.menu_reset_to_default:
-                        resetApp(packageName, view);
+                        resetApp(packageName);
 
                     default:
                         return true;
@@ -268,16 +250,27 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         DbUtils.freezeAppSize(packageName, true);
     }
 
-    private void renameApp(String packageName, TextView view) {
-        Dialog dialog = new RenameInput(this, packageName, view);
+    private void renameApp(String packageName) {
+        Dialog dialog = new RenameInput(this, packageName, this);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
+
     }
 
-    private void resetApp(String packageName, TextView view) {
+    public void onAppRenamed(String packageName, String appNewName) {
+        for (Apps app : appsList) {
+            if (app.getPackageName().toString().equalsIgnoreCase(packageName)) {
+                app.setAppName(appNewName);
+                sortApps();
+                break;
+            }
+        }
 
+    }
+
+    private void resetApp(String packageName) {
         DbUtils.removeAppName(packageName);
         DbUtils.removeColor(packageName);
         DbUtils.removeSize(packageName);
@@ -299,12 +292,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     private void changeColor(String packageName, TextView view) {
         int color = DbUtils.getAppColor(packageName);
+        if (color == -1) {
+            color = view.getCurrentTextColor();
+        }
         Dialog dialog = new ChooseColor(this, packageName, color, view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
-
     }
 
     private void changeSize(String packageName, TextView view) {
@@ -391,6 +386,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
         if (requestCode == 125) {
             Uri uri = data.getData();

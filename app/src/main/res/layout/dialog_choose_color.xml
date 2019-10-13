@@ -17,7 +17,6 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/llcolor"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -26,7 +25,6 @@
         android:id="@+id/colorSlider1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        app:bgColor="@android:color/black" />
+        android:layout_margin="6dp" />
 
 </LinearLayout>

@@ -18,7 +18,6 @@
 
 package io.github.subhamtyagi.lastlauncher.dialogs;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -28,20 +27,24 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatDialog;
+
+import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
-public class RenameInput extends Dialog implements TextView.OnEditorActionListener {
+public class RenameInput extends AppCompatDialog implements TextView.OnEditorActionListener {
 
     final private String appPackage;
-    final private TextView textView;
+    private LauncherActivity launcherActivity;
+
 
     private EditText mAppName;
 
-    public RenameInput(Context context, String appPackage, TextView textView) {
+    public RenameInput(Context context, String appPackage, LauncherActivity launcherActivity) {
         super(context);
         this.appPackage = appPackage;
-        this.textView = textView;
+        this.launcherActivity = launcherActivity;
     }
 
     @Override
@@ -63,13 +66,13 @@ public class RenameInput extends Dialog implements TextView.OnEditorActionListen
         if (i == EditorInfo.IME_ACTION_DONE) {
             String temp = mAppName.getText().toString();
             if (!temp.isEmpty()) {
-                textView.setText(temp);
                 DbUtils.putAppName(appPackage, temp);
+                //Db my be slow to reflect this so pass app new name:editor.apply()
+                launcherActivity.onAppRenamed(appPackage,temp);
                 cancel();
             }
             handled = true;
         }
         return handled;
-
     }
 }

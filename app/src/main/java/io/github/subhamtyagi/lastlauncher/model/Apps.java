@@ -18,16 +18,21 @@
 
 package io.github.subhamtyagi.lastlauncher.model;
 
+import android.view.View;
 import android.widget.TextView;
 
 
 public class Apps {
 
-    final private int id;
 
     final private CharSequence packageName;
     private CharSequence appName;
-    final private TextView textView;
+
+    public void setTextView(TextView textView) {
+        this.textView = textView;
+    }
+
+    private TextView textView;
     private int color;
     private int size;
 
@@ -48,10 +53,10 @@ public class Apps {
 
     public void setHide(boolean hide) {
         this.hide = hide;
+        textView.setVisibility(hide?View.GONE:View.VISIBLE);
     }
 
     /**
-     * @param id          a auto increment id
      * @param packageName apps package name
      * @param appName     App name
      * @param tv          a text view corresponding to App
@@ -60,8 +65,8 @@ public class Apps {
      * @param hide        boolean to tell 'is app hide
      * @param freezeSize  is app size to freeze
      */
-    public Apps(int id, String packageName, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
-        this.id = id;
+    public Apps(String packageName, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
+
         this.packageName = packageName;
         this.appName = appName;
         this.textView = tv;
@@ -70,6 +75,13 @@ public class Apps {
         this.freezeSize = freezeSize;
         this.hide = hide;
 
+        textView.setText(appName);
+        textView.setTag(packageName);
+        textView.setTextSize(size);
+        if (color != -1)
+            textView.setTextColor(color);
+
+        textView.setVisibility(hide ? View.GONE : View.VISIBLE);
     }
 
     public CharSequence getPackageName() {
@@ -90,10 +102,12 @@ public class Apps {
 
     public void setColor(int color) {
         this.color = color;
+        textView.setTextColor(color);
     }
 
     public void setAppName(CharSequence appName) {
         this.appName = appName;
+        textView.setText(appName);
     }
 
     public int getSize() {
@@ -102,5 +116,6 @@ public class Apps {
 
     public void setSize(int size) {
         this.size = size;
+        textView.setTextSize(size);
     }
 }

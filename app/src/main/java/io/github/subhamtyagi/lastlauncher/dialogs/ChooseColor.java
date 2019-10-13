@@ -18,19 +18,20 @@
 
 package io.github.subhamtyagi.lastlauncher.dialogs;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatDialog;
+
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
-import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
-public class ChooseColor extends Dialog {
+public class ChooseColor extends AppCompatDialog {
 
+    private static final String TAG = "ChooseColor";
     final private String appPackage;
     final private int appColor;
     final private TextView textView;
@@ -54,13 +55,15 @@ public class ChooseColor extends Dialog {
         //colorSeekBar.setColorSeeds(R.array.material_colors);
         colorSeekBar.setShowAlphaBar(true);
         colorSeekBar.setBarHeight(5);
-        colorSeekBar.setColor(appColor);
+
+        if (appColor != -1)
+            colorSeekBar.setColor(appColor);
 
         colorSeekBar.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {
             @Override
             public void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color) {
                 textView.setTextColor(color);
-                DbUtils.putAppColor(appPackage,color);
+                DbUtils.putAppColor(appPackage, color);
             }
         });
 

@@ -33,9 +33,19 @@ import io.github.subhamtyagi.lastlauncher.R;
 public class ColorSeekBar extends View {
 
     private int[] mColorSeeds = new int[]{
-            0xFF9900FF, 0xFF0000FF, 0xFF00FF00, 0xFF00FFFF,
-            0xFFFF0000, 0xFFFF00FF, 0xFFFF6600, 0xFFFFFF00, 0xFFFFFFFF,
-            0xFF8F8C8C};
+            0xFFFFFFFF,
+            0xFF9900FF,
+            0xFF0000FF,
+            0xFF00FF00,
+            0xFF00FFFF,
+            0xFFFF0000,
+            0xFFFF00FF,
+            0xFFFF6600,
+            0xFFFFFF00,
+            0xFF8F8C8C,
+            0xFF000000
+            // 0xFFEAFEAF
+    };
 
     private int mAlpha;
     private OnColorChangeListener mOnColorChangeLister;
