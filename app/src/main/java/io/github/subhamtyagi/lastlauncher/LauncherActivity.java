@@ -33,7 +33,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
@@ -202,40 +201,37 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         if (DbUtils.isAppFreezed(packageName)) {
             popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze);
         }
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.menu_color:
-                        changeColor(packageName, view);
-                        break;
-                    case R.id.menu_size:
-                        changeSize(packageName, view);
-                        break;
-                    case R.id.menu_rename:
-                        renameApp(packageName);
-                        break;
-                    case R.id.menu_freeze_size: {
-                        freezeSize(packageName);
-                    }
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_color:
+                    changeColor(packageName, view);
                     break;
-                    case R.id.menu_hide:
-                        hideApp(packageName, view);
-                        break;
-                    case R.id.menu_uninstall:
-                        uninstallApp(packageName);
-                        break;
-                    case R.id.menu_app_info:
-                        showAppInfo(packageName);
-                        break;
-                    case R.id.menu_reset_to_default:
-                        resetApp(packageName);
-
-                    default:
-                        return true;
+                case R.id.menu_size:
+                    changeSize(packageName, view);
+                    break;
+                case R.id.menu_rename:
+                    renameApp(packageName,view.getText().toString());
+                    break;
+                case R.id.menu_freeze_size: {
+                    freezeSize(packageName);
                 }
-                return true;
+                break;
+                case R.id.menu_hide:
+                    hideApp(packageName, view);
+                    break;
+                case R.id.menu_uninstall:
+                    uninstallApp(packageName);
+                    break;
+                case R.id.menu_app_info:
+                    showAppInfo(packageName);
+                    break;
+                case R.id.menu_reset_to_default:
+                    resetApp(packageName);
+
+                default:
+                    return true;
             }
+            return true;
         });
         popupMenu.show();
     }
@@ -250,8 +246,8 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         DbUtils.freezeAppSize(packageName, true);
     }
 
-    private void renameApp(String packageName) {
-        Dialog dialog = new RenameInput(this, packageName, this);
+    private void renameApp(String packageName,String appName) {
+        Dialog dialog = new RenameInput(this, packageName, appName,this);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);

@@ -37,14 +37,16 @@ public class RenameInput extends AppCompatDialog implements TextView.OnEditorAct
 
     final private String appPackage;
     private LauncherActivity launcherActivity;
+    private final String oldAppName;
 
 
     private EditText mAppName;
 
-    public RenameInput(Context context, String appPackage, LauncherActivity launcherActivity) {
+    public RenameInput(Context context, String appPackage, String oldAppName, LauncherActivity launcherActivity) {
         super(context);
         this.appPackage = appPackage;
         this.launcherActivity = launcherActivity;
+        this.oldAppName = oldAppName;
     }
 
     @Override
@@ -53,6 +55,7 @@ public class RenameInput extends AppCompatDialog implements TextView.OnEditorAct
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_rename_input);
         mAppName = findViewById(R.id.ed_input);
+        mAppName.setText(oldAppName);
         mAppName.setOnEditorActionListener(this);
         mAppName.setEnabled(true);
         mAppName.requestFocus();
@@ -68,7 +71,7 @@ public class RenameInput extends AppCompatDialog implements TextView.OnEditorAct
             if (!temp.isEmpty()) {
                 DbUtils.putAppName(appPackage, temp);
                 //Sp Db is slow to reflect this so pass app new name:editor.apply()
-                launcherActivity.onAppRenamed(appPackage,temp);
+                launcherActivity.onAppRenamed(appPackage, temp);
                 cancel();
             }
             handled = true;
