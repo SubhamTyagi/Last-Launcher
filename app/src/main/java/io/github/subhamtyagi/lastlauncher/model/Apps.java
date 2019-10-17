@@ -26,6 +26,8 @@ public class Apps {
 
 
     final private CharSequence packageName;
+
+    final private CharSequence activity;
     private CharSequence appName;
 
     public void setTextView(TextView textView) {
@@ -53,11 +55,12 @@ public class Apps {
 
     public void setHide(boolean hide) {
         this.hide = hide;
-        textView.setVisibility(hide?View.GONE:View.VISIBLE);
+        textView.setVisibility(hide ? View.GONE : View.VISIBLE);
     }
 
     /**
      * @param packageName apps package name
+     * @param activity    executable activity path
      * @param appName     App name
      * @param tv          a text view corresponding to App
      * @param color       Text color
@@ -65,9 +68,10 @@ public class Apps {
      * @param hide        boolean to tell 'is app hide
      * @param freezeSize  is app size to freeze
      */
-    public Apps(String packageName, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
+    public Apps(String packageName, String activity, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
 
         this.packageName = packageName;
+        this.activity=activity;
         this.appName = appName;
         this.textView = tv;
         this.color = color;

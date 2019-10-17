@@ -26,12 +26,17 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.LauncherActivityInfo;
+import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.UserHandle;
+import android.os.UserManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -39,6 +44,7 @@ import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -56,6 +62,7 @@ import io.github.subhamtyagi.lastlauncher.dialogs.RenameInput;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
+import io.github.subhamtyagi.lastlauncher.util.UserUtils;
 
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
@@ -63,6 +70,10 @@ import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
 public class LauncherActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
 
+
+    private final String TAG = "LaucnherActivity";
+
+    //private Map<String,Apps> appsList;
     private ArrayList<Apps> appsList;
     //Typeface mTypeface;
 
@@ -78,7 +89,10 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_launcher);
         //TOD O: check the memory footprint
         // mTypeface = Typeface.createFromAsset(getAssets(),"fonts/Comfortaa.ttf");
-        //DbUtils.TEXT_COLOR = getResources().getColor(R.color.default_apps_colors);
+
+        homeLayout = findViewById(R.id.home_layout);
+        homeLayout.setOnLongClickListener(this);
+
 
         loadApps();
         registerForReceiver();
@@ -86,35 +100,36 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    //this must be done in background
+
     private void loadApps() {
+
         Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
-        /*Collections.sort(activities, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
-                a.loadLabel(pm).toString(),
-                b.loadLabel(pm).toString()
-        ));*/
-
-        homeLayout = findViewById(R.id.home_layout);
-        homeLayout.setOnLongClickListener(this);
-        homeLayout.removeAllViews();
-
         int appsCount = activities.size();
-        String packageName, appName;
+
         appsList = new ArrayList<>(appsCount);
 
+        String packageName, appName;
         int color, textSize;
+        boolean hide;
 
         for (ResolveInfo resolveInfo : activities) {
+
             packageName = resolveInfo.activityInfo.packageName;
+
+            String activity = resolveInfo.activityInfo.name + "&" + packageName;
+
             DbUtils.putAppOriginalName(packageName, resolveInfo.loadLabel(pm).toString());
             appName = DbUtils.getAppName(packageName, resolveInfo.loadLabel(pm).toString());
-            boolean hide = DbUtils.isAppHidden(packageName);
+            hide = DbUtils.isAppHidden(packageName);
 
-            //Temp code
-            if (hide) continue;
+            if (hide) {
+                //Temp hide
+                continue;
+            }
+
             textSize = DbUtils.getAppSize(packageName);
             color = DbUtils.getAppColor(packageName);
             boolean freeze = DbUtils.isAppFreezed(packageName);
@@ -123,13 +138,22 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
                 Random rnd = new Random();
                 color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             }
-            appsList.add(new Apps(packageName, appName, getCustomView(), color, textSize, hide, freeze));
-            //homeLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            appsList.add(new Apps(packageName, activity, appName, getCustomView(), color, textSize, hide, freeze));
         }
 
         sortApps();
     }
 
+    private void sortApps() {
+        homeLayout.removeAllViews();
+        Collections.sort(appsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
+                a.getAppName().toString(),
+                b.getAppName().toString()
+        ));
+        for (Apps apps : appsList) {
+            homeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        }
+    }
 
     private void refreshAppSize(String packageName) {
         int size = DbUtils.getAppSize(packageName) + 2;
@@ -155,7 +179,7 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
                 boolean hide = apps.isHide();
                 boolean freezeSize = apps.isFreezeSize();
 
-                Apps newApp = new Apps(packageName, appName, getCustomView(), color, size, hide, freezeSize);
+                Apps newApp = new Apps(packageName, null, appName, getCustomView(), color, size, hide, freezeSize);
                 appsList.add(newApp);
                 sortApps();
                 break;
@@ -170,17 +194,6 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         textView.setPadding(10, -6, 0, -4);
         //textView.setTypeface(mTypeface);
         return textView;
-    }
-
-    private void sortApps() {
-        homeLayout.removeAllViews();
-        Collections.sort(appsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
-                a.getAppName().toString(),
-                b.getAppName().toString()
-        ));
-        for (Apps apps : appsList) {
-            homeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        }
     }
 
 
@@ -210,7 +223,7 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
                     changeSize(packageName, view);
                     break;
                 case R.id.menu_rename:
-                    renameApp(packageName,view.getText().toString());
+                    renameApp(packageName, view.getText().toString());
                     break;
                 case R.id.menu_freeze_size: {
                     freezeSize(packageName);
@@ -246,8 +259,8 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         DbUtils.freezeAppSize(packageName, true);
     }
 
-    private void renameApp(String packageName,String appName) {
-        Dialog dialog = new RenameInput(this, packageName, appName,this);
+    private void renameApp(String packageName, String appName) {
+        Dialog dialog = new RenameInput(this, packageName, appName, this);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
@@ -311,13 +324,25 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view) {
         if (view instanceof TextView) {
-            String packageName = (String) view.getTag();
+            String activity = (String) view.getTag();
+            // String[] strings = activity.split("&");
             try {
-                startActivity(getPackageManager().getLaunchIntentForPackage(packageName));
-                if (!DbUtils.isAppFreezed(packageName)) {
-                    refreshAppSize(packageName);
+                final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+
+                //intent.setClassName(strings[1],strings[0]);
+                // Log.d(TAG, "onClick: app name" + activity);
+                //intent.setComponent(new ComponentName(strings[1],strings[0]));
+                // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                //startActivity(intent);
+
+                startActivity(getPackageManager().getLaunchIntentForPackage(activity));
+
+                if (!DbUtils.isAppFreezed(activity)) {
+                    refreshAppSize(activity);
                 }
             } catch (Exception ignore) {
+
+                Log.e(TAG, "onClick: " + ignore);
             }
         }
     }
@@ -397,4 +422,36 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
             }
         }
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public static List<Apps> loadAppsMINLolipop(Activity activity, boolean hideHidden) {
+        List<Apps> appsList = new ArrayList<>();
+        PackageManager manager = activity.getPackageManager();
+
+        UserUtils userUtils = new UserUtils(activity);
+
+        UserManager userManager = (UserManager) activity.getSystemService(Context.USER_SERVICE);
+        LauncherApps launcher = (LauncherApps) activity.getSystemService(Context.LAUNCHER_APPS_SERVICE);
+        for (UserHandle profile : userManager.getUserProfiles()) {
+
+            for (LauncherActivityInfo activityInfo : launcher.getActivityList(null, profile)) {
+
+                String componentName = activityInfo.getComponentName().flattenToString();
+                String userPackageName;
+                long user = userManager.getSerialNumberForUser(profile);
+                if (user != userUtils.getCurrentSerial()) {
+                    userPackageName = user + "-" + componentName;
+                } else {
+                    userPackageName = componentName;
+                }
+
+                String appName = activityInfo.getLabel().toString();
+
+            }
+        }
+        return appsList;
+    }
+
 }
+
