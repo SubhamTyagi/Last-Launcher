@@ -80,7 +80,7 @@ public class Apps {
         this.hide = hide;
 
         textView.setText(appName);
-        textView.setTag(packageName);
+        textView.setTag(activity);
         textView.setTextSize(size);
         if (color != -1)
             textView.setTextColor(color);

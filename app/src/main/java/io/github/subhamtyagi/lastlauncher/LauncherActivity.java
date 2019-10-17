@@ -22,6 +22,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -116,9 +117,7 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         boolean hide;
 
         for (ResolveInfo resolveInfo : activities) {
-
             packageName = resolveInfo.activityInfo.packageName;
-
             String activity = resolveInfo.activityInfo.name + "&" + packageName;
 
             DbUtils.putAppOriginalName(packageName, resolveInfo.loadLabel(pm).toString());
@@ -325,23 +324,22 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         if (view instanceof TextView) {
             String activity = (String) view.getTag();
-            // String[] strings = activity.split("&");
+            String[] strings = activity.split("&");
             try {
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-
-                //intent.setClassName(strings[1],strings[0]);
-                // Log.d(TAG, "onClick: app name" + activity);
-                //intent.setComponent(new ComponentName(strings[1],strings[0]));
-                // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                //startActivity(intent);
-
-                startActivity(getPackageManager().getLaunchIntentForPackage(activity));
+                if (strings[0].contains(strings[1])) {
+                    intent.setClassName(strings[1], strings[0]);
+                    //Log.d(TAG, "onClick: app name" + activity);
+                    intent.setComponent(new ComponentName(strings[1], strings[0]));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(intent);
+                } else
+                    startActivity(getPackageManager().getLaunchIntentForPackage(strings[1]));
 
                 if (!DbUtils.isAppFreezed(activity)) {
                     refreshAppSize(activity);
                 }
             } catch (Exception ignore) {
-
                 Log.e(TAG, "onClick: " + ignore);
             }
         }
