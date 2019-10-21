@@ -27,6 +27,15 @@ android {
             shrinkResources true
             //zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    def date = new Date();
+                    def formattedDate = date.format('yyyyMMddHHmmss')
+                    outputFileName = "Last-Launcher-${variant.name}-${variant.versionName}-${formattedDate}.apk"
+                }
+            }
         }
     }
 
@@ -43,6 +52,4 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':flowlayout:layouts')
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

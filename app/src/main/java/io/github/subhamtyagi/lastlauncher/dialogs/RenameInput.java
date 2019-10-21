@@ -18,6 +18,7 @@
 
 package io.github.subhamtyagi.lastlauncher.dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -27,13 +28,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatDialog;
-
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
-public class RenameInput extends AppCompatDialog implements TextView.OnEditorActionListener {
+public class RenameInput extends Dialog implements TextView.OnEditorActionListener {
 
     final private String appPackage;
     private LauncherActivity launcherActivity;

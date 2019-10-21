@@ -18,18 +18,17 @@
 
 package io.github.subhamtyagi.lastlauncher.dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatDialog;
-
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
-public class ChooseColor extends AppCompatDialog {
+public class ChooseColor extends Dialog {
 
     private static final String TAG = "ChooseColor";
     final private String appPackage;

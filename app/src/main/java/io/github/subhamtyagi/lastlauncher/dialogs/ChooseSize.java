@@ -18,18 +18,17 @@
 
 package io.github.subhamtyagi.lastlauncher.dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatDialog;
-
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
-public class ChooseSize extends AppCompatDialog {
+public class ChooseSize extends Dialog {
     final private String appPackage;
     final private int appSize;
     final private TextView textView;

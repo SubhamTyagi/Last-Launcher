@@ -26,6 +26,11 @@ public class DbUtils {
     private static int TEXT_COLOR=-1;
 
 
+    public static boolean isFirstStart(){
+        return SpUtils.getInstance().getBoolean("sp_first_time_app_open",true);
+    }
+
+
     public static void putAppOriginalName(String packageName, String value) {
         packageName = packageName.replaceAll("\\.", "_") + "_app_original_name";
         SpUtils.getInstance().putString(packageName, value);
@@ -106,12 +111,22 @@ public class DbUtils {
         SpUtils.getInstance().remove(packageName);
     }
 
+
+
     public static void setTheme(int id){
         SpUtils.getInstance().putInt("launcher_theme",id);
     }
 
     public static int getTheme(){
        return SpUtils.getInstance().getInt("launcher_theme", R.style.AppTheme);
+    }
+
+    public static void setFonts(String path){
+        SpUtils.getInstance().putString("launcher_fonts",path);
+    }
+
+    public static String getFonts(){
+        return SpUtils.getInstance().getString("launcher_fonts",null);
     }
 
     public static boolean isPermissionRequired(){

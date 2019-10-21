@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppBaseTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppBaseTheme" parent="android:Theme.Black.NoTitleBar">
         <item name="android:popupAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:listPreferredItemHeightSmall">40dp</item>
@@ -9,12 +9,9 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="dialog" parent="Theme.AppCompat.Dialog">
-
-    </style>
 
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">@android:color/black</item>
+
         <item name="android:textColor">#FF8F8C8C</item>
         <item name="android:background">@android:color/black</item>
     </style>
@@ -58,90 +55,90 @@
     </style>
 
     <style name="White" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#FFFFFFFF</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="BlackonGrey" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#cdd8da</item>
+
         <item name="android:background">#cdd8da</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFFFFFFF</item>
     </style>
 
     <style name="A" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#d5e0e2</item>
+
         <item name="android:background">#d5e0e2</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="D" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#b57154</item>
+
         <item name="android:background">#b57154</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="E" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#daad86</item>
+
         <item name="android:background">#daad86</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="H" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#689775</item>
+
         <item name="android:background">#689775</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="I" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#b1a296</item>
+
         <item name="android:background">#b1a296</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="J" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#349683</item>
+
         <item name="android:background">#349683</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="K" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#5d5c61</item>
+
         <item name="android:background">#5d5c61</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFFFFFFF</item>
     </style>
 
     <style name="L" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#2e1114</item>
+
         <item name="android:background">#2e1114</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFFFFFFF</item>
     </style>
 
     <style name="M" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#501b1d</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFFFFFFF</item>
     </style>
 
     <style name="N" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#adadad</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="O" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#240090</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFFFFFFF</item>
@@ -149,14 +146,14 @@
 
 
     <style name="Q" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#282828</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFFFFFFF</item>
     </style>
 
     <style name="R" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#0c0032</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF8F8C8C</item>
@@ -164,42 +161,42 @@
 
 
     <style name="U" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#4E4E50</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFEAFEAF</item>
     </style>
 
     <style name="V" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#afd275</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="W" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#45A29E</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="X" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#9a1750</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFF0F0F0</item>
     </style>
 
     <style name="AA" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#d8c3a5</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF000000</item>
     </style>
 
     <style name="AB" parent="AppBaseTheme.Shadow">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#10e7dc</item>
         <item name="android:shadowColor">#dedede</item>
         <item name="android:textColor">#FF000000</item>
@@ -207,14 +204,14 @@
 
 
     <style name="Hacker.green" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#000000</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF00ff00</item>
     </style>
 
     <style name="Hacker.red" parent="AppBaseTheme">
-        <item name="colorPrimaryDark">#dedede</item>
+
         <item name="android:background">#000000</item>
         <item name="android:shadowColor">#BADA0F0F</item>
         <item name="android:textColor">#FFFF0000</item>

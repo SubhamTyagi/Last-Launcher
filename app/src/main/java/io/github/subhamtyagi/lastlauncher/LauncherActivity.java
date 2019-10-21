@@ -19,6 +19,7 @@
 package io.github.subhamtyagi.lastlauncher;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -31,12 +32,15 @@ import android.content.pm.LauncherActivityInfo;
 import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.os.UserManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -44,9 +48,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import org.apmem.tools.layouts.FlowLayout;
 
@@ -69,14 +70,12 @@ import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
 import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
-public class LauncherActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener {
+public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
 
 
     private final String TAG = "LaucnherActivity";
-
-    //private Map<String,Apps> appsList;
     private ArrayList<Apps> appsList;
-    //Typeface mTypeface;
+    Typeface mTypeface;
 
     FlowLayout homeLayout;
 
@@ -88,8 +87,12 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-        //TOD O: check the memory footprint
-        // mTypeface = Typeface.createFromAsset(getAssets(),"fonts/Comfortaa.ttf");
+
+        String fontsPath = DbUtils.getFonts();
+        if (fontsPath == null || DbUtils.isFirstStart())
+            mTypeface = Typeface.createFromAsset(getAssets(), "fonts/Raleway.ttf");
+        else
+            mTypeface = Typeface.createFromFile(fontsPath);
 
         homeLayout = findViewById(R.id.home_layout);
         homeLayout.setOnLongClickListener(this);
@@ -101,17 +104,15 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-
     private void loadApps() {
-
         Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
         int appsCount = activities.size();
-
+        if (appsList != null)
+            appsList.clear();
         appsList = new ArrayList<>(appsCount);
-
         String packageName, appName;
         int color, textSize;
         boolean hide;
@@ -191,10 +192,9 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         textView.setOnClickListener(this);
         textView.setOnLongClickListener(this);
         textView.setPadding(10, -6, 0, -4);
-        //textView.setTypeface(mTypeface);
+        textView.setTypeface(mTypeface);
         return textView;
     }
-
 
     @Override
     public boolean onLongClick(View view) {
@@ -205,7 +205,6 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         }
         return true;
     }
-
 
     private void showPopup(String packageName, TextView view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
@@ -370,7 +369,7 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             requestPermissions(
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
-                    148
+                    PERMISSION_REQUEST
             );
         }
     }
@@ -394,20 +393,34 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void browseFile() {
-        Intent chooseFile;
-        Intent intent;
-        chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
         chooseFile.setType("file/plain");
-        intent = Intent.createChooser(chooseFile, "Choose backup file");
-        startActivityForResult(intent, 125);
+        Intent intent = Intent.createChooser(chooseFile, "Choose backup file");
+        startActivityForResult(intent, BACKUP_REQUEST);
     }
+
+
+    public void browseFonts() {
+        if (isPermissionRequired()) {
+            requestPermission();
+        }
+        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+        chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+        chooseFile.setType("file/plain");
+        Intent intent = Intent.createChooser(chooseFile, "Choose Fonts");
+        startActivityForResult(intent, FONTS_REQUEST);
+    }
+
+    public static final int BACKUP_REQUEST = 125;
+    public static final int FONTS_REQUEST = 126;
+    public static final int PERMISSION_REQUEST = 127;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
-        if (requestCode == 125) {
+        if (requestCode == BACKUP_REQUEST) {
             Uri uri = data.getData();
             ContentResolver cr = getContentResolver();
             try {
@@ -418,18 +431,30 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+        } else if (requestCode == FONTS_REQUEST) {
+            try {
+                String path = uriToPath(data.getData());
+                Log.i(TAG, "onActivityResult: " + path);
+                DbUtils.setFonts(path);
+                mTypeface = Typeface.createFromFile(path);
+                loadApps();
+            } catch (Exception ignore) {
+                ignore.printStackTrace();
+            }
         }
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @TargetApi(21)
     public static List<Apps> loadAppsMINLolipop(Activity activity, boolean hideHidden) {
         List<Apps> appsList = new ArrayList<>();
         PackageManager manager = activity.getPackageManager();
 
         UserUtils userUtils = new UserUtils(activity);
 
-        UserManager userManager = (UserManager) activity.getSystemService(Context.USER_SERVICE);
+        UserManager userManager = null;
+
+        userManager = (UserManager) activity.getSystemService(Context.USER_SERVICE);
+
         LauncherApps launcher = (LauncherApps) activity.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         for (UserHandle profile : userManager.getUserProfiles()) {
 
@@ -449,7 +474,18 @@ public class LauncherActivity extends AppCompatActivity implements View.OnClickL
             }
         }
         return appsList;
+
     }
 
+
+    public String uriToPath(Uri uri) {
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String path = cursor.getString(column_index);
+        cursor.close();
+        return path;
+    }
 }
 

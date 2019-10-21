@@ -3,13 +3,14 @@ package org.apmem.tools.layouts;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
 
-import androidx.recyclerview.widget.RecyclerView;
+
 
 import org.apmem.tools.layouts.logic.CommonLogic;
 import org.apmem.tools.layouts.logic.ConfigDefinition;

@@ -18,19 +18,18 @@
 
 package io.github.subhamtyagi.lastlauncher.dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.app.AppCompatDialog;
-
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
-public class ThemeSelector extends AppCompatDialog implements View.OnClickListener {
+public class ThemeSelector extends Dialog implements View.OnClickListener {
 
     private LauncherActivity context;
 

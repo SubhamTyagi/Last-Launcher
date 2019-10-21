@@ -18,6 +18,7 @@
 
 package io.github.subhamtyagi.lastlauncher.dialogs;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -25,14 +26,12 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatDialog;
-
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 
-public class GlobalSettings extends AppCompatDialog implements View.OnClickListener {
+public class GlobalSettings extends Dialog implements View.OnClickListener {
 
 
     private LauncherActivity launcherActivity;
@@ -150,7 +149,14 @@ public class GlobalSettings extends AppCompatDialog implements View.OnClickListe
     }
 
     private void setFonts() {
-        Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
+        if (launcherActivity.isPermissionRequired())
+            launcherActivity.requestPermission();
+        else {
+            launcherActivity.browseFonts();
+            cancel();
+        }
+
+
     }
 
 }

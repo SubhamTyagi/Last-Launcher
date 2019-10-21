@@ -18,15 +18,15 @@
 
 package io.github.subhamtyagi.lastlauncher.util;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.os.Process;
 import android.os.UserHandle;
 import android.os.UserManager;
 
-import androidx.annotation.RequiresApi;
 
-@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+@TargetApi(21)
 public class UserUtils {
     private UserManager userManager;
 
