@@ -25,7 +25,7 @@ I fed-up by all Android Launcher that are available on F-DROID and Play store(al
 * [ ] App Layout improvements.
 * [ ] Backup store/restore, Default setting in one click.
 * [ ] Background color scheme.
-* [ ] Custom Fonts.
+* [x] Custom Fonts.
 * [ ] Simple swipe gestures.
 * [ ] Color slider improvement.
 * [ ] [Primary app icon like color support](https://github.com/SubhamTyagi/Last-Launcher/issues/2)
