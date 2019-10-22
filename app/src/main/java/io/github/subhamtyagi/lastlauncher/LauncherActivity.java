@@ -42,7 +42,7 @@ import android.os.UserHandle;
 import android.os.UserManager;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.util.SparseArray;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -127,8 +127,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
-            
-            
+
+
             String activity = resolveInfo.activityInfo.name + "&" + packageName;
 
             DbUtils.putAppOriginalName(activity, resolveInfo.loadLabel(pm).toString());
@@ -218,7 +218,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void showPopup(String activityName, TextView view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
+        Context context;
+        if (DbUtils.getTheme() == R.style.Wallpaper)
+            context = new ContextThemeWrapper(this, R.style.AppTheme);
+        else
+            context = new ContextThemeWrapper(this, DbUtils.getTheme());
+
+        PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
         if (DbUtils.isAppFreezed(activityName)) {
             popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze);
@@ -295,13 +301,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         refreshApps(activityName);
     }
 
-    //TODO: break
+
     private void showAppInfo(String activityName) {
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + activityName.split("&")[1]));
         startActivity(intent);
     }
-    //TODO: break
+
     private void uninstallApp(String activityName) {
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
         intent.setData(Uri.parse("package:" + activityName.split("&")[1]));
