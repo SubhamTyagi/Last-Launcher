@@ -74,16 +74,13 @@ import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
 public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
 
-    public static final int BACKUP_REQUEST = 125;
-    public static final int FONTS_REQUEST = 126;
-    public static final int PERMISSION_REQUEST = 127;
-
+    private static final int BACKUP_REQUEST = 125;
+    private static final int FONTS_REQUEST = 126;
+    private static final int PERMISSION_REQUEST = 127;
     private final String TAG = "LauncherActivity";
-
 
     private ArrayList<Apps> appsList;
     private Typeface mTypeface;
-
     private FlowLayout homeLayout;
 
     @Override
@@ -156,6 +153,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         sortApps();
     }
 
+    //TODO: others
     private void sortApps() {
         homeLayout.removeAllViews();
         Collections.sort(appsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
@@ -178,7 +176,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-    void refreshApps(String activityName) {
+    private void refreshApps(String activityName) {
         for (Apps apps : appsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
                 appsList.remove(apps);
@@ -243,7 +241,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     renameApp(activityName, view.getText().toString());
                     break;
                 case R.id.menu_freeze_size: {
-                    boolean b =DbUtils.isAppFreezed(activityName);
+                    boolean b = DbUtils.isAppFreezed(activityName);
                     DbUtils.freezeAppSize(activityName, !b);
                 }
                 break;
@@ -274,8 +272,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         //refreshApps(activityName);
     }
 
-
-
     private void renameApp(String activityName, String appName) {
         Dialog dialog = new RenameInput(this, activityName, appName, this);
         Window window = dialog.getWindow();
@@ -302,7 +298,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         DbUtils.removeSize(activityName);
         refreshApps(activityName);
     }
-
 
     private void showAppInfo(String activityName) {
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -355,7 +350,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 } else
                     startActivity(getPackageManager().getLaunchIntentForPackage(strings[1]));
 
-                if (!DbUtils.isSizeFreezed()&&!DbUtils.isAppFreezed(activity)) {
+                if (!DbUtils.isSizeFreezed() && !DbUtils.isAppFreezed(activity)) {
                     refreshAppSize(activity);
                 }
             } catch (Exception ignore) {
@@ -364,8 +359,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-
-    //Launcher hack
     @Override
     public void onBackPressed() {
     }
@@ -383,7 +376,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         }, intentFilter);
     }
-
 
     public void requestPermission() {
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -420,7 +412,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         startActivityForResult(intent, BACKUP_REQUEST);
     }
 
-
     public void browseFonts() {
         if (isPermissionRequired()) {
             requestPermission();
@@ -431,7 +422,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         Intent intent = Intent.createChooser(chooseFile, "Choose Fonts");
         startActivityForResult(intent, FONTS_REQUEST);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
