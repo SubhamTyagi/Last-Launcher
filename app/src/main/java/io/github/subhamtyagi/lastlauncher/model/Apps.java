@@ -25,7 +25,7 @@ import android.widget.TextView;
 public class Apps {
 
 
-    final private CharSequence packageName;
+    //final private CharSequence packageName;
 
     final private CharSequence activity;
     private CharSequence appName;
@@ -59,7 +59,6 @@ public class Apps {
     }
 
     /**
-     * @param packageName apps package name
      * @param activity    executable activity path
      * @param appName     App name
      * @param tv          a text view corresponding to App
@@ -68,9 +67,9 @@ public class Apps {
      * @param hide        boolean to tell 'is app hide
      * @param freezeSize  is app size to freeze
      */
-    public Apps(String packageName, String activity, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
+    public Apps(String activity, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
 
-        this.packageName = packageName;
+       // this.packageName = packageName;
         this.activity=activity;
         this.appName = appName;
         this.textView = tv;
@@ -88,9 +87,12 @@ public class Apps {
         textView.setVisibility(hide ? View.GONE : View.VISIBLE);
     }
 
-    public CharSequence getPackageName() {
-        return packageName;
+    public CharSequence getActivityName() {
+        return activity;
     }
+
+
+
 
     public CharSequence getAppName() {
         return appName;

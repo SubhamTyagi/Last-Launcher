@@ -42,6 +42,7 @@ import android.os.UserHandle;
 import android.os.UserManager;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -72,12 +73,17 @@ import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
 public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
 
+    public static final int BACKUP_REQUEST = 125;
+    public static final int FONTS_REQUEST = 126;
+    public static final int PERMISSION_REQUEST = 127;
 
-    private final String TAG = "LaucnherActivity";
+    private final String TAG = "LauncherActivity";
+
+
     private ArrayList<Apps> appsList;
-    Typeface mTypeface;
+    private Typeface mTypeface;
 
-    FlowLayout homeLayout;
+    private FlowLayout homeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,35 +116,40 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
         int appsCount = activities.size();
+
         if (appsList != null)
             appsList.clear();
         appsList = new ArrayList<>(appsCount);
+
         String packageName, appName;
         int color, textSize;
         boolean hide;
 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
+            
+            
             String activity = resolveInfo.activityInfo.name + "&" + packageName;
 
-            DbUtils.putAppOriginalName(packageName, resolveInfo.loadLabel(pm).toString());
-            appName = DbUtils.getAppName(packageName, resolveInfo.loadLabel(pm).toString());
-            hide = DbUtils.isAppHidden(packageName);
+            DbUtils.putAppOriginalName(activity, resolveInfo.loadLabel(pm).toString());
+            appName = DbUtils.getAppName(activity, resolveInfo.loadLabel(pm).toString());
+            hide = DbUtils.isAppHidden(activity);
 
             if (hide) {
                 //Temp hide
                 continue;
             }
 
-            textSize = DbUtils.getAppSize(packageName);
-            color = DbUtils.getAppColor(packageName);
-            boolean freeze = DbUtils.isAppFreezed(packageName);
+            textSize = DbUtils.getAppSize(activity);
+            color = DbUtils.getAppColor(activity);
+            boolean freeze = DbUtils.isAppFreezed(activity);
 
             if (DbUtils.isRandomColor() && color == -1) {
                 Random rnd = new Random();
                 color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             }
-            appsList.add(new Apps(packageName, activity, appName, getCustomView(), color, textSize, hide, freeze));
+
+            appsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
         }
 
         sortApps();
@@ -155,31 +166,31 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-    private void refreshAppSize(String packageName) {
-        int size = DbUtils.getAppSize(packageName) + 2;
-        DbUtils.putAppSize(packageName, size);
+    private void refreshAppSize(String activityName) {
+        int size = DbUtils.getAppSize(activityName) + 2;
+        DbUtils.putAppSize(activityName, size);
         for (Apps apps : appsList) {
-            if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
+            if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
                 apps.setSize(size);
                 break;
             }
         }
     }
 
-    void refreshApps(String packageName) {
+    void refreshApps(String activityName) {
         for (Apps apps : appsList) {
-            if (apps.getPackageName().toString().equalsIgnoreCase(packageName)) {
+            if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
                 appsList.remove(apps);
                 //now add new App
-                int size = DbUtils.getAppSize(packageName);
-                int color = DbUtils.getAppColor(packageName);
-                String appOriginalName = DbUtils.getAppOriginalName(packageName, "");
-                String appName = DbUtils.getAppName(packageName, appOriginalName);
+                int size = DbUtils.getAppSize(activityName);
+                int color = DbUtils.getAppColor(activityName);
+                String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
+                String appName = DbUtils.getAppName(activityName, appOriginalName);
 
                 boolean hide = apps.isHide();
                 boolean freezeSize = apps.isFreezeSize();
 
-                Apps newApp = new Apps(packageName, null, appName, getCustomView(), color, size, hide, freezeSize);
+                Apps newApp = new Apps(activityName, appName, getCustomView(), color, size, hide, freezeSize);
                 appsList.add(newApp);
                 sortApps();
                 break;
@@ -206,38 +217,38 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         return true;
     }
 
-    private void showPopup(String packageName, TextView view) {
+    private void showPopup(String activityName, TextView view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
-        if (DbUtils.isAppFreezed(packageName)) {
+        if (DbUtils.isAppFreezed(activityName)) {
             popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze);
         }
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.menu_color:
-                    changeColor(packageName, view);
+                    changeColor(activityName, view);
                     break;
                 case R.id.menu_size:
-                    changeSize(packageName, view);
+                    changeSize(activityName, view);
                     break;
                 case R.id.menu_rename:
-                    renameApp(packageName, view.getText().toString());
+                    renameApp(activityName, view.getText().toString());
                     break;
                 case R.id.menu_freeze_size: {
-                    freezeSize(packageName);
+                    freezeSize(activityName);
                 }
                 break;
                 case R.id.menu_hide:
-                    hideApp(packageName, view);
+                    hideApp(activityName, view);
                     break;
                 case R.id.menu_uninstall:
-                    uninstallApp(packageName);
+                    uninstallApp(activityName);
                     break;
                 case R.id.menu_app_info:
-                    showAppInfo(packageName);
+                    showAppInfo(activityName);
                     break;
                 case R.id.menu_reset_to_default:
-                    resetApp(packageName);
+                    resetApp(activityName);
 
                 default:
                     return true;
@@ -247,18 +258,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         popupMenu.show();
     }
 
-    private void hideApp(String packageName, TextView view) {
-        //DbUtils.hideApp(packageName, true);
+    private void hideApp(String activityName, TextView view) {
+        //DbUtils.hideApp(activityName, true);
         view.setVisibility(View.GONE);
-        //refreshApps(packageName);
+        //refreshApps(activityName);
     }
 
-    private void freezeSize(String packageName) {
-        DbUtils.freezeAppSize(packageName, true);
+    private void freezeSize(String activityName) {
+        DbUtils.freezeAppSize(activityName, true);
     }
 
-    private void renameApp(String packageName, String appName) {
-        Dialog dialog = new RenameInput(this, packageName, appName, this);
+    private void renameApp(String activityName, String appName) {
+        Dialog dialog = new RenameInput(this, activityName, appName, this);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
@@ -266,9 +277,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
-    public void onAppRenamed(String packageName, String appNewName) {
+    public void onAppRenamed(String activityName, String appNewName) {
         for (Apps app : appsList) {
-            if (app.getPackageName().toString().equalsIgnoreCase(packageName)) {
+            if (app.getActivityName().toString().equalsIgnoreCase(activityName)) {
                 app.setAppName(appNewName);
                 sortApps();
                 break;
@@ -277,41 +288,42 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
-    private void resetApp(String packageName) {
-        DbUtils.removeAppName(packageName);
-        DbUtils.removeColor(packageName);
-        DbUtils.removeSize(packageName);
-        refreshApps(packageName);
+    private void resetApp(String activityName) {
+        DbUtils.removeAppName(activityName);
+        DbUtils.removeColor(activityName);
+        DbUtils.removeSize(activityName);
+        refreshApps(activityName);
     }
 
-    private void showAppInfo(String packageName) {
+    //TODO: break
+    private void showAppInfo(String activityName) {
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + packageName));
+        intent.setData(Uri.parse("package:" + activityName.split("&")[1]));
         startActivity(intent);
     }
-
-    private void uninstallApp(String packageName) {
+    //TODO: break
+    private void uninstallApp(String activityName) {
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
-        intent.setData(Uri.parse("package:" + packageName));
+        intent.setData(Uri.parse("package:" + activityName.split("&")[1]));
         intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
         startActivityForResult(intent, 97);
     }
 
-    private void changeColor(String packageName, TextView view) {
-        int color = DbUtils.getAppColor(packageName);
+    private void changeColor(String activityName, TextView view) {
+        int color = DbUtils.getAppColor(activityName);
         if (color == -1) {
             color = view.getCurrentTextColor();
         }
-        Dialog dialog = new ChooseColor(this, packageName, color, view);
+        Dialog dialog = new ChooseColor(this, activityName, color, view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
     }
 
-    private void changeSize(String packageName, TextView view) {
-        int size = DbUtils.getAppSize(packageName);
-        Dialog dialog = new ChooseSize(this, packageName, size, view);
+    private void changeSize(String activityName, TextView view) {
+        int size = DbUtils.getAppSize(activityName);
+        Dialog dialog = new ChooseSize(this, activityName, size, view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
@@ -412,9 +424,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         startActivityForResult(intent, FONTS_REQUEST);
     }
 
-    public static final int BACKUP_REQUEST = 125;
-    public static final int FONTS_REQUEST = 126;
-    public static final int PERMISSION_REQUEST = 127;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -433,13 +442,19 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         } else if (requestCode == FONTS_REQUEST) {
             try {
-                String path = uriToPath(data.getData());
+                String[] proj = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(data.getData(), proj, null, null, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                String path = cursor.getString(column_index);
+                cursor.close();
+
                 Log.i(TAG, "onActivityResult: " + path);
                 DbUtils.setFonts(path);
                 mTypeface = Typeface.createFromFile(path);
                 loadApps();
-            } catch (Exception ignore) {
-                ignore.printStackTrace();
+            } catch (Exception i) {
+                i.printStackTrace();
             }
         }
     }
@@ -461,12 +476,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             for (LauncherActivityInfo activityInfo : launcher.getActivityList(null, profile)) {
 
                 String componentName = activityInfo.getComponentName().flattenToString();
-                String userPackageName;
+                String useractivityName;
                 long user = userManager.getSerialNumberForUser(profile);
                 if (user != userUtils.getCurrentSerial()) {
-                    userPackageName = user + "-" + componentName;
+                    useractivityName = user + "-" + componentName;
                 } else {
-                    userPackageName = componentName;
+                    useractivityName = componentName;
                 }
 
                 String appName = activityInfo.getLabel().toString();
@@ -477,15 +492,5 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
-
-    public String uriToPath(Uri uri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String path = cursor.getString(column_index);
-        cursor.close();
-        return path;
-    }
 }
 

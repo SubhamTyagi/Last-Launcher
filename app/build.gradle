@@ -25,17 +25,8 @@ android {
             jniDebuggable false
             minifyEnabled true
             shrinkResources true
-            //zipAlignEnabled true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-
-            applicationVariants.all { variant ->
-                variant.outputs.all {
-                    def date = new Date();
-                    def formattedDate = date.format('yyyyMMddHHmmss')
-                    outputFileName = "Last-Launcher-${variant.name}-${variant.versionName}-${formattedDate}.apk"
-                }
-            }
         }
     }
 
@@ -47,9 +38,18 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def date = new Date()
+            def formattedDate = date.format('yyyyMMddHHmmss')
+            outputFileName = "Last-Launcher-${variant.name}-${variant.versionName}-${formattedDate}.apk"
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':flowlayout:layouts')
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
 }

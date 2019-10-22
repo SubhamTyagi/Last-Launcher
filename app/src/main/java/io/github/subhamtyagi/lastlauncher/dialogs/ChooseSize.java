@@ -45,10 +45,9 @@ public class ChooseSize extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.dialog_choose_size);
-
         SeekBar sizeSeekBar = findViewById(R.id.sb_size);
+        
         sizeSeekBar.setProgress(appSize);
         sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int size = 0;
