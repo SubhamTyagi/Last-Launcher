@@ -24,7 +24,6 @@ import android.widget.TextView;
 
 public class Apps {
 
-
     //final private CharSequence packageName;
 
     final private CharSequence activity;
@@ -43,10 +42,6 @@ public class Apps {
 
     public boolean isFreezeSize() {
         return freezeSize;
-    }
-
-    public void setFreezeSize(boolean freezeSize) {
-        this.freezeSize = freezeSize;
     }
 
     public boolean isHide() {
@@ -91,9 +86,6 @@ public class Apps {
         return activity;
     }
 
-
-
-
     public CharSequence getAppName() {
         return appName;
     }
@@ -114,10 +106,6 @@ public class Apps {
     public void setAppName(CharSequence appName) {
         this.appName = appName;
         textView.setText(appName);
-    }
-
-    public int getSize() {
-        return size;
     }
 
     public void setSize(int size) {

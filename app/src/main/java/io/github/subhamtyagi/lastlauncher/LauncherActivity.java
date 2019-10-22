@@ -114,7 +114,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
         int appsCount = activities.size();
-
         if (appsList != null)
             appsList.clear();
         appsList = new ArrayList<>(appsCount);
@@ -125,7 +124,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
-
 
             String activity = resolveInfo.activityInfo.name + "&" + packageName;
 
@@ -146,7 +144,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 Random rnd = new Random();
                 color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             }
-
             appsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
         }
 
