@@ -90,6 +90,8 @@ public class DbUtils {
 
     }
 
+
+
     public static boolean isAppHidden(String packageName) {
         packageName = packageName.replaceAll("\\.", "_") + "_hide";
         return SpUtils.getInstance().getBoolean(packageName, false);
@@ -114,34 +116,48 @@ public class DbUtils {
 
 
     public static void setTheme(int id){
-        SpUtils.getInstance().putInt("launcher_theme",id);
+        SpUtils.getInstance().putInt(LAUNCHER_THEME,id);
     }
 
     public static int getTheme(){
-       return SpUtils.getInstance().getInt("launcher_theme", R.style.AppTheme);
+       return SpUtils.getInstance().getInt(LAUNCHER_THEME, R.style.AppTheme);
     }
 
     public static void setFonts(String path){
-        SpUtils.getInstance().putString("launcher_fonts",path);
+        SpUtils.getInstance().putString(LAUNCHER_FONTS,path);
     }
 
     public static String getFonts(){
-        return SpUtils.getInstance().getString("launcher_fonts",null);
+        return SpUtils.getInstance().getString(LAUNCHER_FONTS,null);
     }
 
     public static boolean isPermissionRequired(){
-        return SpUtils.getInstance().getBoolean("read_write_permission",true);
+        return SpUtils.getInstance().getBoolean(READ_WRITE_PERMISSION,true);
     }
 
 
     public static void permissionRequired(boolean b){
-         SpUtils.getInstance().putBoolean("read_write_permission",b);
+         SpUtils.getInstance().putBoolean(READ_WRITE_PERMISSION,b);
     }
 
     public static boolean isRandomColor() {
-        return SpUtils.getInstance().getBoolean("random_color_for_apps",false);
+        return SpUtils.getInstance().getBoolean(RANDOM_COLOR_FOR_APPS,false);
     }
     public static void randomColor(boolean b) {
-        SpUtils.getInstance().putBoolean("random_color_for_apps",b);
+        SpUtils.getInstance().putBoolean(RANDOM_COLOR_FOR_APPS,b);
     }
+    public static void freezeSize(boolean b) {
+        SpUtils.getInstance().putBoolean(LAUNCHER_FREEZE_SIZE,b);
+    }
+
+    public static boolean isSizeFreezed() {
+        return SpUtils.getInstance().getBoolean(LAUNCHER_FREEZE_SIZE, false);
+
+    }
+
+    private static final String  RANDOM_COLOR_FOR_APPS="random_color_for_apps";
+    private static final String READ_WRITE_PERMISSION="read_write_permission";
+    private static final String LAUNCHER_FONTS="launcher_fonts";
+    private static final String LAUNCHER_THEME="launcher_theme";
+    private static final String LAUNCHER_FREEZE_SIZE="launcher_freeze_size";
 }

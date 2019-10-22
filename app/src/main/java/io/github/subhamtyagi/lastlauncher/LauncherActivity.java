@@ -49,6 +49,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apmem.tools.layouts.FlowLayout;
 
@@ -226,8 +227,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
+
         if (DbUtils.isAppFreezed(activityName)) {
-            popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze);
+            popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze_size);
         }
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
@@ -241,7 +243,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     renameApp(activityName, view.getText().toString());
                     break;
                 case R.id.menu_freeze_size: {
-                    freezeSize(activityName);
+                    boolean b =DbUtils.isAppFreezed(activityName);
+                    DbUtils.freezeAppSize(activityName, !b);
                 }
                 break;
                 case R.id.menu_hide:
@@ -265,14 +268,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void hideApp(String activityName, TextView view) {
+        Toast.makeText(this, "Current Hide is not persistent\n After restart App will appeared", Toast.LENGTH_LONG).show();
         //DbUtils.hideApp(activityName, true);
         view.setVisibility(View.GONE);
         //refreshApps(activityName);
     }
 
-    private void freezeSize(String activityName) {
-        DbUtils.freezeAppSize(activityName, true);
-    }
+
 
     private void renameApp(String activityName, String appName) {
         Dialog dialog = new RenameInput(this, activityName, appName, this);
@@ -353,7 +355,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 } else
                     startActivity(getPackageManager().getLaunchIntentForPackage(strings[1]));
 
-                if (!DbUtils.isAppFreezed(activity)) {
+                if (!DbUtils.isSizeFreezed()&&!DbUtils.isAppFreezed(activity)) {
                     refreshAppSize(activity);
                 }
             } catch (Exception ignore) {

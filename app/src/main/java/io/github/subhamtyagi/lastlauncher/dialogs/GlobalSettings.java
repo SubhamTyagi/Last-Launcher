@@ -35,7 +35,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
 
 
     private LauncherActivity launcherActivity;
-    private TextView randomColors;
+    TextView freezeSize;
 
     public GlobalSettings(Context context, LauncherActivity launcherActivity) {
         super(context);
@@ -50,11 +50,15 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
 
         findViewById(R.id.settings_fonts).setOnClickListener(this);
         findViewById(R.id.settings_themes).setOnClickListener(this);
+
+        freezeSize = findViewById(R.id.settings_freeze_size);
+        freezeSize.setOnClickListener(this::onClick);
+
         findViewById(R.id.settings_reset_to_defaults).setOnClickListener(this);
         findViewById(R.id.settings_backup).setOnClickListener(this);
         findViewById(R.id.settings_restore).setOnClickListener(this);
         //findViewById(R.id.settings_primary_color).setOnClickListener(this);
-        randomColors = findViewById(R.id.settings_setup_random_colors);
+        TextView randomColors = findViewById(R.id.settings_setup_random_colors);
         randomColors.setOnClickListener(this);
         findViewById(R.id.settings_freezed_apps).setOnClickListener(this);
         findViewById(R.id.settings_hidden_apps).setOnClickListener(this);
@@ -63,6 +67,11 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
             randomColors.setText(R.string.fixed_colors);
         } else
             randomColors.setText(R.string.random_colors);
+
+        if (DbUtils.isSizeFreezed()) {
+            freezeSize.setText(R.string.unfreeze_app_size);
+        }else
+            freezeSize.setText(R.string.freeze_apps_size);
 
     }
 
@@ -74,6 +83,9 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
                 break;
             case R.id.settings_themes:
                 bgColor();
+                break;
+            case R.id.settings_freeze_size:
+                freezeAppsSize();
                 break;
             case R.id.settings_backup:
                 backup();
@@ -96,6 +108,15 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
             case R.id.settings_freezed_apps:
                 freezedApps();
         }
+    }
+
+    private void freezeAppsSize() {
+        boolean b=DbUtils.isSizeFreezed();
+        DbUtils.freezeSize(!b);
+        if (!b) {
+            freezeSize.setText(R.string.unfreeze_app_size);
+        }else
+            freezeSize.setText(R.string.freeze_apps_size);
     }
 
     private void freezedApps() {

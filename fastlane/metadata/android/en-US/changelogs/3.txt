@@ -1,12 +1,11 @@
 *Preview release 3*
+-To access Launcher settings long click on empty area
 
 -Freeze/unfreeze app size
 -Hide apps(temporary)
-
--To access Global settings long click on empty area
-
+-Custom Fonts
 -Multiple Themes
--Reset to default 
+-Reset to default setings
 -Backup and restore settings
 -Random colors
 

@@ -27,18 +27,20 @@
     <string name="set_to_primary_colors">Set Primary Colors</string>
     <string name="backup">Backup</string>
 
-    <string name="reset_to_default_settings">Reset to default</string>
+    <string name="reset_to_default_settings">Reset to default Settings</string>
     <string name="app_info">App Info</string>
     <string name="random_colors">Random Colors</string>
     <string name="reset_to_default">Reset</string>
     <string name="freeze_size">Freeze Size</string>
     <string name="hide">Hide</string>
-    <string name="unfreeze">Unfreeze</string>
+    <string name="unfreeze_size">Unfreeze size</string>
     <string name="hidden_apps">Hidden Apps</string>
     <string name="freezed_apps">Freezed Apps</string>
     <string name="example_of_text">Example of text</string>
     <string name="restore">Restore</string>
     <string name="fixed_colors">Fixed Colors</string>
+    <string name="freeze_apps_size">Freeze Apps Size</string>
+    <string name="unfreeze_app_size">Unfreeze Apps Size</string>
 
 
 </resources>
