@@ -67,6 +67,7 @@ import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 import io.github.subhamtyagi.lastlauncher.util.UserUtils;
+import io.github.subhamtyagi.lastlauncher.util.Utils;
 
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
@@ -77,6 +78,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private static final int BACKUP_REQUEST = 125;
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
+
+    private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS=20;
+    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS=30;
+
     private final String TAG = "LauncherActivity";
 
     private ArrayList<Apps> appsList;
@@ -118,15 +123,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             appsList.clear();
         appsList = new ArrayList<>(appsCount);
 
+
+        List<String> oftenApps= Utils.getOftenAppsList();
+
         String packageName, appName;
         int color, textSize;
         boolean hide;
 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
-
             String activity = resolveInfo.activityInfo.name + "&" + packageName;
-
             DbUtils.putAppOriginalName(activity, resolveInfo.loadLabel(pm).toString());
             appName = DbUtils.getAppName(activity, resolveInfo.loadLabel(pm).toString());
             hide = DbUtils.isAppHidden(activity);
@@ -137,6 +143,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
 
             textSize = DbUtils.getAppSize(activity);
+
+            if (textSize==DbUtils.NULL_TEXT_SIZE){
+                if (oftenApps.contains(packageName)){
+                    textSize=DEFAUTL_TEXT_SIZE_OFTEN_APPS;
+                }else textSize=DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+            }
             color = DbUtils.getAppColor(activity);
             boolean freeze = DbUtils.isAppFreezed(activity);
 
@@ -486,6 +498,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         return appsList;
 
     }
+
+
+
 
 }
 

@@ -22,7 +22,7 @@ import io.github.subhamtyagi.lastlauncher.R;
 
 public class DbUtils {
 
-    private static final int TEXT_SIZE = 30;
+    public static final int NULL_TEXT_SIZE = -1;
     private static int TEXT_COLOR=-1;
 
 
@@ -52,7 +52,6 @@ public class DbUtils {
         SpUtils.getInstance().putInt(packageName, color);
     }
 
-    //-----------------------
     public static String getAppOriginalName(String packageName, String defaultValue) {
         packageName = packageName.replaceAll("\\.", "_") + "_app_original_name";
         return SpUtils.getInstance().getString(packageName, defaultValue);
@@ -65,7 +64,7 @@ public class DbUtils {
 
     public static int getAppSize(String packageName) {
         packageName = packageName.replaceAll("\\.", "_") + "_size";
-        return SpUtils.getInstance().getInt(packageName, TEXT_SIZE);
+        return SpUtils.getInstance().getInt(packageName, NULL_TEXT_SIZE);
     }
 
     public static int getAppColor(String packageName) {
