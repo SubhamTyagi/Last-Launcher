@@ -79,8 +79,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
 
-    private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS=20;
-    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS=30;
+    private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
+    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 30;
 
     private final String TAG = "LauncherActivity";
 
@@ -90,7 +90,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         SpUtils.getInstance().init(this);
         int theme = DbUtils.getTheme();
         setTheme(theme);
@@ -98,19 +97,19 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         setContentView(R.layout.activity_launcher);
 
         String fontsPath = DbUtils.getFonts();
+
         if (fontsPath == null || DbUtils.isFirstStart())
-            mTypeface = Typeface.createFromAsset(getAssets(), "fonts/Raleway.ttf");
+            mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
         else
-            mTypeface = Typeface.createFromFile(fontsPath);
+           mTypeface = Typeface.createFromFile(fontsPath);
 
         homeLayout = findViewById(R.id.home_layout);
         homeLayout.setOnLongClickListener(this);
 
-
         loadApps();
         registerForReceiver();
         SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
-
+        System.gc();
     }
 
     private void loadApps() {
@@ -124,7 +123,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         appsList = new ArrayList<>(appsCount);
 
 
-        List<String> oftenApps= Utils.getOftenAppsList();
+        List<String> oftenApps = Utils.getOftenAppsList();
 
         String packageName, appName;
         int color, textSize;
@@ -144,10 +143,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
             textSize = DbUtils.getAppSize(activity);
 
-            if (textSize==DbUtils.NULL_TEXT_SIZE){
-                if (oftenApps.contains(packageName)){
-                    textSize=DEFAUTL_TEXT_SIZE_OFTEN_APPS;
-                }else textSize=DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+            if (textSize == DbUtils.NULL_TEXT_SIZE) {
+                if (oftenApps.contains(packageName))
+                    textSize = DEFAUTL_TEXT_SIZE_OFTEN_APPS;
+                else textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
             }
             color = DbUtils.getAppColor(activity);
             boolean freeze = DbUtils.isAppFreezed(activity);
@@ -370,6 +369,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     @Override
     public void onBackPressed() {
+        System.gc();
     }
 
     private void registerForReceiver() {
@@ -498,8 +498,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         return appsList;
 
     }
-
-
 
 
 }
