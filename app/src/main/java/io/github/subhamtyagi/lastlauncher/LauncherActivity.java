@@ -49,7 +49,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apmem.tools.layouts.FlowLayout;
 
@@ -79,8 +78,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
 
-    private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
-    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 30;
+    private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 24;
+    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
 
     private final String TAG = "LauncherActivity";
 
@@ -95,13 +94,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-
         String fontsPath = DbUtils.getFonts();
-
         if (fontsPath == null || DbUtils.isFirstStart())
             mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
         else
-           mTypeface = Typeface.createFromFile(fontsPath);
+            mTypeface = Typeface.createFromFile(fontsPath);
 
         homeLayout = findViewById(R.id.home_layout);
         homeLayout.setOnLongClickListener(this);
@@ -122,7 +119,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             appsList.clear();
         appsList = new ArrayList<>(appsCount);
 
-
         List<String> oftenApps = Utils.getOftenAppsList();
 
         String packageName, appName;
@@ -135,7 +131,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             DbUtils.putAppOriginalName(activity, resolveInfo.loadLabel(pm).toString());
             appName = DbUtils.getAppName(activity, resolveInfo.loadLabel(pm).toString());
             hide = DbUtils.isAppHidden(activity);
-
             if (hide) {
                 //Temp hide
                 continue;
@@ -190,6 +185,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 appsList.remove(apps);
                 //now add new App
                 int size = DbUtils.getAppSize(activityName);
+                if (size == DbUtils.NULL_TEXT_SIZE) {
+                    size = apps.getSize();
+                }
                 int color = DbUtils.getAppColor(activityName);
                 String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
                 String appName = DbUtils.getAppName(activityName, appOriginalName);
@@ -274,8 +272,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void hideApp(String activityName, TextView view) {
-        Toast.makeText(this, "Current Hide is not persistent\n After restart App will appeared", Toast.LENGTH_LONG).show();
-        //DbUtils.hideApp(activityName, true);
+        //Toast.makeText(this, "Current Hide is not fully implemented\n After hide app you will not access that app from this launcher", Toast.LENGTH_LONG).show();
+        DbUtils.hideApp(activityName, true);
         view.setVisibility(View.GONE);
         //refreshApps(activityName);
     }
@@ -292,7 +290,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     public void onAppRenamed(String activityName, String appNewName) {
         for (Apps app : appsList) {
             if (app.getActivityName().toString().equalsIgnoreCase(activityName)) {
-                app.setAppName(appNewName);
+                app.setAppName(appNewName.trim());
                 sortApps();
                 break;
             }
@@ -334,13 +332,19 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     private void changeSize(String activityName, TextView view) {
         int size = DbUtils.getAppSize(activityName);
+        if (size == DbUtils.NULL_TEXT_SIZE) {
+            for (Apps apps : appsList) {
+                if (apps.getActivityName().equals(activityName)) {
+                    size = apps.getSize();
+                }
+            }
+        }
         Dialog dialog = new ChooseSize(this, activityName, size, view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
     }
-
 
     @Override
     public void onClick(View view) {
@@ -369,7 +373,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     @Override
     public void onBackPressed() {
-        System.gc();
+
     }
 
     private void registerForReceiver() {

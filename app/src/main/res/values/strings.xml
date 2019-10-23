@@ -36,11 +36,19 @@
     <string name="unfreeze_size">Unfreeze size</string>
     <string name="hidden_apps">Hidden Apps</string>
     <string name="freezed_apps">Freezed Apps</string>
-    <string name="example_of_text">Example of text</string>
+
     <string name="restore">Restore</string>
     <string name="fixed_colors">Fixed Colors</string>
     <string name="freeze_apps_size">Freeze Apps Size</string>
     <string name="unfreeze_app_size">Unfreeze Apps Size</string>
+    <string name="default_theme">Default Theme</string>
+    <string name="background_wallpaper">Background Wallpaper</string>
+    <string name="white_on_black">White on Black</string>
+    <string name="black_on_white">Black on White</string>
+    <string name="white_on_grey">White on Grey</string>
+    <string name="black_on_grey">Black on Grey</string>
+    <string name="hacker_green">Hacker Green</string>
+    <string name="hacker_red">Hacker Red</string>
 
 
 </resources>

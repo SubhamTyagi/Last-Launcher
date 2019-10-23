@@ -53,6 +53,10 @@ public class Apps {
         textView.setVisibility(hide ? View.GONE : View.VISIBLE);
     }
 
+    public int getSize() {
+        return size;
+    }
+
     /**
      * @param activity    executable activity path
      * @param appName     App name

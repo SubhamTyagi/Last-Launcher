@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "io.github.subhamtyagi.lastlauncher"
         minSdkVersion 14
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode 3
         versionName "0.3"
         resConfigs "en"
@@ -45,6 +45,31 @@ android {
             def formattedDate = date.format('yyyyMMddHHmmss')
             outputFileName = "Last-Launcher-${variant.name}-${variant.versionName}-${formattedDate}.apk"
         }
+    }
+    packagingOptions {
+        exclude 'META-INF/android.arch.core_runtime.version'
+        exclude 'META-INF/android.arch.lifecycle_livedata-core.version'
+        exclude 'META-INF/android.arch.lifecycle_livedata.version'
+        exclude 'META-INF/android.arch.lifecycle_runtime.version'
+        exclude 'META-INF/android.arch.lifecycle_viewmodel.version'
+        exclude 'META-INF/androidx.asynclayoutinflater_asynclayoutinflater.version'
+        exclude 'META-INF/androidx.coordinatorlayout_coordinatorlayout.version'
+        exclude 'META-INF/androidx.core_core.version'
+        exclude 'META-INF/androidx.cursoradapter_cursoradapter.version'
+        exclude 'META-INF/androidx.customview_customview.version'
+        exclude 'META-INF/androidx.documentfile_documentfile.version'
+        exclude 'META-INF/androidx.drawerlayout_drawerlayout.version'
+        exclude 'META-INF/androidx.interpolator_interpolator.version'
+        exclude 'META-INF/androidx.legacy_legacy-support-core-ui.version'
+        exclude 'META-INF/androidx.legacy_legacy-support-core-utils.version'
+        exclude 'META-INF/androidx.loader_loader.version'
+        exclude 'META-INF/androidx.localbroadcastmanager_localbroadcastmanager.version'
+        exclude 'META-INF/androidx.print_print.version'
+        exclude 'META-INF/androidx.recyclerview_recyclerview.version'
+        exclude 'META-INF/androidx.slidingpanelayout_slidingpanelayout.version'
+        exclude 'META-INF/androidx.swiperefreshlayout_swiperefreshlayout.version'
+        exclude 'META-INF/androidx.versionedparcelable_versionedparcelable.version'
+        exclude 'META-INF/androidx.viewpager_viewpager.version'
     }
 }
 

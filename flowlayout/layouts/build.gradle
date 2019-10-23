@@ -1,22 +1,21 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
 
 
     defaultConfig {
         versionCode 1
         versionName "0.1"
         minSdkVersion 14
-        targetSdkVersion 29
+        targetSdkVersion 28
     }
     buildTypes {
         release {
             debuggable false
             jniDebuggable false
             minifyEnabled true
-
-            //zipAlignEnabled true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
