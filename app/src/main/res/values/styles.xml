@@ -35,19 +35,14 @@
     <style name="Wallpaper" parent="android:Theme.Wallpaper.NoTitleBar">
         <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-
         <item name="android:popupAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
-
         <item name="android:listPreferredItemHeightSmall">40dp</item>
         <item name="android:listPreferredItemPaddingLeft">5dp</item>
         <item name="android:listPreferredItemPaddingRight">5dp</item>
-
         <item name="android:textColor">#FFFFFFFF</item>
-
         <item name="android:popupBackground">#FF000000</item>
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
-
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 

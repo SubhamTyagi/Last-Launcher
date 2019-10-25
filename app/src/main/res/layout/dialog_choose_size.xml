@@ -16,8 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -27,8 +26,6 @@
         android:id="@+id/sb_size"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:background="@android:color/black"
         android:max="70" />
-
 
 </LinearLayout>

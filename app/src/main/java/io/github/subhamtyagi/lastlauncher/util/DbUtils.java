@@ -23,7 +23,7 @@ import io.github.subhamtyagi.lastlauncher.R;
 public class DbUtils {
 
     public static final int NULL_TEXT_SIZE = -1;
-    private static int TEXT_COLOR=-1;
+    public static int NULL_TEXT_COLOR =-1;
 
 
     public static boolean isFirstStart(){
@@ -69,7 +69,7 @@ public class DbUtils {
 
     public static int getAppColor(String packageName) {
         packageName = packageName.replaceAll("\\.", "_") + "_color";
-        return SpUtils.getInstance().getInt(packageName, TEXT_COLOR);
+        return SpUtils.getInstance().getInt(packageName, NULL_TEXT_COLOR);
     }
 
     public static void hideApp(String packageName, boolean value) {

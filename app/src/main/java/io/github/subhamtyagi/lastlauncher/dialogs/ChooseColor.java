@@ -45,6 +45,7 @@ public class ChooseColor extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_choose_color);
 
@@ -55,7 +56,7 @@ public class ChooseColor extends Dialog {
         colorSeekBar.setShowAlphaBar(true);
         colorSeekBar.setBarHeight(5);
 
-        if (appColor != -1)
+        if (appColor != -DbUtils.NULL_TEXT_COLOR)
             colorSeekBar.setColor(appColor);
 
         colorSeekBar.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {

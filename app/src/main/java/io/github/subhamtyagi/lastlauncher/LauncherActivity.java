@@ -81,11 +81,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 24;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
 
+    private BroadcastReceiver broadcastReceiver;
+
     private final String TAG = "LauncherActivity";
 
-    private ArrayList<Apps> appsList;
+    private ArrayList<Apps> mAppsList;
     private Typeface mTypeface;
-    private FlowLayout homeLayout;
+    private FlowLayout mHomeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +102,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         else
             mTypeface = Typeface.createFromFile(fontsPath);
 
-        homeLayout = findViewById(R.id.home_layout);
-        homeLayout.setOnLongClickListener(this);
+        mHomeLayout = findViewById(R.id.home_layout);
+        mHomeLayout.setOnLongClickListener(this);
 
         loadApps();
         registerForReceiver();
@@ -115,9 +117,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
         int appsCount = activities.size();
-        if (appsList != null)
-            appsList.clear();
-        appsList = new ArrayList<>(appsCount);
+        if (mAppsList != null)
+            mAppsList.clear();
+        mAppsList = new ArrayList<>(appsCount);
 
         List<String> oftenApps = Utils.getOftenAppsList();
 
@@ -131,6 +133,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             DbUtils.putAppOriginalName(activity, resolveInfo.loadLabel(pm).toString());
             appName = DbUtils.getAppName(activity, resolveInfo.loadLabel(pm).toString());
             hide = DbUtils.isAppHidden(activity);
+
             if (hide) {
                 //Temp hide
                 continue;
@@ -150,7 +153,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 Random rnd = new Random();
                 color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             }
-            appsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
+            mAppsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
         }
 
         sortApps();
@@ -158,20 +161,20 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     //TODO: others
     private void sortApps() {
-        homeLayout.removeAllViews();
-        Collections.sort(appsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
+        mHomeLayout.removeAllViews();
+        Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
                 a.getAppName().toString(),
                 b.getAppName().toString()
         ));
-        for (Apps apps : appsList) {
-            homeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        for (Apps apps : mAppsList) {
+            mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         }
     }
 
     private void refreshAppSize(String activityName) {
         int size = DbUtils.getAppSize(activityName) + 2;
         DbUtils.putAppSize(activityName, size);
-        for (Apps apps : appsList) {
+        for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
                 apps.setSize(size);
                 break;
@@ -180,9 +183,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void refreshApps(String activityName) {
-        for (Apps apps : appsList) {
+        for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
-                appsList.remove(apps);
+                mAppsList.remove(apps);
                 //now add new App
                 int size = DbUtils.getAppSize(activityName);
                 if (size == DbUtils.NULL_TEXT_SIZE) {
@@ -196,7 +199,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 boolean freezeSize = apps.isFreezeSize();
 
                 Apps newApp = new Apps(activityName, appName, getCustomView(), color, size, hide, freezeSize);
-                appsList.add(newApp);
+                mAppsList.add(newApp);
                 sortApps();
                 break;
             }
@@ -288,7 +291,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     public void onAppRenamed(String activityName, String appNewName) {
-        for (Apps app : appsList) {
+        for (Apps app : mAppsList) {
             if (app.getActivityName().toString().equalsIgnoreCase(activityName)) {
                 app.setAppName(appNewName.trim());
                 sortApps();
@@ -333,7 +336,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private void changeSize(String activityName, TextView view) {
         int size = DbUtils.getAppSize(activityName);
         if (size == DbUtils.NULL_TEXT_SIZE) {
-            for (Apps apps : appsList) {
+            for (Apps apps : mAppsList) {
                 if (apps.getActivityName().equals(activityName)) {
                     size = apps.getSize();
                 }
@@ -372,9 +375,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     @Override
-    public void onBackPressed() {
-
-    }
+    public void onBackPressed() { }
 
     private void registerForReceiver() {
         IntentFilter intentFilter = new IntentFilter();
@@ -382,12 +383,19 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         intentFilter.addAction(ACTION_PACKAGE_REMOVED);
         intentFilter.addAction(ACTION_PACKAGE_REPLACED);
         intentFilter.addDataScheme("package");
-        registerReceiver(new BroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 loadApps();
             }
-        }, intentFilter);
+        };
+        registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
     }
 
     public void requestPermission() {
@@ -502,7 +510,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         return appsList;
 
     }
-
 
 }
 
