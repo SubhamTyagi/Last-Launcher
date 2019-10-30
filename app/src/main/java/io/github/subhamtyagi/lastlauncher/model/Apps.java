@@ -24,26 +24,16 @@ import android.widget.TextView;
 
 public class Apps {
 
-    //final private CharSequence packageName;
-
     final private CharSequence activity;
     private CharSequence appName;
-
-    public void setTextView(TextView textView) {
-        this.textView = textView;
-    }
-
     private TextView textView;
     private int color;
     private int size;
-
     private boolean freezeSize;
     private boolean hide;
-
     public boolean isFreezeSize() {
         return freezeSize;
     }
-
     public boolean isHide() {
         return hide;
     }

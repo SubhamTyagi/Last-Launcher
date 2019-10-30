@@ -72,4 +72,8 @@ public class Utils {
         return Arrays.asList(list);
 
     }
+
+    public static String getPackageNameFromActivityName(String activityName){
+        return activityName.split("&")[1];
+    }
 }

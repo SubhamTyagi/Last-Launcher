@@ -78,8 +78,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
 
-    private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 24;
-    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
+    private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
+    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 32;
 
     private BroadcastReceiver broadcastReceiver;
 
@@ -140,16 +140,17 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
 
             textSize = DbUtils.getAppSize(activity);
-
             if (textSize == DbUtils.NULL_TEXT_SIZE) {
                 if (oftenApps.contains(packageName))
                     textSize = DEFAUTL_TEXT_SIZE_OFTEN_APPS;
                 else textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
             }
+
+
             color = DbUtils.getAppColor(activity);
             boolean freeze = DbUtils.isAppFreezed(activity);
 
-            if (DbUtils.isRandomColor() && color == -1) {
+            if (DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
                 Random rnd = new Random();
                 color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             }
@@ -159,7 +160,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         sortApps();
     }
 
-    //TODO: others
+    //TODO: others sorts
     private void sortApps() {
         mHomeLayout.removeAllViews();
         Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
@@ -172,11 +173,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void refreshAppSize(String activityName) {
-        int size = DbUtils.getAppSize(activityName) + 2;
-        DbUtils.putAppSize(activityName, size);
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
+                int size=apps.getSize()+2;
                 apps.setSize(size);
+                DbUtils.putAppSize(activityName,size);
                 break;
             }
         }
@@ -187,10 +188,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
                 mAppsList.remove(apps);
                 //now add new App
-                int size = DbUtils.getAppSize(activityName);
-                if (size == DbUtils.NULL_TEXT_SIZE) {
-                    size = apps.getSize();
-                }
+                int size = apps.getSize();
                 int color = DbUtils.getAppColor(activityName);
                 String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
                 String appName = DbUtils.getAppName(activityName, appOriginalName);
@@ -210,7 +208,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         TextView textView = new TextView(this);
         textView.setOnClickListener(this);
         textView.setOnLongClickListener(this);
-        textView.setPadding(10, -6, 0, -4);
+        textView.setPadding(10, 0, 4, 0);
         textView.setTypeface(mTypeface);
         return textView;
     }
@@ -375,7 +373,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     @Override
-    public void onBackPressed() { }
+    public void onBackPressed() {
+    }
 
     private void registerForReceiver() {
         IntentFilter intentFilter = new IntentFilter();
@@ -478,6 +477,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+
+    //not in use;
     @TargetApi(21)
     public static List<Apps> loadAppsMINLolipop(Activity activity, boolean hideHidden) {
         List<Apps> appsList = new ArrayList<>();
