@@ -208,7 +208,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         TextView textView = new TextView(this);
         textView.setOnClickListener(this);
         textView.setOnLongClickListener(this);
-        textView.setPadding(10, 0, 4, 0);
+        textView.setPadding(10, -6, 4, -2);
         textView.setTypeface(mTypeface);
         return textView;
     }
@@ -356,9 +356,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);
                 if (strings[0].contains(strings[1])) {
                     intent.setClassName(strings[1], strings[0]);
-                    //Log.d(TAG, "onClick: app name" + activity);
                     intent.setComponent(new ComponentName(strings[1], strings[0]));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                   // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                 } else
                     startActivity(getPackageManager().getLaunchIntentForPackage(strings[1]));
