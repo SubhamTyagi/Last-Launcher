@@ -1,0 +1,50 @@
+<resources>
+    <!--Navigation related strings-->
+    <array name="colors">
+    </array>
+
+    <string name="app_name">Last Launcher</string>
+
+    <!--Shared preference strings  -->
+    <string name="action_settings">Einstellungen</string>
+
+    <!--App information related strings-->
+    <string name="app_usage_permission_title">Optionale Nutzungsdaten rechte</string>
+    <!--app menu-->
+    <string name="app_usage_permission_message">Diese optionale Berechtigung ist nötig für veränderte Größen der App-Namen.\n
+ Willst mit der Berechtigsabfrage fortfahren?</string>
+    <string name="size_for_this_entry">Größe</string>
+    <string name="color_for_this_entry">Farbe</string>
+    <string name="rename">Umbenen</string>
+    <!--launcher menu-->
+    <string name="uninstall">Deinstallieren</string>
+    <string name="fonts">Schriftarten</string>
+    <string name="themes">Designs</string>
+    <string name="set_to_primary_colors">Hauptfarben setzen</string>
+    <string name="backup">Backup</string>
+
+    <string name="reset_to_default_settings">Auf Standarteinstellung zurücksetzen</string>
+    <string name="app_info">App-Info</string>
+    <string name="random_colors">Zufällige Farben</string>
+    <string name="reset_to_default">Zurücksetzen</string>
+    <string name="freeze_size">Größe einfrieren.</string>
+    <string name="hide">Verstecken</string>
+    <string name="unfreeze_size">Größe nicht mehr Einfrieren</string>
+    <string name="hidden_apps">Versteckte Apps</string>
+    <string name="freezed_apps">Eingefrorene Apps</string>
+
+    <string name="restore">Wiederhergestellen</string>
+    <string name="fixed_colors">Feste Farben</string>
+    <string name="freeze_apps_size">Appgrößen einfrieren</string>
+    <string name="unfreeze_app_size">Appgröße nicht mehr einfrieren</string>
+    <string name="default_theme">Standartdesign</string>
+    <string name="background_wallpaper">Hintergrundbild</string>
+    <string name="white_on_black">Weiß auf Schwarz</string>
+    <string name="black_on_white">Schwarz auf Weiß</string>
+    <string name="white_on_grey">Weiß auf Grau</string>
+    <string name="black_on_grey">Schwarz auf Grau</string>
+    <string name="hacker_green">Hackergrün</string>
+    <string name="hacker_red">Hacherrot</string>
+
+
+</resources>
