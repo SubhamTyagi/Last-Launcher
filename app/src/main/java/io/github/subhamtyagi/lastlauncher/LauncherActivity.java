@@ -527,21 +527,25 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
-    //may be override of abstract class method to be called from color sniffer
+    //may be override of abstract class method to be called from color sniffer #3 types
     public void colorSnifferCall(Bundle bundle) {
-        int DEFAULT_COLOR = -1;
-        boolean defaultColorSet = false;
-        String sDefaultColor = bundle.getString(DEFAULT_COLOR_FOR_APPS);
-        if (sDefaultColor != null) {
+
+        int DEFAULT_COLOR = -1;//-1 represent null or not set
+        boolean defaultColorSet = false;// for change set
+        String sDefaultColor = bundle.getString(DEFAULT_COLOR_FOR_APPS);//keys
+        if (sDefaultColor != null) {// not set by ColorSniffer
             DEFAULT_COLOR = Integer.valueOf(sDefaultColor);
-            if (DEFAULT_COLOR != DbUtils.NULL_TEXT_COLOR) {
-                defaultColorSet = true;
+            if (DEFAULT_COLOR != DbUtils.NULL_TEXT_COLOR) { //NULL_TEXT_COLOR=-1
+                defaultColorSet = true;// to save cpu cycle
             }
         }
+
+        // get each value as proposed by Color Sniffer App developer
+
         for (Apps apps : mAppsList) {
             TextView textView = apps.getTextView();
             String appPackage = apps.getActivityName().toString();
-            String sColor = bundle.getString(appPackage);
+            String sColor = bundle.getString(appPackage);// get each value as proposed by Color Sniffer App developer
             if (sColor != null) {
                 int color = Integer.valueOf(sColor);
                 textView.setTextColor(color);
@@ -554,6 +558,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    //Clipboard manager
     private void clipboardData() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -564,7 +569,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 Log.d(TAG, "clipboardData: " + tsv);
                 //
                 //validate tsv and get its data
-                //unique id bae73ae068dacc6cb659d1fb231e7b11 i.e LastLauncher-ColorSniffer
+                //unique id bae73ae068dacc6cb659d1fb231e7b11 i.e LastLauncher-ColorSniffer MD5-128
 
                 //FromClipBoard = true;
             }
