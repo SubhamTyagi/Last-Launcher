@@ -18,11 +18,15 @@
 
 package io.github.subhamtyagi.lastlauncher.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
 
+import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
-public class Apps {
+
+public class Apps implements Parcelable {
 
     final private CharSequence activity;
     private CharSequence appName;
@@ -31,9 +35,30 @@ public class Apps {
     private int size;
     private boolean freezeSize;
     private boolean hide;
+
+    private Apps(Parcel in) {
+        activity = in.readString();
+        appName = in.readString();
+        freezeSize = in.readByte() != 0;
+        hide = in.readByte() != 0;
+    }
+
+    public static final Creator<Apps> CREATOR = new Creator<Apps>() {
+        @Override
+        public Apps createFromParcel(Parcel in) {
+            return new Apps(in);
+        }
+
+        @Override
+        public Apps[] newArray(int size) {
+            return new Apps[size];
+        }
+    };
+
     public boolean isFreezeSize() {
         return freezeSize;
     }
+
     public boolean isHide() {
         return hide;
     }
@@ -48,29 +73,27 @@ public class Apps {
     }
 
     /**
-     * @param activity    executable activity path
-     * @param appName     App name
-     * @param tv          a text view corresponding to App
-     * @param color       Text color
-     * @param size        Text Size
-     * @param hide        boolean to tell 'is app hide
-     * @param freezeSize  is app size to freeze
+     * @param activity   executable activity path
+     * @param appName    App name
+     * @param tv         a text view corresponding to App
+     * @param color      Text color
+     * @param size       Text Size
+     * @param hide       boolean to tell 'is app hide
+     * @param freezeSize is app size to freeze
      */
     public Apps(String activity, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
 
-       // this.packageName = packageName;
-        this.activity=activity;
+        this.activity = activity;
         this.appName = appName;
         this.textView = tv;
         this.color = color;
         this.size = size;
         this.freezeSize = freezeSize;
         this.hide = hide;
-
         textView.setText(appName);
         textView.setTag(activity);
         textView.setTextSize(size);
-        if (color != -1)
+        if (color != DbUtils.NULL_TEXT_COLOR)
             textView.setTextColor(color);
 
         textView.setVisibility(hide ? View.GONE : View.VISIBLE);
@@ -105,5 +128,18 @@ public class Apps {
     public void setSize(int size) {
         this.size = size;
         textView.setTextSize(size);
+    }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(activity.toString());
+        parcel.writeString(appName.toString());
+        parcel.writeByte((byte) (freezeSize ? 1 : 0));
+        parcel.writeByte((byte) (hide ? 1 : 0));
     }
 }

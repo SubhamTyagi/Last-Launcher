@@ -34,8 +34,8 @@ import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 public class GlobalSettings extends Dialog implements View.OnClickListener {
 
 
-    private LauncherActivity launcherActivity;
     TextView freezeSize;
+    private LauncherActivity launcherActivity;
 
     public GlobalSettings(Context context, LauncherActivity launcherActivity) {
         super(context);
@@ -70,7 +70,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
 
         if (DbUtils.isSizeFreezed()) {
             freezeSize.setText(R.string.unfreeze_app_size);
-        }else
+        } else
             freezeSize.setText(R.string.freeze_apps_size);
 
     }
@@ -111,11 +111,11 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
     }
 
     private void freezeAppsSize() {
-        boolean b=DbUtils.isSizeFreezed();
+        boolean b = DbUtils.isSizeFreezed();
         DbUtils.freezeSize(!b);
         if (!b) {
             freezeSize.setText(R.string.unfreeze_app_size);
-        }else
+        } else
             freezeSize.setText(R.string.freeze_apps_size);
     }
 
@@ -126,6 +126,8 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
 
     private void hiddenApps() {
         Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
+        // launcherActivity.showHiddenApps();
+        cancel();
     }
 
     private void randomColor() {

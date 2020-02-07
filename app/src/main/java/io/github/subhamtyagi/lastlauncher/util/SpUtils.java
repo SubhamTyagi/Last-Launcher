@@ -242,4 +242,7 @@ public class SpUtils {
     }
 
 
+    public Map<String,?> getAll(){
+        return mPref.getAll();
+    }
 }

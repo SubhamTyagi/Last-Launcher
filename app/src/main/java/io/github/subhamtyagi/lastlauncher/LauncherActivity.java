@@ -77,7 +77,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private static final int BACKUP_REQUEST = 125;
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
-
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 32;
 
@@ -511,5 +510,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
+    //hidden app support
+    /*public void showHiddenApps() {
+        Intent i=new Intent(this,MyList.class);
+        i.putParcelableArrayListExtra("arrays",mAppsList);
+        startActivity(i);
+    }*/
 }
 
