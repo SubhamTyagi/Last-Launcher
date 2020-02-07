@@ -77,6 +77,7 @@ import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
 
     public static final int COLOR_SNIFFER_REQUEST = 154;
+    public final static String DEFAULT_COLOR_FOR_APPS = "default_color_for_apps";
     private static final int RESTORE_REQUEST = 125;
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
@@ -513,7 +514,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             // bundle yes
             // is it complex: may be
             //what is the bundle name: Mr. Xyz?
-            colorSnifferCall(getIntent().getBundleExtra("what was the data name? is this name is Sparrow :)"));
+            colorSnifferCall(getIntent().getBundleExtra("color_bundle"));
 
         }
     }
@@ -526,13 +527,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
-
     //may be override of abstract class method to be called from color sniffer
     public void colorSnifferCall(Bundle bundle) {
         int DEFAULT_COLOR = -1;
         boolean defaultColorSet = false;
-        //TODO: default color string consensus
-        String sDefaultColor = bundle.getString("default_color_for_apps");
+        String sDefaultColor = bundle.getString(DEFAULT_COLOR_FOR_APPS);
         if (sDefaultColor != null) {
             DEFAULT_COLOR = Integer.valueOf(sDefaultColor);
             if (DEFAULT_COLOR != DbUtils.NULL_TEXT_COLOR) {
@@ -555,16 +554,17 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-    private void clipboardData(){
+    private void clipboardData() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             ClipData clipData = clipboardManager.getPrimaryClip();
             if (clipData.getItemCount() > 0) {
                 ClipData.Item item = clipData.getItemAt(0);
                 String tsv = item.getText().toString();
-                Log.d(TAG, "clipboardData: "+tsv);
+                Log.d(TAG, "clipboardData: " + tsv);
                 //
                 //validate tsv and get its data
+                //unique id bae73ae068dacc6cb659d1fb231e7b11 i.e LastLauncher-ColorSniffer
 
                 //FromClipBoard = true;
             }

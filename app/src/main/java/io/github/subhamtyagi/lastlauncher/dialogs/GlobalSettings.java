@@ -29,8 +29,6 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.URISyntaxException;
-
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
@@ -132,16 +130,16 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
         try {
             Intent intent = new Intent("android.intent.action.MAIN");
-            intent.setComponent(new ComponentName("ryey.what.was.the.package", "what.was.the.classname.name"));
+            //is this correct call Rui Zhao?
+            intent.setComponent(new ComponentName("ryey.colorsniffer", "ryey.colorsniffer.FormActivity"));
             //currently default color is only provided by Theme:
             //Is it required to send default colors of apps : YES
-            // is it required/or necessary to send theme related data for better experience : ask for color sniffer developer
-            intent.putExtra("TODO: default color unique string", 2121);
-            intent.putExtra("", "");
-            launcherActivity.startActivity(Intent.parseUri("TODO: uri of the color sniffer app to handle intent", 0));
-        } catch (URISyntaxException ignore) {
-            ignore.printStackTrace();
+            // is it required/ to send theme related data for better experience : ask for color sniffer developer
+           // 2121= dummy value
+            intent.putExtra(LauncherActivity.DEFAULT_COLOR_FOR_APPS, 2121);
+            launcherActivity.startActivity(intent);
         } catch (ActivityNotFoundException e) {
+            Toast.makeText(getContext(), "Color Sniffer is not installed", Toast.LENGTH_SHORT).show();
             //App is not installed send user to fdroid store for installation
         }
     }
