@@ -23,6 +23,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -74,19 +76,51 @@ import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
 public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
 
-    private static final int BACKUP_REQUEST = 125;
+    public static final int COLOR_SNIFFER_REQUEST = 154;
+    private static final int RESTORE_REQUEST = 125;
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 32;
-
-    private BroadcastReceiver broadcastReceiver;
-
     private final String TAG = "LauncherActivity";
-
+    private BroadcastReceiver broadcastReceiver;
     private ArrayList<Apps> mAppsList;
     private Typeface mTypeface;
     private FlowLayout mHomeLayout;
+
+    //not in use;
+    @TargetApi(21)
+    public static List<Apps> loadAppsMINLolipop(Activity activity, boolean hideHidden) {
+        List<Apps> appsList = new ArrayList<>();
+        PackageManager manager = activity.getPackageManager();
+
+        UserUtils userUtils = new UserUtils(activity);
+
+        UserManager userManager = null;
+
+        userManager = (UserManager) activity.getSystemService(Context.USER_SERVICE);
+
+        LauncherApps launcher = (LauncherApps) activity.getSystemService(Context.LAUNCHER_APPS_SERVICE);
+        for (UserHandle profile : userManager.getUserProfiles()) {
+
+            for (LauncherActivityInfo activityInfo : launcher.getActivityList(null, profile)) {
+
+                String componentName = activityInfo.getComponentName().flattenToString();
+                String useractivityName;
+                long user = userManager.getSerialNumberForUser(profile);
+                if (user != userUtils.getCurrentSerial()) {
+                    useractivityName = user + "-" + componentName;
+                } else {
+                    useractivityName = componentName;
+                }
+
+                String appName = activityInfo.getLabel().toString();
+
+            }
+        }
+        return appsList;
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +141,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         loadApps();
         registerForReceiver();
         SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
+        //WTF
         System.gc();
     }
 
@@ -174,9 +209,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private void refreshAppSize(String activityName) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
-                int size=apps.getSize()+2;
+                int size = apps.getSize() + 2;
                 apps.setSize(size);
-                DbUtils.putAppSize(activityName,size);
+                DbUtils.putAppSize(activityName, size);
                 break;
             }
         }
@@ -320,7 +355,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     private void changeColor(String activityName, TextView view) {
         int color = DbUtils.getAppColor(activityName);
-        if (color == -1) {
+        if (color == DbUtils.NULL_TEXT_COLOR) {
             color = view.getCurrentTextColor();
         }
         Dialog dialog = new ChooseColor(this, activityName, color, view);
@@ -356,7 +391,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 if (strings[0].contains(strings[1])) {
                     intent.setClassName(strings[1], strings[0]);
                     intent.setComponent(new ComponentName(strings[1], strings[0]));
-                   // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                 } else
                     startActivity(getPackageManager().getLaunchIntentForPackage(strings[1]));
@@ -426,8 +461,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
         chooseFile.setType("file/plain");
-        Intent intent = Intent.createChooser(chooseFile, "Choose backup file");
-        startActivityForResult(intent, BACKUP_REQUEST);
+        Intent intent = Intent.createChooser(chooseFile, this.getString(R.string.choose_old_backup_files));
+        startActivityForResult(intent, RESTORE_REQUEST);
     }
 
     public void browseFonts() {
@@ -445,7 +480,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
-        if (requestCode == BACKUP_REQUEST) {
+        if (requestCode == RESTORE_REQUEST) {
             Uri uri = data.getData();
             ContentResolver cr = getContentResolver();
             try {
@@ -464,7 +499,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 cursor.moveToFirst();
                 String path = cursor.getString(column_index);
                 cursor.close();
-
                 Log.i(TAG, "onActivityResult: " + path);
                 DbUtils.setFonts(path);
                 mTypeface = Typeface.createFromFile(path);
@@ -472,49 +506,69 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             } catch (Exception i) {
                 i.printStackTrace();
             }
+        } else if (requestCode == COLOR_SNIFFER_REQUEST) {
+            //TODO: data schema consensus
+            //GET DATA FROM COLOR SNIFFER APPS:
+            //K,V ??? no
+            // bundle yes
+            // is it complex: may be
+            //what is the bundle name: Mr. Xyz?
+            colorSnifferCall(getIntent().getBundleExtra("what was the data name? is this name is Sparrow :)"));
+
         }
-    }
-
-
-    //not in use;
-    @TargetApi(21)
-    public static List<Apps> loadAppsMINLolipop(Activity activity, boolean hideHidden) {
-        List<Apps> appsList = new ArrayList<>();
-        PackageManager manager = activity.getPackageManager();
-
-        UserUtils userUtils = new UserUtils(activity);
-
-        UserManager userManager = null;
-
-        userManager = (UserManager) activity.getSystemService(Context.USER_SERVICE);
-
-        LauncherApps launcher = (LauncherApps) activity.getSystemService(Context.LAUNCHER_APPS_SERVICE);
-        for (UserHandle profile : userManager.getUserProfiles()) {
-
-            for (LauncherActivityInfo activityInfo : launcher.getActivityList(null, profile)) {
-
-                String componentName = activityInfo.getComponentName().flattenToString();
-                String useractivityName;
-                long user = userManager.getSerialNumberForUser(profile);
-                if (user != userUtils.getCurrentSerial()) {
-                    useractivityName = user + "-" + componentName;
-                } else {
-                    useractivityName = componentName;
-                }
-
-                String appName = activityInfo.getLabel().toString();
-
-            }
-        }
-        return appsList;
-
     }
 
     //hidden app support
-    /*public void showHiddenApps() {
-        Intent i=new Intent(this,MyList.class);
-        i.putParcelableArrayListExtra("arrays",mAppsList);
-        startActivity(i);
-    }*/
+    public void showHiddenApps() {
+        // Intent i = new Intent(this, MyList.class);
+        // i.putParcelableArrayListExtra("arrays", mAppsList);
+        // startActivity(i);
+
+    }
+
+
+    //may be override of abstract class method to be called from color sniffer
+    public void colorSnifferCall(Bundle bundle) {
+        int DEFAULT_COLOR = -1;
+        boolean defaultColorSet = false;
+        //TODO: default color string consensus
+        String sDefaultColor = bundle.getString("default_color_for_apps");
+        if (sDefaultColor != null) {
+            DEFAULT_COLOR = Integer.valueOf(sDefaultColor);
+            if (DEFAULT_COLOR != DbUtils.NULL_TEXT_COLOR) {
+                defaultColorSet = true;
+            }
+        }
+        for (Apps apps : mAppsList) {
+            TextView textView = apps.getTextView();
+            String appPackage = apps.getActivityName().toString();
+            String sColor = bundle.getString(appPackage);
+            if (sColor != null) {
+                int color = Integer.valueOf(sColor);
+                textView.setTextColor(color);
+                DbUtils.putAppColor(appPackage, color);
+            } else if (defaultColorSet) {
+                //set default color
+                DbUtils.putAppColor(appPackage, DEFAULT_COLOR);
+                textView.setTextColor(DEFAULT_COLOR);
+            }//else do nothing theme default color will apply
+        }
+    }
+
+    private void clipboardData(){
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clipData = clipboardManager.getPrimaryClip();
+            if (clipData.getItemCount() > 0) {
+                ClipData.Item item = clipData.getItemAt(0);
+                String tsv = item.getText().toString();
+                Log.d(TAG, "clipboardData: "+tsv);
+                //
+                //validate tsv and get its data
+
+                //FromClipBoard = true;
+            }
+        }
+    }
 }
 

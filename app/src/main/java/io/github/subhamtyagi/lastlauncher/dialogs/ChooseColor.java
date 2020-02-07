@@ -56,6 +56,8 @@ public class ChooseColor extends Dialog {
         colorSeekBar.setShowAlphaBar(true);
         colorSeekBar.setBarHeight(5);
 
+
+        // todo: is this still correct?
         if (appColor != -DbUtils.NULL_TEXT_COLOR)
             colorSeekBar.setColor(appColor);
 
