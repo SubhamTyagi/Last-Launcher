@@ -43,6 +43,7 @@ import android.os.Bundle;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.provider.MediaStore;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -58,7 +59,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
@@ -142,7 +143,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         loadApps();
         registerForReceiver();
         SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
-        //WTF
         System.gc();
     }
 
@@ -164,7 +164,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
-            String activity = resolveInfo.activityInfo.name + "&" + packageName;
+            String activity = packageName + "/" + resolveInfo.activityInfo.name;
             DbUtils.putAppOriginalName(activity, resolveInfo.loadLabel(pm).toString());
             appName = DbUtils.getAppName(activity, resolveInfo.loadLabel(pm).toString());
             hide = DbUtils.isAppHidden(activity);
@@ -176,18 +176,20 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
             textSize = DbUtils.getAppSize(activity);
             if (textSize == DbUtils.NULL_TEXT_SIZE) {
-                if (oftenApps.contains(packageName))
+                if (oftenApps.contains(packageName)) {
                     textSize = DEFAUTL_TEXT_SIZE_OFTEN_APPS;
-                else textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+                } else {
+                    textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+                }
+                DbUtils.putAppSize(activity, textSize);
             }
 
 
             color = DbUtils.getAppColor(activity);
             boolean freeze = DbUtils.isAppFreezed(activity);
 
-            if (DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
-                Random rnd = new Random();
-                color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            if (DbUtils.isExternalSourceColor() && color == DbUtils.NULL_TEXT_COLOR) {
+                color = DbUtils.getAppColorExternalSource(activity);
             }
             mAppsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
         }
@@ -210,7 +212,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private void refreshAppSize(String activityName) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
-                int size = apps.getSize() + 2;
+                int size = DbUtils.getAppSize(activityName)+2;
                 apps.setSize(size);
                 DbUtils.putAppSize(activityName, size);
                 break;
@@ -343,13 +345,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     private void showAppInfo(String activityName) {
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + activityName.split("&")[1]));
+        intent.setData(Uri.parse("package:" + activityName.split("/")[0]));
         startActivity(intent);
     }
 
     private void uninstallApp(String activityName) {
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
-        intent.setData(Uri.parse("package:" + activityName.split("&")[1]));
+        intent.setData(Uri.parse("package:" + activityName.split("/")[0]));
         intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
         startActivityForResult(intent, 97);
     }
@@ -386,17 +388,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     public void onClick(View view) {
         if (view instanceof TextView) {
             String activity = (String) view.getTag();
-            String[] strings = activity.split("&");
+            String[] strings = activity.split("/");
             try {
+                //TODO: apps is not in recent menus
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                if (strings[0].contains(strings[1])) {
-                    intent.setClassName(strings[1], strings[0]);
-                    intent.setComponent(new ComponentName(strings[1], strings[0]));
-                    // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                } else
-                    startActivity(getPackageManager().getLaunchIntentForPackage(strings[1]));
-
+                intent.setClassName(strings[0], strings[1]);
+                intent.setComponent(new ComponentName(strings[0], strings[1]));
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
                 if (!DbUtils.isSizeFreezed() && !DbUtils.isAppFreezed(activity)) {
                     refreshAppSize(activity);
                 }
@@ -508,13 +507,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 i.printStackTrace();
             }
         } else if (requestCode == COLOR_SNIFFER_REQUEST) {
+            Log.d(TAG, "onActivityResult: yes i am called !~!");
             //TODO: data schema consensus
             //GET DATA FROM COLOR SNIFFER APPS:
             //K,V ??? no
             // bundle yes
             // is it complex: may be
-            //what is the bundle name: Mr. Xyz?
-            colorSnifferCall(getIntent().getBundleExtra("color_bundle"));
+            //Bundle is null wtf
+            colorSnifferCall(getIntent().getExtras().getBundle("color_bundle"));
 
         }
     }
@@ -529,7 +529,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     //may be override of abstract class method to be called from color sniffer #3 types
     public void colorSnifferCall(Bundle bundle) {
-
+        Log.d(TAG, "colorSnifferCall: i am called now it is my duty");
         int DEFAULT_COLOR = -1;//-1 represent null or not set
         boolean defaultColorSet = false;// for change set
         String sDefaultColor = bundle.getString(DEFAULT_COLOR_FOR_APPS);//keys
@@ -559,19 +559,50 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     //Clipboard manager
-    private void clipboardData() {
+    public Map<String, Integer> clipboardData() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clipData = clipboardManager.getPrimaryClip();
-            if (clipData.getItemCount() > 0) {
-                ClipData.Item item = clipData.getItemAt(0);
-                String tsv = item.getText().toString();
-                Log.d(TAG, "clipboardData: " + tsv);
-                //
-                //validate tsv and get its data
-                //unique id bae73ae068dacc6cb659d1fb231e7b11 i.e LastLauncher-ColorSniffer MD5-128
+            try {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = clipboardManager.getPrimaryClip();
+                if (clipData.getItemCount() > 0) {
+                    ClipData.Item item = clipData.getItemAt(0);
+                    String tsv = item.getText().toString();
+                    // Log.d(TAG, "clipboardData: " + tsv);
+                    //validate tsv and get its data
+                    //unique id bae73ae068dacc6cb659d1fb231e7b11 i.e LastLauncher-ColorSniffer MD5-128
+                    String[] entries = tsv.split("\n");//get each line
+                    Map<String, Integer> colorsAndId = new ArrayMap<>(); // map to put all values in key and values format
+                    for (int i = 0, entriesLength = entries.length; i < entriesLength; i++) {
+                        String entry = entries[i];// iterate over every line
+                        String[] activityIdAndColor = entry.split("\t");// split line into id and color
+                        int color = Color.parseColor(activityIdAndColor[1]);
+                        colorsAndId.put(activityIdAndColor[0], color);// put id and color to map
+                    }
+                    setAppsColorFromClipboard(colorsAndId);
+                    return colorsAndId;// return map
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
 
-                //FromClipBoard = true;
+        return null;// return empty null/
+    }
+
+    private void setAppsColorFromClipboard(Map<String, Integer> colorsAndId) {
+        if (colorsAndId == null) return;
+        DbUtils.externalSourceColor(true);
+        for (Apps apps : mAppsList) {
+            try {
+                TextView textView = apps.getTextView();
+                String activityName = apps.getActivityName().toString().split("/")[0];
+                Integer newColor = colorsAndId.get(activityName);
+                if (newColor == null) continue;
+                textView.setTextColor(newColor);
+                DbUtils.putAppColorExternalSource(apps.getActivityName().toString(), newColor);
+            } catch (NullPointerException ignore) {
+                ignore.printStackTrace();
             }
         }
     }

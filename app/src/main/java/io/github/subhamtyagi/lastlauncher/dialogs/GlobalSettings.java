@@ -19,10 +19,7 @@
 package io.github.subhamtyagi.lastlauncher.dialogs;
 
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -37,7 +34,7 @@ import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 public class GlobalSettings extends Dialog implements View.OnClickListener {
 
 
-    TextView freezeSize;
+    private TextView freezeSize;
     private LauncherActivity launcherActivity;
 
     public GlobalSettings(Context context, LauncherActivity launcherActivity) {
@@ -53,7 +50,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         findViewById(R.id.settings_fonts).setOnClickListener(this);
         findViewById(R.id.settings_themes).setOnClickListener(this);
         freezeSize = findViewById(R.id.settings_freeze_size);
-        freezeSize.setOnClickListener(this::onClick);
+        freezeSize.setOnClickListener(this);
 
         findViewById(R.id.settings_reset_to_defaults).setOnClickListener(this);
         findViewById(R.id.settings_backup).setOnClickListener(this);
@@ -75,7 +72,6 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
             case R.id.settings_fonts:
                 setFonts();
                 break;
@@ -105,6 +101,11 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         }
     }
 
+    private void colorSnifferCall() {
+        new ColorSniffer(getContext(), launcherActivity).show();
+        cancel();
+    }
+
     private void freezeAppsSize() {
         boolean b = DbUtils.isSizeFreezed();
         DbUtils.freezeSize(!b);
@@ -122,26 +123,6 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
         // launcherActivity.showHiddenApps();
         cancel();
-    }
-
-    //TODO: uri update, data schema
-    private void colorSnifferCall() {
-        //check app android compat currently colorSniffer api=19 and this app api=14
-        Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
-        try {
-            Intent intent = new Intent("android.intent.action.MAIN");
-            //is this correct call Rui Zhao?
-            intent.setComponent(new ComponentName("ryey.colorsniffer", "ryey.colorsniffer.FormActivity"));
-            //currently default color is only provided by Theme:
-            //Is it required to send default colors of apps : YES
-            // is it required/ to send theme related data for better experience : ask for color sniffer developer
-           // 2121= dummy value
-            intent.putExtra(LauncherActivity.DEFAULT_COLOR_FOR_APPS, 2121);
-            launcherActivity.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getContext(), "Color Sniffer is not installed", Toast.LENGTH_SHORT).show();
-            //App is not installed send user to fdroid store for installation
-        }
     }
 
     private void bgColor() {
