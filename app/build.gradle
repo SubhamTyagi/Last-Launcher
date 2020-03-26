@@ -7,9 +7,9 @@ android {
         applicationId "io.github.subhamtyagi.lastlauncher"
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 4
-        versionName "0.4"
-        resConfigs "en"
+        versionCode 5
+        versionName "0.5"
+        resConfigs "en", "de"
     }
     buildTypes {
         debug {
@@ -76,5 +76,5 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':flowlayout:layouts')
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 }

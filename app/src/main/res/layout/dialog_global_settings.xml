@@ -95,6 +95,8 @@
         android:layout_gravity="center|center_horizontal|center_vertical"
         android:background="#DEDEDE"
         android:foregroundGravity="center_vertical|center_horizontal" />
+
+
     <TextView
         android:id="@+id/settings_reset_to_defaults"
         android:layout_width="match_parent"

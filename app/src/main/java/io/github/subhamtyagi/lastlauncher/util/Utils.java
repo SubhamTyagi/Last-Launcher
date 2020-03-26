@@ -75,6 +75,6 @@ public class Utils {
     }
 
     public static String getPackageNameFromActivityName(String activityName){
-        return activityName.split("&")[1];
+        return activityName.split("/")[0];
     }
 }

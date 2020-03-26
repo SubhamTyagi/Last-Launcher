@@ -60,7 +60,9 @@ import java.util.Random;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
+import io.github.subhamtyagi.lastlauncher.dialogs.FreezedApps;
 import io.github.subhamtyagi.lastlauncher.dialogs.GlobalSettings;
+import io.github.subhamtyagi.lastlauncher.dialogs.HiddenApps;
 import io.github.subhamtyagi.lastlauncher.dialogs.RenameInput;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
@@ -77,17 +79,47 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private static final int BACKUP_REQUEST = 125;
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
-
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 32;
-
-    private BroadcastReceiver broadcastReceiver;
-
     private final String TAG = "LauncherActivity";
-
     private ArrayList<Apps> mAppsList;
+    private BroadcastReceiver broadcastReceiver;
     private Typeface mTypeface;
     private FlowLayout mHomeLayout;
+
+    //not in use;
+    @TargetApi(21)
+    public static List<Apps> loadAppsMINLolipop(Activity activity, boolean hideHidden) {
+        List<Apps> appsList = new ArrayList<>();
+        PackageManager manager = activity.getPackageManager();
+
+        UserUtils userUtils = new UserUtils(activity);
+
+        UserManager userManager = null;
+
+        userManager = (UserManager) activity.getSystemService(Context.USER_SERVICE);
+
+        LauncherApps launcher = (LauncherApps) activity.getSystemService(Context.LAUNCHER_APPS_SERVICE);
+        for (UserHandle profile : userManager.getUserProfiles()) {
+
+            for (LauncherActivityInfo activityInfo : launcher.getActivityList(null, profile)) {
+
+                String componentName = activityInfo.getComponentName().flattenToString();
+                String useractivityName;
+                long user = userManager.getSerialNumberForUser(profile);
+                if (user != userUtils.getCurrentSerial()) {
+                    useractivityName = user + "-" + componentName;
+                } else {
+                    useractivityName = componentName;
+                }
+
+                String appName = activityInfo.getLabel().toString();
+
+            }
+        }
+        return appsList;
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,10 +140,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         loadApps();
         registerForReceiver();
         SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
+
+
         System.gc();
     }
 
     private void loadApps() {
+
         Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = getPackageManager();
@@ -129,15 +164,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
-            String activity = resolveInfo.activityInfo.name + "&" + packageName;
+
+            String activity = packageName + "/" + resolveInfo.activityInfo.name;
+
             DbUtils.putAppOriginalName(activity, resolveInfo.loadLabel(pm).toString());
             appName = DbUtils.getAppName(activity, resolveInfo.loadLabel(pm).toString());
-            hide = DbUtils.isAppHidden(activity);
 
-            if (hide) {
-                //Temp hide
-                continue;
-            }
+            hide = DbUtils.isAppHidden(activity);
 
             textSize = DbUtils.getAppSize(activity);
             if (textSize == DbUtils.NULL_TEXT_SIZE) {
@@ -154,7 +187,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 Random rnd = new Random();
                 color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             }
+
             mAppsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
+
         }
 
         sortApps();
@@ -175,9 +210,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private void refreshAppSize(String activityName) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
-                int size=apps.getSize()+2;
+                int size = apps.getSize() + 2;
                 apps.setSize(size);
-                DbUtils.putAppSize(activityName,size);
+                DbUtils.putAppSize(activityName, size);
                 break;
             }
         }
@@ -193,7 +228,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
                 String appName = DbUtils.getAppName(activityName, appOriginalName);
 
-                boolean hide = apps.isHide();
+                boolean hide = apps.isHidden();
                 boolean freezeSize = apps.isFreezeSize();
 
                 Apps newApp = new Apps(activityName, appName, getCustomView(), color, size, hide, freezeSize);
@@ -247,13 +282,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 case R.id.menu_rename:
                     renameApp(activityName, view.getText().toString());
                     break;
-                case R.id.menu_freeze_size: {
-                    boolean b = DbUtils.isAppFreezed(activityName);
-                    DbUtils.freezeAppSize(activityName, !b);
-                }
-                break;
+                case R.id.menu_freeze_size:
+                    freezeAppSize(activityName);
+                    break;
                 case R.id.menu_hide:
-                    hideApp(activityName, view);
+                    hideApp(activityName);
                     break;
                 case R.id.menu_uninstall:
                     uninstallApp(activityName);
@@ -272,11 +305,24 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         popupMenu.show();
     }
 
-    private void hideApp(String activityName, TextView view) {
+    private void freezeAppSize(String activityName) {
+        boolean b = DbUtils.isAppFreezed(activityName);
+        for (Apps apps : mAppsList) {
+            if (activityName.equalsIgnoreCase(apps.getActivityName().toString())) {
+                apps.setFreeze(!b);
+            }
+        }
+
+    }
+
+    private void hideApp(String activityName) {
         //Toast.makeText(this, "Current Hide is not fully implemented\n After hide app you will not access that app from this launcher", Toast.LENGTH_LONG).show();
-        DbUtils.hideApp(activityName, true);
-        view.setVisibility(View.GONE);
-        //refreshApps(activityName);
+        for (Apps apps : mAppsList) {
+            if (activityName.equalsIgnoreCase(apps.getActivityName().toString())) {
+                apps.setHide(true);
+            }
+        }
+
     }
 
     private void renameApp(String activityName, String appName) {
@@ -308,13 +354,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     private void showAppInfo(String activityName) {
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + activityName.split("&")[1]));
+        intent.setData(Uri.parse("package:" + activityName.split("/")[0]));
         startActivity(intent);
     }
 
     private void uninstallApp(String activityName) {
         Intent intent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE);
-        intent.setData(Uri.parse("package:" + activityName.split("&")[1]));
+        intent.setData(Uri.parse("package:" + activityName.split("/")[0]));
         intent.putExtra(Intent.EXTRA_RETURN_RESULT, true);
         startActivityForResult(intent, 97);
     }
@@ -351,22 +397,22 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     public void onClick(View view) {
         if (view instanceof TextView) {
             String activity = (String) view.getTag();
-            String[] strings = activity.split("&");
+            String[] strings = activity.split("/");
             try {
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                if (strings[0].contains(strings[1])) {
-                    intent.setClassName(strings[1], strings[0]);
-                    intent.setComponent(new ComponentName(strings[1], strings[0]));
-                   // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                if (strings[1].contains(strings[0])) {
+                    intent.setClassName(strings[0], strings[1]);
+                    intent.setComponent(new ComponentName(strings[0], strings[1]));
+                    // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                     startActivity(intent);
                 } else
-                    startActivity(getPackageManager().getLaunchIntentForPackage(strings[1]));
+                    startActivity(getPackageManager().getLaunchIntentForPackage(strings[0]));
 
                 if (!DbUtils.isSizeFreezed() && !DbUtils.isAppFreezed(activity)) {
                     refreshAppSize(activity);
                 }
             } catch (Exception ignore) {
-                Log.e(TAG, "onClick: " + ignore);
+
             }
         }
     }
@@ -476,39 +522,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    public void showHiddenApps() {
+        new HiddenApps(this, mAppsList).show();
+    }
 
-    //not in use;
-    @TargetApi(21)
-    public static List<Apps> loadAppsMINLolipop(Activity activity, boolean hideHidden) {
-        List<Apps> appsList = new ArrayList<>();
-        PackageManager manager = activity.getPackageManager();
-
-        UserUtils userUtils = new UserUtils(activity);
-
-        UserManager userManager = null;
-
-        userManager = (UserManager) activity.getSystemService(Context.USER_SERVICE);
-
-        LauncherApps launcher = (LauncherApps) activity.getSystemService(Context.LAUNCHER_APPS_SERVICE);
-        for (UserHandle profile : userManager.getUserProfiles()) {
-
-            for (LauncherActivityInfo activityInfo : launcher.getActivityList(null, profile)) {
-
-                String componentName = activityInfo.getComponentName().flattenToString();
-                String useractivityName;
-                long user = userManager.getSerialNumberForUser(profile);
-                if (user != userUtils.getCurrentSerial()) {
-                    useractivityName = user + "-" + componentName;
-                } else {
-                    useractivityName = componentName;
-                }
-
-                String appName = activityInfo.getLabel().toString();
-
-            }
-        }
-        return appsList;
-
+    public void showFreezedApps() {
+        new FreezedApps(this, mAppsList).show();
     }
 
 }

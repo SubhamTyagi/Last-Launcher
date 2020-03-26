@@ -21,6 +21,8 @@ package io.github.subhamtyagi.lastlauncher.model;
 import android.view.View;
 import android.widget.TextView;
 
+import io.github.subhamtyagi.lastlauncher.util.DbUtils;
+
 
 public class Apps {
 
@@ -31,49 +33,63 @@ public class Apps {
     private int size;
     private boolean freezeSize;
     private boolean hide;
+
+
+    /**
+     * @param activity   executable activity path
+     * @param appName    App name
+     * @param tv         a text view corresponding to App
+     * @param color      Text color
+     * @param size       Text Size
+     * @param hide       boolean to tell 'is app hide
+     * @param freezeSize is app size to freeze
+     */
+    public Apps(String activity, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
+
+        this.activity = activity;
+        this.appName = appName;
+        this.textView = tv;
+        this.color = color;
+        this.size = size;
+
+        textView.setText(appName);
+        textView.setTag(activity);
+        textView.setTextSize(size);
+
+        if (color != DbUtils.NULL_TEXT_COLOR)
+            textView.setTextColor(color);
+
+        setHide(hide);
+        setFreeze(freezeSize);
+
+    }
+
     public boolean isFreezeSize() {
         return freezeSize;
     }
-    public boolean isHide() {
+
+    public boolean isHidden() {
         return hide;
     }
 
     public void setHide(boolean hide) {
         this.hide = hide;
         textView.setVisibility(hide ? View.GONE : View.VISIBLE);
+        DbUtils.hideApp(activity.toString(), hide);
     }
 
     public int getSize() {
         return size;
     }
 
-    /**
-     * @param activity    executable activity path
-     * @param appName     App name
-     * @param tv          a text view corresponding to App
-     * @param color       Text color
-     * @param size        Text Size
-     * @param hide        boolean to tell 'is app hide
-     * @param freezeSize  is app size to freeze
-     */
-    public Apps(String activity, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
-
-       // this.packageName = packageName;
-        this.activity=activity;
-        this.appName = appName;
-        this.textView = tv;
-        this.color = color;
+    public void setSize(int size) {
         this.size = size;
-        this.freezeSize = freezeSize;
-        this.hide = hide;
-
-        textView.setText(appName);
-        textView.setTag(activity);
         textView.setTextSize(size);
-        if (color != -1)
-            textView.setTextColor(color);
+    }
 
-        textView.setVisibility(hide ? View.GONE : View.VISIBLE);
+    public void setFreeze(boolean freezeSize) {
+        this.freezeSize = freezeSize;
+        DbUtils.freezeAppSize(activity.toString(), freezeSize);
     }
 
     public CharSequence getActivityName() {
@@ -82,6 +98,11 @@ public class Apps {
 
     public CharSequence getAppName() {
         return appName;
+    }
+
+    public void setAppName(CharSequence appName) {
+        this.appName = appName;
+        textView.setText(appName);
     }
 
     public TextView getTextView() {
@@ -97,13 +118,5 @@ public class Apps {
         textView.setTextColor(color);
     }
 
-    public void setAppName(CharSequence appName) {
-        this.appName = appName;
-        textView.setText(appName);
-    }
 
-    public void setSize(int size) {
-        this.size = size;
-        textView.setTextSize(size);
-    }
 }

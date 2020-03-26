@@ -18,6 +18,8 @@
 
 package io.github.subhamtyagi.lastlauncher.util;
 
+import java.util.Map;
+
 import io.github.subhamtyagi.lastlauncher.R;
 
 public class DbUtils {
@@ -152,6 +154,17 @@ public class DbUtils {
     public static boolean isSizeFreezed() {
         return SpUtils.getInstance().getBoolean(LAUNCHER_FREEZE_SIZE, false);
 
+    }
+
+    public static String[] getAllHiddenApps(){
+       Map<String,?> entries= SpUtils.getInstance().getAll();
+        for (Map.Entry<String, ?> entry : entries.entrySet()) {
+            if (entry.getKey().contains("hide")){
+
+            }
+        }
+
+        return null;
     }
 
     private static final String RANDOM_COLOR_FOR_APPS = "random_color_for_apps";
