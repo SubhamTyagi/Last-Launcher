@@ -121,6 +121,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
 
     private void freezedApps() {
         launcherActivity.showFreezedApps();
+        cancel();
     }
 
     private void hiddenApps() {

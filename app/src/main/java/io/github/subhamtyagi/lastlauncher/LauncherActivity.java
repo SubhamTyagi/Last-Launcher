@@ -286,7 +286,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     freezeAppSize(activityName);
                     break;
                 case R.id.menu_hide:
-                    hideApp(activityName, view);
+                    hideApp(activityName);
                     break;
                 case R.id.menu_uninstall:
                     uninstallApp(activityName);
@@ -315,7 +315,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
-    private void hideApp(String activityName, TextView view) {
+    private void hideApp(String activityName) {
         //Toast.makeText(this, "Current Hide is not fully implemented\n After hide app you will not access that app from this launcher", Toast.LENGTH_LONG).show();
         for (Apps apps : mAppsList) {
             if (activityName.equalsIgnoreCase(apps.getActivityName().toString())) {
@@ -412,7 +412,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     refreshAppSize(activity);
                 }
             } catch (Exception ignore) {
-                Log.e(TAG, "onClick: " + ignore);
+
             }
         }
     }
@@ -523,20 +523,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     public void showHiddenApps() {
-        //startActivity(new Intent(this, HiddenApps.class));
         new HiddenApps(this, mAppsList).show();
     }
 
     public void showFreezedApps() {
-        //startActivity(new Intent(this, HiddenApps.class));
         new FreezedApps(this, mAppsList).show();
     }
 
-    //hidden app support
-    /*public void showHiddenApps() {
-        Intent i=new Intent(this,MyList.class);
-        i.putParcelableArrayListExtra("arrays",mAppsList);
-        startActivity(i);
-    }*/
 }
 

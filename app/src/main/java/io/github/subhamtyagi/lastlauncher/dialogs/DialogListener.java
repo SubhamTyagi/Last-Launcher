@@ -18,6 +18,7 @@
 
 package io.github.subhamtyagi.lastlauncher.dialogs;
 
+//not in use
 public interface DialogListener {
     void showHiddenApps();
 
@@ -28,6 +29,8 @@ public interface DialogListener {
     void isPermissionRequired();
 
     void browseFonts();
+
+    void onAppRenamed(String activityName, String appNewName);
 
 
 }
