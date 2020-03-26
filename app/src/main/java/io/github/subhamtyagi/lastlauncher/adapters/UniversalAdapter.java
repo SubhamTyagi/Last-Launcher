@@ -34,25 +34,46 @@ public class UniversalAdapter extends ArrayAdapter<Apps> {
 
    private Context context;
    private ArrayList<Apps> list;
+    private OnClickListener listener;
+
     public UniversalAdapter(Context context, ArrayList<Apps> list) {
         super(context,R.layout.list_item,list);
         this.context=context;
         this.list=list;
     }
 
+    public void setOnClickListener(OnClickListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View row = inflater.inflate(R.layout.list_item, parent, false);
+        row.setTag(position);
         TextView textView=row.findViewById(R.id.app_label);
         textView.setText(list.get(position).getAppName());
+        textView.setTag(position);
 
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClick(getItem((int) view.getTag()), view);
+            }
+        });
 
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClick(getItem((int) view.getTag()), view);
+            }
+        });
         return row;
-
-
     }
 
+
+    public interface OnClickListener {
+        void onClick(Apps apps, View view);
+    }
 
 }

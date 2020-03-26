@@ -18,15 +18,13 @@
 
 package io.github.subhamtyagi.lastlauncher.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
 
-public class Apps implements Parcelable {
+public class Apps {
 
     final private CharSequence activity;
     private CharSequence appName;
@@ -36,41 +34,6 @@ public class Apps implements Parcelable {
     private boolean freezeSize;
     private boolean hide;
 
-    private Apps(Parcel in) {
-        activity = in.readString();
-        appName = in.readString();
-        freezeSize = in.readByte() != 0;
-        hide = in.readByte() != 0;
-    }
-
-    public static final Creator<Apps> CREATOR = new Creator<Apps>() {
-        @Override
-        public Apps createFromParcel(Parcel in) {
-            return new Apps(in);
-        }
-
-        @Override
-        public Apps[] newArray(int size) {
-            return new Apps[size];
-        }
-    };
-
-    public boolean isFreezeSize() {
-        return freezeSize;
-    }
-
-    public boolean isHide() {
-        return hide;
-    }
-
-    public void setHide(boolean hide) {
-        this.hide = hide;
-        textView.setVisibility(hide ? View.GONE : View.VISIBLE);
-    }
-
-    public int getSize() {
-        return size;
-    }
 
     /**
      * @param activity   executable activity path
@@ -88,15 +51,45 @@ public class Apps implements Parcelable {
         this.textView = tv;
         this.color = color;
         this.size = size;
-        this.freezeSize = freezeSize;
-        this.hide = hide;
+
         textView.setText(appName);
         textView.setTag(activity);
         textView.setTextSize(size);
+
         if (color != DbUtils.NULL_TEXT_COLOR)
             textView.setTextColor(color);
 
+        setHide(hide);
+        setFreeze(freezeSize);
+
+    }
+
+    public boolean isFreezeSize() {
+        return freezeSize;
+    }
+
+    public boolean isHidden() {
+        return hide;
+    }
+
+    public void setHide(boolean hide) {
+        this.hide = hide;
         textView.setVisibility(hide ? View.GONE : View.VISIBLE);
+        DbUtils.hideApp(activity.toString(), hide);
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+        textView.setTextSize(size);
+    }
+
+    public void setFreeze(boolean freezeSize) {
+        this.freezeSize = freezeSize;
+        DbUtils.freezeAppSize(activity.toString(), freezeSize);
     }
 
     public CharSequence getActivityName() {
@@ -105,6 +98,11 @@ public class Apps implements Parcelable {
 
     public CharSequence getAppName() {
         return appName;
+    }
+
+    public void setAppName(CharSequence appName) {
+        this.appName = appName;
+        textView.setText(appName);
     }
 
     public TextView getTextView() {
@@ -120,26 +118,5 @@ public class Apps implements Parcelable {
         textView.setTextColor(color);
     }
 
-    public void setAppName(CharSequence appName) {
-        this.appName = appName;
-        textView.setText(appName);
-    }
 
-    public void setSize(int size) {
-        this.size = size;
-        textView.setTextSize(size);
-    }
-
-    @Override
-    public int describeContents() {
-        return hashCode();
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(activity.toString());
-        parcel.writeString(appName.toString());
-        parcel.writeByte((byte) (freezeSize ? 1 : 0));
-        parcel.writeByte((byte) (hide ? 1 : 0));
-    }
 }
