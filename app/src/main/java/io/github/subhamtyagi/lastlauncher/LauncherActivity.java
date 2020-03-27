@@ -191,6 +191,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             if (DbUtils.isExternalSourceColor() && color == DbUtils.NULL_TEXT_COLOR) {
                 color = DbUtils.getAppColorExternalSource(activity);
             }
+
             mAppsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
         }
 

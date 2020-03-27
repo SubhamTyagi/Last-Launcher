@@ -26,22 +26,23 @@
         android:id="@+id/text_color_sniffer_on_off"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center|center_horizontal|center_vertical"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="start"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:text="Color Sniffer"
             android:textSize="20sp" />
 
-        <Switch
+        <TextView
             android:id="@+id/switch_color_sniffer_on_off"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="end"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:textSize="20sp" />

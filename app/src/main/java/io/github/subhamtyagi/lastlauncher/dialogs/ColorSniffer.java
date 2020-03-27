@@ -26,7 +26,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
-import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
@@ -35,7 +35,7 @@ import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
 public class ColorSniffer extends Dialog implements View.OnClickListener {
     private LauncherActivity launcherActivity;
-    private Switch onOffSwitch;
+    private TextView onOffSwitch;
 
     ColorSniffer(Context context, LauncherActivity launcherActivity) {
         super(context);
@@ -58,7 +58,10 @@ public class ColorSniffer extends Dialog implements View.OnClickListener {
     }
 
     private void onOffColorSnifferCustomisation() {
-
+        boolean b = DbUtils.isExternalSourceColor();
+        DbUtils.externalSourceColor(!b);
+        onOffSwitch.setText(!b ? ":On" : ":Off");
+        //
     }
 
 
@@ -94,6 +97,7 @@ public class ColorSniffer extends Dialog implements View.OnClickListener {
         findViewById(R.id.color_sniffer_clipboard).setOnClickListener(this::onClick);
         findViewById(R.id.color_sniffer_external_app).setOnClickListener(this::onClick);
         onOffSwitch = findViewById(R.id.switch_color_sniffer_on_off);
-        onOffSwitch.setChecked(DbUtils.isExternalSourceColor());
+
+        onOffSwitch.setText(DbUtils.isExternalSourceColor() ? ":On" : ":Off");
     }
 }
