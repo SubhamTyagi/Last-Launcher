@@ -57,7 +57,7 @@ public class HiddenApps extends Dialog {
     }
 
 
-    //TODO: strings
+
     private void confirmationAndRemove(Apps apps, View view) {
 
         Context ctx;
@@ -92,7 +92,6 @@ public class HiddenApps extends Dialog {
             }
         }
         if (appsList2.isEmpty()) {
-            // Toast.makeText(context, "no hidden apps", Toast.LENGTH_SHORT).show();
             cancel();
             dismiss();
             return;
@@ -101,12 +100,7 @@ public class HiddenApps extends Dialog {
         UniversalAdapter adapter = new UniversalAdapter(context, appsList2);
         listView.setAdapter(adapter);
 
-        adapter.setOnClickListener(new UniversalAdapter.OnClickListener() {
-            @Override
-            public void onClick(Apps apps, View view) {
-                confirmationAndRemove(apps, view);
-            }
-        });
+        adapter.setOnClickListener(this::confirmationAndRemove);
     }
 
 }

@@ -30,7 +30,7 @@ import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
 public class ChooseColor extends Dialog {
 
-    private static final String TAG = "ChooseColor";
+
     final private String appPackage;
     final private int appColor;
     final private TextView textView;
@@ -61,12 +61,9 @@ public class ChooseColor extends Dialog {
         if (appColor != -DbUtils.NULL_TEXT_COLOR)
             colorSeekBar.setColor(appColor);
 
-        colorSeekBar.setOnColorChangeListener(new ColorSeekBar.OnColorChangeListener() {
-            @Override
-            public void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color) {
-                textView.setTextColor(color);
-                DbUtils.putAppColor(appPackage, color);
-            }
+        colorSeekBar.setOnColorChangeListener((colorBarPosition, alphaBarPosition, color) -> {
+            textView.setTextColor(color);
+            DbUtils.putAppColor(appPackage, color);
         });
 
     }

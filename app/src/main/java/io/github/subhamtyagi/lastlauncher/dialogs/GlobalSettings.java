@@ -20,6 +20,8 @@ package io.github.subhamtyagi.lastlauncher.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -36,9 +38,11 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
 
     private TextView freezeSize;
     private LauncherActivity launcherActivity;
+    private Context context;
 
     public GlobalSettings(Context context, LauncherActivity launcherActivity) {
         super(context);
+        this.context = context;
         this.launcherActivity = launcherActivity;
     }
 
@@ -103,7 +107,17 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
 
     private void colorSnifferCall() {
         cancel();
-        new ColorSniffer(getContext(), launcherActivity).show();
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage("ryey.colorsniffer");
+
+        if (intent == null) {
+            Uri uri = Uri.parse("market://details?id=ryey.colorsniffer");
+            Intent i = new Intent(Intent.ACTION_VIEW, uri);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+        } else {
+            new ColorSniffer(getContext(), launcherActivity).show();
+
+        }
     }
 
     private void freezeAppsSize() {

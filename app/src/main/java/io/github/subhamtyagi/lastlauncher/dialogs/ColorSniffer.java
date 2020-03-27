@@ -84,22 +84,16 @@ public class ColorSniffer extends Dialog implements View.OnClickListener {
             //Is it required to send default colors of apps : YES
             // is it required/ to send theme related data for better experience : ask for color sniffer developer
             // 2121= dummy value
-
             intent.putExtra(LauncherActivity.DEFAULT_COLOR_FOR_APPS, 2121);
-
             launcherActivity.startActivityForResult(intent, LauncherActivity.COLOR_SNIFFER_REQUEST);
             // for activity result see LauncherActivity line 509
             cancel();
         } catch (ActivityNotFoundException e) {
-
-            try {
-                Uri uri = Uri.parse("market://details?id=ryey.colorsniffer");
-                Intent i = new Intent(Intent.ACTION_VIEW, uri);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
-            } catch (ActivityNotFoundException ignore) {
-
-            }
+            //this will never happen because this option is only shown after app is installed
+            Uri uri = Uri.parse("market://details?id=ryey.colorsniffer");
+            Intent i = new Intent(Intent.ACTION_VIEW, uri);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
         }
     }
 

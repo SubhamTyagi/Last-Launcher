@@ -10,12 +10,19 @@
         <attr name="showAlphaBar" format="boolean" />
         <attr name="alphaBarPosition" format="integer" />
         <attr name="colorBarPosition" format="integer" />
-        <attr name="bgColor" format="color"/>
-        <attr name="barRadius" format="dimension"/>
-        <attr name="barMargin" format="dimension"/>
-        <attr name="maxPosition" format="integer"/>
-        <attr name="isVertical" format="boolean"/>
-        <attr name="disabledColor" format="color"/>
-        <attr name="showThumb" format="boolean"/>
+        <attr name="bgColor" format="color" />
+        <attr name="barRadius" format="dimension" />
+        <attr name="barMargin" format="dimension" />
+        <attr name="maxPosition" format="integer" />
+        <attr name="isVertical" format="boolean" />
+        <attr name="disabledColor" format="color" />
+        <attr name="showThumb" format="boolean" />
     </declare-styleable>
+
+
+    <declare-styleable name="AnimatedTextView">
+        <attr name="colorSpeed" format="dimension" />
+        <attr name="colorSpace" format="dimension" />
+    </declare-styleable>
+
 </resources>

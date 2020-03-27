@@ -89,7 +89,6 @@ public class FreezedApps extends Dialog {
         }
 
         if (appsList2.isEmpty()) {
-            //Toast.makeText(context, "no freezed apps", Toast.LENGTH_SHORT).show();
             cancel();
             dismiss();
             return;
@@ -98,12 +97,7 @@ public class FreezedApps extends Dialog {
         UniversalAdapter adapter = new UniversalAdapter(context, appsList2);
         listView.setAdapter(adapter);
 
-        adapter.setOnClickListener(new UniversalAdapter.OnClickListener() {
-            @Override
-            public void onClick(Apps apps, View view) {
-                confirmationAndRemove(apps, view);
-            }
-        });
+        adapter.setOnClickListener(this::confirmationAndRemove);
     }
 
 }

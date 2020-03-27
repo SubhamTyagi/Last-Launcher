@@ -250,6 +250,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private TextView getCustomView() {
+        //  AnimatedTextView textView=new AnimatedTextView(this);
+        // textView.setColorSpace(15);
         TextView textView = new TextView(this);
         textView.setOnClickListener(this);
         textView.setOnLongClickListener(this);
@@ -326,7 +328,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void hideApp(String activityName) {
-        //Toast.makeText(this, "Current Hide is not fully implemented\n After hide app you will not access that app from this launcher", Toast.LENGTH_LONG).show();
         for (Apps apps : mAppsList) {
             if (activityName.equalsIgnoreCase(apps.getActivityName().toString())) {
                 apps.setHide(true);
