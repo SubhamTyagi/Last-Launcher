@@ -23,11 +23,11 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
@@ -36,9 +36,13 @@ import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 public class ColorSniffer extends Dialog implements View.OnClickListener {
     private LauncherActivity launcherActivity;
     private TextView onOffSwitch;
+    private Context context;
+    private TextView mStartColorSniffer;
+    private boolean change = false;
 
     ColorSniffer(Context context, LauncherActivity launcherActivity) {
         super(context);
+        this.context = context;
         this.launcherActivity = launcherActivity;
     }
 
@@ -51,9 +55,12 @@ public class ColorSniffer extends Dialog implements View.OnClickListener {
             case R.id.color_sniffer_clipboard:
                 launcherActivity.clipboardData();
                 break;
-            case R.id.color_sniffer_external_app:
-                colorSnifferCall();
+            case R.id.color_sniffer_external_app: {
+                if (DbUtils.isExternalSourceColor())
+                    startColorSnifferApp();
+
                 break;
+            }
         }
     }
 
@@ -61,12 +68,13 @@ public class ColorSniffer extends Dialog implements View.OnClickListener {
         boolean b = DbUtils.isExternalSourceColor();
         DbUtils.externalSourceColor(!b);
         onOffSwitch.setText(!b ? ":On" : ":Off");
-        //
+        change = !change;
+        mStartColorSniffer.setVisibility(!b ? View.VISIBLE : View.GONE);
     }
 
 
     //TODO: uri update, data schema
-    private void colorSnifferCall() {
+    private void startColorSnifferApp() {
         //check app android compat currently colorSniffer api=19 and this app api=14
         try {
             Intent intent = new Intent("android.intent.action.MAIN");
@@ -76,14 +84,22 @@ public class ColorSniffer extends Dialog implements View.OnClickListener {
             //Is it required to send default colors of apps : YES
             // is it required/ to send theme related data for better experience : ask for color sniffer developer
             // 2121= dummy value
+
             intent.putExtra(LauncherActivity.DEFAULT_COLOR_FOR_APPS, 2121);
+
             launcherActivity.startActivityForResult(intent, LauncherActivity.COLOR_SNIFFER_REQUEST);
             // for activity result see LauncherActivity line 509
             cancel();
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getContext(), "Color Sniffer is not installed", Toast.LENGTH_SHORT).show();
-            //App is not installed send user to fdroid store for installation
 
+            try {
+                Uri uri = Uri.parse("market://details?id=ryey.colorsniffer");
+                Intent i = new Intent(Intent.ACTION_VIEW, uri);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(i);
+            } catch (ActivityNotFoundException ignore) {
+
+            }
         }
     }
 
@@ -95,9 +111,22 @@ public class ColorSniffer extends Dialog implements View.OnClickListener {
         setContentView(R.layout.dialog_color_sniffer_settings);
         findViewById(R.id.text_color_sniffer_on_off).setOnClickListener(this::onClick);
         findViewById(R.id.color_sniffer_clipboard).setOnClickListener(this::onClick);
-        findViewById(R.id.color_sniffer_external_app).setOnClickListener(this::onClick);
+        mStartColorSniffer = findViewById(R.id.color_sniffer_external_app);
+        mStartColorSniffer.setOnClickListener(this::onClick);
         onOffSwitch = findViewById(R.id.switch_color_sniffer_on_off);
+        boolean onOff = DbUtils.isExternalSourceColor();
+        onOffSwitch.setText(onOff ? ":On" : ":Off");
+        mStartColorSniffer.setVisibility(onOff ? View.VISIBLE : View.GONE);
+    }
 
-        onOffSwitch.setText(DbUtils.isExternalSourceColor() ? ":On" : ":Off");
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //else Window decor leak happen
+        if (change) {
+            launcherActivity.recreate();
+        }
+
     }
 }

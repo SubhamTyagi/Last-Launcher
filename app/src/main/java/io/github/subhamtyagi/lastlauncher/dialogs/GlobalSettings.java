@@ -102,8 +102,8 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
     }
 
     private void colorSnifferCall() {
-        new ColorSniffer(getContext(), launcherActivity).show();
         cancel();
+        new ColorSniffer(getContext(), launcherActivity).show();
     }
 
     private void freezeAppsSize() {

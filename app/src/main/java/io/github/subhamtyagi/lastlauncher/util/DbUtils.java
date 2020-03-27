@@ -31,6 +31,7 @@ public class DbUtils {
     private static final String LAUNCHER_THEME = "launcher_theme";
     private static final String LAUNCHER_FREEZE_SIZE = "launcher_freeze_size";
     private static final String APPS_COLOR_FROM_EXTERNAL_SOURCE = "external_app_color";
+
     public static int NULL_TEXT_COLOR = -1;
 
     public static boolean isFirstStart() {

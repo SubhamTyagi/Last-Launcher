@@ -213,7 +213,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private void refreshAppSize(String activityName) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
-                int size = DbUtils.getAppSize(activityName)+2;
+                int size = DbUtils.getAppSize(activityName) + 2;
                 apps.setSize(size);
                 DbUtils.putAppSize(activityName, size);
                 break;
@@ -515,7 +515,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             // bundle yes
             // is it complex: may be
             //Bundle is null wtf
-            colorSnifferCall(getIntent().getExtras().getBundle("color_bundle"));
+
+            colorSnifferCall(data.getBundleExtra("color_bundle"));
+
 
         }
     }
@@ -530,29 +532,25 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     //may be override of abstract class method to be called from color sniffer #3 types
     public void colorSnifferCall(Bundle bundle) {
-        Log.d(TAG, "colorSnifferCall: i am called now it is my duty");
-        int DEFAULT_COLOR = -1;//-1 represent null or not set
         boolean defaultColorSet = false;// for change set
-        String sDefaultColor = bundle.getString(DEFAULT_COLOR_FOR_APPS);//keys
-        if (sDefaultColor != null) {// not set by ColorSniffer
-            DEFAULT_COLOR = Integer.valueOf(sDefaultColor);
-            if (DEFAULT_COLOR != DbUtils.NULL_TEXT_COLOR) { //NULL_TEXT_COLOR=-1
-                defaultColorSet = true;// to save cpu cycle
-            }
+        int DEFAULT_COLOR = bundle.getInt(DEFAULT_COLOR_FOR_APPS);//keys
+        // not set by ColorSniffer
+        if (DEFAULT_COLOR != DbUtils.NULL_TEXT_COLOR) { //NULL_TEXT_COLOR=-1
+            defaultColorSet = true;// to save cpu cycle
         }
 
         // get each value as proposed by Color Sniffer App developer
-
         for (Apps apps : mAppsList) {
             TextView textView = apps.getTextView();
             String appPackage = apps.getActivityName().toString();
-            String sColor = bundle.getString(appPackage);// get each value as proposed by Color Sniffer App developer
-            if (sColor != null) {
-                int color = Integer.valueOf(sColor);
+            int color = bundle.getInt(appPackage);
+            if (color != DbUtils.NULL_TEXT_COLOR) {
                 textView.setTextColor(color);
-                DbUtils.putAppColor(appPackage, color);
+                DbUtils.putAppColorExternalSource(appPackage, color);
+                // DbUtils.putAppColor(appPackage, color);
             } else if (defaultColorSet) {
                 //set default color
+                //TODO:
                 DbUtils.putAppColor(appPackage, DEFAULT_COLOR);
                 textView.setTextColor(DEFAULT_COLOR);
             }//else do nothing theme default color will apply
@@ -561,23 +559,29 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     //Clipboard manager
     public Map<String, Integer> clipboardData() {
+        Log.d(TAG, "clipboardData: ");
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             try {
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clipData = clipboardManager.getPrimaryClip();
                 if (clipData.getItemCount() > 0) {
                     ClipData.Item item = clipData.getItemAt(0);
-                    String tsv = item.getText().toString();
-                    // Log.d(TAG, "clipboardData: " + tsv);
-                    //validate tsv and get its data
+                    String tabSepratedData = item.getText().toString();
+                    Log.d(TAG, "clipboardData: " + tabSepratedData);
+                    //validate tabSepratedData and get its data
                     //unique id bae73ae068dacc6cb659d1fb231e7b11 i.e LastLauncher-ColorSniffer MD5-128
-                    String[] entries = tsv.split("\n");//get each line
+
+                    String[] line = tabSepratedData.split("\n");//get each line
+
                     Map<String, Integer> colorsAndId = new ArrayMap<>(); // map to put all values in key and values format
-                    for (int i = 0, entriesLength = entries.length; i < entriesLength; i++) {
-                        String entry = entries[i];// iterate over every line
+                    for (int i = 0, entriesLength = line.length; i < entriesLength; i++) {
+                        String entry = line[i];// iterate over every line
                         String[] activityIdAndColor = entry.split("\t");// split line into id and color
                         int color = Color.parseColor(activityIdAndColor[1]);
                         colorsAndId.put(activityIdAndColor[0], color);// put id and color to map
+
+                        Log.d(TAG, "clipboardData: app:" + activityIdAndColor[0] + "  color==" + color);
+
                     }
                     setAppsColorFromClipboard(colorsAndId);
                     return colorsAndId;// return map
@@ -597,11 +601,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         for (Apps apps : mAppsList) {
             try {
                 TextView textView = apps.getTextView();
-                String activityName = apps.getActivityName().toString().split("/")[0];
-                Integer newColor = colorsAndId.get(activityName);
+                String s = apps.getActivityName().toString();
+                Integer newColor = colorsAndId.get(s);
                 if (newColor == null) continue;
                 textView.setTextColor(newColor);
-                DbUtils.putAppColorExternalSource(apps.getActivityName().toString(), newColor);
+                DbUtils.putAppColorExternalSource(s, newColor);
             } catch (NullPointerException ignore) {
                 ignore.printStackTrace();
             }
