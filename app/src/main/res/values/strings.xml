@@ -29,7 +29,11 @@
 
     <string name="reset_to_default_settings">Reset to default Settings</string>
     <string name="app_info">App Info</string>
+
     <string name="random_colors">Random Colors</string>
+
+    <string name="customize_with_color_sniffer">ColorSniffer…</string>
+
     <string name="reset_to_default">Reset</string>
     <string name="freeze_size">Freeze Size</string>
     <string name="hide">Hide</string>
@@ -49,6 +53,7 @@
     <string name="black_on_grey">Black on Grey</string>
     <string name="hacker_green">Hacker Green</string>
     <string name="hacker_red">Hacker Red</string>
+    <string name="choose_old_backup_files">Choose previous backup file</string>
 
 
 </resources>

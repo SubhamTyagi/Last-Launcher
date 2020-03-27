@@ -45,6 +45,10 @@
     <string name="black_on_grey">Schwarz auf Grau</string>
     <string name="hacker_green">Hackergrün</string>
     <string name="hacker_red">Hackerrot</string>
+    <string name="customize_with_color_sniffer">ColorSniffer…</string>
+
+    <!--translation required-->
+    <string name="choose_old_backup_files">Choose previous backup file</string>
 
 
 </resources>

@@ -7,11 +7,13 @@
         <item name="android:listPreferredItemPaddingLeft">25dp</item>
         <item name="android:listPreferredItemPaddingRight">5dp</item>
         <item name="android:backgroundDimEnabled">false</item>
+
     </style>
 
 
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:textColor">#FF8F8C8C</item>
+        <!--<item name="android:switchTextAppearance">#FF8F8C8C</item>-->
         <item name="android:background">@android:color/black</item>
     </style>
 
@@ -41,6 +43,7 @@
         <item name="android:listPreferredItemPaddingLeft">5dp</item>
         <item name="android:listPreferredItemPaddingRight">5dp</item>
         <item name="android:textColor">#FFFFFFFF</item>
+        <!--<item name="android:switchTextAppearance">#FFFFff</item>-->
         <item name="android:popupBackground">#FF000000</item>
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:backgroundDimEnabled">false</item>
@@ -50,12 +53,14 @@
     <style name="Black" parent="AppBaseTheme">
         <item name="android:background">@android:color/black</item>
         <item name="android:textColor">@android:color/white</item>
+       <!-- <item name="android:switchTextAppearance">@android:color/white</item>-->
     </style>
 
     <style name="White" parent="AppBaseTheme">
 
         <item name="android:background">#FFFFFFFF</item>
         <item name="android:textColor">#FF000000</item>
+        <!--<item name="android:switchTextAppearance">#FF000000</item>-->
     </style>
 
     <style name="BlackonGrey" parent="AppBaseTheme">
@@ -63,11 +68,13 @@
         <item name="android:background">#cdd8da</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFFFFFFF</item>
+       <!-- <item name="android:switchTextAppearance">#FFFFFFFF</item>-->
     </style>
 
     <style name="A" parent="AppBaseTheme">
         <item name="android:background">#d5e0e2</item>
         <item name="android:textColor">#FF000000</item>
+        <!--<item name="android:switchTextAppearance">#FF000000</item>-->
     </style>
 
 
@@ -75,13 +82,15 @@
         <item name="android:background">#000000</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF00ff00</item>
+       <!-- <item name="android:switchTextAppearance">#FF00ff00</item>-->
     </style>
 
     <style name="Hacker.red" parent="AppBaseTheme">
 
         <item name="android:background">#000000</item>
         <item name="android:shadowColor">#BADA0F0F</item>
-        <item name="android:textColor">#FFFF0000</item>
+        <item name="android:textColor">#FF00ff00</item>
+       <!-- <item name="android:switchTextAppearance">#FF00ff00</item>-->
     </style>
 
 

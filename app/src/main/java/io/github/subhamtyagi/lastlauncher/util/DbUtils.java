@@ -25,13 +25,18 @@ import io.github.subhamtyagi.lastlauncher.R;
 public class DbUtils {
 
     public static final int NULL_TEXT_SIZE = -1;
-    public static int NULL_TEXT_COLOR = -1;
+    private static final String RANDOM_COLOR_FOR_APPS = "random_color_for_apps";
+    private static final String READ_WRITE_PERMISSION = "read_write_permission";
+    private static final String LAUNCHER_FONTS = "launcher_fonts";
+    private static final String LAUNCHER_THEME = "launcher_theme";
+    private static final String LAUNCHER_FREEZE_SIZE = "launcher_freeze_size";
+    private static final String APPS_COLOR_FROM_EXTERNAL_SOURCE = "external_app_color";
 
+    public static int NULL_TEXT_COLOR = -1;
 
     public static boolean isFirstStart() {
         return SpUtils.getInstance().getBoolean("sp_first_time_app_open", true);
     }
-
 
     public static void putAppOriginalName(String activityName, String value) {
         activityName = activityName.replaceAll("\\.", "_") + "_app_original_name";
@@ -79,7 +84,6 @@ public class DbUtils {
         SpUtils.getInstance().putBoolean(activityName, value);
     }
 
-
     public static void freezeAppSize(String activityName, boolean value) {
         activityName = activityName.replaceAll("\\.", "_") + "_freeze";
         SpUtils.getInstance().putBoolean(activityName, value);
@@ -90,7 +94,6 @@ public class DbUtils {
         return SpUtils.getInstance().getBoolean(activityName, false);
 
     }
-
 
     public static boolean isAppHidden(String activityName) {
         activityName = activityName.replaceAll("\\.", "_") + "_hide";
@@ -113,27 +116,25 @@ public class DbUtils {
         SpUtils.getInstance().remove(activityName);
     }
 
-
-    public static void setTheme(int id) {
-        SpUtils.getInstance().putInt(LAUNCHER_THEME, id);
-    }
-
     public static int getTheme() {
         return SpUtils.getInstance().getInt(LAUNCHER_THEME, R.style.AppTheme);
     }
 
-    public static void setFonts(String path) {
-        SpUtils.getInstance().putString(LAUNCHER_FONTS, path);
+    public static void setTheme(int id) {
+        SpUtils.getInstance().putInt(LAUNCHER_THEME, id);
     }
 
     public static String getFonts() {
         return SpUtils.getInstance().getString(LAUNCHER_FONTS, null);
     }
 
+    public static void setFonts(String path) {
+        SpUtils.getInstance().putString(LAUNCHER_FONTS, path);
+    }
+
     public static boolean isPermissionRequired() {
         return SpUtils.getInstance().getBoolean(READ_WRITE_PERMISSION, true);
     }
-
 
     public static void permissionRequired(boolean b) {
         SpUtils.getInstance().putBoolean(READ_WRITE_PERMISSION, b);
@@ -156,10 +157,10 @@ public class DbUtils {
 
     }
 
-    public static String[] getAllHiddenApps(){
-       Map<String,?> entries= SpUtils.getInstance().getAll();
+    public static String[] getAllHiddenApps() {
+        Map<String, ?> entries = SpUtils.getInstance().getAll();
         for (Map.Entry<String, ?> entry : entries.entrySet()) {
-            if (entry.getKey().contains("hide")){
+            if (entry.getKey().contains("hide")) {
 
             }
         }
@@ -167,9 +168,21 @@ public class DbUtils {
         return null;
     }
 
-    private static final String RANDOM_COLOR_FOR_APPS = "random_color_for_apps";
-    private static final String READ_WRITE_PERMISSION = "read_write_permission";
-    private static final String LAUNCHER_FONTS = "launcher_fonts";
-    private static final String LAUNCHER_THEME = "launcher_theme";
-    private static final String LAUNCHER_FREEZE_SIZE = "launcher_freeze_size";
+    public static boolean isExternalSourceColor() {
+        return SpUtils.getInstance().getBoolean(APPS_COLOR_FROM_EXTERNAL_SOURCE, false);
+    }
+
+    public static void externalSourceColor(boolean b) {
+        SpUtils.getInstance().putBoolean(APPS_COLOR_FROM_EXTERNAL_SOURCE, b);
+    }
+
+    public static int getAppColorExternalSource(String activityName) {
+        activityName = activityName.replaceAll("\\.", "_") + "external_color";
+        return SpUtils.getInstance().getInt(activityName, NULL_TEXT_COLOR);
+    }
+
+    public static void putAppColorExternalSource(String activityName, int color) {
+        activityName = activityName.replaceAll("\\.", "_") + "external_color";
+        SpUtils.getInstance().putInt(activityName, color);
+    }
 }

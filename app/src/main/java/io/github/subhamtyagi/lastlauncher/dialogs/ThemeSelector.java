@@ -85,6 +85,7 @@ public class ThemeSelector extends Dialog implements View.OnClickListener {
 
     private void setTheme(int appTheme) {
         DbUtils.setTheme(appTheme);
+        DbUtils.externalSourceColor(false);
         cancel();
         context.recreate();
     }

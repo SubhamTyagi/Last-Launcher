@@ -47,26 +47,20 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_global_settings);
-
         findViewById(R.id.settings_fonts).setOnClickListener(this);
         findViewById(R.id.settings_themes).setOnClickListener(this);
-
         freezeSize = findViewById(R.id.settings_freeze_size);
-        freezeSize.setOnClickListener(this::onClick);
+        freezeSize.setOnClickListener(this);
 
         findViewById(R.id.settings_reset_to_defaults).setOnClickListener(this);
         findViewById(R.id.settings_backup).setOnClickListener(this);
         findViewById(R.id.settings_restore).setOnClickListener(this);
-        //findViewById(R.id.settings_primary_color).setOnClickListener(this);
-        TextView randomColors = findViewById(R.id.settings_setup_random_colors);
-        randomColors.setOnClickListener(this);
+
+        TextView colorSniffer = findViewById(R.id.settings_color_sniffer);
+        colorSniffer.setOnClickListener(this);
         findViewById(R.id.settings_freezed_apps).setOnClickListener(this);
         findViewById(R.id.settings_hidden_apps).setOnClickListener(this);
 
-        if (DbUtils.isRandomColor()) {
-            randomColors.setText(R.string.fixed_colors);
-        } else
-            randomColors.setText(R.string.random_colors);
 
         if (DbUtils.isSizeFreezed()) {
             freezeSize.setText(R.string.unfreeze_app_size);
@@ -84,30 +78,32 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
             case R.id.settings_themes:
                 bgColor();
                 break;
+            case R.id.settings_color_sniffer:
+                colorSnifferCall();
+                break;
             case R.id.settings_freeze_size:
                 freezeAppsSize();
-                break;
-            case R.id.settings_backup:
-                backup();
-                break;
-            case R.id.settings_restore:
-                restore();
-                break;
-            case R.id.settings_primary_color:
-                setPrimaryColor();
-                break;
-            case R.id.settings_reset_to_defaults:
-                defaultSettings();
-                break;
-            case R.id.settings_setup_random_colors:
-                randomColor();
                 break;
             case R.id.settings_hidden_apps:
                 hiddenApps();
                 break;
             case R.id.settings_freezed_apps:
                 freezedApps();
+            case R.id.settings_backup:
+                backup();
+                break;
+            case R.id.settings_restore:
+                restore();
+                break;
+            case R.id.settings_reset_to_defaults:
+                defaultSettings();
+                break;
         }
+    }
+
+    private void colorSnifferCall() {
+        cancel();
+        new ColorSniffer(getContext(), launcherActivity).show();
     }
 
     private void freezeAppsSize() {
@@ -120,8 +116,10 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
     }
 
     private void freezedApps() {
+
         launcherActivity.showFreezedApps();
         cancel();
+
     }
 
     private void hiddenApps() {
@@ -129,25 +127,14 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         cancel();
     }
 
-    private void randomColor() {
-        DbUtils.randomColor(!DbUtils.isRandomColor());
-        cancel();
-        launcherActivity.recreate();
-    }
-
     private void bgColor() {
         cancel();
         new ThemeSelector(getContext(), launcherActivity).show();
     }
 
-
     private void defaultSettings() {
         SpUtils.getInstance().clear();
         launcherActivity.recreate();
-    }
-
-    private void setPrimaryColor() {
-        Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
     }
 
     private void backup() {

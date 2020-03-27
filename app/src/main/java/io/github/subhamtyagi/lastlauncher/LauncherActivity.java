@@ -23,6 +23,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -41,6 +43,7 @@ import android.os.Bundle;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.provider.MediaStore;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -56,7 +59,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
@@ -76,12 +79,15 @@ import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
 public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
 
-    private static final int BACKUP_REQUEST = 125;
+    public static final int COLOR_SNIFFER_REQUEST = 154;
+    public final static String DEFAULT_COLOR_FOR_APPS = "default_color_for_apps";
+    private static final int RESTORE_REQUEST = 125;
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 32;
     private final String TAG = "LauncherActivity";
+
     private ArrayList<Apps> mAppsList;
     private BroadcastReceiver broadcastReceiver;
     private Typeface mTypeface;
@@ -174,18 +180,20 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
             textSize = DbUtils.getAppSize(activity);
             if (textSize == DbUtils.NULL_TEXT_SIZE) {
-                if (oftenApps.contains(packageName))
+                if (oftenApps.contains(packageName)) {
                     textSize = DEFAUTL_TEXT_SIZE_OFTEN_APPS;
-                else textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+                } else {
+                    textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+                }
+                DbUtils.putAppSize(activity, textSize);
             }
 
 
             color = DbUtils.getAppColor(activity);
             boolean freeze = DbUtils.isAppFreezed(activity);
 
-            if (DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
-                Random rnd = new Random();
-                color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            if (DbUtils.isExternalSourceColor() && color == DbUtils.NULL_TEXT_COLOR) {
+                color = DbUtils.getAppColorExternalSource(activity);
             }
 
             mAppsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
@@ -210,7 +218,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private void refreshAppSize(String activityName) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
-                int size = apps.getSize() + 2;
+
+                int size = DbUtils.getAppSize(activityName) + 2;
+
                 apps.setSize(size);
                 DbUtils.putAppSize(activityName, size);
                 break;
@@ -367,7 +377,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     private void changeColor(String activityName, TextView view) {
         int color = DbUtils.getAppColor(activityName);
-        if (color == -1) {
+        if (color == DbUtils.NULL_TEXT_COLOR) {
             color = view.getCurrentTextColor();
         }
         Dialog dialog = new ChooseColor(this, activityName, color, view);
@@ -399,14 +409,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             String activity = (String) view.getTag();
             String[] strings = activity.split("/");
             try {
+                //TODO: apps is not in recent menus
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                if (strings[1].contains(strings[0])) {
-                    intent.setClassName(strings[0], strings[1]);
-                    intent.setComponent(new ComponentName(strings[0], strings[1]));
-                    // intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    startActivity(intent);
-                } else
-                    startActivity(getPackageManager().getLaunchIntentForPackage(strings[0]));
+
+                intent.setClassName(strings[0], strings[1]);
+                intent.setComponent(new ComponentName(strings[0], strings[1]));
+                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
 
                 if (!DbUtils.isSizeFreezed() && !DbUtils.isAppFreezed(activity)) {
                     refreshAppSize(activity);
@@ -473,8 +482,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
         chooseFile.setType("file/plain");
-        Intent intent = Intent.createChooser(chooseFile, "Choose backup file");
-        startActivityForResult(intent, BACKUP_REQUEST);
+        Intent intent = Intent.createChooser(chooseFile, this.getString(R.string.choose_old_backup_files));
+        startActivityForResult(intent, RESTORE_REQUEST);
     }
 
     public void browseFonts() {
@@ -492,7 +501,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
-        if (requestCode == BACKUP_REQUEST) {
+        if (requestCode == RESTORE_REQUEST) {
             Uri uri = data.getData();
             ContentResolver cr = getContentResolver();
             try {
@@ -511,13 +520,108 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 cursor.moveToFirst();
                 String path = cursor.getString(column_index);
                 cursor.close();
-
                 Log.i(TAG, "onActivityResult: " + path);
                 DbUtils.setFonts(path);
                 mTypeface = Typeface.createFromFile(path);
                 loadApps();
             } catch (Exception i) {
                 i.printStackTrace();
+            }
+        } else if (requestCode == COLOR_SNIFFER_REQUEST) {
+            Log.d(TAG, "onActivityResult: yes i am called !~!");
+            //TODO: data schema consensus
+            //GET DATA FROM COLOR SNIFFER APPS:
+            //K,V ??? no
+            // bundle yes
+            // is it complex: may be
+            //Bundle is null wtf
+          
+            colorSnifferCall(data.getBundleExtra("color_bundle"));
+
+
+        }
+    }
+
+  
+
+    //may be override of abstract class method to be called from color sniffer #3 types
+    public void colorSnifferCall(Bundle bundle) {
+        boolean defaultColorSet = false;// for change set
+        int DEFAULT_COLOR = bundle.getInt(DEFAULT_COLOR_FOR_APPS);//keys
+        // not set by ColorSniffer
+        if (DEFAULT_COLOR != DbUtils.NULL_TEXT_COLOR) { //NULL_TEXT_COLOR=-1
+            defaultColorSet = true;// to save cpu cycle
+        }
+
+        // get each value as proposed by Color Sniffer App developer
+        for (Apps apps : mAppsList) {
+            TextView textView = apps.getTextView();
+            String appPackage = apps.getActivityName().toString();
+            int color = bundle.getInt(appPackage);
+            if (color != DbUtils.NULL_TEXT_COLOR) {
+                textView.setTextColor(color);
+                DbUtils.putAppColorExternalSource(appPackage, color);
+                // DbUtils.putAppColor(appPackage, color);
+            } else if (defaultColorSet) {
+                //set default color
+                //TODO:
+                DbUtils.putAppColor(appPackage, DEFAULT_COLOR);
+                textView.setTextColor(DEFAULT_COLOR);
+            }//else do nothing theme default color will apply
+        }
+    }
+
+    //Clipboard manager
+    public Map<String, Integer> clipboardData() {
+        Log.d(TAG, "clipboardData: ");
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            try {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = clipboardManager.getPrimaryClip();
+                if (clipData.getItemCount() > 0) {
+                    ClipData.Item item = clipData.getItemAt(0);
+                    String tabSepratedData = item.getText().toString();
+                    Log.d(TAG, "clipboardData: " + tabSepratedData);
+                    //validate tabSepratedData and get its data
+                    //unique id bae73ae068dacc6cb659d1fb231e7b11 i.e LastLauncher-ColorSniffer MD5-128
+
+                    String[] line = tabSepratedData.split("\n");//get each line
+
+                    Map<String, Integer> colorsAndId = new ArrayMap<>(); // map to put all values in key and values format
+                    for (int i = 0, entriesLength = line.length; i < entriesLength; i++) {
+                        String entry = line[i];// iterate over every line
+                        String[] activityIdAndColor = entry.split("\t");// split line into id and color
+                        int color = Color.parseColor(activityIdAndColor[1]);
+                        colorsAndId.put(activityIdAndColor[0], color);// put id and color to map
+
+                        Log.d(TAG, "clipboardData: app:" + activityIdAndColor[0] + "  color==" + color);
+
+                    }
+                    setAppsColorFromClipboard(colorsAndId);
+                    return colorsAndId;// return map
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        return null;// return empty null/
+    }
+
+    private void setAppsColorFromClipboard(Map<String, Integer> colorsAndId) {
+        if (colorsAndId == null) return;
+        DbUtils.externalSourceColor(true);
+        for (Apps apps : mAppsList) {
+            try {
+                TextView textView = apps.getTextView();
+                String s = apps.getActivityName().toString();
+                Integer newColor = colorsAndId.get(s);
+                if (newColor == null) continue;
+                textView.setTextColor(newColor);
+                DbUtils.putAppColorExternalSource(s, newColor);
+            } catch (NullPointerException ignore) {
+                ignore.printStackTrace();
             }
         }
     }
@@ -529,6 +633,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     public void showFreezedApps() {
         new FreezedApps(this, mAppsList).show();
     }
+
 
 }
 
