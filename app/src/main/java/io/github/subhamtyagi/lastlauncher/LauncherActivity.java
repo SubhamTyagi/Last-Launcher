@@ -63,7 +63,9 @@ import java.util.Map;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
+import io.github.subhamtyagi.lastlauncher.dialogs.FreezedApps;
 import io.github.subhamtyagi.lastlauncher.dialogs.GlobalSettings;
+import io.github.subhamtyagi.lastlauncher.dialogs.HiddenApps;
 import io.github.subhamtyagi.lastlauncher.dialogs.RenameInput;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
@@ -85,8 +87,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 32;
     private final String TAG = "LauncherActivity";
-    private BroadcastReceiver broadcastReceiver;
+
     private ArrayList<Apps> mAppsList;
+    private BroadcastReceiver broadcastReceiver;
     private Typeface mTypeface;
     private FlowLayout mHomeLayout;
 
@@ -143,10 +146,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         loadApps();
         registerForReceiver();
         SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
+
+
         System.gc();
     }
 
     private void loadApps() {
+
         Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = getPackageManager();
@@ -164,15 +170,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         for (ResolveInfo resolveInfo : activities) {
             packageName = resolveInfo.activityInfo.packageName;
+
             String activity = packageName + "/" + resolveInfo.activityInfo.name;
+
             DbUtils.putAppOriginalName(activity, resolveInfo.loadLabel(pm).toString());
             appName = DbUtils.getAppName(activity, resolveInfo.loadLabel(pm).toString());
-            hide = DbUtils.isAppHidden(activity);
 
-            if (hide) {
-                //Temp hide
-                continue;
-            }
+            hide = DbUtils.isAppHidden(activity);
 
             textSize = DbUtils.getAppSize(activity);
             if (textSize == DbUtils.NULL_TEXT_SIZE) {
@@ -193,6 +197,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
 
             mAppsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
+
         }
 
         sortApps();
@@ -213,7 +218,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private void refreshAppSize(String activityName) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
+
                 int size = DbUtils.getAppSize(activityName) + 2;
+
                 apps.setSize(size);
                 DbUtils.putAppSize(activityName, size);
                 break;
@@ -231,7 +238,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
                 String appName = DbUtils.getAppName(activityName, appOriginalName);
 
-                boolean hide = apps.isHide();
+                boolean hide = apps.isHidden();
                 boolean freezeSize = apps.isFreezeSize();
 
                 Apps newApp = new Apps(activityName, appName, getCustomView(), color, size, hide, freezeSize);
@@ -285,13 +292,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 case R.id.menu_rename:
                     renameApp(activityName, view.getText().toString());
                     break;
-                case R.id.menu_freeze_size: {
-                    boolean b = DbUtils.isAppFreezed(activityName);
-                    DbUtils.freezeAppSize(activityName, !b);
-                }
-                break;
+                case R.id.menu_freeze_size:
+                    freezeAppSize(activityName);
+                    break;
                 case R.id.menu_hide:
-                    hideApp(activityName, view);
+                    hideApp(activityName);
                     break;
                 case R.id.menu_uninstall:
                     uninstallApp(activityName);
@@ -310,11 +315,24 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         popupMenu.show();
     }
 
-    private void hideApp(String activityName, TextView view) {
+    private void freezeAppSize(String activityName) {
+        boolean b = DbUtils.isAppFreezed(activityName);
+        for (Apps apps : mAppsList) {
+            if (activityName.equalsIgnoreCase(apps.getActivityName().toString())) {
+                apps.setFreeze(!b);
+            }
+        }
+
+    }
+
+    private void hideApp(String activityName) {
         //Toast.makeText(this, "Current Hide is not fully implemented\n After hide app you will not access that app from this launcher", Toast.LENGTH_LONG).show();
-        DbUtils.hideApp(activityName, true);
-        view.setVisibility(View.GONE);
-        //refreshApps(activityName);
+        for (Apps apps : mAppsList) {
+            if (activityName.equalsIgnoreCase(apps.getActivityName().toString())) {
+                apps.setHide(true);
+            }
+        }
+
     }
 
     private void renameApp(String activityName, String appName) {
@@ -393,15 +411,17 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             try {
                 //TODO: apps is not in recent menus
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+
                 intent.setClassName(strings[0], strings[1]);
                 intent.setComponent(new ComponentName(strings[0], strings[1]));
                 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
+
                 if (!DbUtils.isSizeFreezed() && !DbUtils.isAppFreezed(activity)) {
                     refreshAppSize(activity);
                 }
             } catch (Exception ignore) {
-                Log.e(TAG, "onClick: " + ignore);
+
             }
         }
     }
@@ -515,20 +535,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             // bundle yes
             // is it complex: may be
             //Bundle is null wtf
-
+          
             colorSnifferCall(data.getBundleExtra("color_bundle"));
 
 
         }
     }
 
-    //hidden app support
-    public void showHiddenApps() {
-        // Intent i = new Intent(this, MyList.class);
-        // i.putParcelableArrayListExtra("arrays", mAppsList);
-        // startActivity(i);
-
-    }
+  
 
     //may be override of abstract class method to be called from color sniffer #3 types
     public void colorSnifferCall(Bundle bundle) {
@@ -611,5 +625,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         }
     }
+
+    public void showHiddenApps() {
+        new HiddenApps(this, mAppsList).show();
+    }
+
+    public void showFreezedApps() {
+        new FreezedApps(this, mAppsList).show();
+    }
+
+
 }
 

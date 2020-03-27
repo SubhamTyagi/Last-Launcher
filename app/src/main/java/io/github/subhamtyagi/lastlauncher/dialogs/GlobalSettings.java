@@ -116,12 +116,14 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
     }
 
     private void freezedApps() {
-        Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
+
+        launcherActivity.showFreezedApps();
+        cancel();
+
     }
 
     private void hiddenApps() {
-        Toast.makeText(getContext(), "Not implemnted yet", Toast.LENGTH_SHORT).show();
-        // launcherActivity.showHiddenApps();
+        launcherActivity.showHiddenApps();
         cancel();
     }
 
@@ -151,7 +153,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         else {
             launcherActivity.browseFile();
             cancel();
-            Toast.makeText(getContext(), "Choose old back file", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Choose old backup file", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -1,0 +1,6 @@
+*Preview release 5*
+
+- Hide and Freeze app list
+- previous settings may <font color="#ff000"><b>break</b></font>
+- previous backup file may <font color="#ff000"><b>not worked</b></font>
+

@@ -1,6 +1,6 @@
 /*
  * Last Launcher
- * Copyright (C) 2019 Shubham Tyagi
+ * Copyright (C) 2019,2020 Shubham Tyagi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,20 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.subhamtyagi.lastlauncher;
+package io.github.subhamtyagi.lastlauncher.dialogs;
 
-import android.app.ListActivity;
-import android.os.Bundle;
+//not in use
+public interface DialogListener {
+    void showHiddenApps();
 
-import io.github.subhamtyagi.lastlauncher.adapters.UniversalAdapter;
+    void showFreezedApps();
 
-public class MyList extends ListActivity {
+    void browseFile();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    void isPermissionRequired();
+
+    void browseFonts();
+
+    void onAppRenamed(String activityName, String appNewName);
 
 
-        setListAdapter(new UniversalAdapter(this,null));
-    }
 }
