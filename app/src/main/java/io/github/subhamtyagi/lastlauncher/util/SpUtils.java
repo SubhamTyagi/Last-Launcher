@@ -36,7 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-
+// utility to handle shared prefs
 public class SpUtils {
     private volatile static SpUtils mInstance;
     private SharedPreferences mPref;

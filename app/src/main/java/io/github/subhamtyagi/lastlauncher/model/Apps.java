@@ -23,20 +23,29 @@ import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
-
+// a model class that hold everything related to an app
 public class Apps {
 
+    // app activity name format package.name/package.name.ClassName
+    // for eg. com.example.appname/com.example.appname.MainActivity
+    // for eg  io.github.subhamtyagi.lastlauncher/io.github.subhamtyagi.lastlauncher/LauncherActivity
     final private CharSequence activity;
+    // app name to shown on screen
     private CharSequence appName;
+    // a text view or a subclass
     private TextView textView;
+    // app color
     private int color;
+    // app size
     private int size;
+    // is app size freezed
     private boolean freezeSize;
+    // is app hidden from home screen
     private boolean hide;
 
 
     /**
-     * @param activity   executable activity path
+     * @param activity    activity path
      * @param appName    App name
      * @param tv         a text view corresponding to App
      * @param color      Text color
@@ -56,6 +65,8 @@ public class Apps {
         textView.setTag(activity);
         textView.setTextSize(size);
 
+        // if color is not -1 then set this to color
+        // else not set the color default theme text color will handle the color
         if (color != DbUtils.NULL_TEXT_COLOR)
             textView.setTextColor(color);
 

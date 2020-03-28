@@ -20,12 +20,12 @@ package io.github.subhamtyagi.lastlauncher.util;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.os.Process;
 import android.os.UserHandle;
 import android.os.UserManager;
 
 
+// not in use
 @TargetApi(21)
 public class UserUtils {
     private UserManager userManager;

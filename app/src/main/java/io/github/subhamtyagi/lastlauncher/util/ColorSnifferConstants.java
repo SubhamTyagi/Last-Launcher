@@ -18,6 +18,7 @@
 
 package io.github.subhamtyagi.lastlauncher.util;
 
+// not in use
 public class ColorSnifferConstants {
     public final static String DEFAULT_COLOR_FOR_APPS = "default_color_for_apps";
     public static final int COLOR_SNIFFER_REQUEST = 154;

@@ -33,6 +33,8 @@ import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
+
+// color sniffer dialog
 public class ColorSniffer extends Dialog implements View.OnClickListener {
     private LauncherActivity launcherActivity;
     private TextView onOffSwitch;

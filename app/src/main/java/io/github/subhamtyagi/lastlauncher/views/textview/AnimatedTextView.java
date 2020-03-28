@@ -19,27 +19,16 @@
 package io.github.subhamtyagi.lastlauncher.views.textview;
 
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.LinearGradient;
-import android.graphics.Matrix;
-import android.graphics.Shader;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.widget.TextView;
-
-import io.github.subhamtyagi.lastlauncher.R;
-
 /**
  * RainbowTextView
  * Created by hanks on 2017/3/14.
  */
 
-public class AnimatedTextView extends TextView {
 
-    private Matrix mMatrix;
+// a new and animated text view may be used in future
+public class AnimatedTextView /*extends TextView*/ {
+
+ /*   private Matrix mMatrix;
     private float mTranslate;
     private float colorSpeed;
     private float colorSpace;
@@ -119,6 +108,6 @@ public class AnimatedTextView extends TextView {
         // Math.round(150* Resources.getSystem().getDisplayMetrics().density);
         return Resources.getSystem().getDisplayMetrics();
     }
-
+*/
 
 }

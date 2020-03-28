@@ -57,6 +57,7 @@ public class ChooseSize extends Dialog {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 size = i;
+                // check if size is so tiny
                 if (i < 15) {
                     size = 15;
                 }
@@ -71,7 +72,6 @@ public class ChooseSize extends Dialog {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 sizeSeekBar.setProgress(size);
                 DbUtils.putAppSize(appPackage, size);
-                //no need to change in model App
             }
         });
     }

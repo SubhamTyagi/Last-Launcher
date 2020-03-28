@@ -20,9 +20,9 @@
     </declare-styleable>
 
 
-    <declare-styleable name="AnimatedTextView">
-        <attr name="colorSpeed" format="dimension" />
-        <attr name="colorSpace" format="dimension" />
-    </declare-styleable>
+    <!-- <declare-styleable name="AnimatedTextView">
+         <attr name="colorSpeed" format="dimension" />
+         <attr name="colorSpace" format="dimension" />
+     </declare-styleable>-->
 
 </resources>

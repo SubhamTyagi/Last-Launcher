@@ -29,7 +29,7 @@ import io.github.subhamtyagi.lastlauncher.R;
 
 //https://github.com/rtugeek/ColorSeekBar
 
-
+// not a my product
 public class ColorSeekBar extends View {
 
     private int[] mColorSeeds = new int[]{

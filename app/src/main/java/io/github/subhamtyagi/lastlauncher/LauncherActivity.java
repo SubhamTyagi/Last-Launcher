@@ -77,6 +77,25 @@ import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
 import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
+/**
+ * --------------------------------------------------------------------------
+ * People can criticise me all the time they want,
+ * by this is what I am and I won't change the way I live for them.
+ * I live the way I want to flow.
+ * -------------------------------------------------------------------------
+ * -
+ * If we don’t transform the world, who will? If not now, when?
+ * If you have something to give, give it now
+ * -
+ * Do your little bit of good where you are;
+ * it’s those little bits of good put together that overwhelm the world."
+ * -
+ * Don’t just think, do it. Now it is you turn,  do it now, go fast and open pull request
+ * -
+ * ----------------------------------------------------------------------------
+ * This Activity extends the api 14 Activity Class not latest AppCompatActivity
+ * Reason: Small apk size
+ */
 public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
 
     public static final int COLOR_SNIFFER_REQUEST = 154;
@@ -129,11 +148,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // initialize the shared prefs may be done in application class
         SpUtils.getInstance().init(this);
         int theme = DbUtils.getTheme();
+        //theme must be set before setContentView
         setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+
+        // get and set fonts
         String fontsPath = DbUtils.getFonts();
         if (fontsPath == null || DbUtils.isFirstStart())
             mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
@@ -143,84 +166,110 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         mHomeLayout = findViewById(R.id.home_layout);
         mHomeLayout.setOnLongClickListener(this);
 
+        // loads the apps
         loadApps();
+        // register the receiver for installed and  uninstall , update app
         registerForReceiver();
+        //this may not be needed
         SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
 
-
-        System.gc();
     }
 
     private void loadApps() {
 
+        // get the apps installed on devices;
         Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
         int appsCount = activities.size();
+
+        // check whether our app list is already initlaized so we can clear it
+        //
         if (mAppsList != null)
             mAppsList.clear();
+        // is above code necessary i think that is redundant
         mAppsList = new ArrayList<>(appsCount);
 
+        // get the most used apps
+        // a list of app that are popular on fdroid and my most used app
         List<String> oftenApps = Utils.getOftenAppsList();
 
+        //
         String packageName, appName;
         int color, textSize;
         boolean hide;
-
+        // iterate over each app and initalize our base work
         for (ResolveInfo resolveInfo : activities) {
+
             packageName = resolveInfo.activityInfo.packageName;
-
+            // activity name as com.example/com.example.MainActivity
             String activity = packageName + "/" + resolveInfo.activityInfo.name;
-
+            /// save the app original name so that we can use this later e.g if user change
+            /// the app name then we have the name in DB
             DbUtils.putAppOriginalName(activity, resolveInfo.loadLabel(pm).toString());
+            // check whether user set the custom app name for eg. long name to small name
             appName = DbUtils.getAppName(activity, resolveInfo.loadLabel(pm).toString());
-
+            // is app is hidden by user
             hide = DbUtils.isAppHidden(activity);
-
+            // get the app text size
             textSize = DbUtils.getAppSize(activity);
+            // check if text size is null then set the size to default size
+            // size is null(-1) when user installed this app
             if (textSize == DbUtils.NULL_TEXT_SIZE) {
                 if (oftenApps.contains(packageName)) {
                     textSize = DEFAUTL_TEXT_SIZE_OFTEN_APPS;
                 } else {
                     textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
                 }
+                // save the size to db
+                // bcs DB doesn't have the app size
                 DbUtils.putAppSize(activity, textSize);
             }
 
-
+            // get app color
             color = DbUtils.getAppColor(activity);
+            // whether app size is freezed
             boolean freeze = DbUtils.isAppFreezed(activity);
 
+            // this is a separated implementation of ColorSniffer app
+            // if User set the color from external app like ColorSniffer
+            // then use that colors
             if (DbUtils.isExternalSourceColor() && color == DbUtils.NULL_TEXT_COLOR) {
                 color = DbUtils.getAppColorExternalSource(activity);
             }
 
+            // save all and add this is to app list
             mAppsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
 
         }
 
+        // now sort the app list
         sortApps();
     }
 
     //TODO: others sorts
     private void sortApps() {
+        // remove the app view for home layout these needs to be add later after sorting
         mHomeLayout.removeAllViews();
+        //sort the apps
+        //Currently simple alphabetically sort is supported
         Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
                 a.getAppName().toString(),
                 b.getAppName().toString()
         ));
+
+        // now add the app textView to home
         for (Apps apps : mAppsList) {
             mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         }
     }
 
+    // increase the size of app and save this to DB
     private void refreshAppSize(String activityName) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
-
                 int size = DbUtils.getAppSize(activityName) + 2;
-
                 apps.setSize(size);
                 DbUtils.putAppSize(activityName, size);
                 break;
@@ -228,6 +277,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    //  reset app size, color,name,freeze, etc and sort the app
+    // because there may be app name reset and need to suffled
     private void refreshApps(String activityName) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
@@ -237,10 +288,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 int color = DbUtils.getAppColor(activityName);
                 String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
                 String appName = DbUtils.getAppName(activityName, appOriginalName);
-
                 boolean hide = apps.isHidden();
                 boolean freezeSize = apps.isFreezeSize();
-
                 Apps newApp = new Apps(activityName, appName, getCustomView(), color, size, hide, freezeSize);
                 mAppsList.add(newApp);
                 sortApps();
@@ -249,6 +298,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    // the text view and set the various parameters
     private TextView getCustomView() {
         //  AnimatedTextView textView=new AnimatedTextView(this);
         // textView.setColorSpace(15);
@@ -260,11 +310,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         return textView;
     }
 
+    // show the option on long click
     @Override
     public boolean onLongClick(View view) {
         if (view instanceof TextView) {
+            // show app setting
             showPopup((String) view.getTag(), (TextView) view);
         } else if (view instanceof FlowLayout) {
+            // show launcher setting
             new GlobalSettings(this, this).show();
         }
         return true;
@@ -272,6 +325,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     private void showPopup(String activityName, TextView view) {
         Context context;
+        // set theme
+        // if theme wallpaper ie transparent then we have to show other theme
         if (DbUtils.getTheme() == R.style.Wallpaper)
             context = new ContextThemeWrapper(this, R.style.AppTheme);
         else
@@ -280,6 +335,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
 
+        // set proper item based on Db value
         if (DbUtils.isAppFreezed(activityName)) {
             popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze_size);
         }
@@ -314,9 +370,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
             return true;
         });
+        // not forget to show popup
         popupMenu.show();
     }
 
+    // as method name suggest
     private void freezeAppSize(String activityName) {
         boolean b = DbUtils.isAppFreezed(activityName);
         for (Apps apps : mAppsList) {
@@ -327,6 +385,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
+    // as method name suggest
     private void hideApp(String activityName) {
         for (Apps apps : mAppsList) {
             if (activityName.equalsIgnoreCase(apps.getActivityName().toString())) {
@@ -336,6 +395,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
+    // show the app rename Dialog
     private void renameApp(String activityName, String appName) {
         Dialog dialog = new RenameInput(this, activityName, appName, this);
         Window window = dialog.getWindow();
@@ -345,6 +405,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
+    // this is called by RenameInput.class Dialog when user set the name and sort the apps
     public void onAppRenamed(String activityName, String appNewName) {
         for (Apps app : mAppsList) {
             if (app.getActivityName().toString().equalsIgnoreCase(activityName)) {
@@ -356,6 +417,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
+    // reset the app
     private void resetApp(String activityName) {
         DbUtils.removeAppName(activityName);
         DbUtils.removeColor(activityName);
@@ -376,6 +438,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         startActivityForResult(intent, 97);
     }
 
+    //show dialog(i.e a color seek bar) for change color
     private void changeColor(String activityName, TextView view) {
         int color = DbUtils.getAppColor(activityName);
         if (color == DbUtils.NULL_TEXT_COLOR) {
@@ -388,6 +451,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         dialog.show();
     }
 
+    //show dialog(i.e a size seek bar) for change size
     private void changeSize(String activityName, TextView view) {
         int size = DbUtils.getAppSize(activityName);
         if (size == DbUtils.NULL_TEXT_SIZE) {
@@ -404,10 +468,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         dialog.show();
     }
 
+
+    // app text is clicked
+    // so launch the app
     @Override
     public void onClick(View view) {
         if (view instanceof TextView) {
+            // get the activity
             String activity = (String) view.getTag();
+            // split it into package name and class name
+            // bcz activity formatted as com.foo.bar/com.foo.bar.MainActivity
             String[] strings = activity.split("/");
             try {
                 //TODO: apps is not in recent menus
@@ -431,6 +501,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     public void onBackPressed() {
     }
 
+    // register the receiver
+    // when new app installed, app updated and app uninstalled launcher have to reflect it
     private void registerForReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_PACKAGE_ADDED);
@@ -446,12 +518,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         registerReceiver(broadcastReceiver, intentFilter);
     }
 
+
+    // unregister the receiver on destroy
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
     }
 
+    // request storage permission
     public void requestPermission() {
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             requestPermissions(
@@ -479,6 +554,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         return true;
     }
 
+    // browse the backup file
     public void browseFile() {
         Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
@@ -487,6 +563,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         startActivityForResult(intent, RESTORE_REQUEST);
     }
 
+    // browse the fonts
     public void browseFonts() {
         if (isPermissionRequired()) {
             requestPermission();
@@ -502,6 +579,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
+        // restore request
         if (requestCode == RESTORE_REQUEST) {
             Uri uri = data.getData();
             ContentResolver cr = getContentResolver();
@@ -513,6 +591,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            // font request
         } else if (requestCode == FONTS_REQUEST) {
             try {
                 String[] proj = {MediaStore.Images.Media.DATA};
@@ -528,15 +607,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             } catch (Exception i) {
                 i.printStackTrace();
             }
+            // this handle the request of ColorSniffer app
         } else if (requestCode == COLOR_SNIFFER_REQUEST) {
-            Log.d(TAG, "onActivityResult: yes i am called !~!");
             //TODO: data schema consensus
             //GET DATA FROM COLOR SNIFFER APPS:
             //K,V ??? no
             // bundle yes
             // is it complex: may be
-            //Bundle is null wtf
-          
+            //get the data
             colorSnifferCall(data.getBundleExtra("color_bundle"));
 
 
@@ -625,9 +703,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
+    // show the hidden app dialog
+
     public void showHiddenApps() {
         new HiddenApps(this, mAppsList).show();
     }
+
+    // show the freezed app dialog
 
     public void showFreezedApps() {
         new FreezedApps(this, mAppsList).show();

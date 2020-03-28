@@ -30,10 +30,13 @@ import java.util.ArrayList;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 
+//  adapter class
+// this is used in freezed app list and hidden app list
+//
 public class UniversalAdapter extends ArrayAdapter<Apps> {
 
-   private Context context;
-   private ArrayList<Apps> list;
+    private Context context;
+    private ArrayList<Apps> list;
     private OnClickListener listener;
 
     public UniversalAdapter(Context context, ArrayList<Apps> list) {

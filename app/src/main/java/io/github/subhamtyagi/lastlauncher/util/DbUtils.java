@@ -22,6 +22,20 @@ import java.util.Map;
 
 import io.github.subhamtyagi.lastlauncher.R;
 
+/**
+ * This is the our database class
+ * This is purely based on Shared prefs bcz -
+ * 1. faster than Sqlite3 Db
+ * 2. low memory usage than Sqlite3 db
+ * 3. low Cpu usage than sqlite3 db
+ * 4. easy to add new column when updating the db
+ * 5. easy to backup and restore.
+ * 6. built in android(no cpp code) and no other library need such as room
+ * 7. no overhead when updating db version
+ * <p>
+ * <p>
+ * NB: all column are conceptual
+ */
 public class DbUtils {
 
     public static final int NULL_TEXT_SIZE = -1;

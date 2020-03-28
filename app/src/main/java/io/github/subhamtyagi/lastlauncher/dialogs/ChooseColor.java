@@ -28,6 +28,7 @@ import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
+// chose color Dialog
 public class ChooseColor extends Dialog {
 
 
@@ -45,7 +46,8 @@ public class ChooseColor extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        // getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        // no title please
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_choose_color);
 
@@ -61,6 +63,7 @@ public class ChooseColor extends Dialog {
         if (appColor != -DbUtils.NULL_TEXT_COLOR)
             colorSeekBar.setColor(appColor);
 
+        // set the color and save this to database
         colorSeekBar.setOnColorChangeListener((colorBarPosition, alphaBarPosition, color) -> {
             textView.setTextColor(color);
             DbUtils.putAppColor(appPackage, color);

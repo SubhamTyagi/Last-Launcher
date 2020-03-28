@@ -20,9 +20,11 @@ package io.github.subhamtyagi.lastlauncher.util;
 
 import java.util.Arrays;
 import java.util.List;
-
 public class Utils {
 
+
+    // popular and often used app on fdroid and in android system
+    // and some my favourite apps
     public static List<String> getOftenAppsList() {
         String[] list = {
                 "com.google.android.apps.maps",
@@ -37,7 +39,7 @@ public class Utils {
                 "org.thoughtcrime.securesms",
                 "org.telegram.messenger",
                 "com.whatsapp",
-                //"org.sufficientlysecure.viewer",
+                "org.sufficientlysecure.viewer",
                 "org.fdroid.fdroid",
                 "org.mozilla.firefox",
                 "org.schabi.newpipe",

@@ -33,6 +33,9 @@ import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
 
+/**
+ * this the launcher setting Dialog
+ */
 public class GlobalSettings extends Dialog implements View.OnClickListener {
 
 
@@ -49,6 +52,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // no old title: Last Launcher use Activity class not AppCompatActivity so it show very old title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_global_settings);
         findViewById(R.id.settings_fonts).setOnClickListener(this);
@@ -60,12 +64,15 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         findViewById(R.id.settings_backup).setOnClickListener(this);
         findViewById(R.id.settings_restore).setOnClickListener(this);
 
+        //TODO: remove this var
         TextView colorSniffer = findViewById(R.id.settings_color_sniffer);
         colorSniffer.setOnClickListener(this);
+
         findViewById(R.id.settings_freezed_apps).setOnClickListener(this);
         findViewById(R.id.settings_hidden_apps).setOnClickListener(this);
 
 
+        //reflect the DB value
         if (DbUtils.isSizeFreezed()) {
             freezeSize.setText(R.string.unfreeze_app_size);
         } else
@@ -80,10 +87,10 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
                 setFonts();
                 break;
             case R.id.settings_themes:
-                bgColor();
+                showThemeDialog();
                 break;
             case R.id.settings_color_sniffer:
-                colorSnifferCall();
+                showColorSnifferDialog();
                 break;
             case R.id.settings_freeze_size:
                 freezeAppsSize();
@@ -105,10 +112,12 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         }
     }
 
-    private void colorSnifferCall() {
+    private void showColorSnifferDialog() {
         cancel();
         Intent intent = context.getPackageManager().getLaunchIntentForPackage("ryey.colorsniffer");
 
+        // if color snifer app is not installed then send user to install it
+        // else show color sniffer option
         if (intent == null) {
             Uri uri = Uri.parse("market://details?id=ryey.colorsniffer");
             Intent i = new Intent(Intent.ACTION_VIEW, uri);
@@ -136,12 +145,13 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
 
     }
 
+    //show hidden apps
     private void hiddenApps() {
         launcherActivity.showHiddenApps();
         cancel();
     }
 
-    private void bgColor() {
+    private void showThemeDialog() {
         cancel();
         new ThemeSelector(getContext(), launcherActivity).show();
     }
