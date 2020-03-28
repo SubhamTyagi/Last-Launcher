@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 28
 
@@ -77,4 +78,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':flowlayout:layouts')
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+
 }

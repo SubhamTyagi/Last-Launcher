@@ -48,6 +48,8 @@ public class ChooseSize extends Dialog {
         setContentView(R.layout.dialog_choose_size);
         SeekBar sizeSeekBar = findViewById(R.id.sb_size);
 
+        // sizeSeekBar.setProgressDrawable(new ColorDrawable(textView.getCurrentTextColor()));
+
         sizeSeekBar.setProgress(appSize);
         sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int size = 0;

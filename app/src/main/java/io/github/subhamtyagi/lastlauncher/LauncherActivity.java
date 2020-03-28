@@ -543,8 +543,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         }
     }
 
-  
-
     //may be override of abstract class method to be called from color sniffer #3 types
     public void colorSnifferCall(Bundle bundle) {
         boolean defaultColorSet = false;// for change set
