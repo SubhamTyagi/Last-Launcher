@@ -52,6 +52,7 @@ public class RenameInput extends Dialog implements TextView.OnEditorActionListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         setContentView(R.layout.dialog_rename_input);
         mAppName = findViewById(R.id.ed_input);
         mAppName.setText(oldAppName);
@@ -59,6 +60,8 @@ public class RenameInput extends Dialog implements TextView.OnEditorActionListen
         mAppName.setEnabled(true);
         mAppName.requestFocus();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 
 

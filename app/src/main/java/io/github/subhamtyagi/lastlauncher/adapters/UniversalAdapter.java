@@ -58,19 +58,9 @@ public class UniversalAdapter extends ArrayAdapter<Apps> {
         textView.setText(list.get(position).getAppName());
         textView.setTag(position);
 
-        row.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onClick(getItem((int) view.getTag()), view);
-            }
-        });
+        row.setOnClickListener(view -> listener.onClick(getItem((int) view.getTag()), view));
 
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onClick(getItem((int) view.getTag()), view);
-            }
-        });
+        textView.setOnClickListener(view -> listener.onClick(getItem((int) view.getTag()), view));
         return row;
     }
 

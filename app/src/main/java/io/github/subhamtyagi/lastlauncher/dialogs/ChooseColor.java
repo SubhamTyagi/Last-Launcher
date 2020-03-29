@@ -50,6 +50,7 @@ public class ChooseColor extends Dialog {
         // no title please
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_choose_color);
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
 
         ColorSeekBar colorSeekBar = findViewById(R.id.colorSlider1);

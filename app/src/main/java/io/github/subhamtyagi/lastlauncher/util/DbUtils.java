@@ -146,6 +146,7 @@ public class DbUtils {
         SpUtils.getInstance().putString(LAUNCHER_FONTS, path);
     }
 
+
     public static boolean isPermissionRequired() {
         return SpUtils.getInstance().getBoolean(READ_WRITE_PERMISSION, true);
     }

@@ -113,8 +113,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private FlowLayout mHomeLayout;
 
     //not in use;
-    @TargetApi(21)
-    public static List<Apps> loadAppsMINLolipop(Activity activity, boolean hideHidden) {
+    @TargetApi(26)
+    public List<Apps> loadAppsMINLolipop(Activity activity, boolean hideHidden) {
         List<Apps> appsList = new ArrayList<>();
         PackageManager manager = activity.getPackageManager();
 
@@ -126,7 +126,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
         LauncherApps launcher = (LauncherApps) activity.getSystemService(Context.LAUNCHER_APPS_SERVICE);
         for (UserHandle profile : userManager.getUserProfiles()) {
-
             for (LauncherActivityInfo activityInfo : launcher.getActivityList(null, profile)) {
 
                 String componentName = activityInfo.getComponentName().flattenToString();
@@ -142,6 +141,26 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
             }
         }
+        /////////////////////////////////////
+
+        LauncherApps launcherApps = (LauncherApps) getSystemService(Context.LAUNCHER_APPS_SERVICE);
+        List<UserHandle> profiles = launcherApps.getProfiles();
+        for (UserHandle userHandle : profiles) {
+            List<LauncherActivityInfo> apps = launcherApps.getActivityList(null, userHandle);
+            for (LauncherActivityInfo info : apps) {
+
+                /// add app to model and app list
+                // and also save the userHandle
+                // some change required in model Apps
+
+
+            }
+        }
+
+
+        ///////////////////
+
+
         return appsList;
 
     }
@@ -176,6 +195,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     }
 
     private void loadApps() {
+
 
         // get the apps installed on devices;
         Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
@@ -400,6 +420,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         Dialog dialog = new RenameInput(this, activityName, appName, this);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
+        window.setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
 
@@ -447,6 +468,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         Dialog dialog = new ChooseColor(this, activityName, color, view);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
+        window.setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
     }
@@ -462,8 +484,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             }
         }
         Dialog dialog = new ChooseSize(this, activityName, size, view);
+        //dialog.setBackgroundDrawableResource(android.R.color.transparent);
         Window window = dialog.getWindow();
         window.setGravity(Gravity.BOTTOM);
+        window.setBackgroundDrawableResource(android.R.color.transparent);
         window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
     }
@@ -665,8 +689,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                     String[] line = tabSepratedData.split("\n");//get each line
 
                     Map<String, Integer> colorsAndId = new ArrayMap<>(); // map to put all values in key and values format
-                    for (int i = 0, entriesLength = line.length; i < entriesLength; i++) {
-                        String entry = line[i];// iterate over every line
+                    // iterate over every line
+                    for (String entry : line) {
                         String[] activityIdAndColor = entry.split("\t");// split line into id and color
                         int color = Color.parseColor(activityIdAndColor[1]);
                         colorsAndId.put(activityIdAndColor[0], color);// put id and color to map
@@ -698,7 +722,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
                 textView.setTextColor(newColor);
                 DbUtils.putAppColorExternalSource(s, newColor);
             } catch (NullPointerException ignore) {
-                ignore.printStackTrace();
+
             }
         }
     }

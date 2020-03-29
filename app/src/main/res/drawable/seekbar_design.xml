@@ -27,7 +27,7 @@
             android:shape="rectangle"
             android:tint="#FFCA28">
             <corners android:radius="8dp" />
-            <size android:height="12dp" />
+            <size android:height="15dp" />
             <solid android:color="#FFC400" />
         </shape>
     </item>
@@ -45,7 +45,7 @@
                         android:shape="rectangle"
                         android:tint="#f50057">
                         <corners android:radius="8dp" />
-                        <size android:height="12dp" />
+                        <size android:height="16dp" />
                         <solid android:color="#f50057" />
                     </shape>
                 </item>

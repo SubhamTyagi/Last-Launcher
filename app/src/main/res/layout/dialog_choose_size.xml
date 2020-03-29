@@ -17,13 +17,16 @@
   -->
 
 
-<SeekBar android:id="@+id/sb_size"
-    android:layout_width="250dp"
-    android:layout_height="wrap_content"
+<SeekBar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sb_size"
+    android:layout_width="280dp"
+    android:layout_height="30dp"
+
 
     android:background="@android:color/transparent"
     android:backgroundTint="@android:color/transparent"
     android:max="70"
+
     android:progressDrawable="@drawable/seekbar_design"
     android:thumb="@drawable/thumb"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    android:verticalScrollbarPosition="right" />

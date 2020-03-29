@@ -105,10 +105,10 @@ public class ColorSniffer extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_color_sniffer_settings);
-        findViewById(R.id.text_color_sniffer_on_off).setOnClickListener(this::onClick);
-        findViewById(R.id.color_sniffer_clipboard).setOnClickListener(this::onClick);
+        findViewById(R.id.text_color_sniffer_on_off).setOnClickListener(this);
+        findViewById(R.id.color_sniffer_clipboard).setOnClickListener(this);
         mStartColorSniffer = findViewById(R.id.color_sniffer_external_app);
-        mStartColorSniffer.setOnClickListener(this::onClick);
+        mStartColorSniffer.setOnClickListener(this);
         onOffSwitch = findViewById(R.id.switch_color_sniffer_on_off);
         boolean onOff = DbUtils.isExternalSourceColor();
         onOffSwitch.setText(onOff ? ":On" : ":Off");

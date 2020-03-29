@@ -17,15 +17,12 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/theme_linear_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+<LinearLayout android:id="@+id/theme_linear_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <TextView
             android:id="@+id/t1"
@@ -118,4 +115,3 @@
 
 
     </LinearLayout>
-</ScrollView>

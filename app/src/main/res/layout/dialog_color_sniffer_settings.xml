@@ -35,7 +35,7 @@
             android:gravity="start"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:text="Color Sniffer"
+            android:text="@string/color_sniffer"
             android:textSize="20sp" />
 
         <TextView
@@ -63,7 +63,7 @@
         android:gravity="center"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:text="From Clipboard"
+        android:text="@string/from_clipboard"
         android:textSize="20sp" />
 
     <View
@@ -80,7 +80,7 @@
         android:gravity="center"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:text="From ColorSniffer App"
+        android:text="@string/from_colorsniffer_app"
         android:textSize="20sp" />
 
 
