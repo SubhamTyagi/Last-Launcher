@@ -53,8 +53,11 @@
     <string name="black_on_grey">Black on Grey</string>
     <string name="hacker_green">Hacker Green</string>
     <string name="hacker_red">Hacker Red</string>
+
+
     <string name="choose_old_backup_files">Choose previous backup file</string>
-    <string name="color_sniffer">Color Sniffer</string>
+
+    <string name="color_sniffer" translatable="false">Color Sniffer</string>
     <string name="from_clipboard">From Clipboard</string>
     <string name="from_colorsniffer_app">From ColorSniffer App</string>
 

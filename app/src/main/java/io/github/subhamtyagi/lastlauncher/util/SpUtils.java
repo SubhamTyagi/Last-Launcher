@@ -241,8 +241,7 @@ public class SpUtils {
         return res;
     }
 
-
-    public Map<String,?> getAll(){
+    public Map<String, ?> getAll() {
         return mPref.getAll();
     }
 }

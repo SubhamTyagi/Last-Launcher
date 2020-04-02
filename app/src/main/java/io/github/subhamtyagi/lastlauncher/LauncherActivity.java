@@ -60,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
@@ -96,7 +97,8 @@ import static android.content.Intent.ACTION_PACKAGE_REPLACED;
  * This Activity extends the api 14 Activity Class not latest AppCompatActivity
  * Reason: Small apk size
  */
-public class LauncherActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
+public class LauncherActivity extends Activity implements View.OnClickListener,
+        View.OnLongClickListener {
 
     public static final int COLOR_SNIFFER_REQUEST = 154;
     public final static String DEFAULT_COLOR_FOR_APPS = "default_color_for_apps";
@@ -111,6 +113,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private BroadcastReceiver broadcastReceiver;
     private Typeface mTypeface;
     private FlowLayout mHomeLayout;
+
+    //private GestureListener detector;
 
     //not in use;
     @TargetApi(26)
@@ -165,6 +169,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
 
     }
 
+    /*  @Override
+      public boolean dispatchTouchEvent(MotionEvent ev) {
+          detector.onTouchEvent(ev);
+          return super.dispatchTouchEvent(ev);
+
+      }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // initialize the shared prefs may be done in application class
@@ -174,6 +184,28 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+/*
+            detector = new GestureListener(this, new GestureListener.SimpleGestureListener() {
+            @Override
+            public void onSwipe(int direction) {
+                Log.d(TAG, "onSwipe: direction:::"+direction);
+            }
+            @Override
+            public void onDoubleTap() {
+
+            }
+        });
+        findViewById(R.id.main_screen_container)
+                .setOnTouchListener(
+                        new OnSwipeTouchListener(this){
+                            @Override
+                            public void onSwipeRight() {
+                                Log.d(TAG, "onSwipeRight: ");
+
+                            }
+                        }
+        );
+*/
 
         // get and set fonts
         String fontsPath = DbUtils.getFonts();
@@ -255,8 +287,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
             // this is a separated implementation of ColorSniffer app
             // if User set the color from external app like ColorSniffer
             // then use that colors
-            if (DbUtils.isExternalSourceColor() && color == DbUtils.NULL_TEXT_COLOR) {
-                color = DbUtils.getAppColorExternalSource(activity);
+
+            if (BuildConfig.enableColorSniffer) {
+                if (DbUtils.isExternalSourceColor() && color == DbUtils.NULL_TEXT_COLOR) {
+                    color = DbUtils.getAppColorExternalSource(activity);
+                }
+            } else if (DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
+                Random rnd = new Random();
+                color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
             }
 
             // save all and add this is to app list
@@ -289,7 +327,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
     private void refreshAppSize(String activityName) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
-                int size = DbUtils.getAppSize(activityName) + 2;
+                int size = apps.getSize() + 2;
                 apps.setSize(size);
                 DbUtils.putAppSize(activityName, size);
                 break;
@@ -500,23 +538,24 @@ public class LauncherActivity extends Activity implements View.OnClickListener, 
         if (view instanceof TextView) {
             // get the activity
             String activity = (String) view.getTag();
+            //Log.d(TAG, "onClick: starting app   ::"+activity);
             // split it into package name and class name
             // bcz activity formatted as com.foo.bar/com.foo.bar.MainActivity
             String[] strings = activity.split("/");
             try {
                 //TODO: apps is not in recent menus
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-
                 intent.setClassName(strings[0], strings[1]);
                 intent.setComponent(new ComponentName(strings[0], strings[1]));
-                intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
                 if (!DbUtils.isSizeFreezed() && !DbUtils.isAppFreezed(activity)) {
                     refreshAppSize(activity);
                 }
             } catch (Exception ignore) {
-
+                Log.e(TAG, "onClick: exception:::" + ignore);
             }
         }
     }

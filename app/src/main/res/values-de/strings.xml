@@ -47,8 +47,10 @@
     <string name="hacker_red">Hackerrot</string>
     <string name="customize_with_color_sniffer">ColorSniffer…</string>
 
-    <!--translation required-->
-    <string name="choose_old_backup_files">Choose previous backup file</string>
+    <!--translation required    -->
+    <string name="choose_old_backup_files">Wählen Sie die vorherige Sicherungsdatei</string>
+    <string name="from_clipboard">Aus der Zwischenablage</string>
+    <string name="from_colorsniffer_app">Von der ColorSniffer App</string>
 
 
 </resources>

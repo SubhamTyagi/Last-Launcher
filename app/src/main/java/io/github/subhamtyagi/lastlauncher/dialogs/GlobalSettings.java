@@ -28,6 +28,7 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import io.github.subhamtyagi.lastlauncher.BuildConfig;
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
@@ -68,6 +69,13 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         TextView colorSniffer = findViewById(R.id.settings_color_sniffer);
         colorSniffer.setOnClickListener(this);
 
+        if (!BuildConfig.enableColorSniffer) {
+            if (DbUtils.isRandomColor()) {
+                colorSniffer.setText(R.string.fixed_colors);
+            } else
+                colorSniffer.setText(R.string.random_colors);
+        }
+
         findViewById(R.id.settings_freezed_apps).setOnClickListener(this);
         findViewById(R.id.settings_hidden_apps).setOnClickListener(this);
 
@@ -89,8 +97,12 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
             case R.id.settings_themes:
                 showThemeDialog();
                 break;
-            case R.id.settings_color_sniffer:
-                showColorSnifferDialog();
+            case R.id.settings_color_sniffer: {
+                if (BuildConfig.enableColorSniffer)
+                    showColorSnifferDialog();
+                else randomColor();
+
+            }
                 break;
             case R.id.settings_freeze_size:
                 freezeAppsSize();
@@ -111,6 +123,14 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
                 break;
         }
     }
+
+
+    private void randomColor() {
+        DbUtils.randomColor(!DbUtils.isRandomColor());
+        cancel();
+        launcherActivity.recreate();
+    }
+
 
     private void showColorSnifferDialog() {
         cancel();

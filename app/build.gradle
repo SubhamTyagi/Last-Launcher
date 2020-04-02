@@ -11,6 +11,7 @@ android {
         versionCode 5
         versionName "0.5"
         resConfigs "en", "de"
+        buildConfigField "boolean", "enableColorSniffer","false"
     }
     buildTypes {
         debug {
@@ -19,6 +20,7 @@ android {
             versionNameSuffix "-debug"
             minifyEnabled false
             shrinkResources false
+            applicationIdSuffix = '.debug'
 
         }
         release {

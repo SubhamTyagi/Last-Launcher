@@ -19,3 +19,5 @@
 -dontpreverify
 -repackageclasses
 -allowaccessmodification
+-mergeinterfacesaggressively
+-optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*,method/inlining/short,class/merging/horizontal,class/merging/vertical
