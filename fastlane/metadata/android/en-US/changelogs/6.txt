@@ -1,0 +1,12 @@
+*Preview release 6*
+
+- App Size seekbar improvements.
+- App Color bar improvements.
+- App Rename field improvements.
+- App opening animation. 
+- Layouts performance improvement.
+- Fix bug related to recent menu.
+- Fix bug related to app size decrease on click.
+- Fix bug related to some app not opening.
+
+

@@ -8,13 +8,14 @@ Last Launcher is Simple, Minimalist, Customizable open source Android launcher. 
 I fed-up by all Android Launcher that are available on F-DROID and Play store(although some are great). I always in quest of simple and minimal launcher that is light weight on RAM and easy on Device battery.
 ## Features
 * Low Battery and CPU usage.
-* Faster than any other :)
+* Faster than fastest :)
 * Smarter than your ex :smile:
 * Always free and open source and ads free.
 * Material design look and feel.
 * No icon and widgets (~~may be a disadvantage~~).
 * Resizable and colorful app names.
 * Custom Fonts.
+
 ## Contribution and Donation
 1.  Star this Repository or
 2.  Create a Pull Request.
@@ -29,39 +30,25 @@ I fed-up by all Android Launcher that are available on F-DROID and Play store(al
 * [ ] [Primary app icon like color support](https://github.com/SubhamTyagi/Last-Launcher/issues/2)
 
 ## Screenshots
-| Home|App Menu|Color Slider|
-|:-:|:-:|:-:|
-| ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true "Home")| ![App Menu](/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png?raw=true "App Menu")|![Color Slider](/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true "color slider")|
+| Home|Home|Home|Home|
+|:-:|:-:|:-:|:-:|
+| ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true "Home")| ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png?raw=true )|
 
-| Global Settings|Theme Menu|Wallpaper 1|
-|:-:|:-:|:-:|
-| ![Global Settings](/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png?raw=true )| ![Theme Menu](/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png?raw=true )|![Wallpaper 1](/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png?raw=true )
-
-|Wallpaper 2|Wallpaper 3|Wallpaper 4|
-|:-:|:-:|:-:|
-| ![Wallpaper 2](/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png?raw=true )| ![Wallpaper 3](/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png?raw=true )|![Wallpaper 4](/fastlane/metadata/android/en-US/images/phoneScreenshots/9.png?raw=true )
-
-| Theme Black on Grey|Theme White on Black|Theme Black on White|
-|:-:|:-:|:-:|
-| ![Theme Black on Grey](/fastlane/metadata/android/en-US/images/phoneScreenshots/10.png?raw=true )| ![Theme White on Black](/fastlane/metadata/android/en-US/images/phoneScreenshots/11.png?raw=true )|![Theme Black on White](/fastlane/metadata/android/en-US/images/phoneScreenshots/12.png?raw=true )
-
-| Theme White on Grey|Theme Hacker Green|Theme Hacker Red|
-|:-:|:-:|:-:|
-| ![Theme White on Grey](/fastlane/metadata/android/en-US/images/phoneScreenshots/13.png?raw=true )| ![Theme Hacker Green](/fastlane/metadata/android/en-US/images/phoneScreenshots/14.png?raw=true )|![Theme Hacker Red](/fastlane/metadata/android/en-US/images/phoneScreenshots/15.png?raw=true)
-
+| Home|Home|Home|Home|
+|:-:|:-:|:-:|:-:|
+| ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png?raw=true "Home")| ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png?raw=true )|
 
 ## Library and font used
 * ### Android Libraries
-  *   [Artem.Votincev](https://github.com/ApmeM) for [android-flowlayout](https://github.com/ApmeM/android-flowlayout) : License [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
-  *  [Jack Fu](https://github.com/rtugeek) for [ColorSeekBar](https://github.com/rtugeek/ColorSeekBar) :License [WTFPL](http://www.wtfpl.net/)
+  * [android-flowlayout](https://github.com/ApmeM/android-flowlayout)  by [Artem.Votincev](https://github.com/ApmeM), License [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
+  * [ColorSeekBar](https://github.com/rtugeek/ColorSeekBar) by  [Jack Fu](https://github.com/rtugeek), License [WTFPL](http://www.wtfpl.net/)
 * ### Fonts 
   * [Raleway fonts](https://github.com/impallari/Raleway/) License: [SIL Open Font License, Version 1.1]([http://scripts.sil.org/OFL](http://scripts.sil.org/OFL))
-
 
 ## Copyright
 
       Last Launcher
-      Copyright (C) 2019 Shubham Tyagi
+      Copyright (C) 2019,2020 Shubham Tyagi
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
