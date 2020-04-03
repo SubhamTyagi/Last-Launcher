@@ -30,8 +30,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.LauncherActivityInfo;
-import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -40,8 +38,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.UserHandle;
-import android.os.UserManager;
 import android.provider.MediaStore;
 import android.util.ArrayMap;
 import android.util.Log;
@@ -72,7 +68,6 @@ import io.github.subhamtyagi.lastlauncher.dialogs.RenameInput;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.util.SpUtils;
-import io.github.subhamtyagi.lastlauncher.util.UserUtils;
 import io.github.subhamtyagi.lastlauncher.util.Utils;
 
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
@@ -115,60 +110,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private Typeface mTypeface;
     private FlowLayout mHomeLayout;
 
-    //private GestureListener detector;
-
-    //not in use;
-    @TargetApi(26)
-    public List<Apps> loadAppsMINLolipop(Activity activity, boolean hideHidden) {
-        List<Apps> appsList = new ArrayList<>();
-        PackageManager manager = activity.getPackageManager();
-
-        UserUtils userUtils = new UserUtils(activity);
-
-        UserManager userManager = null;
-
-        userManager = (UserManager) activity.getSystemService(Context.USER_SERVICE);
-
-        LauncherApps launcher = (LauncherApps) activity.getSystemService(Context.LAUNCHER_APPS_SERVICE);
-        for (UserHandle profile : userManager.getUserProfiles()) {
-            for (LauncherActivityInfo activityInfo : launcher.getActivityList(null, profile)) {
-
-                String componentName = activityInfo.getComponentName().flattenToString();
-                String useractivityName;
-                long user = userManager.getSerialNumberForUser(profile);
-                if (user != userUtils.getCurrentSerial()) {
-                    useractivityName = user + "-" + componentName;
-                } else {
-                    useractivityName = componentName;
-                }
-
-                String appName = activityInfo.getLabel().toString();
-
-            }
-        }
-        /////////////////////////////////////
-
-        LauncherApps launcherApps = (LauncherApps) getSystemService(Context.LAUNCHER_APPS_SERVICE);
-        List<UserHandle> profiles = launcherApps.getProfiles();
-        for (UserHandle userHandle : profiles) {
-            List<LauncherActivityInfo> apps = launcherApps.getActivityList(null, userHandle);
-            for (LauncherActivityInfo info : apps) {
-
-                /// add app to model and app list
-                // and also save the userHandle
-                // some change required in model Apps
-
-
-            }
-        }
-
-
-        ///////////////////
-
-
-        return appsList;
-
-    }
 
     /*  @Override
       public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -187,42 +128,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
+        // set the status bar color as per theme
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setStatusBarColor(theme);
         }
+        // set the fonts
+        setFont();
 
-
-
-
-        /*
-            detector = new GestureListener(this, new GestureListener.SimpleGestureListener() {
-            @Override
-            public void onSwipe(int direction) {
-                Log.d(TAG, "onSwipe: direction:::"+direction);
-            }
-            @Override
-            public void onDoubleTap() {
-
-            }
-        });
-        findViewById(R.id.main_screen_container)
-                .setOnTouchListener(
-                        new OnSwipeTouchListener(this){
-                            @Override
-                            public void onSwipeRight() {
-                                Log.d(TAG, "onSwipeRight: ");
-
-                            }
-                        }
-        );
-*/
-
-        // get and set fonts
-        String fontsPath = DbUtils.getFonts();
-        if (fontsPath == null || DbUtils.isFirstStart())
-            mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
-        else
-            mTypeface = Typeface.createFromFile(fontsPath);
 
         mHomeLayout = findViewById(R.id.home_layout);
         mHomeLayout.setOnLongClickListener(this);
@@ -233,6 +145,37 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         registerForReceiver();
         //this may not be needed
         SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
+
+    }
+
+    /**
+     * set the color of status bar as per theme
+     * if theme color is light then pass this to system so status icon color will turn into black
+     *
+     * @param theme current theme applied to launcher
+     */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void setStatusBarColor(int theme) {
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            switch (theme) {
+                case R.style.White:
+                case R.style.WhiteOnGrey:
+                case R.style.BlackOnGrey:
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
+        }
+    }
+
+    private void setFont() {
+        // get and set fonts
+        String fontsPath = DbUtils.getFonts();
+        if (fontsPath == null || DbUtils.isFirstStart()) {
+            mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
+        } else {
+            mTypeface = Typeface.createFromFile(fontsPath);
+        }
 
     }
 
@@ -777,48 +720,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     // show the hidden app dialog
-
     public void showHiddenApps() {
         new HiddenApps(this, mAppsList).show();
     }
 
     // show the freezed app dialog
-
     public void showFreezedApps() {
         new FreezedApps(this, mAppsList).show();
     }
 
-
-  /*  @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void transparentStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        } else {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-    }*/
-
-
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void setStatusBarColor(int theme) {
-        // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //  getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        // getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            switch (theme) {
-                case R.style.White:
-                case R.style.WhiteOnGrey:
-                case R.style.BlackOnGrey:
-                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            }
-        }
-    }
 
 }
 

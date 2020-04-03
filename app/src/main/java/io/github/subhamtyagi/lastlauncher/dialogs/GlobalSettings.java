@@ -188,19 +188,23 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         else {
             boolean b = SpUtils.getInstance().saveSharedPreferencesToFile();
             cancel();
-            Toast.makeText(getContext(), b ? "Backup saved to Download" : "Some error occurred", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(getContext(), b ? R.string.backup_saved_to_downloads : R.string.some_error_occurred, Toast.LENGTH_SHORT).show();
         }
     }
 
+
+    //<editor-fold desc="restore backup">
     private void restore() {
         if (launcherActivity.isPermissionRequired())
             launcherActivity.requestPermission();
         else {
             launcherActivity.browseFile();
             cancel();
-            Toast.makeText(getContext(), "Choose old backup file", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.choose_old_backup_file, Toast.LENGTH_SHORT).show();
         }
     }
+    //</editor-fold>
 
     private void setFonts() {
         if (launcherActivity.isPermissionRequired())

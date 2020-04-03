@@ -69,7 +69,7 @@ public class ColorSniffer extends Dialog implements View.OnClickListener {
     private void onOffColorSnifferCustomisation() {
         boolean b = DbUtils.isExternalSourceColor();
         DbUtils.externalSourceColor(!b);
-        onOffSwitch.setText(!b ? ":On" : ":Off");
+        onOffSwitch.setText(!b ? R.string.on : R.string.off);
         change = !change;
         mStartColorSniffer.setVisibility(!b ? View.VISIBLE : View.GONE);
     }
@@ -111,7 +111,7 @@ public class ColorSniffer extends Dialog implements View.OnClickListener {
         mStartColorSniffer.setOnClickListener(this);
         onOffSwitch = findViewById(R.id.switch_color_sniffer_on_off);
         boolean onOff = DbUtils.isExternalSourceColor();
-        onOffSwitch.setText(onOff ? ":On" : ":Off");
+        onOffSwitch.setText(onOff ? R.string.on : R.string.off);
         mStartColorSniffer.setVisibility(onOff ? View.VISIBLE : View.GONE);
     }
 

@@ -1,10 +1,5 @@
 <resources>
-    <!--Navigation related strings-->
-    <array name="colors">
-        <item>#3F51B5</item>
-        <item>#303F9F</item>
-        <item>#FF4081</item>
-    </array>
+
 
     <string name="app_name">Last Launcher</string>
 
@@ -14,9 +9,7 @@
 
     <!--App information related strings-->
     <string name="sp_first_time_app_open" translatable="false">sp_first_time_app_open</string>
-    <string name="app_usage_permission_title">Optional Usage Stats Permission </string>
     <!--app menu-->
-    <string name="app_usage_permission_message">This permission is required for variable size of Apps Name\nThis permission is optional.\nDo you want to proceed for permission request?</string>
     <string name="size_for_this_entry">Size</string>
     <string name="color_for_this_entry">Color</string>
     <string name="rename">Rename</string>
@@ -60,6 +53,11 @@
     <string name="color_sniffer" translatable="false">Color Sniffer</string>
     <string name="from_clipboard">From Clipboard</string>
     <string name="from_colorsniffer_app">From ColorSniffer App</string>
+    <string name="backup_saved_to_downloads">Backup saved to Downloads</string>
+    <string name="some_error_occurred">Some error occurred</string>
+    <string name="choose_old_backup_file">Choose old backup file</string>
+    <string name="on">:On</string>
+    <string name="off">:Off</string>
 
 
 </resources>

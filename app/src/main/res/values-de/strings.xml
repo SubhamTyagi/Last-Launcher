@@ -1,7 +1,5 @@
 <resources>
     <!--Navigation related strings-->
-    <array name="colors">
-    </array>
 
     <string name="app_name">Last Launcher</string>
 
@@ -47,10 +45,23 @@
     <string name="hacker_red">Hackerrot</string>
     <string name="customize_with_color_sniffer">ColorSniffer…</string>
 
-    <!--translation required    -->
+    <!--translation check required-->
     <string name="choose_old_backup_files">Wählen Sie die vorherige Sicherungsdatei</string>
+    <!--translation check required-->
     <string name="from_clipboard">Aus der Zwischenablage</string>
+    <!--translation check required-->
     <string name="from_colorsniffer_app">Von der ColorSniffer App</string>
+
+    <!--translation required    -->
+    <string name="backup_saved_to_downloads">Backup saved to Downloads</string>
+    <!--translation required    -->
+    <string name="some_error_occurred">Some error occurred</string>
+    <!--translation required    -->
+    <string name="choose_old_backup_file">Choose old backup file</string>
+    !--translation required -->
+    <string name="on">:On</string>
+    !--translation required -->
+    <string name="off">:Off</string>
 
 
 </resources>
