@@ -66,10 +66,10 @@ public class ThemeSelector extends Dialog implements View.OnClickListener {
                 setTheme(R.style.White);
                 break;
             case R.id.t5:
-                setTheme(R.style.BlackonGrey);
+                setTheme(R.style.WhiteOnGrey);
                 break;
             case R.id.t6:
-                setTheme(R.style.A);
+                setTheme(R.style.BlackOnGrey);
                 break;
 
             case R.id.t35:

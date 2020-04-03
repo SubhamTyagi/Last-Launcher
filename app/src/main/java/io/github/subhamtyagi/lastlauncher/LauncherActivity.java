@@ -50,6 +50,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -175,6 +176,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
           return super.dispatchTouchEvent(ev);
 
       }*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // initialize the shared prefs may be done in application class
@@ -184,7 +186,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         setTheme(theme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-/*
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setStatusBarColor(theme);
+        }
+
+
+
+
+        /*
             detector = new GestureListener(this, new GestureListener.SimpleGestureListener() {
             @Override
             public void onSwipe(int direction) {
@@ -778,6 +788,37 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         new FreezedApps(this, mAppsList).show();
     }
 
+
+  /*  @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void transparentStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        } else {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+    }*/
+
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void setStatusBarColor(int theme) {
+        // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //  getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        // getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN );
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            switch (theme) {
+                case R.style.White:
+                case R.style.WhiteOnGrey:
+                case R.style.BlackOnGrey:
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            }
+        }
+    }
 
 }
 

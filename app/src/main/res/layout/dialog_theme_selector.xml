@@ -70,23 +70,23 @@
 
         <TextView
             android:id="@+id/t5"
-            style="@style/BlackonGrey"
+            style="@style/WhiteOnGrey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="5dp"
-            android:tag="@style/BlackonGrey"
+            android:tag="@style/WhiteOnGrey"
             android:text="@string/white_on_grey"
             android:textSize="22sp" />
 
         <TextView
             android:id="@+id/t6"
-            style="@style/A"
+            style="@style/BlackOnGrey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="5dp"
-            android:tag="@style/A"
+            android:tag="@style/BlackOnGrey"
             android:text="@string/black_on_grey"
             android:textSize="22sp" />
 

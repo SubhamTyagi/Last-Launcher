@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light.NoActionBar">
         <item name="android:popupAnimationStyle">@style/WindowAnimationTransition</item>
@@ -8,6 +8,14 @@
         <item name="android:listPreferredItemPaddingRight">5dp</item>
         <item name="android:backgroundDimEnabled">false</item>
 
+
+        <!--
+
+                <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+                <item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>
+        -->
+
+
     </style>
 
 
@@ -15,11 +23,14 @@
         <item name="android:textColor">#FF8F8C8C</item>
         <!--<item name="android:switchTextAppearance">#FF8F8C8C</item>-->
         <item name="android:background">@android:color/black</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/black</item>
+
     </style>
 
 
     <style name="PopupMenu" parent="@android:style/Widget.PopupMenu">
         <item name="android:popupBackground">@android:color/black</item>
+
     </style>
 
     <style name="AppBaseTheme.Shadow" parent="AppBaseTheme">
@@ -47,6 +58,10 @@
         <item name="android:popupBackground">#FF000000</item>
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:backgroundDimEnabled">false</item>
+
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent
+        </item>
+
     </style>
 
 
@@ -54,6 +69,8 @@
         <item name="android:background">@android:color/black</item>
         <item name="android:textColor">@android:color/white</item>
        <!-- <item name="android:switchTextAppearance">@android:color/white</item>-->
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/black</item>
+
     </style>
 
     <style name="White" parent="AppBaseTheme">
@@ -61,20 +78,26 @@
         <item name="android:background">#FFFFFFFF</item>
         <item name="android:textColor">#FF000000</item>
         <!--<item name="android:switchTextAppearance">#FF000000</item>-->
+        <item name="android:statusBarColor" tools:targetApi="lollipop">#FFFFFFFF</item>
+
     </style>
 
-    <style name="BlackonGrey" parent="AppBaseTheme">
+    <style name="WhiteOnGrey" parent="AppBaseTheme">
 
         <item name="android:background">#cdd8da</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFFFFFFF</item>
        <!-- <item name="android:switchTextAppearance">#FFFFFFFF</item>-->
+        <item name="android:statusBarColor" tools:targetApi="lollipop">#cdd8da</item>
+
     </style>
 
-    <style name="A" parent="AppBaseTheme">
+    <style name="BlackOnGrey" parent="AppBaseTheme">
         <item name="android:background">#d5e0e2</item>
         <item name="android:textColor">#FF000000</item>
         <!--<item name="android:switchTextAppearance">#FF000000</item>-->
+        <item name="android:statusBarColor" tools:targetApi="lollipop">#d5e0e2</item>
+
     </style>
 
 
@@ -83,6 +106,8 @@
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FF00ff00</item>
        <!-- <item name="android:switchTextAppearance">#FF00ff00</item>-->
+        <item name="android:statusBarColor" tools:targetApi="lollipop">#000000</item>
+
     </style>
 
     <style name="Hacker.red" parent="AppBaseTheme">
@@ -90,7 +115,9 @@
         <item name="android:background">#000000</item>
         <item name="android:shadowColor">#BADA0F0F</item>
         <item name="android:textColor">#FF00ff00</item>
-       <!-- <item name="android:switchTextAppearance">#FF00ff00</item>-->
+        <item name="android:statusBarColor" tools:targetApi="lollipop">#000000</item>
+
+        <!-- <item name="android:switchTextAppearance">#FF00ff00</item>-->
     </style>
 
 

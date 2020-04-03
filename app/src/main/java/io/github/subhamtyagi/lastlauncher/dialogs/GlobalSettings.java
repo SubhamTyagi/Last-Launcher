@@ -112,6 +112,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
                 break;
             case R.id.settings_freezed_apps:
                 freezedApps();
+                break;
             case R.id.settings_backup:
                 backup();
                 break;
