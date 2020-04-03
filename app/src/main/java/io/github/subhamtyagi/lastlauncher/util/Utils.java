@@ -18,6 +18,8 @@
 
 package io.github.subhamtyagi.lastlauncher.util;
 
+import android.graphics.Color;
+
 import java.util.Arrays;
 import java.util.List;
 public class Utils {
@@ -78,5 +80,20 @@ public class Utils {
 
     public static String getPackageNameFromActivityName(String activityName){
         return activityName.split("/")[0];
+    }
+
+    public static int generateColorFromString(String string){
+        // This method isn't scientific, but it seems to generate a nice variety of colors
+        int r = 0;
+        int g = 0;
+        int b = 0;
+
+        for(int i = string.length() - 1; i > 0; i -= 1) {
+            r += string.codePointAt(i) * (256 - i);
+            g += string.codePointAt(i/2) * (256 - i);
+            b += string.codePointAt(i/3) * (256 - i);
+        }
+
+        return Color.argb(255, r % 256, g % 256, b % 256);
     }
 }
