@@ -20,6 +20,7 @@ package io.github.subhamtyagi.lastlauncher.util;
 
 import java.util.Arrays;
 import java.util.List;
+
 public class Utils {
 
 
@@ -71,12 +72,13 @@ public class Utils {
                 "com.mi.android.globalFileexplorer",
                 "com.miui.gallery",
                 "com.miui.calculator",
-                "com.nonsenseapps.feeder" };
+                "com.nonsenseapps.feeder"};
         return Arrays.asList(list);
 
     }
 
-    public static String getPackageNameFromActivityName(String activityName){
+    public static String getPackageNameFromActivityName(String activityName) {
         return activityName.split("/")[0];
     }
+
 }
