@@ -246,8 +246,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     color = DbUtils.getAppColorExternalSource(activity);
                 }
             } else if (DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
-                Random rnd = new Random();
-                color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                color = Utils.generateColorFromString(appName);
             }
 
             // save all and add this is to app list
