@@ -58,6 +58,10 @@
     <string name="choose_old_backup_file">Choose old backup file</string>
     <string name="on">:On</string>
     <string name="off">:Off</string>
+    <string name="alignment">Alignment</string>
+    <string name="start">Start</string>
+    <string name="center">Center</string>
+    <string name="end">End</string>
 
 
 </resources>

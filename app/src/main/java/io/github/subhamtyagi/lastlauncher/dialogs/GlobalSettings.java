@@ -23,8 +23,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +67,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         findViewById(R.id.settings_reset_to_defaults).setOnClickListener(this);
         findViewById(R.id.settings_backup).setOnClickListener(this);
         findViewById(R.id.settings_restore).setOnClickListener(this);
+        findViewById(R.id.settings_alignment).setOnClickListener(this);
 
         //TODO: remove this var
         TextView colorSniffer = findViewById(R.id.settings_color_sniffer);
@@ -103,7 +107,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
                 else randomColor();
 
             }
-                break;
+            break;
             case R.id.settings_freeze_size:
                 freezeAppsSize();
                 break;
@@ -122,9 +126,44 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
             case R.id.settings_reset_to_defaults:
                 defaultSettings();
                 break;
+            case R.id.settings_alignment:
+                setFlowLayoutAlignment(view);
+
+                break;
+
         }
     }
 
+    private void setFlowLayoutAlignment(View view) {
+
+        Context context;
+        // set theme
+        // if theme wallpaper ie transparent then we have to show other theme
+        if (DbUtils.getTheme() == R.style.Wallpaper)
+            context = new ContextThemeWrapper(getContext(), R.style.AppTheme);
+        else
+            context = new ContextThemeWrapper(getContext(), DbUtils.getTheme());
+
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        popupMenu.getMenuInflater().inflate(R.menu.alignment_popup, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_center:
+                    launcherActivity.setFlowLayoutAlignment(Gravity.CENTER);
+                    break;
+                case R.id.menu_end:
+                    launcherActivity.setFlowLayoutAlignment(Gravity.END);
+                    break;
+                case R.id.menu_start:
+                    launcherActivity.setFlowLayoutAlignment(Gravity.START);
+                    break;
+            }
+            return false;
+        });
+        popupMenu.show();
+
+    }
 
     private void randomColor() {
         DbUtils.randomColor(!DbUtils.isRandomColor());

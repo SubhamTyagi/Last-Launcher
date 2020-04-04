@@ -110,12 +110,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private FlowLayout mHomeLayout;
 
 
-    /*  @Override
-      public boolean dispatchTouchEvent(MotionEvent ev) {
-          detector.onTouchEvent(ev);
-          return super.dispatchTouchEvent(ev);
-
-      }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +131,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         mHomeLayout = findViewById(R.id.home_layout);
         mHomeLayout.setOnLongClickListener(this);
+        //set alignment default is centre
+        mHomeLayout.setGravity(DbUtils.getFlowLayoutAlignment());
+
+        //mHomeLayout.setGravity();
 
         // loads the apps
         loadApps();
@@ -729,5 +727,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
 
+    //set the flow layout alignment it is called from global settings
+    public void setFlowLayoutAlignment(int gravity) {
+        mHomeLayout.setGravity(gravity);
+        DbUtils.setFlowLayoutAlignment(gravity);
+    }
 }
 
