@@ -101,7 +101,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
-    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 32;
+    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
     private final String TAG = "LauncherActivity";
 
     private ArrayList<Apps> mAppsList;
@@ -226,9 +226,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 } else {
                     textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
                 }
-                // save the size to db
-                // bcs DB doesn't have the app size
-                DbUtils.putAppSize(activity, textSize);
+                // no need to save this save the size to db
+                /// DbUtils.putAppSize(activity, textSize);
             }
 
             // get app color
