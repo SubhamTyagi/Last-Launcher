@@ -57,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
@@ -246,7 +245,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     color = DbUtils.getAppColorExternalSource(activity);
                 }
             } else if (DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
-                color = Utils.generateColorFromString(appName);
+                color = Utils.getMaterialColor2(activity);//1 randomized but same package name have same class for md color
+                //color = Utils.generateColorFromString(appName);//2 not fully randomized
+                //color=Utils.getMaterialColor(Utils.getPackageNameFromActivityName(activity));//3 extensive randomized
             }
 
             // save all and add this is to app list
