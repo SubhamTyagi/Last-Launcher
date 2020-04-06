@@ -6,27 +6,23 @@
     <!--Shared preference strings  -->
     <string name="action_settings">Einstellungen</string>
 
-    <!--App information related strings-->
-    <string name="app_usage_permission_title">Optionale Nutzungsdaten rechte</string>
-    <!--app menu-->
-    <string name="app_usage_permission_message">Diese optionale Berechtigung ist nötig für veränderte Größen der App-Namen.\n
- Willst mit der Berechtigsabfrage fortfahren?</string>
+
     <string name="size_for_this_entry">Größe</string>
     <string name="color_for_this_entry">Farbe</string>
     <string name="rename">Umbenenen</string>
     <!--launcher menu-->
-    <string name="uninstall">Deinstallieren</string>
+    <string name="uninstall"><font fgcolor='#FF0000'>Deinstallieren</font></string>
     <string name="fonts">Schriftarten</string>
     <string name="themes">Designs</string>
     <string name="set_to_primary_colors">Hauptfarben setzen</string>
     <string name="backup">Backup</string>
 
-    <string name="reset_to_default_settings">Auf Standardeinstellung zurücksetzen</string>
+    <string name="reset_to_default_settings"><font fgcolor='#FF0000'>Auf Standardeinstellung zurücksetzen</font></string>
     <string name="app_info">App-Info</string>
     <string name="random_colors">Zufällige Farben</string>
-    <string name="reset_to_default">Zurücksetzen</string>
+    <string name="reset_to_default"><font fgcolor='#FF0000'>Zurücksetzen</font></string>
     <string name="freeze_size">Größe einfrieren.</string>
-    <string name="hide">Verstecken</string>
+    <string name="hide"><font fgcolor='#FF0000'>Verstecken</font></string>
     <string name="unfreeze_size">Größe nicht mehr Einfrieren</string>
     <string name="hidden_apps">Versteckte Apps</string>
     <string name="freezed_apps">Eingefrorene Apps</string>

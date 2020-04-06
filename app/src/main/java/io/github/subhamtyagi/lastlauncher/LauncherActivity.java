@@ -343,6 +343,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
 
+
+
+       /* for(int i=1;i<=popupMenu.getMenu().size();i++){
+            int item = popupMenu.getMenu().getItem(i).getItemId();
+            if (item==R.id.menu_hide||item==R.id.menu_uninstall||item==
+        }*/
+
+
         // set proper item based on Db value
         if (DbUtils.isAppFreezed(activityName)) {
             popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze_size);

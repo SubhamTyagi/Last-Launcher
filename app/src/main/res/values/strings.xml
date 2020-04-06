@@ -14,22 +14,22 @@
     <string name="color_for_this_entry">Color</string>
     <string name="rename">Rename</string>
     <!--launcher menu-->
-    <string name="uninstall">Uninstall</string>
+    <string name="uninstall"><font fgcolor='#FF0000'>Uninstall</font></string>
     <string name="fonts">Fonts</string>
     <string name="themes">Themes</string>
     <string name="set_to_primary_colors">Set Primary Colors</string>
     <string name="backup">Backup</string>
 
-    <string name="reset_to_default_settings">Reset to default Settings</string>
+    <string name="reset_to_default_settings"><font fgcolor='#FF0000'>Reset to default Settings</font></string>
     <string name="app_info">App Info</string>
 
     <string name="random_colors">Random Colors</string>
 
     <string name="customize_with_color_sniffer">ColorSniffer…</string>
 
-    <string name="reset_to_default">Reset</string>
+    <string name="reset_to_default"><font fgcolor='#FF0000'>Reset</font></string>
     <string name="freeze_size">Freeze Size</string>
-    <string name="hide">Hide</string>
+    <string name="hide"><font fgcolor='#FF0000'>Hide</font></string>
     <string name="unfreeze_size">Unfreeze size</string>
     <string name="hidden_apps">Hidden Apps</string>
     <string name="freezed_apps">Freezed Apps</string>
