@@ -20,6 +20,6 @@ Last Launcher is Simple, Minimalist, Customisable open source Android launcher. 
 - Multiple themes
 - Hide apps
 - Freeze apps size
-- For more <font color="#ff0000"><b>Try App</b></font>
+- For more <font color="#ff0000"><b>try launcher</b></font>
 -
 -To access Launcher settings long click on empty area

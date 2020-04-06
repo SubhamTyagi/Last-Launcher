@@ -132,7 +132,6 @@ public class Utils {
             choice += string.codePointAt(i);
 
         }
-
         return Color.parseColor(colors[choice % colors.length]);
     }
 

@@ -249,8 +249,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     color = DbUtils.getAppColorExternalSource(activity);
                 }
             } else if (DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
-                color = Utils.getMaterialColor2(activity);//1 randomized but same package name have same class for md color
-                //color = Utils.generateColorFromString(appName);//2 not fully randomized
+                // color = Utils.getMaterialColor2(activity);//1 randomized but same package name have same class for md color
+                color = Utils.generateColorFromString(appName);//2 not fully randomized
                 //color=Utils.getMaterialColor(Utils.getPackageNameFromActivityName(activity));//3 extensive randomized
             }
 

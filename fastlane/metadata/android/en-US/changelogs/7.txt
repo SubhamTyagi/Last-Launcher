@@ -1,0 +1,7 @@
+*Preview release 7*
+
+- Status bar and navigation bar color as per selected theme.
+- Generate the Same Random Color each time for a perticular app(Thanks to Sylvia).
+- Alignments(center, left and right) of Apps.
+- Re-ordering of PopMenu items and Cautious Red color for some items. 
+- Hacker Red theme bug fix.
