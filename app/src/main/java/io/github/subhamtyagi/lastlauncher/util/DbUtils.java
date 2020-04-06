@@ -18,6 +18,8 @@
 
 package io.github.subhamtyagi.lastlauncher.util;
 
+import android.view.Gravity;
+
 import java.util.Map;
 
 import io.github.subhamtyagi.lastlauncher.R;
@@ -45,6 +47,8 @@ public class DbUtils {
     private static final String LAUNCHER_THEME = "launcher_theme";
     private static final String LAUNCHER_FREEZE_SIZE = "launcher_freeze_size";
     private static final String APPS_COLOR_FROM_EXTERNAL_SOURCE = "external_app_color";
+    //new addition
+    private static final String FLOW_LAYOUT_ALIGNMENT = "flow_layout_alignment";
 
     public static int NULL_TEXT_COLOR = -1;
 
@@ -199,5 +203,13 @@ public class DbUtils {
     public static void putAppColorExternalSource(String activityName, int color) {
         activityName = activityName.replaceAll("\\.", "_") + "external_color";
         SpUtils.getInstance().putInt(activityName, color);
+    }
+
+    public static int getFlowLayoutAlignment() {
+        return SpUtils.getInstance().getInt(FLOW_LAYOUT_ALIGNMENT, Gravity.CENTER);
+    }
+
+    public static void setFlowLayoutAlignment(int gravity) {
+        SpUtils.getInstance().putInt(FLOW_LAYOUT_ALIGNMENT, gravity);
     }
 }

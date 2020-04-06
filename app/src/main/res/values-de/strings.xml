@@ -62,6 +62,10 @@
     <string name="on">:On</string>
     !--translation required -->
     <string name="off">:Off</string>
+   <string name="alignment">Alignment</string>
+   <string name="start">Start</string>
+   <string name="center">Center</string>
+   <string name="end">End</string>
 
 
 </resources>

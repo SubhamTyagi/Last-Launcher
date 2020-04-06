@@ -57,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
 import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
@@ -102,7 +101,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
-    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 32;
+    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
     private final String TAG = "LauncherActivity";
 
     private ArrayList<Apps> mAppsList;
@@ -111,12 +110,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private FlowLayout mHomeLayout;
 
 
-    /*  @Override
-      public boolean dispatchTouchEvent(MotionEvent ev) {
-          detector.onTouchEvent(ev);
-          return super.dispatchTouchEvent(ev);
-
-      }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +131,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         mHomeLayout = findViewById(R.id.home_layout);
         mHomeLayout.setOnLongClickListener(this);
+        //set alignment default is centre
+        mHomeLayout.setGravity(DbUtils.getFlowLayoutAlignment());
+
+        //mHomeLayout.setGravity();
 
         // loads the apps
         loadApps();
@@ -227,9 +224,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 } else {
                     textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
                 }
-                // save the size to db
-                // bcs DB doesn't have the app size
-                DbUtils.putAppSize(activity, textSize);
+                // no need to save this save the size to db
+                /// DbUtils.putAppSize(activity, textSize);
             }
 
             // get app color
@@ -246,7 +242,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     color = DbUtils.getAppColorExternalSource(activity);
                 }
             } else if (DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
-                color = Utils.generateColorFromString(appName);
+                color = Utils.getMaterialColor2(activity);//1 randomized but same package name have same class for md color
+                //color = Utils.generateColorFromString(appName);//2 not fully randomized
+                //color=Utils.getMaterialColor(Utils.getPackageNameFromActivityName(activity));//3 extensive randomized
             }
 
             // save all and add this is to app list
@@ -729,5 +727,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
 
+    //set the flow layout alignment it is called from global settings
+    public void setFlowLayoutAlignment(int gravity) {
+        mHomeLayout.setGravity(gravity);
+        DbUtils.setFlowLayoutAlignment(gravity);
+    }
 }
 
