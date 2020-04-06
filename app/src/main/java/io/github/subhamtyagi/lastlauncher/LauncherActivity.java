@@ -123,7 +123,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         // set the status bar color as per theme
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setNaviagationAndStatusBarColor(theme);
+            setNavigationAndStatusBarColor(theme);
         }
         // set the fonts
         setFont();
@@ -131,7 +131,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         mHomeLayout = findViewById(R.id.home_layout);
         mHomeLayout.setOnLongClickListener(this);
-        //set alignment default is centre
+        //set alignment default is center|center_vertical
         mHomeLayout.setGravity(DbUtils.getFlowLayoutAlignment());
 
         //mHomeLayout.setGravity();
@@ -152,7 +152,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
      * @param theme current theme applied to launcher
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void setNaviagationAndStatusBarColor(int theme) {
+    private void setNavigationAndStatusBarColor(int theme) {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

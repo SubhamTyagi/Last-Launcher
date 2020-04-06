@@ -206,7 +206,7 @@ public class DbUtils {
     }
 
     public static int getFlowLayoutAlignment() {
-        return SpUtils.getInstance().getInt(FLOW_LAYOUT_ALIGNMENT, Gravity.CENTER);
+        return SpUtils.getInstance().getInt(FLOW_LAYOUT_ALIGNMENT, Gravity.CENTER | Gravity.CENTER_VERTICAL);
     }
 
     public static void setFlowLayoutAlignment(int gravity) {

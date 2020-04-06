@@ -150,13 +150,13 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.menu_center:
-                    launcherActivity.setFlowLayoutAlignment(Gravity.CENTER);
+                    launcherActivity.setFlowLayoutAlignment(Gravity.CENTER | Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
                     break;
                 case R.id.menu_end:
-                    launcherActivity.setFlowLayoutAlignment(Gravity.END);
+                    launcherActivity.setFlowLayoutAlignment(Gravity.END | Gravity.CENTER_VERTICAL);
                     break;
                 case R.id.menu_start:
-                    launcherActivity.setFlowLayoutAlignment(Gravity.START);
+                    launcherActivity.setFlowLayoutAlignment(Gravity.START | Gravity.CENTER_VERTICAL);
                     break;
             }
             return false;
