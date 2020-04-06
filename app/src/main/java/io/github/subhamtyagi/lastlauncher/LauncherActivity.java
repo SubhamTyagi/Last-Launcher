@@ -123,7 +123,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         // set the status bar color as per theme
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setStatusBarColor(theme);
+            setNaviagationAndStatusBarColor(theme);
         }
         // set the fonts
         setFont();
@@ -146,21 +146,28 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     /**
-     * set the color of status bar as per theme
+     * set the color of status bar and navigation bar as per theme
      * if theme color is light then pass this to system so status icon color will turn into black
      *
      * @param theme current theme applied to launcher
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void setStatusBarColor(int theme) {
+    private void setNaviagationAndStatusBarColor(int theme) {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            // getWindow().setNavigationBarColor(getResources().getColor(android.R.color.transparent));
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             switch (theme) {
                 case R.style.White:
                 case R.style.WhiteOnGrey:
-                case R.style.BlackOnGrey:
+                case R.style.BlackOnGrey: {
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                }
             }
         }
     }
