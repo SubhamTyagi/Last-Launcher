@@ -1,0 +1,64 @@
+<resources>
+
+
+    <string name="app_name">Last Launcher</string>
+
+    <!--Shared preference strings  -->
+    <string name="action_settings">Ajustes</string>
+
+    <!--App information related strings-->
+    <!--app menu-->
+    <string name="size_for_this_entry">Tamaño</string>
+    <string name="color_for_this_entry">Color</string>
+    <string name="rename">Renombrar</string>
+    <!--launcher menu-->
+    <string name="uninstall"><font fgcolor="#FF0000" >Desinstalar</font></string>
+    <string name="fonts">Fuentes</string>
+    <string name="themes">Temas</string>
+    <string name="set_to_primary_colors">Elegir colores primarios</string>
+    <string name="backup">Copia de seguridad</string>
+
+    <string name="reset_to_default_settings"><font fgcolor="#FF0000" >Volver a los ajustes predeterminados</font></string>
+    <string name="app_info">Info de la app</string>
+
+    <string name="random_colors">Colores aleatorios</string>
+
+    <string name="customize_with_color_sniffer">ColorSniffer…</string>
+
+    <string name="reset_to_default"><font fgcolor="#FF0000" >Reiniciar</font></string>
+    <string name="freeze_size">Fijar tamaño</string>
+    <string name="hide"><font fgcolor="#FF0000" >Ocultar</font></string>
+    <string name="unfreeze_size">Cambiar tamaño</string>
+    <string name="hidden_apps">Apps ocultas</string>
+    <string name="freezed_apps">Apps fijas</string>
+
+    <string name="restore">Restaurar</string>
+    <string name="fixed_colors">Colores fijos</string>
+    <string name="freeze_apps_size">Fijar tamaño de la app</string>
+    <string name="unfreeze_app_size">Permitir cambiar tamaño de las apps</string>
+    <string name="default_theme">Tema predefinido</string>
+    <string name="background_wallpaper">Fondo de pantalla</string>
+    <string name="white_on_black">Blanco sobre negro</string>
+    <string name="black_on_white">Negro sobre blanco</string>
+    <string name="white_on_grey">Blanco sobre gris</string>
+    <string name="black_on_grey">Negro sobre gris</string>
+    <string name="hacker_green">Verde hacker</string>
+    <string name="hacker_red">Rojo hacker</string>
+
+
+    <string name="choose_old_backup_files">Elegir copia de seguridad anterior</string>
+
+    <string name="from_clipboard">Desde el portapapeles</string>
+    <string name="from_colorsniffer_app">Desde ColorSniffer</string>
+    <string name="backup_saved_to_downloads">Copia de seguridad guardada en Descargas</string>
+    <string name="some_error_occurred">Un error ha ocurrido</string>
+    <string name="choose_old_backup_file">Elegir copia de seguridad antigua</string>
+    <string name="on">:Encendido</string>
+    <string name="off">:Apagado</string>
+    <string name="alignment">Alineación</string>
+    <string name="start">Iniciar</string>
+    <string name="center">Centrar</string>
+    <string name="end">Terminar</string>
+
+
+</resources>
