@@ -28,7 +28,7 @@ import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
-// chose color Dialog
+// choose color Dialog
 public class ChooseColor extends Dialog {
 
 

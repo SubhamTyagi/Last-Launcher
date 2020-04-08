@@ -29,11 +29,13 @@ import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
 public class ChooseSize extends Dialog {
+
     private static final int DELAY = 65;
+    // private static final String TAG="ChooseSize";
 
     //TODO: put the MAX and MIN limit on size of app text
-    private final static int DEFAULT_MIN_TEXT_SIZE = 14;
-    private final static int DEFAULT_MAX_TEXT_SIZE = 80;
+    private final static int DEFAULT_MIN_TEXT_SIZE = DbUtils.getMinAppSize();
+    private final static int DEFAULT_MAX_TEXT_SIZE = DbUtils.getMaxAppSize();
 
     final private String appPackage;
     final private TextView textView;
@@ -62,11 +64,14 @@ public class ChooseSize extends Dialog {
 
 
         plus.setOnClickListener(view -> {
+
             appSize++;
+
             if (appSize >= DEFAULT_MAX_TEXT_SIZE) {
                 appSize = DEFAULT_MAX_TEXT_SIZE;
                 //   plus.setClickable(false);
             }
+
             size.setText(String.valueOf(appSize));
             textView.setTextSize(appSize);
         });
@@ -76,6 +81,7 @@ public class ChooseSize extends Dialog {
             if (appSize < DEFAULT_MIN_TEXT_SIZE) {
                 appSize = DEFAULT_MIN_TEXT_SIZE;
             }
+
             size.setText(String.valueOf(appSize));
             textView.setTextSize(appSize);
         });
@@ -87,12 +93,16 @@ public class ChooseSize extends Dialog {
                     handler.removeCallbacks(runnable);
                     return;
                 }
+
+
                 // increase value
                 appSize++;
+
                 if (appSize >= DEFAULT_MAX_TEXT_SIZE) {
                     appSize = DEFAULT_MAX_TEXT_SIZE;
                     //   plus.setClickable(false);
                 }
+
                 size.setText(String.valueOf(appSize));
                 textView.setTextSize(appSize);
                 handler.postDelayed(runnable, DELAY);
@@ -114,6 +124,7 @@ public class ChooseSize extends Dialog {
                 if (appSize < DEFAULT_MIN_TEXT_SIZE) {
                     appSize = DEFAULT_MIN_TEXT_SIZE;
                 }
+
                 size.setText(String.valueOf(appSize));
                 textView.setTextSize(appSize);
                 handler.postDelayed(runnable, DELAY);

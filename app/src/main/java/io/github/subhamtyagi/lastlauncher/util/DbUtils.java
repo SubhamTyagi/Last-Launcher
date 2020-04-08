@@ -41,16 +41,18 @@ import io.github.subhamtyagi.lastlauncher.R;
 public class DbUtils {
 
     public static final int NULL_TEXT_SIZE = -1;
+    public final static int NULL_TEXT_COLOR = -1;
     private static final String RANDOM_COLOR_FOR_APPS = "random_color_for_apps";
     private static final String READ_WRITE_PERMISSION = "read_write_permission";
     private static final String LAUNCHER_FONTS = "launcher_fonts";
     private static final String LAUNCHER_THEME = "launcher_theme";
     private static final String LAUNCHER_FREEZE_SIZE = "launcher_freeze_size";
     private static final String APPS_COLOR_FROM_EXTERNAL_SOURCE = "external_app_color";
+
     //new addition
     private static final String FLOW_LAYOUT_ALIGNMENT = "flow_layout_alignment";
-
-    public static int NULL_TEXT_COLOR = -1;
+    private static final String MAX_APP_SIZE = "max_app_size";
+    private static final String MIN_APP_SIZE = "max_app_size";
 
     public static boolean isFirstStart() {
         return SpUtils.getInstance().getBoolean("sp_first_time_app_open", true);
@@ -211,5 +213,21 @@ public class DbUtils {
 
     public static void setFlowLayoutAlignment(int gravity) {
         SpUtils.getInstance().putInt(FLOW_LAYOUT_ALIGNMENT, gravity);
+    }
+
+    public static int getMaxAppSize() {
+        return SpUtils.getInstance().getInt(MAX_APP_SIZE, 80);
+    }
+
+    public static void setMaxAppSize(int size) {
+        SpUtils.getInstance().putInt(MAX_APP_SIZE, size);
+    }
+
+    public static int getMinAppSize() {
+        return SpUtils.getInstance().getInt(MIN_APP_SIZE, 14);
+    }
+
+    public static void setMinAppSize(int size) {
+        SpUtils.getInstance().putInt(MIN_APP_SIZE, size);
     }
 }

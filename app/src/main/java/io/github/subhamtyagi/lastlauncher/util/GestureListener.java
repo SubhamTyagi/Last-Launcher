@@ -22,7 +22,7 @@ import android.app.Activity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-
+//not in use
 public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     // Swipe gestures type
