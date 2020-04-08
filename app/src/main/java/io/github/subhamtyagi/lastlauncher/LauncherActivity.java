@@ -63,6 +63,7 @@ import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
 import io.github.subhamtyagi.lastlauncher.dialogs.FreezedApps;
 import io.github.subhamtyagi.lastlauncher.dialogs.GlobalSettings;
 import io.github.subhamtyagi.lastlauncher.dialogs.HiddenApps;
+import io.github.subhamtyagi.lastlauncher.dialogs.PaddingDialog;
 import io.github.subhamtyagi.lastlauncher.dialogs.RenameInput;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
@@ -132,6 +133,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         mHomeLayout.setOnLongClickListener(this);
         //set alignment default is center|center_vertical
         mHomeLayout.setGravity(DbUtils.getFlowLayoutAlignment());
+
 
         //mHomeLayout.setGravity();
 
@@ -746,5 +748,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         mHomeLayout.setGravity(gravity);
         DbUtils.setFlowLayoutAlignment(gravity);
     }
+
+    public void setPadding() {
+        Dialog dialog = new PaddingDialog(this, mHomeLayout);
+        // Window window = dialog.getWindow();
+        //window.setGravity(Gravity.BOTTOM);
+        // window.setBackgroundDrawableResource(android.R.color.transparent);
+        // window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        dialog.show();
+    }
+
+
 }
 

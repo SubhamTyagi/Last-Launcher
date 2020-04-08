@@ -54,6 +54,12 @@ public class DbUtils {
     private static final String MAX_APP_SIZE = "max_app_size";
     private static final String MIN_APP_SIZE = "max_app_size";
 
+
+    private static final String PADDING_LEFT = "padding_left";
+    private static final String PADDING_RIGHT = "padding_right";
+    public static final String PADDING_TOP = "padding_top";
+    private static final String PADDING_BOTTOM = "padding_bottom";
+
     public static boolean isFirstStart() {
         return SpUtils.getInstance().getBoolean("sp_first_time_app_open", true);
     }
@@ -230,4 +236,39 @@ public class DbUtils {
     public static void setMinAppSize(int size) {
         SpUtils.getInstance().putInt(MIN_APP_SIZE, size);
     }
+
+    ///////
+    public static int getPaddingLeft() {
+        return SpUtils.getInstance().getInt(PADDING_LEFT, 0);
+    }
+
+    public static int getPaddingRight() {
+        return SpUtils.getInstance().getInt(PADDING_RIGHT, 0);
+    }
+
+    public static int getPaddingTop() {
+        return SpUtils.getInstance().getInt(PADDING_TOP, 0);
+    }
+
+    public static int getPaddingBottom() {
+        return SpUtils.getInstance().getInt(PADDING_BOTTOM, 0);
+    }
+
+
+    public static void setPaddingLeft(int padding) {
+        SpUtils.getInstance().putInt(PADDING_LEFT, padding);
+    }
+
+    public static void setPaddingRight(int padding) {
+        SpUtils.getInstance().putInt(PADDING_RIGHT, padding);
+    }
+
+    public static void setPaddingTop(int padding) {
+        SpUtils.getInstance().putInt(PADDING_TOP, padding);
+    }
+
+    public static void setPaddingBottom(int padding) {
+        SpUtils.getInstance().putInt(PADDING_BOTTOM, padding);
+    }
+
 }

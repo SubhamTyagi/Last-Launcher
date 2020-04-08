@@ -30,7 +30,7 @@ import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
 public class ChooseSize extends Dialog {
 
-    private static final int DELAY = 65;
+    private static final int DELAY = 25;
     // private static final String TAG="ChooseSize";
 
     //TODO: put the MAX and MIN limit on size of app text
