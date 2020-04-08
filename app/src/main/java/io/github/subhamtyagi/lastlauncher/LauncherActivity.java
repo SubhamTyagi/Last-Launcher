@@ -110,7 +110,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private FlowLayout mHomeLayout;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // initialize the shared prefs may be done in application class
@@ -438,7 +437,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 break;
             }
         }
-
     }
 
     // reset the app
@@ -483,6 +481,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             for (Apps apps : mAppsList) {
                 if (apps.getActivityName().equals(activityName)) {
                     size = apps.getSize();
+                    break;
                 }
             }
         }
