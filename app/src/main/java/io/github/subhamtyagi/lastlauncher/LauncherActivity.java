@@ -58,8 +58,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import io.github.subhamtyagi.lastlauncher.dialogs.ChooseColor;
-import io.github.subhamtyagi.lastlauncher.dialogs.ChooseSize;
+import io.github.subhamtyagi.lastlauncher.dialogs.ColorSizeDialog;
 import io.github.subhamtyagi.lastlauncher.dialogs.FreezedApps;
 import io.github.subhamtyagi.lastlauncher.dialogs.GlobalSettings;
 import io.github.subhamtyagi.lastlauncher.dialogs.HiddenApps;
@@ -365,10 +364,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.menu_color:
-                    changeColor(activityName, view);
-                    break;
-                case R.id.menu_size:
-                    changeSize(activityName, view);
+                    changeColorSize(activityName, view);
                     break;
                 case R.id.menu_rename:
                     renameApp(activityName, view.getText().toString());
@@ -465,12 +461,23 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     //show dialog(i.e a color seek bar) for change color
-    private void changeColor(String activityName, TextView view) {
+    private void changeColorSize(String activityName, TextView view) {
         int color = DbUtils.getAppColor(activityName);
         if (color == DbUtils.NULL_TEXT_COLOR) {
             color = view.getCurrentTextColor();
         }
-        Dialog dialog = new ChooseColor(this, activityName, color, view);
+
+        int size = DbUtils.getAppSize(activityName);
+        if (size == DbUtils.NULL_TEXT_SIZE) {
+            for (Apps apps : mAppsList) {
+                if (apps.getActivityName().equals(activityName)) {
+                    size = apps.getSize();
+                    break;
+                }
+            }
+        }
+        Dialog dialog = new ColorSizeDialog(this, activityName, color, view, size);
+
         Window window = dialog.getWindow();
         if (window != null) {
             window.setGravity(Gravity.BOTTOM);
@@ -482,7 +489,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         dialog.show();
     }
 
-    //show dialog(i.e a size seek bar) for change size
+   /* //show dialog(i.e a size seek bar) for change size
     private void changeSize(String activityName, TextView view) {
         int size = DbUtils.getAppSize(activityName);
         if (size == DbUtils.NULL_TEXT_SIZE) {
@@ -494,7 +501,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             }
         }
         Dialog dialog = new ChooseSize(this, activityName, size, view);
-        //dialog.setBackgroundDrawableResource(android.R.color.transparent);
+       // dialog.setBackgroundDrawableResource(android.R.color.transparent);
         Window window = dialog.getWindow();
         if (window != null) {
             window.setGravity(Gravity.BOTTOM);
@@ -503,7 +510,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
 
         dialog.show();
-    }
+    }*/
 
 
     // app text is clicked

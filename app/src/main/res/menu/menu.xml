@@ -22,9 +22,10 @@
     <item
         android:id="@+id/menu_color"
         android:title="@string/color_for_this_entry" />
-    <item
-        android:id="@+id/menu_size"
-        android:title="@string/size_for_this_entry" />
+
+    <!-- <item
+         android:id="@+id/menu_size"
+         android:title="@string/size_for_this_entry" />-->
 
     <item
         android:id="@+id/menu_rename"

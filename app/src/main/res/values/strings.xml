@@ -10,8 +10,8 @@
     <!--App information related strings-->
     <string name="sp_first_time_app_open" translatable="false">sp_first_time_app_open</string>
     <!--app menu-->
-    <string name="size_for_this_entry">Size</string>
-    <string name="color_for_this_entry">Color</string>
+
+    <string name="color_for_this_entry">Colors &amp; Size</string>
     <string name="rename">Rename</string>
     <!--launcher menu-->
     <string name="uninstall"><font fgcolor='#FF0000'>Uninstall</font></string>

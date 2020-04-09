@@ -1,6 +1,6 @@
 /*
  * Last Launcher
- * Copyright (C) 2019,2020 Shubham Tyagi
+ * Copyright (C) 2019 Shubham Tyagi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,10 @@ import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
+import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
-//soon deleted.....not in use
-@Deprecated
-public class ChooseSize extends Dialog {
+// choose color Dialog
+public class ColorSizeDialog extends Dialog {
 
     private static final int DELAY = 25;
     // private static final String TAG="ChooseSize";
@@ -38,25 +38,52 @@ public class ChooseSize extends Dialog {
     private final static int DEFAULT_MIN_TEXT_SIZE = DbUtils.getMinAppSize();
     private final static int DEFAULT_MAX_TEXT_SIZE = DbUtils.getMaxAppSize();
 
-    final private String appPackage;
-    final private TextView textView;
     private final Handler handler = new Handler();
+    private final String appPackage;
+    private final TextView textView;
+
     private int appSize;
     private Runnable runnable;
+    private int appColor;
 
-    public ChooseSize(Context context, String appPackage, int appSize, TextView textView) {
+    public ColorSizeDialog(Context context, String appPackage, int appColor, TextView textView, int appSize) {
         super(context);
         this.appPackage = appPackage;
-        this.appSize = appSize;
+        this.appColor = appColor;
         this.textView = textView;
+        this.appSize = appSize;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        // no title please
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_choose_size);
+        setContentView(R.layout.dialog_color_size);
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
+
+        ColorSeekBar colorSeekBar = findViewById(R.id.colorSlider1);
+        colorSeekBar.setMaxPosition(100);
+        //colorSeekBar.setColorSeeds(R.array.material_colors);
+        colorSeekBar.setShowAlphaBar(true);
+        colorSeekBar.setBarHeight(5);
+
+
+        // todo: is this still correct?
+        if (appColor != -DbUtils.NULL_TEXT_COLOR)
+            colorSeekBar.setColor(appColor);
+
+        // set the color and save this to database
+        colorSeekBar.setOnColorChangeListener((colorBarPosition, alphaBarPosition, color) -> {
+            textView.setTextColor(color);
+            appColor = color;
+            //DbUtils.putAppColor(appPackage, color);
+        });
+
+
+        // size related
         TextView plus = findViewById(R.id.btn_plus);
         TextView minus = findViewById(R.id.btn_minus);
         TextView size = findViewById(R.id.tv_size);
@@ -132,12 +159,13 @@ public class ChooseSize extends Dialog {
             handler.postDelayed(runnable, DELAY);
             return true;
         });
-    }
 
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
+        DbUtils.putAppColor(appPackage, appColor);
         DbUtils.putAppSize(appPackage, appSize);
     }
 }

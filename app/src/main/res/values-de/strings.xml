@@ -5,10 +5,7 @@
 
     <!--Shared preference strings  -->
     <string name="action_settings">Einstellungen</string>
-
-
-    <string name="size_for_this_entry">Größe</string>
-    <string name="color_for_this_entry">Farbe</string>
+    <string name="color_for_this_entry">Farben &amp; Größe</string>
     <string name="rename">Umbenenen</string>
     <!--launcher menu-->
     <string name="uninstall"><font fgcolor='#FF0000'>Deinstallieren</font></string>
@@ -54,14 +51,16 @@
     <string name="some_error_occurred">Some error occurred</string>
     <!--translation required    -->
     <string name="choose_old_backup_file">Choose old backup file</string>
-    !--translation required -->
+    <!--translation required -->
     <string name="on">:On</string>
-    !--translation required -->
+    <!--translation required -->
     <string name="off">:Off</string>
-   <string name="alignment">Alignment</string>
-   <string name="start">Start</string>
-   <string name="center">Center</string>
-   <string name="end">End</string>
+    <string name="alignment">Alignment</string>
+    <string name="start">Start</string>
+    <string name="center">Center</string>
+    <string name="end">End</string>
+
+    <string name="padding">Padding</string>
 
 
 </resources>
