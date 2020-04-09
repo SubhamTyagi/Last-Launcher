@@ -41,16 +41,24 @@ import io.github.subhamtyagi.lastlauncher.R;
 public class DbUtils {
 
     public static final int NULL_TEXT_SIZE = -1;
+    public final static int NULL_TEXT_COLOR = -1;
     private static final String RANDOM_COLOR_FOR_APPS = "random_color_for_apps";
     private static final String READ_WRITE_PERMISSION = "read_write_permission";
     private static final String LAUNCHER_FONTS = "launcher_fonts";
     private static final String LAUNCHER_THEME = "launcher_theme";
     private static final String LAUNCHER_FREEZE_SIZE = "launcher_freeze_size";
     private static final String APPS_COLOR_FROM_EXTERNAL_SOURCE = "external_app_color";
+
     //new addition
     private static final String FLOW_LAYOUT_ALIGNMENT = "flow_layout_alignment";
+    private static final String MAX_APP_SIZE = "max_app_size";
+    private static final String MIN_APP_SIZE = "max_app_size";
 
-    public static int NULL_TEXT_COLOR = -1;
+
+    private static final String PADDING_LEFT = "padding_left";
+    private static final String PADDING_RIGHT = "padding_right";
+    public static final String PADDING_TOP = "padding_top";
+    private static final String PADDING_BOTTOM = "padding_bottom";
 
     public static boolean isFirstStart() {
         return SpUtils.getInstance().getBoolean("sp_first_time_app_open", true);
@@ -212,4 +220,55 @@ public class DbUtils {
     public static void setFlowLayoutAlignment(int gravity) {
         SpUtils.getInstance().putInt(FLOW_LAYOUT_ALIGNMENT, gravity);
     }
+
+    public static int getMaxAppSize() {
+        return SpUtils.getInstance().getInt(MAX_APP_SIZE, 80);
+    }
+
+    public static void setMaxAppSize(int size) {
+        SpUtils.getInstance().putInt(MAX_APP_SIZE, size);
+    }
+
+    public static int getMinAppSize() {
+        return SpUtils.getInstance().getInt(MIN_APP_SIZE, 14);
+    }
+
+    public static void setMinAppSize(int size) {
+        SpUtils.getInstance().putInt(MIN_APP_SIZE, size);
+    }
+
+    ///////
+    public static int getPaddingLeft() {
+        return SpUtils.getInstance().getInt(PADDING_LEFT, 0);
+    }
+
+    public static int getPaddingRight() {
+        return SpUtils.getInstance().getInt(PADDING_RIGHT, 0);
+    }
+
+    public static int getPaddingTop() {
+        return SpUtils.getInstance().getInt(PADDING_TOP, 0);
+    }
+
+    public static int getPaddingBottom() {
+        return SpUtils.getInstance().getInt(PADDING_BOTTOM, 0);
+    }
+
+
+    public static void setPaddingLeft(int padding) {
+        SpUtils.getInstance().putInt(PADDING_LEFT, padding);
+    }
+
+    public static void setPaddingRight(int padding) {
+        SpUtils.getInstance().putInt(PADDING_RIGHT, padding);
+    }
+
+    public static void setPaddingTop(int padding) {
+        SpUtils.getInstance().putInt(PADDING_TOP, padding);
+    }
+
+    public static void setPaddingBottom(int padding) {
+        SpUtils.getInstance().putInt(PADDING_BOTTOM, padding);
+    }
+
 }

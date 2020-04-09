@@ -68,6 +68,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
         findViewById(R.id.settings_backup).setOnClickListener(this);
         findViewById(R.id.settings_restore).setOnClickListener(this);
         findViewById(R.id.settings_alignment).setOnClickListener(this);
+        findViewById(R.id.settings_padding).setOnClickListener(this);
 
         //TODO: remove this var
         TextView colorSniffer = findViewById(R.id.settings_color_sniffer);
@@ -128,7 +129,10 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
                 break;
             case R.id.settings_alignment:
                 setFlowLayoutAlignment(view);
-
+                break;
+            case R.id.settings_padding:
+                launcherActivity.setPadding();
+                cancel();
                 break;
 
         }

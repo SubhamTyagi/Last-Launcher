@@ -63,5 +63,7 @@
     <string name="center">Center</string>
     <string name="end">End</string>
 
+    <string name="padding">Padding</string>
+
 
 </resources>

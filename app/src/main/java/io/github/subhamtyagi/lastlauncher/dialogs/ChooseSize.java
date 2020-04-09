@@ -1,6 +1,6 @@
 /*
  * Last Launcher
- * Copyright (C) 2019 Shubham Tyagi
+ * Copyright (C) 2019,2020 Shubham Tyagi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,18 +21,26 @@ package io.github.subhamtyagi.lastlauncher.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Window;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.util.DbUtils;
 
 public class ChooseSize extends Dialog {
-    final private String appPackage;
-    final private int appSize;
-    final private TextView textView;
 
+    private static final int DELAY = 25;
+    // private static final String TAG="ChooseSize";
+
+    private final static int DEFAULT_MIN_TEXT_SIZE = DbUtils.getMinAppSize();
+    private final static int DEFAULT_MAX_TEXT_SIZE = DbUtils.getMaxAppSize();
+
+    final private String appPackage;
+    final private TextView textView;
+    private final Handler handler = new Handler();
+    private int appSize;
+    private Runnable runnable;
 
     public ChooseSize(Context context, String appPackage, int appSize, TextView textView) {
         super(context);
@@ -46,34 +54,88 @@ public class ChooseSize extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_choose_size);
-        SeekBar sizeSeekBar = findViewById(R.id.sb_size);
 
-        // sizeSeekBar.setProgressDrawable(new ColorDrawable(textView.getCurrentTextColor()));
+        TextView plus = findViewById(R.id.btn_plus);
+        TextView minus = findViewById(R.id.btn_minus);
+        TextView size = findViewById(R.id.tv_size);
 
-        sizeSeekBar.setProgress(appSize);
-        sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int size = 0;
+        size.setText(String.valueOf(appSize));
 
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                size = i;
-                // check if size is so tiny
-                if (i < 15) {
-                    size = 15;
+
+        plus.setOnClickListener(view -> {
+
+            appSize++;
+
+            if (appSize >= DEFAULT_MAX_TEXT_SIZE) {
+                appSize = DEFAULT_MAX_TEXT_SIZE;
+                //   plus.setClickable(false);
+            }
+
+            size.setText(String.valueOf(appSize));
+            textView.setTextSize(appSize);
+        });
+
+        minus.setOnClickListener(view -> {
+            --appSize;
+            if (appSize < DEFAULT_MIN_TEXT_SIZE) {
+                appSize = DEFAULT_MIN_TEXT_SIZE;
+            }
+
+            size.setText(String.valueOf(appSize));
+            textView.setTextSize(appSize);
+        });
+
+
+        plus.setOnLongClickListener(view -> {
+            runnable = () -> {
+                if (!plus.isPressed()) {
+                    handler.removeCallbacks(runnable);
+                    return;
                 }
-                textView.setTextSize(size);
-            }
+                // increase value
+                appSize++;
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
+                if (appSize >= DEFAULT_MAX_TEXT_SIZE) {
+                    appSize = DEFAULT_MAX_TEXT_SIZE;
+                    //   plus.setClickable(false);
+                }
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                sizeSeekBar.setProgress(size);
-                DbUtils.putAppSize(appPackage, size);
-            }
+                size.setText(String.valueOf(appSize));
+                textView.setTextSize(appSize);
+                handler.postDelayed(runnable, DELAY);
+            };
+            handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable, DELAY);
+            return true;
+        });
+
+
+        minus.setOnLongClickListener(view -> {
+            runnable = () -> {
+                if (!minus.isPressed()) {
+                    handler.removeCallbacks(runnable);
+                    return;
+                }
+                // decrease value
+                --appSize;
+                if (appSize < DEFAULT_MIN_TEXT_SIZE) {
+                    appSize = DEFAULT_MIN_TEXT_SIZE;
+                }
+
+                size.setText(String.valueOf(appSize));
+                textView.setTextSize(appSize);
+                handler.postDelayed(runnable, DELAY);
+            };
+            handler.removeCallbacks(runnable);
+            handler.postDelayed(runnable, DELAY);
+            return true;
         });
     }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        DbUtils.putAppSize(appPackage, appSize);
+    }
 }

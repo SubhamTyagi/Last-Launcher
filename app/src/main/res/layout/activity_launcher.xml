@@ -1,8 +1,16 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_screen_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:id="@+id/main_screen_container">
+    android:fitsSystemWindows="true">
+    <!--
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             android:id="@+id/container"
+            android:paddingTop="150dp">
+    -->
 
     <org.apmem.tools.layouts.FlowLayout
         android:id="@+id/home_layout"
@@ -14,6 +22,9 @@
 
 
     </org.apmem.tools.layouts.FlowLayout>
+
+
+    <!-- </LinearLayout>-->
 
 
 </ScrollView>

@@ -15,18 +15,43 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
 
-<SeekBar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sb_size"
-    android:layout_width="280dp"
-    android:layout_height="30dp"
+    <TextView
+        android:id="@+id/btn_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="-"
+        android:textSize="42sp" />
 
+    <TextView
+        android:id="@+id/tv_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="34"
+        android:textSize="42sp" />
 
-    android:background="@android:color/transparent"
-    android:backgroundTint="@android:color/transparent"
-    android:max="70"
+    <TextView
+        android:id="@+id/btn_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="+"
+        android:textSize="42sp" />
 
-    android:progressDrawable="@drawable/seekbar_design"
-    android:thumb="@drawable/thumb"
-    android:verticalScrollbarPosition="right" />
+</LinearLayout>
+
