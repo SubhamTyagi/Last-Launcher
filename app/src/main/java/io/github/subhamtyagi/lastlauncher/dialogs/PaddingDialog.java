@@ -35,28 +35,20 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
 
     private static final long DELAY = 10;
 
-    private static int MAX_PADDING_LEFT = 50;
-    private static int MAX_PADDING_RIGHT = 50;
-    private static int MAX_PADDING_TOP = 200;
-    private static int MAX_PADDING_BOTTOM = 200;
+    private static int MAX_PADDING_LEFT = 80;
+    private static int MAX_PADDING_RIGHT = 80;
+    private static int MAX_PADDING_TOP = 300;
+    private static int MAX_PADDING_BOTTOM = 300;
 
     private static int MIN_PADDING = 0;
     private final FlowLayout homeLayout;
+
     private final Handler handler = new Handler();
 
     private TextView left;
     private TextView right;
     private TextView top;
     private TextView bottom;
-
-    private TextView btnLeftMinus;
-    private TextView btnRightMinus;
-    private TextView btnTopMinus;
-    private TextView btnBottomMinus;
-    private TextView btnLeftPlus;
-    private TextView btnRightPlus;
-    private TextView btnTopPlus;
-    private TextView btnBottomPlus;
 
     private int topInt, leftInt, rightInt, bottomInt;
 
@@ -73,33 +65,33 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_padding);
 
-        btnLeftMinus = findViewById(R.id.btn_left_minus);
+        TextView btnLeftMinus = findViewById(R.id.btn_left_minus);
         btnLeftMinus.setOnLongClickListener(this);
         btnLeftMinus.setOnClickListener(this);
 
-        btnRightMinus = findViewById(R.id.btn_right_minus);
+        TextView btnRightMinus = findViewById(R.id.btn_right_minus);
         btnRightMinus.setOnLongClickListener(this);
         btnRightMinus.setOnClickListener(this);
 
-        btnTopMinus = findViewById(R.id.btn_top_minus);
+        TextView btnTopMinus = findViewById(R.id.btn_top_minus);
         btnTopMinus.setOnLongClickListener(this);
         btnTopMinus.setOnClickListener(this);
 
-        btnBottomMinus = findViewById(R.id.btn_bottom_minus);
+        TextView btnBottomMinus = findViewById(R.id.btn_bottom_minus);
         btnBottomMinus.setOnLongClickListener(this);
         btnBottomMinus.setOnClickListener(this);
-        btnLeftPlus = findViewById(R.id.btn_left_plus);
+        TextView btnLeftPlus = findViewById(R.id.btn_left_plus);
         btnLeftPlus.setOnLongClickListener(this);
         btnLeftPlus.setOnClickListener(this);
 
-        btnRightPlus = findViewById(R.id.btn_right_plus);
+        TextView btnRightPlus = findViewById(R.id.btn_right_plus);
         btnRightPlus.setOnLongClickListener(this);
         btnRightPlus.setOnClickListener(this);
-        btnTopPlus = findViewById(R.id.btn_top_plus);
+        TextView btnTopPlus = findViewById(R.id.btn_top_plus);
         btnTopPlus.setOnLongClickListener(this);
         btnTopPlus.setOnClickListener(this);
 
-        btnBottomPlus = findViewById(R.id.btn_bottom_plus);
+        TextView btnBottomPlus = findViewById(R.id.btn_bottom_plus);
         btnBottomPlus.setOnLongClickListener(this);
         btnBottomPlus.setOnClickListener(this);
 
@@ -113,6 +105,8 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
         topInt = DbUtils.getPaddingTop();
         bottomInt = DbUtils.getPaddingBottom();
 
+        // Log.d(TAG, "onCreate: top value::::"+topInt);
+
         left.setText(String.valueOf(leftInt));
         right.setText(String.valueOf(rightInt));
         top.setText(String.valueOf(topInt));
@@ -121,17 +115,17 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
 
     }
 
+    // private static final String TAG = "PaddingDialog";
     @Override
     protected void onStop() {
         super.onStop();
-
+        //Log.d("PaddingDialog", "onStop: values are being saved to db");
+        // dialog is about to finish so store the latest values to DB
         DbUtils.setPaddingLeft(leftInt);
         DbUtils.setPaddingRight(rightInt);
-        DbUtils.setPaddingTop(rightInt);
+        DbUtils.setPaddingTop(topInt);
         DbUtils.setPaddingBottom(bottomInt);
-
     }
-
 
     @Override
     public boolean onLongClick(View button) {
@@ -162,21 +156,25 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
                 break;
         }
 
-        return false;
+        return true;
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_left_minus:
+                //decrease the value as minus button is pressed
                 leftInt--;
+                // check the lower limit i.e. 0
                 if (leftInt < MIN_PADDING) {
                     leftInt = MIN_PADDING;
                 }
+                //reflect it on screen
                 left.setText(String.valueOf(leftInt));
                 break;
             case R.id.btn_left_plus:
                 leftInt++;
+                // check the upper limit
                 if (leftInt > MAX_PADDING_LEFT) {
                     leftInt = MAX_PADDING_LEFT;
                 }
@@ -219,29 +217,38 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
                 break;
             case R.id.btn_bottom_plus:
                 bottomInt++;
-
                 if (bottomInt > MAX_PADDING_BOTTOM) {
                     bottomInt = MAX_PADDING_BOTTOM;
                 }
                 bottom.setText(String.valueOf(bottomInt));
                 break;
         }
-
+        // apply all padding to home layout
         homeLayout.setPadding(leftInt, topInt, rightInt, bottomInt);
     }
 
 
+    /**
+     * This runner continuously update the value when button is pressed continuously
+     *
+     * @param button    which button is being pressed
+     * @param view      which text view will be changed or updated
+     * @param step      how much we increase or decrease the value -1 means we have to decrease the value by 1
+     * @param whichSide to which side we apply padding usually @button @view and this param is interrelated
+     */
     private void runner(final TextView button, final TextView view, final int step, Padding whichSide) {
         runnable = () -> {
             if (!button.isPressed()) {
+                // button is released so destroy these calls
                 handler.removeCallbacks(runnable);
-
                 return;
             }
 
             switch (whichSide) {
                 case LEFT:
                     leftInt += step;
+                    // if step is positive means we are increasing the value so we have to check upper limit
+                    //else we have to check lower limit i.e. 0
                     if (step > 0) {
                         if (leftInt > MAX_PADDING_LEFT) {
                             leftInt = MAX_PADDING_LEFT;
@@ -251,6 +258,7 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
                             leftInt = MIN_PADDING;
                         }
                     }
+                    // reflect this in dialog view
                     view.setText(String.valueOf(leftInt));
                     break;
                 case RIGHT:
@@ -294,16 +302,20 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
                     break;
             }
 
+            // set the padding to home layout
             homeLayout.setPadding(leftInt, topInt, rightInt, bottomInt);
+            // currently button is still pressed so again call this runnable
             handler.postDelayed(runnable, DELAY);
 
         };
-
+        // remove callbacks if any
         handler.removeCallbacks(runnable);
+        // first time runner
         handler.postDelayed(runnable, DELAY);
     }
 
-    enum Padding {
+    //enums for better understanding
+    private enum Padding {
         LEFT, RIGHT, TOP, BOTTOM;
     }
 

@@ -93,8 +93,6 @@ public class ChooseSize extends Dialog {
                     handler.removeCallbacks(runnable);
                     return;
                 }
-
-
                 // increase value
                 appSize++;
 

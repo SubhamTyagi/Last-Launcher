@@ -757,7 +757,5 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         // window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
     }
-
-
 }
 
