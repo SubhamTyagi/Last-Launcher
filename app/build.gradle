@@ -8,8 +8,8 @@ android {
         applicationId "io.github.subhamtyagi.lastlauncher"
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 7
-        versionName "0.7"
+        versionCode 8
+        versionName "0.8"
         resConfigs "en", "de"
         buildConfigField "boolean", "enableColorSniffer","false"
     }

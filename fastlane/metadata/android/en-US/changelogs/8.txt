@@ -1,0 +1,9 @@
+*Preview release 8*
+
+- Padding to home screen.
+- Combined Color and Size menu for fast and convenient access.
+- A new Size selection UX for exact values.
+- App source code improvement for better understanding. 
+
+- comming soon: App Search bar
+ 
