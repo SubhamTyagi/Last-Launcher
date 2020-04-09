@@ -32,15 +32,15 @@ import java.util.ArrayList;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.adapters.UniversalAdapter;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
-import io.github.subhamtyagi.lastlauncher.util.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
-public class FreezedApps extends Dialog {
+public class FrozenAppsDialogs extends Dialog {
 
     private final ArrayList<Apps> mAppsList;
     private ListView listView;
     private Context context;
 
-    public FreezedApps(Context context, ArrayList<Apps> appsList) {
+    public FrozenAppsDialogs(Context context, ArrayList<Apps> appsList) {
         super(context);
         this.context = context;
         mAppsList = appsList;

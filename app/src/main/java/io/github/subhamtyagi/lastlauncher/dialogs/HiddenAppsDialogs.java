@@ -32,15 +32,15 @@ import java.util.ArrayList;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.adapters.UniversalAdapter;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
-import io.github.subhamtyagi.lastlauncher.util.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
-public class HiddenApps extends Dialog {
+public class HiddenAppsDialogs extends Dialog {
 
     private final ArrayList<Apps> mAppsList;
     private ListView listView;
     private Context context;
 
-    public HiddenApps(Context context, ArrayList<Apps> appsList) {
+    public HiddenAppsDialogs(Context context, ArrayList<Apps> appsList) {
         super(context);
         this.context = context;
         mAppsList = appsList;

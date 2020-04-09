@@ -26,7 +26,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.R;
-import io.github.subhamtyagi.lastlauncher.util.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
 // choose color Dialog

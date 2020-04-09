@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.subhamtyagi.lastlauncher.util;
+package io.github.subhamtyagi.lastlauncher.utils;
 
 // not in use
+@Deprecated
 public class ColorSnifferConstants {
     public final static String DEFAULT_COLOR_FOR_APPS = "default_color_for_apps";
     public static final int COLOR_SNIFFER_REQUEST = 154;

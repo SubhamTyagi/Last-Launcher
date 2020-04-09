@@ -29,7 +29,7 @@ import android.widget.TextView;
 import org.apmem.tools.layouts.FlowLayout;
 
 import io.github.subhamtyagi.lastlauncher.R;
-import io.github.subhamtyagi.lastlauncher.util.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
 public class PaddingDialog extends Dialog implements View.OnLongClickListener, View.OnClickListener {
 

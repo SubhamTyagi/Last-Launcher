@@ -21,14 +21,14 @@ package io.github.subhamtyagi.lastlauncher.model;
 import android.view.View;
 import android.widget.TextView;
 
-import io.github.subhamtyagi.lastlauncher.util.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
 // a model class that hold everything related to an app
 public class Apps {
 
     // app activity name format package.name/package.name.ClassName
     // for eg. com.example.appname/com.example.appname.MainActivity
-    // for eg  io.github.subhamtyagi.lastlauncher/io.github.subhamtyagi.lastlauncher/LauncherActivity
+    // for eg  io.github.subhamtyagi.lastlauncher/io.github.subhamtyagi.lastlauncher.LauncherActivity
     final private CharSequence activity;
     // app name to shown on screen
     private CharSequence appName;

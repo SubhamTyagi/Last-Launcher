@@ -31,18 +31,18 @@ import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
-import io.github.subhamtyagi.lastlauncher.util.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
 
 // color sniffer dialog
-public class ColorSniffer extends Dialog implements View.OnClickListener {
+public class ColorSnifferDialog extends Dialog implements View.OnClickListener {
     private LauncherActivity launcherActivity;
     private TextView onOffSwitch;
     private Context context;
     private TextView mStartColorSniffer;
     private boolean change = false;
 
-    ColorSniffer(Context context, LauncherActivity launcherActivity) {
+    ColorSnifferDialog(Context context, LauncherActivity launcherActivity) {
         super(context);
         this.context = context;
         this.launcherActivity = launcherActivity;

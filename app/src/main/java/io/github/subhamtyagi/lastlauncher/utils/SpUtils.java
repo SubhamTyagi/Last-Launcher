@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.subhamtyagi.lastlauncher.util;
+package io.github.subhamtyagi.lastlauncher.utils;
 
 
 import android.content.Context;

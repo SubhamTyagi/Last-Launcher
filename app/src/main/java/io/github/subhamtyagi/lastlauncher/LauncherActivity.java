@@ -59,15 +59,15 @@ import java.util.List;
 import java.util.Map;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ColorSizeDialog;
-import io.github.subhamtyagi.lastlauncher.dialogs.FreezedApps;
-import io.github.subhamtyagi.lastlauncher.dialogs.GlobalSettings;
-import io.github.subhamtyagi.lastlauncher.dialogs.HiddenApps;
+import io.github.subhamtyagi.lastlauncher.dialogs.FrozenAppsDialogs;
+import io.github.subhamtyagi.lastlauncher.dialogs.GlobalSettingsDialog;
+import io.github.subhamtyagi.lastlauncher.dialogs.HiddenAppsDialogs;
 import io.github.subhamtyagi.lastlauncher.dialogs.PaddingDialog;
-import io.github.subhamtyagi.lastlauncher.dialogs.RenameInput;
+import io.github.subhamtyagi.lastlauncher.dialogs.RenameInputDialogs;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
-import io.github.subhamtyagi.lastlauncher.util.DbUtils;
-import io.github.subhamtyagi.lastlauncher.util.SpUtils;
-import io.github.subhamtyagi.lastlauncher.util.Utils;
+import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.SpUtils;
+import io.github.subhamtyagi.lastlauncher.utils.Utils;
 
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
@@ -332,7 +332,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             showPopup((String) view.getTag(), (TextView) view);
         } else if (view instanceof FlowLayout) {
             // show launcher setting
-            new GlobalSettings(this, this).show();
+            new GlobalSettingsDialog(this, this).show();
         }
         return true;
     }
@@ -416,7 +416,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     // show the app rename Dialog
     private void renameApp(String activityName, String appName) {
-        Dialog dialog = new RenameInput(this, activityName, appName, this);
+        Dialog dialog = new RenameInputDialogs(this, activityName, appName, this);
         Window window = dialog.getWindow();
         if (window != null) {
             window.setGravity(Gravity.BOTTOM);
@@ -488,30 +488,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         dialog.show();
     }
-
-   /* //show dialog(i.e a size seek bar) for change size
-    private void changeSize(String activityName, TextView view) {
-        int size = DbUtils.getAppSize(activityName);
-        if (size == DbUtils.NULL_TEXT_SIZE) {
-            for (Apps apps : mAppsList) {
-                if (apps.getActivityName().equals(activityName)) {
-                    size = apps.getSize();
-                    break;
-                }
-            }
-        }
-        Dialog dialog = new ChooseSize(this, activityName, size, view);
-       // dialog.setBackgroundDrawableResource(android.R.color.transparent);
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setGravity(Gravity.BOTTOM);
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-            window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-        }
-
-        dialog.show();
-    }*/
-
 
     // app text is clicked
     // so launch the app
@@ -750,12 +726,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     // show the hidden app dialog
     public void showHiddenApps() {
-        new HiddenApps(this, mAppsList).show();
+        new HiddenAppsDialogs(this, mAppsList).show();
     }
 
     // show the freezed app dialog
     public void showFreezedApps() {
-        new FreezedApps(this, mAppsList).show();
+        new FrozenAppsDialogs(this, mAppsList).show();
     }
 
 

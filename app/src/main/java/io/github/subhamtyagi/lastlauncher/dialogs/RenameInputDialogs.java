@@ -30,9 +30,9 @@ import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
-import io.github.subhamtyagi.lastlauncher.util.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
-public class RenameInput extends Dialog implements TextView.OnEditorActionListener {
+public class RenameInputDialogs extends Dialog implements TextView.OnEditorActionListener {
 
     final private String appPackage;
     private LauncherActivity launcherActivity;
@@ -41,7 +41,7 @@ public class RenameInput extends Dialog implements TextView.OnEditorActionListen
 
     private EditText mAppName;
 
-    public RenameInput(Context context, String appPackage, String oldAppName, LauncherActivity launcherActivity) {
+    public RenameInputDialogs(Context context, String appPackage, String oldAppName, LauncherActivity launcherActivity) {
         super(context);
         this.appPackage = appPackage;
         this.launcherActivity = launcherActivity;

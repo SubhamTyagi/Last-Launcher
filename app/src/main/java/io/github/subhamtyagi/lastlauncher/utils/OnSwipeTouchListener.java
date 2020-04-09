@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.subhamtyagi.lastlauncher.util;
+package io.github.subhamtyagi.lastlauncher.utils;
 
 import android.content.Context;
 import android.view.GestureDetector;
@@ -24,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 //not in use
+@Deprecated
 public class OnSwipeTouchListener implements View.OnTouchListener {
 
     private final GestureDetector gestureDetector;

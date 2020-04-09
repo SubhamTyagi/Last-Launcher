@@ -22,7 +22,7 @@
     <string name="hide"><font fgcolor='#FF0000'>Verstecken</font></string>
     <string name="unfreeze_size">Größe nicht mehr Einfrieren</string>
     <string name="hidden_apps">Versteckte Apps</string>
-    <string name="freezed_apps">Eingefrorene Apps</string>
+    <string name="frozen_apps">Eingefrorene Apps</string>
 
     <string name="restore">Wiederherstellen</string>
     <string name="fixed_colors">Feste Farben</string>

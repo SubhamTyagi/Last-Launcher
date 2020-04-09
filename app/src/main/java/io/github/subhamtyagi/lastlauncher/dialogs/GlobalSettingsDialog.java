@@ -34,20 +34,20 @@ import android.widget.Toast;
 import io.github.subhamtyagi.lastlauncher.BuildConfig;
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
-import io.github.subhamtyagi.lastlauncher.util.DbUtils;
-import io.github.subhamtyagi.lastlauncher.util.SpUtils;
+import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.SpUtils;
 
 /**
  * this the launcher setting Dialog
  */
-public class GlobalSettings extends Dialog implements View.OnClickListener {
+public class GlobalSettingsDialog extends Dialog implements View.OnClickListener {
 
 
     private TextView freezeSize;
     private LauncherActivity launcherActivity;
     private Context context;
 
-    public GlobalSettings(Context context, LauncherActivity launcherActivity) {
+    public GlobalSettingsDialog(Context context, LauncherActivity launcherActivity) {
         super(context);
         this.context = context;
         this.launcherActivity = launcherActivity;
@@ -188,7 +188,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         } else {
-            new ColorSniffer(getContext(), launcherActivity).show();
+            new ColorSnifferDialog(getContext(), launcherActivity).show();
 
         }
     }
@@ -217,7 +217,7 @@ public class GlobalSettings extends Dialog implements View.OnClickListener {
 
     private void showThemeDialog() {
         cancel();
-        new ThemeSelector(getContext(), launcherActivity).show();
+        new ThemeSelectorDialog(getContext(), launcherActivity).show();
     }
 
     private void defaultSettings() {

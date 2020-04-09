@@ -27,13 +27,13 @@ import android.widget.LinearLayout;
 
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
-import io.github.subhamtyagi.lastlauncher.util.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
-public class ThemeSelector extends Dialog implements View.OnClickListener {
+public class ThemeSelectorDialog extends Dialog implements View.OnClickListener {
 
     private LauncherActivity context;
 
-    ThemeSelector(Context context, LauncherActivity launcherActivity) {
+    ThemeSelectorDialog(Context context, LauncherActivity launcherActivity) {
         super(context);
         this.context = launcherActivity;
     }

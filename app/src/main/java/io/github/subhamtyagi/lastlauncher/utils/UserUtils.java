@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.github.subhamtyagi.lastlauncher.util;
+package io.github.subhamtyagi.lastlauncher.utils;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -26,6 +26,7 @@ import android.os.UserManager;
 
 
 // not in use
+@Deprecated
 @TargetApi(21)
 public class UserUtils {
     private UserManager userManager;
