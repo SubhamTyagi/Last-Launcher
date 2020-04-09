@@ -133,9 +133,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         mHomeLayout.setOnLongClickListener(this);
         //set alignment default is center|center_vertical
         mHomeLayout.setGravity(DbUtils.getFlowLayoutAlignment());
-
-
-        //mHomeLayout.setGravity();
+        //set padding ..
+        mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
 
         // loads the apps
         loadApps();

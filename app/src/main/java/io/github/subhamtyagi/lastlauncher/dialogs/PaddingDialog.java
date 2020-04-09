@@ -131,28 +131,28 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
     public boolean onLongClick(View button) {
         switch (button.getId()) {
             case R.id.btn_left_minus:
-                runner((TextView) button, left, -1, Padding.LEFT);
+                runner((TextView) button, left, -2, Padding.LEFT);
                 break;
             case R.id.btn_left_plus:
-                runner((TextView) button, left, 1, Padding.LEFT);
+                runner((TextView) button, left, 2, Padding.LEFT);
                 break;
             case R.id.btn_right_minus:
-                runner((TextView) button, right, -1, Padding.RIGHT);
+                runner((TextView) button, right, -2, Padding.RIGHT);
                 break;
             case R.id.btn_right_plus:
-                runner((TextView) button, right, 1, Padding.RIGHT);
+                runner((TextView) button, right, 2, Padding.RIGHT);
                 break;
             case R.id.btn_top_minus:
-                runner((TextView) button, top, -1, Padding.TOP);
+                runner((TextView) button, top, -2, Padding.TOP);
                 break;
             case R.id.btn_top_plus:
-                runner((TextView) button, top, 1, Padding.TOP);
+                runner((TextView) button, top, 2, Padding.TOP);
                 break;
             case R.id.btn_bottom_minus:
-                runner((TextView) button, bottom, -1, Padding.BOTTOM);
+                runner((TextView) button, bottom, -2, Padding.BOTTOM);
                 break;
             case R.id.btn_bottom_plus:
-                runner((TextView) button, bottom, 1, Padding.BOTTOM);
+                runner((TextView) button, bottom, 2, Padding.BOTTOM);
                 break;
         }
 
@@ -233,7 +233,7 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
      *
      * @param button    which button is being pressed
      * @param view      which text view will be changed or updated
-     * @param step      how much we increase or decrease the value -1 means we have to decrease the value by 1
+     * @param step      how much we increase or decrease the value -2 means we have to decrease the value by 2
      * @param whichSide to which side we apply padding usually @button @view and this param is interrelated
      */
     private void runner(final TextView button, final TextView view, final int step, Padding whichSide) {
