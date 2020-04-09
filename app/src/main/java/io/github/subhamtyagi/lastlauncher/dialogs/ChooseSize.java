@@ -1,6 +1,6 @@
 /*
  * Last Launcher
- * Copyright (C) 2019 Shubham Tyagi
+ * Copyright (C) 2019,2020 Shubham Tyagi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ public class ChooseSize extends Dialog {
     private static final int DELAY = 25;
     // private static final String TAG="ChooseSize";
 
-    //TODO: put the MAX and MIN limit on size of app text
     private final static int DEFAULT_MIN_TEXT_SIZE = DbUtils.getMinAppSize();
     private final static int DEFAULT_MAX_TEXT_SIZE = DbUtils.getMaxAppSize();
 

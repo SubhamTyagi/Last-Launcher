@@ -1,6 +1,6 @@
 /*
  * Last Launcher
- * Copyright (C) 2019 Shubham Tyagi
+ * Copyright (C) 2019,2020 Shubham Tyagi
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -423,9 +423,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private void renameApp(String activityName, String appName) {
         Dialog dialog = new RenameInput(this, activityName, appName, this);
         Window window = dialog.getWindow();
-        window.setGravity(Gravity.BOTTOM);
-        window.setBackgroundDrawableResource(android.R.color.transparent);
-        window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        if (window != null) {
+            window.setGravity(Gravity.BOTTOM);
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+            window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        }
+
         dialog.show();
 
     }
@@ -470,9 +473,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
         Dialog dialog = new ChooseColor(this, activityName, color, view);
         Window window = dialog.getWindow();
-        window.setGravity(Gravity.BOTTOM);
-        window.setBackgroundDrawableResource(android.R.color.transparent);
-        window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        if (window != null) {
+            window.setGravity(Gravity.BOTTOM);
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+            window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        }
+
+
         dialog.show();
     }
 
@@ -490,9 +497,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         Dialog dialog = new ChooseSize(this, activityName, size, view);
         //dialog.setBackgroundDrawableResource(android.R.color.transparent);
         Window window = dialog.getWindow();
-        window.setGravity(Gravity.BOTTOM);
-        window.setBackgroundDrawableResource(android.R.color.transparent);
-        window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        if (window != null) {
+            window.setGravity(Gravity.BOTTOM);
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+            window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        }
+
         dialog.show();
     }
 
@@ -509,7 +519,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // bcz activity formatted as com.foo.bar/com.foo.bar.MainActivity
             String[] strings = activity.split("/");
             try {
-                //TODO: apps is not in recent menus
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);
                 intent.setClassName(strings[0], strings[1]);
                 intent.setComponent(new ComponentName(strings[0], strings[1]));
@@ -521,7 +530,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     refreshAppSize(activity);
                 }
             } catch (Exception ignore) {
-                Log.e(TAG, "onClick: exception:::" + ignore);
+                //  Log.e(TAG, "onClick: exception:::" + ignore);
             }
         }
     }
@@ -638,7 +647,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             }
             // this handle the request of ColorSniffer app
         } else if (requestCode == COLOR_SNIFFER_REQUEST) {
-            //TODO: data schema consensus
+            //
             //GET DATA FROM COLOR SNIFFER APPS:
             //K,V ??? no
             // bundle yes
@@ -679,8 +688,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     //Clipboard manager
     public Map<String, Integer> clipboardData() {
+        Map<String, Integer> result = null;
         Log.d(TAG, "clipboardData: ");
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clipData = clipboardManager.getPrimaryClip();
@@ -704,15 +714,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
                     }
                     setAppsColorFromClipboard(colorsAndId);
-                    return colorsAndId;// return map
+                    result = colorsAndId;// return map
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                return null;
             }
         }
 
-        return null;// return empty null/
+        // return empty null/
+        return result;
     }
 
     private void setAppsColorFromClipboard(Map<String, Integer> colorsAndId) {
