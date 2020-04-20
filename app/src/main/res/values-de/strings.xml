@@ -63,6 +63,7 @@
     <string name="padding">Padding</string>
     <string name="remove">Remove?</string>
     <string name="open">Open</string>
+    <string name="reset_color">Reset Color</string>
 
 
 </resources>

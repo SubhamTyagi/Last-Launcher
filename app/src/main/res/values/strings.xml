@@ -27,7 +27,7 @@
 
     <string name="customize_with_color_sniffer">ColorSniffer…</string>
 
-    <string name="reset_to_default"><font fgcolor='#E53935'>Reset</font></string>
+    <string name="reset_to_default"><font fgcolor='#E53935'>Reset All</font></string>
     <string name="freeze_size">Freeze Size</string>
     <string name="hide"><font fgcolor='#E53935'>Hide</font></string>
     <string name="unfreeze_size">Unfreeze size</string>
@@ -66,6 +66,7 @@
     <string name="padding">Padding</string>
     <string name="remove">Remove?</string>
     <string name="open">Open</string>
+    <string name="reset_color">Reset Color</string>
 
 
 </resources>

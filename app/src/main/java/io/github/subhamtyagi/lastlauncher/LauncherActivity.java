@@ -383,6 +383,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     break;
                 case R.id.menu_reset_to_default:
                     resetApp(activityName);
+                    break;
+                case R.id.menu_reset_color:
+                    resetAppColor(activityName);
+                    break;
 
                 default:
                     return true;
@@ -391,6 +395,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         });
         // not forget to show popup
         popupMenu.show();
+    }
+
+    //reset the app color to default color;
+    private void resetAppColor(String activityName) {
+        DbUtils.removeColor(activityName);
+        refreshApps(activityName);
     }
 
     // as method name suggest

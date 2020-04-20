@@ -38,6 +38,9 @@
         android:id="@+id/menu_app_info"
         android:title="@string/app_info" />
     <item
+        android:id="@+id/menu_reset_color"
+        android:title="@string/reset_color" />
+    <item
         android:id="@+id/menu_hide"
         android:title="@string/hide" />
     <item
