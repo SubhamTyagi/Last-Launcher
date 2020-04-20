@@ -35,10 +35,10 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
 
     private static final long DELAY = 10;
 
-    private static int MAX_PADDING_LEFT = 80;
-    private static int MAX_PADDING_RIGHT = 80;
-    private static int MAX_PADDING_TOP = 300;
-    private static int MAX_PADDING_BOTTOM = 300;
+    private static int MAX_PADDING_LEFT = 99;
+    private static int MAX_PADDING_RIGHT = 99;
+    private static int MAX_PADDING_TOP = 1000;
+    private static int MAX_PADDING_BOTTOM = 1000;
 
     private static int MIN_PADDING = 0;
     private final FlowLayout homeLayout;
