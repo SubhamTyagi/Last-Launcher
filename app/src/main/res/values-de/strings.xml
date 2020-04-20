@@ -61,6 +61,8 @@
     <string name="end">End</string>
 
     <string name="padding">Padding</string>
+    <string name="remove">Remove?</string>
+    <string name="open">Open</string>
 
 
 </resources>

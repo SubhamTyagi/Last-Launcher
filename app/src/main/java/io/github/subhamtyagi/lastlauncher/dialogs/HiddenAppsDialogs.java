@@ -19,7 +19,9 @@
 package io.github.subhamtyagi.lastlauncher.dialogs;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -74,6 +76,14 @@ public class HiddenAppsDialogs extends Dialog {
             if (menuItem.getItemId() == R.id.menu_remove_this) {
                 apps.setHide(false);
                 updateList(mAppsList);
+            } else if (menuItem.getItemId() == R.id.menu_run_this_app) {
+                String[] strings = apps.getActivityName().toString().split("/");
+                final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+                intent.setClassName(strings[0], strings[1]);
+                intent.setComponent(new ComponentName(strings[0], strings[1]));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+
 
             }
             return true;
