@@ -69,6 +69,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         findViewById(R.id.settings_restore).setOnClickListener(this);
         findViewById(R.id.settings_alignment).setOnClickListener(this);
         findViewById(R.id.settings_padding).setOnClickListener(this);
+        findViewById(R.id.settings_color_size).setOnClickListener(this);
 
         //TODO: remove this var
         TextView colorSniffer = findViewById(R.id.settings_color_sniffer);
@@ -144,6 +145,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
 
     private void showColorAndSizeDialog() {
         launcherActivity.setColorsAndSize();
+        cancel();
     }
 
     private void setFlowLayoutAlignment(View view) {
@@ -171,7 +173,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                     launcherActivity.setFlowLayoutAlignment(Gravity.START | Gravity.CENTER_VERTICAL);
                     break;
             }
-            return false;
+            return true;
         });
         popupMenu.show();
 

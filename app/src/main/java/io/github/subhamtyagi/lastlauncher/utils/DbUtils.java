@@ -57,6 +57,9 @@ public class DbUtils {
     private static final String PADDING_RIGHT = "padding_right";
     private static final String PADDING_BOTTOM = "padding_bottom";
 
+    private static final String GLOBAL_SIZE_ADDITION_EXTRA = "global_size_addition_extra";
+    private static final String APPS_COLORS_DEFAULT = "apps_color_default";
+
     public static boolean isFirstStart() {
         return SpUtils.getInstance().getBoolean("sp_first_time_app_open", true);
     }
@@ -80,6 +83,12 @@ public class DbUtils {
     public static void putAppColor(String activityName, int color) {
         activityName = activityName.replaceAll("\\.", "_") + "_color";
         SpUtils.getInstance().putInt(activityName, color);
+    }
+
+
+    public static void putAppColorImmediately(String activityName, int color) {
+        activityName = activityName.replaceAll("\\.", "_") + "_color";
+        SpUtils.getInstance().putIntCommit(activityName, color);
     }
 
     public static String getAppOriginalName(String activityName, String defaultValue) {
@@ -296,5 +305,21 @@ public class DbUtils {
     public static int getOpeningCounts(String activityName) {
         activityName = activityName.replaceAll("\\.", "_" + "_opening_counts");
         return SpUtils.getInstance().getInt(activityName);
+    }
+
+    public static int getGlobalSizeAdditionExtra() {
+        return SpUtils.getInstance().getInt(GLOBAL_SIZE_ADDITION_EXTRA, 0);
+    }
+
+    public static void setGlobalSizeAdditionExtra(int extra) {
+        SpUtils.getInstance().putInt(GLOBAL_SIZE_ADDITION_EXTRA, extra);
+    }
+
+    public static int getAppsColorDefault() {
+        return SpUtils.getInstance().getInt(APPS_COLORS_DEFAULT, NULL_TEXT_COLOR);
+    }
+
+    public static void setAppsColorDefault(int color) {
+        SpUtils.getInstance().putInt(APPS_COLORS_DEFAULT, color);
     }
 }

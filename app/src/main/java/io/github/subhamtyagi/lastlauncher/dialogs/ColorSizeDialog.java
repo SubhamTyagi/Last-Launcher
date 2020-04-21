@@ -25,10 +25,7 @@ import android.os.Handler;
 import android.view.Window;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import io.github.subhamtyagi.lastlauncher.R;
-import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
@@ -57,13 +54,6 @@ public class ColorSizeDialog extends Dialog {
         this.appSize = appSize;
     }
 
-    public ColorSizeDialog(Context context, ArrayList<Apps> mAppsList) {
-        super(context);
-        this.appPackage = null;
-        this.textView = null;
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,14 +72,14 @@ public class ColorSizeDialog extends Dialog {
 
 
         // todo: is this still correct?
-        if (appColor != -DbUtils.NULL_TEXT_COLOR)
+        if (appColor != DbUtils.NULL_TEXT_COLOR)
             colorSeekBar.setColor(appColor);
 
         // set the color and save this to database
         colorSeekBar.setOnColorChangeListener((colorBarPosition, alphaBarPosition, color) -> {
             textView.setTextColor(color);
             appColor = color;
-            //DbUtils.putAppColor(appPackage, color);
+            // DbUtils.putAppColorImmediately(appPackage, color);
         });
 
 

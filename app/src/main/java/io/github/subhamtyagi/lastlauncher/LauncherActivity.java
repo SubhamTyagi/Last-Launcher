@@ -60,6 +60,7 @@ import java.util.Map;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ColorSizeDialog;
 import io.github.subhamtyagi.lastlauncher.dialogs.FrozenAppsDialogs;
+import io.github.subhamtyagi.lastlauncher.dialogs.GlobalColorSizeDialog;
 import io.github.subhamtyagi.lastlauncher.dialogs.GlobalSettingsDialog;
 import io.github.subhamtyagi.lastlauncher.dialogs.HiddenAppsDialogs;
 import io.github.subhamtyagi.lastlauncher.dialogs.PaddingDialog;
@@ -235,6 +236,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
             // get app color
             color = DbUtils.getAppColor(activity);
+
+            // check for default color : set default colors if random color is not set
+            if (!DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
+                color = DbUtils.getAppsColorDefault();
+            }
             // whether app size is freezed
             boolean freeze = DbUtils.isAppFreezed(activity);
 
@@ -290,22 +296,29 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     //  reset app size, color,name,freeze, etc and sort the app
-    // because there may be app name reset and need to suffled
-    private void refreshApps(String activityName) {
+    // because there may be app name reset
+    private void refreshApps(String activityName, boolean sortNeeded) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().equalsIgnoreCase(activityName)) {
                 mAppsList.remove(apps);
 
                 //now add new App
-                int size = apps.getSize();
-                int color = DbUtils.getAppColor(activityName);
+                int color;
+
+                if (DbUtils.isRandomColor()) {
+                    color = Utils.generateColorFromString(activityName);
+                } else {
+                    color = DbUtils.getAppsColorDefault();
+                }
+
                 String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
                 String appName = DbUtils.getAppName(activityName, appOriginalName);
                 boolean hide = apps.isHidden();
                 boolean freezeSize = apps.isFreezeSize();
-                Apps newApp = new Apps(activityName, appName, getCustomView(), color, size, hide, freezeSize);
+                Apps newApp = new Apps(activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize);
                 mAppsList.add(newApp);
-                sortApps();
+                if (sortNeeded)
+                    sortApps();
                 break;
             }
         }
@@ -399,16 +412,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     //reset the app color to default color;
     private void resetAppColor(String activityName) {
         DbUtils.removeColor(activityName);
-        //TODO: testing
+        refreshApps(activityName, false);
 
-        // refreshApps(activityName);
-        for (Apps apps : mAppsList) {
-            if (apps.getActivityName().equalsIgnoreCase(activityName)) {
-                //TODO: for compat
-                apps.getTextView().setTextAppearance(this, DbUtils.getTheme());
-                break;
-            }
-        }
     }
 
     // as method name suggest
@@ -462,7 +467,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         DbUtils.removeAppName(activityName);
         DbUtils.removeColor(activityName);
         DbUtils.removeSize(activityName);
-        refreshApps(activityName);
+        refreshApps(activityName, true);
     }
 
     private void showAppInfo(String activityName) {
@@ -769,7 +774,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     public void setColorsAndSize() {
-        Dialog dialog = new ColorSizeDialog(this, mAppsList);
+        Dialog dialog = new GlobalColorSizeDialog(this, mAppsList);
 
         Window window = dialog.getWindow();
         if (window != null) {

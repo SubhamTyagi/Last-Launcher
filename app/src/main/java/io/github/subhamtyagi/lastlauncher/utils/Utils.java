@@ -99,7 +99,7 @@ public class Utils {
 
     }
 
-    public static String getPackageNameFromActivityName(String activityName) {
+    private static String getPackageNameFromActivityName(String activityName) {
         return activityName.split("/")[0];
     }
 
@@ -135,7 +135,7 @@ public class Utils {
         return Color.parseColor(colors[choice % colors.length]);
     }
 
-    public static int getMaterialColor(String string) {
+    private static int getMaterialColor(String string) {
         String[] colors = {
                 "#F44336", "#FFEBEE", "#FFCDD2", "#EF9A9A", "#E57373", "#EF5350", "#E53935", "#D32F2F", "#C62828", "#B71C1C", "#FF8A80", "#FF5252", "#FF1744", "#D50000", "#FCE4EC", "#F8BBD0",
                 "#F48FB1", "#F06292", "#EC407A", "#E91E63", "#D81B60", "#C2185B", "#AD1457", "#880E4F", "#FF80AB", "#FF4081", "#F50057", "#C51162", "#F3E5F5", "#E1BEE7", "#CE93D8", "#BA68C8",
@@ -203,7 +203,7 @@ public class Utils {
     }
 
 
-    public static int getMaterialColor2(String string) {
+    private static int getMaterialColor2(String string) {
 
         int a = hash(getPackageNameFromActivityName(string)) % 14;
         int b = hash(string);

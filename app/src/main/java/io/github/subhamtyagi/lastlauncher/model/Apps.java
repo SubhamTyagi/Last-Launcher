@@ -59,9 +59,8 @@ public class Apps {
     private String categories;
 
 
-
     /**
-     * @param activity    activity path
+     * @param activity   activity path
      * @param appName    App name
      * @param tv         a text view corresponding to App
      * @param color      Text color
@@ -143,7 +142,8 @@ public class Apps {
 
     public void setColor(int color) {
         this.color = color;
-        textView.setTextColor(color);
+        if (color != DbUtils.NULL_TEXT_COLOR)
+            textView.setTextColor(color);
     }
 
 

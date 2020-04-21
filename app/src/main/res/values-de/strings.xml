@@ -1,7 +1,4 @@
 <resources>
-    <!--Navigation related strings-->
-
-    <string name="app_name">Last Launcher</string>
 
     <!--Shared preference strings  -->
     <string name="action_settings">Einstellungen</string>

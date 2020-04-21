@@ -90,6 +90,16 @@ public class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
+    public SpUtils putIntCommit(String key, int value) {
+
+        if (mPref != null) {
+            Editor editor = mPref.edit();
+            editor.putInt(key, value);
+            editor.commit();
+            return this;
+        } else throw new RuntimeException("First Initialize context");
+    }
+
     public SpUtils putBoolean(String key, boolean value) {
         if (mPref != null) {
             Editor editor = mPref.edit();
