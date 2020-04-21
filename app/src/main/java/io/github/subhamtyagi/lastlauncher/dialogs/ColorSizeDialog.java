@@ -25,7 +25,10 @@ import android.os.Handler;
 import android.view.Window;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import io.github.subhamtyagi.lastlauncher.R;
+import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
@@ -52,6 +55,13 @@ public class ColorSizeDialog extends Dialog {
         this.appColor = appColor;
         this.textView = textView;
         this.appSize = appSize;
+    }
+
+    public ColorSizeDialog(Context context, ArrayList<Apps> mAppsList) {
+        super(context);
+        this.appPackage = null;
+        this.textView = null;
+
     }
 
     @Override

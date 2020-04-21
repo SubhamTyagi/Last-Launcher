@@ -42,22 +42,19 @@ public class DbUtils {
 
     public static final int NULL_TEXT_SIZE = -1;
     public final static int NULL_TEXT_COLOR = -1;
+    public static final String PADDING_TOP = "padding_top";
     private static final String RANDOM_COLOR_FOR_APPS = "random_color_for_apps";
     private static final String READ_WRITE_PERMISSION = "read_write_permission";
     private static final String LAUNCHER_FONTS = "launcher_fonts";
     private static final String LAUNCHER_THEME = "launcher_theme";
     private static final String LAUNCHER_FREEZE_SIZE = "launcher_freeze_size";
     private static final String APPS_COLOR_FROM_EXTERNAL_SOURCE = "external_app_color";
-
     //new addition
     private static final String FLOW_LAYOUT_ALIGNMENT = "flow_layout_alignment";
     private static final String MAX_APP_SIZE = "max_app_size";
     private static final String MIN_APP_SIZE = "max_app_size";
-
-
     private static final String PADDING_LEFT = "padding_left";
     private static final String PADDING_RIGHT = "padding_right";
-    public static final String PADDING_TOP = "padding_top";
     private static final String PADDING_BOTTOM = "padding_bottom";
 
     public static boolean isFirstStart() {
@@ -204,12 +201,12 @@ public class DbUtils {
     }
 
     public static int getAppColorExternalSource(String activityName) {
-        activityName = activityName.replaceAll("\\.", "_") + "external_color";
+        activityName = activityName.replaceAll("\\.", "_") + "_external_color";
         return SpUtils.getInstance().getInt(activityName, NULL_TEXT_COLOR);
     }
 
     public static void putAppColorExternalSource(String activityName, int color) {
-        activityName = activityName.replaceAll("\\.", "_") + "external_color";
+        activityName = activityName.replaceAll("\\.", "_") + "_external_color";
         SpUtils.getInstance().putInt(activityName, color);
     }
 
@@ -242,33 +239,62 @@ public class DbUtils {
         return SpUtils.getInstance().getInt(PADDING_LEFT, 0);
     }
 
-    public static int getPaddingRight() {
-        return SpUtils.getInstance().getInt(PADDING_RIGHT, 0);
-    }
-
-    public static int getPaddingTop() {
-        return SpUtils.getInstance().getInt(PADDING_TOP, 0);
-    }
-
-    public static int getPaddingBottom() {
-        return SpUtils.getInstance().getInt(PADDING_BOTTOM, 0);
-    }
-
-
     public static void setPaddingLeft(int padding) {
         SpUtils.getInstance().putInt(PADDING_LEFT, padding);
+    }
+
+    public static int getPaddingRight() {
+        return SpUtils.getInstance().getInt(PADDING_RIGHT, 0);
     }
 
     public static void setPaddingRight(int padding) {
         SpUtils.getInstance().putInt(PADDING_RIGHT, padding);
     }
 
+    public static int getPaddingTop() {
+        return SpUtils.getInstance().getInt(PADDING_TOP, 0);
+    }
+
     public static void setPaddingTop(int padding) {
         SpUtils.getInstance().putInt(PADDING_TOP, padding);
+    }
+
+    public static int getPaddingBottom() {
+        return SpUtils.getInstance().getInt(PADDING_BOTTOM, 0);
     }
 
     public static void setPaddingBottom(int padding) {
         SpUtils.getInstance().putInt(PADDING_BOTTOM, padding);
     }
 
+
+    public static void setGroupPrefix(String activityName, String prefix) {
+        activityName = activityName.replaceAll("\\.", "_") + "_group_prefix";
+        SpUtils.getInstance().putString(activityName, prefix);
+    }
+
+    public static void setCategories(String activityName, String categories) {
+        activityName = activityName.replaceAll("\\.", "_") + "_categories";
+        SpUtils.getInstance().putString(activityName, categories);
+    }
+
+    public static void setOpeningCounts(String activityName, int count) {
+        activityName = activityName.replaceAll("\\.", "_" + "_opening_counts");
+        SpUtils.getInstance().putInt(activityName, count);
+    }
+
+    public static String getGroupPrefix(String activityName) {
+        activityName = activityName.replaceAll("\\.", "_") + "_group_prefix";
+        return SpUtils.getInstance().getString(activityName);
+    }
+
+    public static String getCategories(String activityName) {
+        activityName = activityName.replaceAll("\\.", "_") + "_categories";
+        return SpUtils.getInstance().getString(activityName);
+    }
+
+    public static int getOpeningCounts(String activityName) {
+        activityName = activityName.replaceAll("\\.", "_" + "_opening_counts");
+        return SpUtils.getInstance().getInt(activityName);
+    }
 }

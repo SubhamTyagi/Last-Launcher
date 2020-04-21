@@ -77,7 +77,7 @@ public class HiddenAppsDialogs extends Dialog {
                 apps.setHide(false);
                 updateList(mAppsList);
             } else if (menuItem.getItemId() == R.id.menu_run_this_app) {
-                String[] strings = apps.getActivityName().toString().split("/");
+                String[] strings = apps.getActivityName().split("/");
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);
                 intent.setClassName(strings[0], strings[1]);
                 intent.setComponent(new ComponentName(strings[0], strings[1]));

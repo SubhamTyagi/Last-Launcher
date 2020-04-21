@@ -23,15 +23,16 @@ import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
+
 // a model class that hold everything related to an app
 public class Apps {
 
     // app activity name format package.name/package.name.ClassName
     // for eg. com.example.appname/com.example.appname.MainActivity
     // for eg  io.github.subhamtyagi.lastlauncher/io.github.subhamtyagi.lastlauncher.LauncherActivity
-    final private CharSequence activity;
+    final private String activity;
     // app name to shown on screen
-    private CharSequence appName;
+    private String appName;
     // a text view or a subclass
     private TextView textView;
     // app color
@@ -42,6 +43,21 @@ public class Apps {
     private boolean freezeSize;
     // is app hidden from home screen
     private boolean hide;
+
+    //store how many time this app is opened by user
+    // save this to DB. So launcher can sort the app based on it uses:
+    // (take precaution while saving this: encrypt this it contains sensitive info)
+    // in theory this is a tracking count which store how many time user opens this apps
+    // nothing will send to anywhere only locally and privately saved to user device and btw this
+    // launcher doesn't have internet permission
+    private int openingCounts;
+
+    // This field is use for grouping the app
+    private String groupPrefix;
+
+    // app belongs to this categories
+    private String categories;
+
 
 
     /**
@@ -86,7 +102,7 @@ public class Apps {
     public void setHide(boolean hide) {
         this.hide = hide;
         textView.setVisibility(hide ? View.GONE : View.VISIBLE);
-        DbUtils.hideApp(activity.toString(), hide);
+        DbUtils.hideApp(activity, hide);
     }
 
     public int getSize() {
@@ -96,14 +112,15 @@ public class Apps {
     public void setSize(int size) {
         this.size = size;
         textView.setTextSize(size);
+        DbUtils.putAppSize(activity, size);
     }
 
     public void setFreeze(boolean freezeSize) {
         this.freezeSize = freezeSize;
-        DbUtils.freezeAppSize(activity.toString(), freezeSize);
+        DbUtils.freezeAppSize(activity, freezeSize);
     }
 
-    public CharSequence getActivityName() {
+    public String getActivityName() {
         return activity;
     }
 
@@ -111,7 +128,7 @@ public class Apps {
         return appName;
     }
 
-    public void setAppName(CharSequence appName) {
+    public void setAppName(String appName) {
         this.appName = appName;
         textView.setText(appName);
     }
@@ -130,4 +147,35 @@ public class Apps {
     }
 
 
+    public int getOpeningCounts() {
+        return openingCounts;
+    }
+
+    public void setOpeningCounts(int openingCounts) {
+        this.openingCounts = openingCounts;
+        DbUtils.setOpeningCounts(this.activity, openingCounts);
+    }
+
+    public void increaseOpeningCounts() {
+        this.openingCounts++;
+        DbUtils.setOpeningCounts(this.activity, openingCounts);
+    }
+
+    public String getGroupPrefix() {
+        return groupPrefix;
+    }
+
+    public void setGroupPrefix(String groupPrefix) {
+        this.groupPrefix = groupPrefix;
+        DbUtils.setCategories(this.activity, groupPrefix);
+    }
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+        DbUtils.setCategories(this.activity, categories);
+    }
 }

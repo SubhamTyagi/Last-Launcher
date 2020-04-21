@@ -203,7 +203,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         // a list of app that are popular on fdroid and my most used app
         List<String> oftenApps = Utils.getOftenAppsList();
 
-        //
         String packageName, appName;
         int color, textSize;
         boolean hide;
@@ -230,7 +229,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 } else {
                     textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
                 }
-                // no need to save this save the size to db
+
                 /// DbUtils.putAppSize(activity, textSize);
             }
 
@@ -282,10 +281,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // increase the size of app and save this to DB
     private void refreshAppSize(String activityName) {
         for (Apps apps : mAppsList) {
-            if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
+            if (apps.getActivityName().equalsIgnoreCase(activityName)) {
                 int size = apps.getSize() + 2;
                 apps.setSize(size);
-                DbUtils.putAppSize(activityName, size);
                 break;
             }
         }
@@ -295,8 +293,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // because there may be app name reset and need to suffled
     private void refreshApps(String activityName) {
         for (Apps apps : mAppsList) {
-            if (apps.getActivityName().toString().equalsIgnoreCase(activityName)) {
+            if (apps.getActivityName().equalsIgnoreCase(activityName)) {
                 mAppsList.remove(apps);
+
                 //now add new App
                 int size = apps.getSize();
                 int color = DbUtils.getAppColor(activityName);
@@ -400,14 +399,23 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     //reset the app color to default color;
     private void resetAppColor(String activityName) {
         DbUtils.removeColor(activityName);
-        refreshApps(activityName);
+        //TODO: testing
+
+        // refreshApps(activityName);
+        for (Apps apps : mAppsList) {
+            if (apps.getActivityName().equalsIgnoreCase(activityName)) {
+                //TODO: for compat
+                apps.getTextView().setTextAppearance(this, DbUtils.getTheme());
+                break;
+            }
+        }
     }
 
     // as method name suggest
     private void freezeAppSize(String activityName) {
         boolean b = DbUtils.isAppFreezed(activityName);
         for (Apps apps : mAppsList) {
-            if (activityName.equalsIgnoreCase(apps.getActivityName().toString())) {
+            if (activityName.equalsIgnoreCase(apps.getActivityName())) {
                 apps.setFreeze(!b);
             }
         }
@@ -417,7 +425,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // as method name suggest
     private void hideApp(String activityName) {
         for (Apps apps : mAppsList) {
-            if (activityName.equalsIgnoreCase(apps.getActivityName().toString())) {
+            if (activityName.equalsIgnoreCase(apps.getActivityName())) {
                 apps.setHide(true);
             }
         }
@@ -441,7 +449,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // this is called by RenameInput.class Dialog when user set the name and sort the apps
     public void onAppRenamed(String activityName, String appNewName) {
         for (Apps app : mAppsList) {
-            if (app.getActivityName().toString().equalsIgnoreCase(activityName)) {
+            if (app.getActivityName().equalsIgnoreCase(activityName)) {
                 app.setAppName(appNewName.trim());
                 sortApps();
                 break;
@@ -663,7 +671,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         // get each value as proposed by Color Sniffer App developer
         for (Apps apps : mAppsList) {
             TextView textView = apps.getTextView();
-            String appPackage = apps.getActivityName().toString();
+            String appPackage = apps.getActivityName();
             int color = bundle.getInt(appPackage);
             if (color != DbUtils.NULL_TEXT_COLOR) {
                 textView.setTextColor(color);
@@ -757,6 +765,20 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         //window.setGravity(Gravity.BOTTOM);
         // window.setBackgroundDrawableResource(android.R.color.transparent);
         // window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        dialog.show();
+    }
+
+    public void setColorsAndSize() {
+        Dialog dialog = new ColorSizeDialog(this, mAppsList);
+
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setGravity(Gravity.BOTTOM);
+            window.setBackgroundDrawableResource(android.R.color.transparent);
+            window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+        }
+
+
         dialog.show();
     }
 }

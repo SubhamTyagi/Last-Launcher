@@ -316,7 +316,7 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
 
     //enums for better understanding
     private enum Padding {
-        LEFT, RIGHT, TOP, BOTTOM;
+        LEFT, RIGHT, TOP, BOTTOM
     }
 
 }

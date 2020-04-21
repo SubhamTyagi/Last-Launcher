@@ -109,6 +109,10 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
 
             }
             break;
+            case R.id.settings_color_size: {
+                showColorAndSizeDialog();
+            }
+            break;
             case R.id.settings_freeze_size:
                 freezeAppsSize();
                 break;
@@ -136,6 +140,10 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                 break;
 
         }
+    }
+
+    private void showColorAndSizeDialog() {
+        launcherActivity.setColorsAndSize();
     }
 
     private void setFlowLayoutAlignment(View view) {
