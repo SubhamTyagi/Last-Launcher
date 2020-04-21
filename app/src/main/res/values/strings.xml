@@ -65,6 +65,8 @@
     <string name="remove">Remove?</string>
     <string name="open">Open</string>
     <string name="reset_color">Reset Color</string>
+    <string name="restore_default_fonts">Restore Default fonts</string>
+    <string name="select_fonts">Select fonts</string>
 
 
 </resources>

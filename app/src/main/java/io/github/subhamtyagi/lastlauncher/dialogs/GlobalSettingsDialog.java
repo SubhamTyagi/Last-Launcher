@@ -98,7 +98,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.settings_fonts:
-                setFonts();
+                fontSelection(view);
                 break;
             case R.id.settings_themes:
                 showThemeDialog();
@@ -266,7 +266,35 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             launcherActivity.browseFonts();
             cancel();
         }
+    }
 
+
+    private void fontSelection(View view) {
+
+        Context context;
+        // set theme
+        // if theme wallpaper ie transparent then we have to show other theme
+        if (DbUtils.getTheme() == R.style.Wallpaper)
+            context = new ContextThemeWrapper(getContext(), R.style.AppTheme);
+        else
+            context = new ContextThemeWrapper(getContext(), DbUtils.getTheme());
+
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        popupMenu.getMenuInflater().inflate(R.menu.font_selection_popup, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.menu_choose_fonts:
+                    setFonts();
+                    break;
+                case R.id.menu_default_font:
+                    DbUtils.removeFont();
+                    launcherActivity.recreate();
+                    break;
+            }
+            return true;
+        });
+        popupMenu.show();
 
     }
 

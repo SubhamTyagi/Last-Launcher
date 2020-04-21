@@ -322,4 +322,9 @@ public class DbUtils {
     public static void setAppsColorDefault(int color) {
         SpUtils.getInstance().putInt(APPS_COLORS_DEFAULT, color);
     }
+
+    public static void removeFont() {
+        SpUtils.getInstance().remove(LAUNCHER_FONTS);
+    }
+
 }
