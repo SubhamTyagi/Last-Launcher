@@ -18,9 +18,10 @@
 
 package io.github.subhamtyagi.lastlauncher.utils;
 
+import android.content.Context;
 import android.view.Gravity;
 
-import java.util.Map;
+import java.io.InputStream;
 
 import io.github.subhamtyagi.lastlauncher.R;
 
@@ -42,7 +43,7 @@ public class DbUtils {
 
     public static final int NULL_TEXT_SIZE = -1;
     public final static int NULL_TEXT_COLOR = -1;
-    public static final String PADDING_TOP = "padding_top";
+    private static final String PADDING_TOP = "padding_top";
     private static final String RANDOM_COLOR_FOR_APPS = "random_color_for_apps";
     private static final String READ_WRITE_PERMISSION = "read_write_permission";
     private static final String LAUNCHER_FONTS = "launcher_fonts";
@@ -59,6 +60,23 @@ public class DbUtils {
 
     private static final String GLOBAL_SIZE_ADDITION_EXTRA = "global_size_addition_extra";
     private static final String APPS_COLORS_DEFAULT = "apps_color_default";
+
+
+    public static void init(Context context) {
+        SpUtils.getInstance().init(context);
+    }
+
+    public static void clearDB() {
+        SpUtils.getInstance().clear();
+    }
+
+    public static boolean saveDbTOFile() {
+        return SpUtils.getInstance().saveSharedPreferencesToFile();
+    }
+
+    public static boolean loadDbFromFile(InputStream inputStream) {
+        return SpUtils.getInstance().loadSharedPreferencesFromFile(inputStream);
+    }
 
     public static boolean isFirstStart() {
         return SpUtils.getInstance().getBoolean("sp_first_time_app_open", true);
@@ -121,7 +139,7 @@ public class DbUtils {
         SpUtils.getInstance().putBoolean(activityName, value);
     }
 
-    public static boolean isAppFreezed(String activityName) {
+    public static boolean isAppFrozen(String activityName) {
         activityName = activityName.replaceAll("\\.", "_") + "_freeze";
         return SpUtils.getInstance().getBoolean(activityName, false);
 
@@ -165,10 +183,6 @@ public class DbUtils {
     }
 
 
-    public static boolean isPermissionRequired() {
-        return SpUtils.getInstance().getBoolean(READ_WRITE_PERMISSION, true);
-    }
-
     public static void permissionRequired(boolean b) {
         SpUtils.getInstance().putBoolean(READ_WRITE_PERMISSION, b);
     }
@@ -185,21 +199,12 @@ public class DbUtils {
         SpUtils.getInstance().putBoolean(LAUNCHER_FREEZE_SIZE, b);
     }
 
-    public static boolean isSizeFreezed() {
+    public static boolean isSizeFrozen() {
         return SpUtils.getInstance().getBoolean(LAUNCHER_FREEZE_SIZE, false);
 
     }
 
-    public static String[] getAllHiddenApps() {
-        Map<String, ?> entries = SpUtils.getInstance().getAll();
-        for (Map.Entry<String, ?> entry : entries.entrySet()) {
-            if (entry.getKey().contains("hide")) {
 
-            }
-        }
-
-        return null;
-    }
 
     public static boolean isExternalSourceColor() {
         return SpUtils.getInstance().getBoolean(APPS_COLOR_FROM_EXTERNAL_SOURCE, false);
@@ -288,6 +293,7 @@ public class DbUtils {
     }
 
     public static void setOpeningCounts(String activityName, int count) {
+
         activityName = activityName.replaceAll("\\.", "_" + "_opening_counts");
         SpUtils.getInstance().putInt(activityName, count);
     }
@@ -325,6 +331,10 @@ public class DbUtils {
 
     public static void removeFont() {
         SpUtils.getInstance().remove(LAUNCHER_FONTS);
+    }
+
+    public static boolean isFontExists() {
+        return SpUtils.getInstance().contains(LAUNCHER_FONTS);
     }
 
 }

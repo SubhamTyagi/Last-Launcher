@@ -37,14 +37,14 @@ import java.util.Date;
 import java.util.Map;
 
 // utility to handle shared prefs
-public class SpUtils {
+class SpUtils {
     private volatile static SpUtils mInstance;
     private SharedPreferences mPref;
 
     private SpUtils() {
     }
 
-    public static SpUtils getInstance() {
+    static SpUtils getInstance() {
         if (null == mInstance) {
             synchronized (SpUtils.class) {
                 if (null == mInstance) {
@@ -55,14 +55,14 @@ public class SpUtils {
         return mInstance;
     }
 
-    public SpUtils init(Context context) {
+    SpUtils init(Context context) {
         if (mPref == null) {
             mPref = PreferenceManager.getDefaultSharedPreferences(context);
         }
         return this;
     }
 
-    public SpUtils putString(String key, String value) {
+    SpUtils putString(String key, String value) {
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.putString(key, value);
@@ -71,7 +71,7 @@ public class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public SpUtils putLong(String key, long value) {
+    SpUtils putLong(String key, long value) {
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.putLong(key, value);
@@ -80,7 +80,7 @@ public class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public SpUtils putInt(String key, int value) {
+    SpUtils putInt(String key, int value) {
 
         if (mPref != null) {
             Editor editor = mPref.edit();
@@ -90,7 +90,7 @@ public class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public SpUtils putIntCommit(String key, int value) {
+    SpUtils putIntCommit(String key, int value) {
 
         if (mPref != null) {
             Editor editor = mPref.edit();
@@ -100,7 +100,7 @@ public class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public SpUtils putBoolean(String key, boolean value) {
+    SpUtils putBoolean(String key, boolean value) {
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.putBoolean(key, value);
@@ -115,20 +115,20 @@ public class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public boolean getBoolean(String key, boolean def) {
+    boolean getBoolean(String key, boolean def) {
         if (mPref != null) {
             return mPref.getBoolean(key, def);
         } else throw new RuntimeException("First Initialize context");
     }
 
 
-    public String getString(String key) {
+    String getString(String key) {
         if (mPref != null) {
             return mPref.getString(key, "");
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public String getString(String key, String def) {
+    String getString(String key, String def) {
         if (mPref != null) {
             return mPref.getString(key, def);
         } else throw new RuntimeException("First Initialize context");
@@ -146,26 +146,26 @@ public class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public int getInt(String key) {
+    int getInt(String key) {
         if (mPref != null) {
             return mPref.getInt(key, 0);
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public int getInt(String key, int defInt) {
+    int getInt(String key, int defInt) {
         if (mPref != null) {
             return mPref.getInt(key, defInt);
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public boolean contains(String key) {
+    boolean contains(String key) {
         if (mPref != null) {
             return mPref.contains(key);
         } else throw new RuntimeException("First Initialize context");
     }
 
 
-    public void remove(String key) {
+    void remove(String key) {
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.remove(key);
@@ -173,7 +173,7 @@ public class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public void clear() {
+    void clear() {
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.clear();
@@ -181,7 +181,7 @@ public class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    public boolean saveSharedPreferencesToFile() {
+    boolean saveSharedPreferencesToFile() {
         SimpleDateFormat df = new SimpleDateFormat("YYYY_MM_dd_HHSS");
         df.format(new Date());
         String date = df.format(new Date());
@@ -211,7 +211,7 @@ public class SpUtils {
 
 
     //stub
-    public boolean loadSharedPreferencesFromFile(InputStream inputS) {
+    boolean loadSharedPreferencesFromFile(InputStream inputS) {
         boolean res = false;
         ObjectInputStream input = null;
         try {
@@ -251,7 +251,7 @@ public class SpUtils {
         return res;
     }
 
-    public Map<String, ?> getAll() {
+    Map<String, ?> getAll() {
         return mPref.getAll();
     }
 }

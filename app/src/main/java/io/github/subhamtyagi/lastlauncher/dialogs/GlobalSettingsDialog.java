@@ -35,7 +35,6 @@ import io.github.subhamtyagi.lastlauncher.BuildConfig;
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
-import io.github.subhamtyagi.lastlauncher.utils.SpUtils;
 
 /**
  * this the launcher setting Dialog
@@ -45,6 +44,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
 
     private TextView freezeSize;
     private LauncherActivity launcherActivity;
+
     private Context context;
 
     public GlobalSettingsDialog(Context context, LauncherActivity launcherActivity) {
@@ -82,12 +82,12 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                 colorSniffer.setText(R.string.random_colors);
         }
 
-        findViewById(R.id.settings_freezed_apps).setOnClickListener(this);
+        findViewById(R.id.settings_frozen_apps).setOnClickListener(this);
         findViewById(R.id.settings_hidden_apps).setOnClickListener(this);
 
 
         //reflect the DB value
-        if (DbUtils.isSizeFreezed()) {
+        if (DbUtils.isSizeFrozen()) {
             freezeSize.setText(R.string.unfreeze_app_size);
         } else
             freezeSize.setText(R.string.freeze_apps_size);
@@ -120,8 +120,8 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             case R.id.settings_hidden_apps:
                 hiddenApps();
                 break;
-            case R.id.settings_freezed_apps:
-                freezedApps();
+            case R.id.settings_frozen_apps:
+                frozenApps();
                 break;
             case R.id.settings_backup:
                 backup();
@@ -204,7 +204,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
     }
 
     private void freezeAppsSize() {
-        boolean b = DbUtils.isSizeFreezed();
+        boolean b = DbUtils.isSizeFrozen();
         DbUtils.freezeSize(!b);
         if (!b) {
             freezeSize.setText(R.string.unfreeze_app_size);
@@ -212,9 +212,9 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             freezeSize.setText(R.string.freeze_apps_size);
     }
 
-    private void freezedApps() {
+    private void frozenApps() {
 
-        launcherActivity.showFreezedApps();
+        launcherActivity.showFrozenApps();
         cancel();
 
     }
@@ -231,7 +231,8 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
     }
 
     private void defaultSettings() {
-        SpUtils.getInstance().clear();
+        DbUtils.clearDB();
+
         launcherActivity.recreate();
     }
 
@@ -239,9 +240,8 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         if (launcherActivity.isPermissionRequired())
             launcherActivity.requestPermission();
         else {
-            boolean b = SpUtils.getInstance().saveSharedPreferencesToFile();
+            boolean b = DbUtils.saveDbTOFile();
             cancel();
-
             Toast.makeText(getContext(), b ? R.string.backup_saved_to_downloads : R.string.some_error_occurred, Toast.LENGTH_SHORT).show();
         }
     }
@@ -287,10 +287,13 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                 case R.id.menu_choose_fonts:
                     setFonts();
                     break;
-                case R.id.menu_default_font:
-                    DbUtils.removeFont();
-                    launcherActivity.recreate();
-                    break;
+                case R.id.menu_default_font: {
+                    if (DbUtils.isFontExists()) {
+                        DbUtils.removeFont();
+                        launcherActivity.recreate();
+                        break;
+                    }
+                }
             }
             return true;
         });

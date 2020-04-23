@@ -74,7 +74,7 @@ public class HiddenAppsDialogs extends Dialog {
         popupMenu.setOnMenuItemClickListener(menuItem -> {
 
             if (menuItem.getItemId() == R.id.menu_remove_this) {
-                apps.setHide(false);
+                apps.setAppHidden(false);
                 updateList(mAppsList);
             } else if (menuItem.getItemId() == R.id.menu_run_this_app) {
                 String[] strings = apps.getActivityName().split("/");

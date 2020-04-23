@@ -67,7 +67,6 @@ import io.github.subhamtyagi.lastlauncher.dialogs.PaddingDialog;
 import io.github.subhamtyagi.lastlauncher.dialogs.RenameInputDialogs;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
-import io.github.subhamtyagi.lastlauncher.utils.SpUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Utils;
 
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
@@ -113,12 +112,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         // initialize the shared prefs may be done in application class
-        SpUtils.getInstance().init(this);
+        DbUtils.init(this);
+
         int theme = DbUtils.getTheme();
         //theme must be set before setContentView
         setTheme(theme);
-        super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_launcher);
 
         // set the status bar color as per theme
@@ -127,7 +129,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
         // set the fonts
         setFont();
-
 
         mHomeLayout = findViewById(R.id.home_layout);
         mHomeLayout.setOnLongClickListener(this);
@@ -140,8 +141,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         loadApps();
         // register the receiver for installed and  uninstall , update app
         registerForReceiver();
+
         //this may not be needed
-        SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
+        // SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
 
     }
 
@@ -242,7 +244,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 color = DbUtils.getAppsColorDefault();
             }
             // whether app size is freezed
-            boolean freeze = DbUtils.isAppFreezed(activity);
+            boolean freeze = DbUtils.isAppFrozen(activity);
 
             // this is a separated implementation of ColorSniffer app
             // if User set the color from external app like ColorSniffer
@@ -314,7 +316,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
                 String appName = DbUtils.getAppName(activityName, appOriginalName);
                 boolean hide = apps.isHidden();
-                boolean freezeSize = apps.isFreezeSize();
+                boolean freezeSize = apps.isSizeFrozen();
                 Apps newApp = new Apps(activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize);
                 mAppsList.add(newApp);
                 if (sortNeeded)
@@ -370,7 +372,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
 
         // set proper item based on Db value
-        if (DbUtils.isAppFreezed(activityName)) {
+        if (DbUtils.isAppFrozen(activityName)) {
             popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze_size);
         }
         popupMenu.setOnMenuItemClickListener(menuItem -> {
@@ -418,7 +420,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     // as method name suggest
     private void freezeAppSize(String activityName) {
-        boolean b = DbUtils.isAppFreezed(activityName);
+        boolean b = DbUtils.isAppFrozen(activityName);
         for (Apps apps : mAppsList) {
             if (activityName.equalsIgnoreCase(apps.getActivityName())) {
                 apps.setFreeze(!b);
@@ -431,7 +433,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private void hideApp(String activityName) {
         for (Apps apps : mAppsList) {
             if (activityName.equalsIgnoreCase(apps.getActivityName())) {
-                apps.setHide(true);
+                apps.setAppHidden(true);
             }
         }
 
@@ -531,7 +533,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-                if (!DbUtils.isSizeFreezed() && !DbUtils.isAppFreezed(activity)) {
+                if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
                     refreshAppSize(activity);
                 }
             } catch (Exception ignore) {
@@ -627,7 +629,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             Uri uri = data.getData();
             ContentResolver cr = getContentResolver();
             try {
-                boolean b = SpUtils.getInstance().loadSharedPreferencesFromFile(cr.openInputStream(uri));
+                boolean b = DbUtils.loadDbFromFile(cr.openInputStream(uri));
                 if (b) {
                     recreate();
                 }
@@ -752,8 +754,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         new HiddenAppsDialogs(this, mAppsList).show();
     }
 
-    // show the freezed app dialog
-    public void showFreezedApps() {
+    // show the frozen app dialog
+    public void showFrozenApps() {
         new FrozenAppsDialogs(this, mAppsList).show();
     }
 

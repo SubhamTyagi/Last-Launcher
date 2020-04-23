@@ -39,10 +39,10 @@ public class Apps {
     private int color;
     // app size
     private int size;
-    // is app size freezed
-    private boolean freezeSize;
+    // is app size frozen
+    private boolean isSizeFrozen;
     // is app hidden from home screen
-    private boolean hide;
+    private boolean isAppHidden;
 
     //store how many time this app is opened by user
     // save this to DB. So launcher can sort the app based on it uses:
@@ -65,10 +65,10 @@ public class Apps {
      * @param tv         a text view corresponding to App
      * @param color      Text color
      * @param size       Text Size
-     * @param hide       boolean to tell 'is app hide
-     * @param freezeSize is app size to freeze
+     * @param isAppHidden       boolean to tell 'is app hide
+     * @param isSizeFrozen is app size to freeze
      */
-    public Apps(String activity, String appName, TextView tv, int color, int size, boolean hide, boolean freezeSize) {
+    public Apps(String activity, String appName, TextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen) {
 
         this.activity = activity;
         this.appName = appName;
@@ -85,23 +85,23 @@ public class Apps {
         if (color != DbUtils.NULL_TEXT_COLOR)
             textView.setTextColor(color);
 
-        setHide(hide);
-        setFreeze(freezeSize);
+        setAppHidden(isAppHidden);
+        setFreeze(isSizeFrozen);
 
     }
 
-    public boolean isFreezeSize() {
-        return freezeSize;
+    public boolean isSizeFrozen() {
+        return isSizeFrozen;
     }
 
     public boolean isHidden() {
-        return hide;
+        return isAppHidden;
     }
 
-    public void setHide(boolean hide) {
-        this.hide = hide;
-        textView.setVisibility(hide ? View.GONE : View.VISIBLE);
-        DbUtils.hideApp(activity, hide);
+    public void setAppHidden(boolean appHidden) {
+        this.isAppHidden = appHidden;
+        textView.setVisibility(appHidden ? View.GONE : View.VISIBLE);
+        DbUtils.hideApp(activity, appHidden);
     }
 
     public int getSize() {
@@ -115,7 +115,7 @@ public class Apps {
     }
 
     public void setFreeze(boolean freezeSize) {
-        this.freezeSize = freezeSize;
+        this.isSizeFrozen = freezeSize;
         DbUtils.freezeAppSize(activity, freezeSize);
     }
 
