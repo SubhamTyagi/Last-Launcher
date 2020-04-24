@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Last Launcher
+  ~ Copyright (C) 2019,2020 Shubham Tyagi
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_sort_by_name"
+        android:title="@string/by_name" />
+
+    <item
+        android:id="@+id/menu_sort_by_opening_counts"
+        android:title="@string/by_opening_counts" />
+
+    <item
+        android:id="@+id/menu_sort_by_size"
+        android:title="@string/by_size" />
+
+    <item
+        android:id="@+id/menu_sort_by_color"
+        android:title="@string/by_color" />
+
+    <!--<item android:id="@+id/menu_sort_by_customs"
+        android:title="@string/custom"/>-->
+</menu>

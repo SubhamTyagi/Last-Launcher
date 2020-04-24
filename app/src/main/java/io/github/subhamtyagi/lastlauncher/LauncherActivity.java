@@ -97,13 +97,21 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     public static final int COLOR_SNIFFER_REQUEST = 154;
     public final static String DEFAULT_COLOR_FOR_APPS = "default_color_for_apps";
+    //various sorting constant
+    //why constant? Why not enums for this ?
+    // may be lack from DB side
+    public static final int SORT_BY_NAME = 1;
+    public static final int SORT_BY_SIZE = 2;
+    public static final int SORT_BY_COLOR = 3;
+    public static final int SORT_BY_OPENING_COUNTS = 4;
+    public static final int SORT_BY_CUSTOM = 5;
+
     private static final int RESTORE_REQUEST = 125;
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
     private final String TAG = "LauncherActivity";
-
     private ArrayList<Apps> mAppsList;
     private BroadcastReceiver broadcastReceiver;
     private Typeface mTypeface;
@@ -260,26 +268,58 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 //color=Utils.getMaterialColor(Utils.getPackageNameFromActivityName(activity));//3 extensive randomized
             }
 
+
+            int openingCounts = DbUtils.getOpeningCounts(activity);
             // save all and add this is to app list
-            mAppsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze));
+            mAppsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze, openingCounts));
 
         }
 
         // now sort the app list
-        sortApps();
+        sortApps(DbUtils.getSortsTypes());
     }
 
-    //TODO: others sorts
-    private void sortApps() {
+    /**
+     * @param type sort type
+     */
+    public void sortApps(final int type) {
         // remove the app view for home layout these needs to be add later after sorting
         mHomeLayout.removeAllViews();
-        //sort the apps
-        //Currently simple alphabetically sort is supported
+
+        DbUtils.setAppsSortsType(type);
+
+        //sort the apps alphabetically
         Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
                 a.getAppName().toString(),
                 b.getAppName().toString()
         ));
 
+        switch (type) {
+            case SORT_BY_SIZE://descending
+                Collections.sort(mAppsList, (apps, t1) -> t1.getSize() - apps.getSize());
+                break;
+            case SORT_BY_OPENING_COUNTS://descending
+                Collections.sort(mAppsList, (apps, t1) -> t1.getOpeningCounts() - apps.getOpeningCounts());
+                break;
+            case SORT_BY_COLOR:
+                Collections.sort(mAppsList, (apps, t1) -> {
+                    float[] hsv = new float[3];
+                    Color.colorToHSV(apps.getColor(), hsv);
+                    float[] another = new float[3];
+                    Color.colorToHSV(t1.getColor(), another);
+
+                    for (int i = 0; i < 3; i++) {
+                        if (hsv[i] != another[i]) {
+                            return (hsv[i] < another[i]) ? -1 : 1;
+                        }
+                    }
+                    return 0;
+                });
+                break;
+            case SORT_BY_CUSTOM:
+                // do nothing
+                break;
+        }
         // now add the app textView to home
         for (Apps apps : mAppsList) {
             mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -303,24 +343,25 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().equalsIgnoreCase(activityName)) {
                 mAppsList.remove(apps);
-
                 //now add new App
                 int color;
-
                 if (DbUtils.isRandomColor()) {
                     color = Utils.generateColorFromString(activityName);
                 } else {
                     color = DbUtils.getAppsColorDefault();
                 }
-
                 String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
                 String appName = DbUtils.getAppName(activityName, appOriginalName);
+
+                int openingCounts = DbUtils.getOpeningCounts(activityName);
                 boolean hide = apps.isHidden();
                 boolean freezeSize = apps.isSizeFrozen();
-                Apps newApp = new Apps(activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize);
+
+                Apps newApp = new Apps(activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts);
+
                 mAppsList.add(newApp);
                 if (sortNeeded)
-                    sortApps();
+                    sortApps(DbUtils.getSortsTypes());
                 break;
             }
         }
@@ -414,8 +455,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     //reset the app color to default color;
     private void resetAppColor(String activityName) {
         DbUtils.removeColor(activityName);
-        refreshApps(activityName, false);
-
+        boolean sortNeeded = (DbUtils.getSortsTypes() == SORT_BY_COLOR);
+        refreshApps(activityName, sortNeeded);
     }
 
     // as method name suggest
@@ -458,7 +499,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         for (Apps app : mAppsList) {
             if (app.getActivityName().equalsIgnoreCase(activityName)) {
                 app.setAppName(appNewName.trim());
-                sortApps();
+                if (SORT_BY_NAME == DbUtils.getSortsTypes()) {
+                    sortApps(SORT_BY_NAME);
+                }
                 break;
             }
         }
@@ -533,13 +576,38 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+                appOpened(activity);
+
                 if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
                     refreshAppSize(activity);
+                    if (DbUtils.getSortsTypes() == SORT_BY_SIZE)
+                        sortApps(SORT_BY_SIZE);
                 }
             } catch (Exception ignore) {
                 //  Log.e(TAG, "onClick: exception:::" + ignore);
             }
         }
+    }
+
+    //TODO: multi thread check for memory leaks if any, or check any bad behaviour;
+    private void appOpened(String activity) {
+       /* new Thread() {
+            @Override
+            public void run() {
+                super.run();*/
+        for (Apps apps : mAppsList) {
+            if (apps.getActivityName().equalsIgnoreCase(activity)) {
+                if (DbUtils.getSortsTypes() == SORT_BY_OPENING_COUNTS) {
+                    int counter = apps.getOpeningCounts();
+                    if (counter % 5 == 0) {
+                        sortApps(SORT_BY_OPENING_COUNTS);
+                    }
+                }
+                apps.increaseOpeningCounts();
+            }
+        }
+        /*   }
+        }.start();*/
     }
 
     @Override
@@ -759,7 +827,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         new FrozenAppsDialogs(this, mAppsList).show();
     }
 
-
     //set the flow layout alignment it is called from global settings
     public void setFlowLayoutAlignment(int gravity) {
         mHomeLayout.setGravity(gravity);
@@ -784,8 +851,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             window.setBackgroundDrawableResource(android.R.color.transparent);
             window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         }
-
-
         dialog.show();
     }
 }

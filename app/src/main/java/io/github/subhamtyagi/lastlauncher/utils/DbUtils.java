@@ -60,6 +60,7 @@ public class DbUtils {
 
     private static final String GLOBAL_SIZE_ADDITION_EXTRA = "global_size_addition_extra";
     private static final String APPS_COLORS_DEFAULT = "apps_color_default";
+    private static final String APPS_SORTS_TYPE = "apps_sorts_types";
 
 
     public static void init(Context context) {
@@ -170,6 +171,9 @@ public class DbUtils {
         return SpUtils.getInstance().getInt(LAUNCHER_THEME, R.style.AppTheme);
     }
 
+    //Putting the theme this will break backups everytime when apps get updated
+    // every version have different ids
+    //Todo: change the way to save themes;
     public static void setTheme(int id) {
         SpUtils.getInstance().putInt(LAUNCHER_THEME, id);
     }
@@ -203,7 +207,6 @@ public class DbUtils {
         return SpUtils.getInstance().getBoolean(LAUNCHER_FREEZE_SIZE, false);
 
     }
-
 
 
     public static boolean isExternalSourceColor() {
@@ -293,9 +296,8 @@ public class DbUtils {
     }
 
     public static void setOpeningCounts(String activityName, int count) {
-
         activityName = activityName.replaceAll("\\.", "_" + "_opening_counts");
-        SpUtils.getInstance().putInt(activityName, count);
+        SpUtils.getInstance().putString(activityName, codeCount(count));
     }
 
     public static String getGroupPrefix(String activityName) {
@@ -310,7 +312,7 @@ public class DbUtils {
 
     public static int getOpeningCounts(String activityName) {
         activityName = activityName.replaceAll("\\.", "_" + "_opening_counts");
-        return SpUtils.getInstance().getInt(activityName);
+        return decodeCount(SpUtils.getInstance().getString(activityName, null));
     }
 
     public static int getGlobalSizeAdditionExtra() {
@@ -336,5 +338,39 @@ public class DbUtils {
     public static boolean isFontExists() {
         return SpUtils.getInstance().contains(LAUNCHER_FONTS);
     }
+
+    public static int getSortsTypes() {
+        return SpUtils.getInstance().getInt(APPS_SORTS_TYPE, 1);
+    }
+
+    public static void setAppsSortsType(int type) {
+        SpUtils.getInstance().putInt(APPS_SORTS_TYPE, type);
+    }
+
+
+    private static String codeCount(int count) {
+        char[] map = "(e*+@_$k&m".toCharArray();
+        int info = count ^ 86194;
+        String enc = "";
+        while (info > 0) {
+            int c = info % 10;
+            info /= 10;
+            enc += map[c];
+        }
+        return enc;
+    }
+
+    private static int decodeCount(String text) {
+        if (text == null) return 0;
+
+        String map = "(e*+@_$k&m";
+        int value = 0;
+        for (int i = text.length() - 1; i >= 0; i--) {
+            value *= 10;
+            value += map.indexOf(text.charAt(i));
+        }
+        return value ^ 86194;
+    }
+
 
 }

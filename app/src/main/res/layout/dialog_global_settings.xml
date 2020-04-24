@@ -29,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
+        android:gravity="center"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:text="@string/fonts"
@@ -119,6 +120,24 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:text="@string/customize_with_color_sniffer"
+        android:textSize="20sp" />
+
+
+    <View
+        android:layout_width="170dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center|center_horizontal|center_vertical"
+        android:background="#DEDEDE"
+        android:foregroundGravity="center_vertical|center_horizontal" />
+
+    <TextView
+        android:id="@+id/settings_sort_app_by"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="@string/sort_apps_by"
         android:textSize="20sp" />
 
 

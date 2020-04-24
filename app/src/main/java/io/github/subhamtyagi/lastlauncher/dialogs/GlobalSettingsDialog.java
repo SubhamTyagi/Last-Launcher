@@ -59,17 +59,21 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         // no old title: Last Launcher use Activity class not AppCompatActivity so it show very old title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_global_settings);
-        findViewById(R.id.settings_fonts).setOnClickListener(this);
+
+
         findViewById(R.id.settings_themes).setOnClickListener(this);
         freezeSize = findViewById(R.id.settings_freeze_size);
         freezeSize.setOnClickListener(this);
 
+
+        findViewById(R.id.settings_fonts).setOnClickListener(this);
         findViewById(R.id.settings_reset_to_defaults).setOnClickListener(this);
         findViewById(R.id.settings_backup).setOnClickListener(this);
         findViewById(R.id.settings_restore).setOnClickListener(this);
         findViewById(R.id.settings_alignment).setOnClickListener(this);
         findViewById(R.id.settings_padding).setOnClickListener(this);
         findViewById(R.id.settings_color_size).setOnClickListener(this);
+        findViewById(R.id.settings_sort_app_by).setOnClickListener(this);
 
         //TODO: remove this var
         TextView colorSniffer = findViewById(R.id.settings_color_sniffer);
@@ -107,9 +111,13 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                 if (BuildConfig.enableColorSniffer)
                     showColorSnifferDialog();
                 else randomColor();
-
             }
             break;
+
+            case R.id.settings_sort_app_by: {
+                sortApps(view);
+                break;
+            }
             case R.id.settings_color_size: {
                 showColorAndSizeDialog();
             }
@@ -141,6 +149,42 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                 break;
 
         }
+    }
+
+    private void sortApps(View view) {
+        Context context;
+        // set theme
+        // if theme wallpaper ie transparent then we have to show other theme
+        if (DbUtils.getTheme() == R.style.Wallpaper)
+            context = new ContextThemeWrapper(getContext(), R.style.AppTheme);
+        else
+            context = new ContextThemeWrapper(getContext(), DbUtils.getTheme());
+
+        PopupMenu popupMenu = new PopupMenu(context, view);
+        popupMenu.getMenuInflater().inflate(R.menu.sort_apps_popups, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            cancel();
+            switch (menuItem.getItemId()) {
+                case R.id.menu_sort_by_name:
+                    launcherActivity.sortApps(LauncherActivity.SORT_BY_NAME);
+                    break;
+                case R.id.menu_sort_by_opening_counts:
+                    launcherActivity.sortApps(LauncherActivity.SORT_BY_OPENING_COUNTS);
+                    break;
+                case R.id.menu_sort_by_color:
+                    launcherActivity.sortApps(LauncherActivity.SORT_BY_COLOR);
+                    break;
+               /* case R.id.menu_sort_by_customs:
+                    launcherActivity.sortApps(LauncherActivity.SORT_BY_CUSTOM);
+                    break;*/
+                case R.id.menu_sort_by_size:
+                    launcherActivity.sortApps(LauncherActivity.SORT_BY_SIZE);
+                    break;
+            }
+            return true;
+        });
+        popupMenu.show();
     }
 
     private void showColorAndSizeDialog() {
@@ -182,6 +226,9 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
     private void randomColor() {
         DbUtils.randomColor(!DbUtils.isRandomColor());
         cancel();
+
+        //TODO: iterate over app list and change the random color
+        // that will improve the performance
         launcherActivity.recreate();
     }
 

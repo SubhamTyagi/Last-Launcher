@@ -67,8 +67,9 @@ public class Apps {
      * @param size       Text Size
      * @param isAppHidden       boolean to tell 'is app hide
      * @param isSizeFrozen is app size to freeze
+     * @param openingCounts how many time apps was opened before this addition
      */
-    public Apps(String activity, String appName, TextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen) {
+    public Apps(String activity, String appName, TextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen, int openingCounts) {
 
         this.activity = activity;
         this.appName = appName;
@@ -84,6 +85,8 @@ public class Apps {
         // else not set the color default theme text color will handle the color
         if (color != DbUtils.NULL_TEXT_COLOR)
             textView.setTextColor(color);
+
+        this.openingCounts = openingCounts;
 
         setAppHidden(isAppHidden);
         setFreeze(isSizeFrozen);
