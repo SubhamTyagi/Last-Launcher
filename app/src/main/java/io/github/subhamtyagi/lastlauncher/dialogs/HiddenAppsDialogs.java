@@ -77,13 +77,14 @@ public class HiddenAppsDialogs extends Dialog {
                 apps.setAppHidden(false);
                 updateList(mAppsList);
             } else if (menuItem.getItemId() == R.id.menu_run_this_app) {
-                String[] strings = apps.getActivityName().split("/");
-                final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                intent.setClassName(strings[0], strings[1]);
-                intent.setComponent(new ComponentName(strings[0], strings[1]));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-
+                if (!apps.isShortcut()) {
+                    String[] strings = apps.getActivityName().split("/");
+                    final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+                    intent.setClassName(strings[0], strings[1]);
+                    intent.setComponent(new ComponentName(strings[0], strings[1]));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
 
             }
             return true;

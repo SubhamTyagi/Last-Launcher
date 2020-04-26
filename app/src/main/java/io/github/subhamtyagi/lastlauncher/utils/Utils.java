@@ -166,7 +166,7 @@ public class Utils {
     }
 
 
-    private static int hash(final String text) {
+    public static int hash(final String text) {
         final byte[] data = text.getBytes();
         final int length = data.length;
         final int seed = 0x9747b28c;
@@ -242,6 +242,15 @@ public class Utils {
                 ctx.getPackageName().equals(resolveInfo.activityInfo.packageName);
     }
 
+
+    public static void main(String[] args) {
+        String uri = "content://com.mixplorer.fileProvider/CEWvRkIDpqtERwAob2YParA=/Android#Intent;action=com.mixplorer.ACTION_OPEN_FOLDER;launchFlags=0x24000000;component=com.mixplorer/.activities.BrowseActivity;B.shortcut=true;B.shortcut_fi_dir=true;S.shortcut_fi_id=0;end";
+        long time = System.currentTimeMillis();
+        int hash = hash(uri);
+        time = System.currentTimeMillis() - time;
+        System.out.println("time taken+" + time);
+        System.out.println(hash);
+    }
 
 }
 

@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.Utils;
+import io.github.subhamtyagi.lastlauncher.views.textview.AppTextView;
 
 
 // a model class that hold everything related to an app
@@ -36,7 +38,7 @@ public class Apps {
     // app name to shown on screen
     private String appName;
     // a text view or a subclass
-    private TextView textView;
+    private AppTextView textView;
     // app color
     private int color;
     // app size
@@ -67,7 +69,7 @@ public class Apps {
 
     /**
      * @param isShortcut    tell whether this shortcut or not
-     * @param activity      activity path
+     * @param activity      activity path if this is shortcut then it will hold a unique strings
      * @param appName       App name
      * @param tv            a text view corresponding to App
      * @param color         Text color
@@ -76,21 +78,26 @@ public class Apps {
      * @param isSizeFrozen  is app size to freeze
      * @param openingCounts how many time apps was opened before this addition
      */
-    public Apps(boolean isShortcut, String activity, String appName, TextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen, int openingCounts) {
+    public Apps(boolean isShortcut, String activity, String appName, AppTextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen, int openingCounts) {
 
         this.isShortcut = isShortcut;
-        this.activity = activity;
-        this.appName = appName;
         this.textView = tv;
+        this.appName = appName;
+
         this.color = color;
         this.size = size;
 
-        textView.setText(appName);
+        if (isShortcut) {
+            this.activity = String.valueOf(Utils.hash(activity));
+            textView.setUri(activity);
+        } else {
+            this.activity = activity;
+        }
 
-        // TODO: something here so we differentiate b/w apps and shortcut
-        textView.setTag(activity);
-
-        textView.setTextSize(size);
+        textView.setText(this.appName);
+        textView.setTag(this.activity);
+        textView.setTextSize(this.size);
+        textView.setShortcut(this.isShortcut);
 
         // if color is not -1 then set this to color
         // else not set the color default theme text color will handle the color

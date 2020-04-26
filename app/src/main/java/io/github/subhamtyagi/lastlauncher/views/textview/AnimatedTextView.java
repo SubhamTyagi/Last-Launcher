@@ -26,7 +26,7 @@ package io.github.subhamtyagi.lastlauncher.views.textview;
 
 
 // a new and animated text view may be used in future
-public class AnimatedTextView /*extends TextView*/ {
+public class AnimatedTextView /*extends AppTextView*/ {
 
  /*   private Matrix mMatrix;
     private float mTranslate;

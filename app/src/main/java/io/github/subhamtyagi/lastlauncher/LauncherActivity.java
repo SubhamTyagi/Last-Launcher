@@ -30,7 +30,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -54,6 +53,7 @@ import android.widget.TextView;
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -69,6 +69,7 @@ import io.github.subhamtyagi.lastlauncher.dialogs.RenameInputDialogs;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Utils;
+import io.github.subhamtyagi.lastlauncher.views.textview.AppTextView;
 
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
@@ -112,9 +113,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private static final int PERMISSION_REQUEST = 127;
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
+    private static ArrayList<Apps> mAppsList;
     private final String TAG = "LauncherActivity";
-    private ArrayList<Apps> mAppsList;
-    private BroadcastReceiver broadcastReceiver;
+    private BroadcastReceiver broadcastReceiverAppInstall;
+    private BroadcastReceiver broadcastReceiverShortcutInstall;
     private Typeface mTypeface;
     private FlowLayout mHomeLayout;
 
@@ -199,7 +201,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
         PackageManager pm = getPackageManager();
-        List<ApplicationInfo> apps = pm.getInstalledApplications(0);
+
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
 
         int appsCount = activities.size();
@@ -264,15 +266,41 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     color = DbUtils.getAppColorExternalSource(activity);
                 }
             } else if (DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
-                // color = Utils.getMaterialColor2(activity);//1 randomized but same package name have same class for md color
-                color = Utils.generateColorFromString(appName);//2 not fully randomized
-                //color=Utils.getMaterialColor(Utils.getPackageNameFromActivityName(activity));//3 extensive randomized
+                color = Utils.generateColorFromString(appName);
             }
 
 
             int openingCounts = DbUtils.getOpeningCounts(activity);
             // save all and add this is to app list
             mAppsList.add(new Apps(false, activity, appName, getCustomView(), color, textSize, hide, freeze, openingCounts));
+
+        }
+
+        int installedShortcut = DbUtils.getShortcutCount();
+
+        for (int i = 1; i <= installedShortcut; i++) {
+            String uri = DbUtils.getShortcutURI(i);
+            String sName = DbUtils.getShortcutName(i);
+
+            String sActivity = String.valueOf(Utils.hash(uri));
+            int sColor = DbUtils.getAppColor(sActivity);
+            int sSize = DbUtils.getAppSize(sActivity);
+
+            if (sSize == DbUtils.NULL_TEXT_SIZE) {
+                sSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+            }
+
+            if (sColor == DbUtils.NULL_TEXT_COLOR) {
+                if (DbUtils.isRandomColor()) {
+                    sColor = Utils.generateColorFromString(sName);
+                } else {
+                    sColor = DbUtils.getAppsColorDefault();
+                }
+            }
+            boolean sFreeze = DbUtils.isAppFrozen(sActivity);
+            int sOpeningCount = DbUtils.getOpeningCounts(sActivity);
+
+            mAppsList.add(new Apps(true, uri, sName, getCustomView(), sColor, sSize, false, sFreeze, sOpeningCount));
 
         }
 
@@ -340,7 +368,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     //  add a new app: generally called after reset
-    private void addNewApp(String activityName, boolean sortNeeded) {
+    private void addAppAfterReset(String activityName, boolean sortNeeded) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().equalsIgnoreCase(activityName)) {
                 mAppsList.remove(apps);
@@ -352,12 +380,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     color = DbUtils.getAppsColorDefault();
                 }
                 String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
+
                 String appName = DbUtils.getAppName(activityName, appOriginalName);
 
                 int openingCounts = DbUtils.getOpeningCounts(activityName);
                 boolean hide = apps.isHidden();
                 boolean freezeSize = apps.isSizeFrozen();
-
 
                 Apps newApp = new Apps(apps.isShortcut(), activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts);
 
@@ -370,10 +398,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     // the text view and set the various parameters
-    private TextView getCustomView() {
+    private AppTextView getCustomView() {
         //  AnimatedTextView textView=new AnimatedTextView(this);
         // textView.setColorSpace(15);
-        TextView textView = new TextView(this);
+        AppTextView textView = new AppTextView(this);
         textView.setOnClickListener(this);
         textView.setOnLongClickListener(this);
         textView.setPadding(10, -6, 4, -2);
@@ -385,40 +413,51 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // so launch the app
     @Override
     public void onClick(View view) {
-        if (view instanceof TextView) {
+        if (view instanceof AppTextView) {
             // get the activity
-            String activity = (String) view.getTag();
+            AppTextView appTextView = (AppTextView) view;
+
+            if (appTextView.isShortcut()) {
+                try {
+                    startActivity(Intent.parseUri(appTextView.getUri(), 0));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                String activity = (String) view.getTag();
+                String[] strings = activity.split("/");
+                try {
+                    final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+                    intent.setClassName(strings[0], strings[1]);
+                    intent.setComponent(new ComponentName(strings[0], strings[1]));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+                    appOpened(activity);
+
+                    if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
+                        increaseAppSize(activity);
+                        if (DbUtils.getSortsTypes() == SORT_BY_SIZE)
+                            sortApps(SORT_BY_SIZE);
+                    }
+                } catch (Exception ignore) {
+                    //  Log.e(TAG, "onClick: exception:::" + ignore);
+                }
+            }
             //Log.d(TAG, "onClick: starting app   ::"+activity);
             // split it into package name and class name
             // bcz activity formatted as com.foo.bar/com.foo.bar.MainActivity
-            String[] strings = activity.split("/");
-            try {
-                final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                intent.setClassName(strings[0], strings[1]);
-                intent.setComponent(new ComponentName(strings[0], strings[1]));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-                appOpened(activity);
-
-                if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
-                    increaseAppSize(activity);
-                    if (DbUtils.getSortsTypes() == SORT_BY_SIZE)
-                        sortApps(SORT_BY_SIZE);
-                }
-            } catch (Exception ignore) {
-                //  Log.e(TAG, "onClick: exception:::" + ignore);
-            }
         }
     }
 
     //show the option on long click
     @Override
     public boolean onLongClick(View view) {
-        if (view instanceof TextView) {
+        if (view instanceof AppTextView) {
             // show app setting
-            showPopup((String) view.getTag(), (TextView) view);
+            showPopup((String) view.getTag(), (AppTextView) view);
         } else if (view instanceof FlowLayout) {
             // show launcher setting
             new GlobalSettingsDialog(this, this).show();
@@ -426,7 +465,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         return true;
     }
 
-    private void showPopup(String activityName, TextView view) {
+    private void showPopup(String activityName, AppTextView view) {
+
         Context context;
         // set theme
         // if theme wallpaper ie transparent then we have to show other theme
@@ -451,6 +491,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         if (DbUtils.isAppFrozen(activityName)) {
             popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze_size);
         }
+
+        if (view.isShortcut()) {
+            popupMenu.getMenu().findItem(R.id.menu_uninstall).setTitle(R.string.remove);
+            popupMenu.getMenu().findItem(R.id.menu_hide).setVisible(false);
+            popupMenu.getMenu().findItem(R.id.menu_rename).setVisible(false);
+            popupMenu.getMenu().findItem(R.id.menu_app_info).setVisible(false);
+        }
+
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.menu_color:
@@ -466,7 +514,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     hideApp(activityName);
                     break;
                 case R.id.menu_uninstall:
-                    uninstallApp(activityName);
+                    if (view.isShortcut()) {
+                        removeShortcut(view);
+                    } else {
+                        uninstallApp(activityName);
+                    }
                     break;
                 case R.id.menu_app_info:
                     showAppInfo(activityName);
@@ -487,11 +539,19 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         popupMenu.show();
     }
 
+    private void removeShortcut(AppTextView view) {
+        Log.d(TAG, "removeShortcut: " + view.getUri());
+        view.setVisibility(View.GONE);
+        DbUtils.removeShortcut(view.getUri());
+        loadApps();
+    }
+
     //reset the app color to default color;
+    //TODO: port to new textview
     private void resetAppColor(String activityName) {
         DbUtils.removeColor(activityName);
         boolean sortNeeded = (DbUtils.getSortsTypes() == SORT_BY_COLOR);
-        addNewApp(activityName, sortNeeded);
+        addAppAfterReset(activityName, sortNeeded);
     }
 
     // as method name suggest
@@ -547,7 +607,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         DbUtils.removeAppName(activityName);
         DbUtils.removeColor(activityName);
         DbUtils.removeSize(activityName);
-        addNewApp(activityName, true);
+        addAppAfterReset(activityName, true);
     }
 
     private void showAppInfo(String activityName) {
@@ -626,16 +686,38 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         intentFilter.addAction(ACTION_PACKAGE_REMOVED);
         intentFilter.addAction(ACTION_PACKAGE_REPLACED);
         intentFilter.addDataScheme("package");
-        broadcastReceiver = new BroadcastReceiver() {
+        broadcastReceiverAppInstall = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 loadApps();
             }
         };
-        registerReceiver(broadcastReceiver, intentFilter);
+        registerReceiver(broadcastReceiverAppInstall, intentFilter);
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.android.launcher.action.INSTALL_SHORTCUT");
+        filter.addAction("com.android.launcher.action.CREATE_SHORTCUT");
 
-        IntentFilter if1 = new IntentFilter();
+        broadcastReceiverShortcutInstall = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Intent shortcutIntent = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
+                String uri = shortcutIntent.toUri(0);
+                // check this is already included in list
+                if (shortcutIntent.getAction() == null) {
+                    shortcutIntent.setAction(Intent.ACTION_VIEW);
+
+                }
+                String name = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
+
+                Log.d(TAG, "onReceive: uri:::" + uri);
+                Log.d(TAG, "onReceive: name::" + name);
+                //TODO: add this persistent
+                addShortcut(uri, name);
+            }
+        };
+
+        registerReceiver(broadcastReceiverShortcutInstall, filter);
 
     }
 
@@ -644,7 +726,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(broadcastReceiverAppInstall);
+        unregisterReceiver(broadcastReceiverShortcutInstall);
     }
 
     // request storage permission
@@ -844,7 +927,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     public void setPadding() {
         Dialog dialog = new PaddingDialog(this, mHomeLayout);
         // Window window = dialog.getWindow();
-        //window.setGravity(Gravity.BOTTOM);
+        // window.setGravity(Gravity.BOTTOM);
         // window.setBackgroundDrawableResource(android.R.color.transparent);
         // window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         dialog.show();
@@ -861,5 +944,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
         dialog.show();
     }
-}
 
+    private void addShortcut(String uri, String appName) {
+        if (mAppsList == null) return;
+        mAppsList.add(new Apps(true, uri, appName, getCustomView(), DbUtils.NULL_TEXT_COLOR, DEFAUTL_TEXT_SIZE_NORMAL_APPS, false, false, 0));
+
+        DbUtils.addShortcut(uri, appName);
+        sortApps(DbUtils.getSortsTypes());
+    }
+}
