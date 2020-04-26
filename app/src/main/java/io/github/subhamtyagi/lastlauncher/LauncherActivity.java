@@ -39,8 +39,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -113,8 +114,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private static final int PERMISSION_REQUEST = 127;
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
-    private static ArrayList<Apps> mAppsList;
-    private final String TAG = "LauncherActivity";
+
+    // private final String TAG = "LauncherActivity";
+    private ArrayList<Apps> mAppsList;
     private BroadcastReceiver broadcastReceiverAppInstall;
     private BroadcastReceiver broadcastReceiverShortcutInstall;
     private Typeface mTypeface;
@@ -206,21 +208,20 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         int appsCount = activities.size();
 
-        // check whether our app list is already initlaized so we can clear it
-        //
+        // check whether our app list is already initialized if yes then clear this(when new app or shortcut installed)
         if (mAppsList != null)
             mAppsList.clear();
-        // is above code necessary i think that is redundant
+
         mAppsList = new ArrayList<>(appsCount);
 
         // get the most used apps
-        // a list of app that are popular on fdroid and my most used app
+        // a list of app that are popular on fdroid and some of my apps
         List<String> oftenApps = Utils.getOftenAppsList();
 
         String packageName, appName;
         int color, textSize;
         boolean hide;
-        // iterate over each app and initalize our base work
+        // iterate over each app and initialize app list
         for (ResolveInfo resolveInfo : activities) {
 
             packageName = resolveInfo.activityInfo.packageName;
@@ -235,6 +236,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             hide = DbUtils.isAppHidden(activity);
             // get the app text size
             textSize = DbUtils.getAppSize(activity);
+
             // check if text size is null then set the size to default size
             // size is null(-1) when user installed this app
             if (textSize == DbUtils.NULL_TEXT_SIZE) {
@@ -257,10 +259,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // whether app size is freezed
             boolean freeze = DbUtils.isAppFrozen(activity);
 
-            // this is a separated implementation of ColorSniffer app
+            // this is a separate implementation of ColorSniffer app
             // if User set the color from external app like ColorSniffer
             // then use that colors
-
             if (BuildConfig.enableColorSniffer) {
                 if (DbUtils.isExternalSourceColor() && color == DbUtils.NULL_TEXT_COLOR) {
                     color = DbUtils.getAppColorExternalSource(activity);
@@ -276,13 +277,25 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         }
 
+        // now adds Shortcut
+        // shortcut are stored in DB android system doesn't store them
+        // shortcut or pwa counts
         int installedShortcut = DbUtils.getShortcutCount();
 
         for (int i = 1; i <= installedShortcut; i++) {
+            // shortcut only have URI
             String uri = DbUtils.getShortcutURI(i);
+            // shortcut name
             String sName = DbUtils.getShortcutName(i);
 
+            // this is the unique code for each uri
+            // let store them in activity field app APP POJO
+            // As we have to store some uniquely identified info in Db
+            // this be used as key as i have done for Each apps(see above)
+            // Usually URI sting is too long and so it will take more memory and storage
             String sActivity = String.valueOf(Utils.hash(uri));
+
+            // get color and size for this shortcut
             int sColor = DbUtils.getAppColor(sActivity);
             int sSize = DbUtils.getAppSize(sActivity);
 
@@ -297,14 +310,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     sColor = DbUtils.getAppsColorDefault();
                 }
             }
+
             boolean sFreeze = DbUtils.isAppFrozen(sActivity);
             int sOpeningCount = DbUtils.getOpeningCounts(sActivity);
 
+            // add this shortcut to list
+            // currently shortcut hide is disabled
             mAppsList.add(new Apps(true, uri, sName, getCustomView(), sColor, sSize, false, sFreeze, sOpeningCount));
 
         }
 
         // now sort the app list
+        // and display this
         sortApps(DbUtils.getSortsTypes());
     }
 
@@ -365,6 +382,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 break;
             }
         }
+        //NOTES to me ::This could be convert to O(1) by introducing DB and App POJO variables in AppTexyView
     }
 
     //  add a new app: generally called after reset
@@ -398,13 +416,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     // the text view and set the various parameters
+    //TODO: new animated field for this(test randomly)
     private AppTextView getCustomView() {
         //  AnimatedTextView textView=new AnimatedTextView(this);
         // textView.setColorSpace(15);
         AppTextView textView = new AppTextView(this);
         textView.setOnClickListener(this);
         textView.setOnLongClickListener(this);
-        textView.setPadding(10, -6, 4, -2);
+        textView.setPadding(10, 0, 4, -2);
         textView.setTypeface(mTypeface);
         return textView;
     }
@@ -424,6 +443,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     e.printStackTrace();
                 }
             } else {
+                //Notes to me:if view store package and component name then this could reduce this splits
                 String activity = (String) view.getTag();
                 String[] strings = activity.split("/");
                 try {
@@ -434,6 +454,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
+                    // tell the our db that app is opened
                     appOpened(activity);
 
                     if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
@@ -478,23 +499,40 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
 
-        /*for(int i=1;i<=popupMenu.getMenu().size();i++){
-            MenuItem menuItem = popupMenu.getMenu().getItem(i);
-            int item = menuItem.getItemId();
-            if (item==R.id.menu_hide||item==R.id.menu_uninstall||item==R.id.menu_reset_to_default){
 
-            }
-        }
-*/
+        int color = Color.parseColor("#E53935");
+
+        SpannableString s = new SpannableString(getString(R.string.hide));
+
+        s.setSpan(new ForegroundColorSpan(color), 0, s.length(), 0);
+        popupMenu.getMenu().findItem(R.id.menu_hide).setTitle(s);
+
+        s = new SpannableString(getString(R.string.uninstall));
+        s.setSpan(new ForegroundColorSpan(color), 0, s.length(), 0);
+        popupMenu.getMenu().findItem(R.id.menu_uninstall).setTitle(s);
+
+        s = new SpannableString(getString(R.string.reset_to_default));
+        s.setSpan(new ForegroundColorSpan(color), 0, s.length(), 0);
+        popupMenu.getMenu().findItem(R.id.menu_reset_to_default).setTitle(s);
+
+
 
         // set proper item based on Db value
         if (DbUtils.isAppFrozen(activityName)) {
             popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze_size);
         }
 
+        //disable some item for shortcut
+        // and change the uninstall to remove
         if (view.isShortcut()) {
-            popupMenu.getMenu().findItem(R.id.menu_uninstall).setTitle(R.string.remove);
+
+            SpannableString s1 = new SpannableString(getString(R.string.remove));
+            s1.setSpan(new ForegroundColorSpan(Color.parseColor("#E53935")), 0, s1.length(), 0);
+            popupMenu.getMenu().findItem(R.id.menu_uninstall).setTitle(s1);
+
             popupMenu.getMenu().findItem(R.id.menu_hide).setVisible(false);
+            //renaming is also disabled;
+            // consider it later
             popupMenu.getMenu().findItem(R.id.menu_rename).setVisible(false);
             popupMenu.getMenu().findItem(R.id.menu_app_info).setVisible(false);
         }
@@ -539,9 +577,13 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         popupMenu.show();
     }
 
+    /**
+     * remove the shortcut
+     *
+     * @param view shortcut view to be removed...
+     */
     private void removeShortcut(AppTextView view) {
-        Log.d(TAG, "removeShortcut: " + view.getUri());
-        view.setVisibility(View.GONE);
+        // view.setVisibility(View.GONE);
         DbUtils.removeShortcut(view.getUri());
         loadApps();
     }
@@ -681,6 +723,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // register the receiver
     // when new app installed, app updated and app uninstalled launcher have to reflect it
     private void registerForReceiver() {
+        //app install and uninstall receiver
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_PACKAGE_ADDED);
         intentFilter.addAction(ACTION_PACKAGE_REMOVED);
@@ -694,6 +737,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         };
         registerReceiver(broadcastReceiverAppInstall, intentFilter);
 
+        //shortcut install receiver
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.android.launcher.action.INSTALL_SHORTCUT");
         filter.addAction("com.android.launcher.action.CREATE_SHORTCUT");
@@ -710,8 +754,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 }
                 String name = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
 
-                Log.d(TAG, "onReceive: uri:::" + uri);
-                Log.d(TAG, "onReceive: name::" + name);
+                // Log.d(TAG, "onReceive: uri:::" + uri);
+                // Log.d(TAG, "onReceive: name::" + name);
                 //TODO: add this persistent
                 addShortcut(uri, name);
             }
@@ -731,6 +775,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     // request storage permission
+    //TODO: move to SAF
     public void requestPermission() {
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             requestPermissions(
@@ -740,6 +785,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
+    //TODO: move to SAF
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -750,6 +796,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
+    //TODO: move to SAF
     public boolean isPermissionRequired() {
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             return checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -758,7 +805,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         return true;
     }
 
+
     // browse the backup file
+    //TODO: move to SAF
     public void browseFile() {
         Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
@@ -768,6 +817,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     // browse the fonts
+    //TODO: move to SAF
     public void browseFonts() {
         if (isPermissionRequired()) {
             requestPermission();
@@ -804,7 +854,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 cursor.moveToFirst();
                 String path = cursor.getString(column_index);
                 cursor.close();
-                Log.i(TAG, "onActivityResult: " + path);
+                //Log.i(TAG, "onActivityResult: " + path);
                 DbUtils.setFonts(path);
                 mTypeface = Typeface.createFromFile(path);
                 loadApps();
@@ -855,7 +905,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     //Clipboard manager
     public Map<String, Integer> clipboardData() {
         Map<String, Integer> result = null;
-        Log.d(TAG, "clipboardData: ");
+        // Log.d(TAG, "clipboardData: ");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -863,7 +913,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 if (clipData.getItemCount() > 0) {
                     ClipData.Item item = clipData.getItemAt(0);
                     String tabSepratedData = item.getText().toString();
-                    Log.d(TAG, "clipboardData: " + tabSepratedData);
+                    //Log.d(TAG, "clipboardData: " + tabSepratedData);
                     //validate tabSepratedData and get its data
                     //unique id bae73ae068dacc6cb659d1fb231e7b11 i.e LastLauncher-ColorSniffer MD5-128
 
@@ -876,7 +926,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                         int color = Color.parseColor(activityIdAndColor[1]);
                         colorsAndId.put(activityIdAndColor[0], color);// put id and color to map
 
-                        Log.d(TAG, "clipboardData: app:" + activityIdAndColor[0] + "  color==" + color);
+                        //   Log.d(TAG, "clipboardData: app:" + activityIdAndColor[0] + "  color==" + color);
 
                     }
                     setAppsColorFromClipboard(colorsAndId);

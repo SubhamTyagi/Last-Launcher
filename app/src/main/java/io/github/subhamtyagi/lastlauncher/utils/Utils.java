@@ -243,14 +243,5 @@ public class Utils {
     }
 
 
-    public static void main(String[] args) {
-        String uri = "content://com.mixplorer.fileProvider/CEWvRkIDpqtERwAob2YParA=/Android#Intent;action=com.mixplorer.ACTION_OPEN_FOLDER;launchFlags=0x24000000;component=com.mixplorer/.activities.BrowseActivity;B.shortcut=true;B.shortcut_fi_dir=true;S.shortcut_fi_id=0;end";
-        long time = System.currentTimeMillis();
-        int hash = hash(uri);
-        time = System.currentTimeMillis() - time;
-        System.out.println("time taken+" + time);
-        System.out.println(hash);
-    }
-
 }
 

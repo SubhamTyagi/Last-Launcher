@@ -68,7 +68,10 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
 
 
         findViewById(R.id.settings_fonts).setOnClickListener(this);
-        findViewById(R.id.settings_reset_to_defaults).setOnClickListener(this);
+
+        TextView reset = findViewById(R.id.settings_reset_to_defaults);
+        reset.setOnClickListener(this);
+        reset.setTextColor(Color.parseColor("#E53935"));
         findViewById(R.id.settings_backup).setOnClickListener(this);
         findViewById(R.id.settings_restore).setOnClickListener(this);
         findViewById(R.id.settings_alignment).setOnClickListener(this);
