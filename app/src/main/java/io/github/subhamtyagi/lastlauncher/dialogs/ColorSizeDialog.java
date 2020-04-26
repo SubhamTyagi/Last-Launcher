@@ -45,6 +45,7 @@ public class ColorSizeDialog extends Dialog {
     private int appSize;
     private Runnable runnable;
     private int appColor;
+    // boolean change=false;
 
     public ColorSizeDialog(Context context, String appPackage, int appColor, TextView textView, int appSize) {
         super(context);
@@ -79,6 +80,7 @@ public class ColorSizeDialog extends Dialog {
         colorSeekBar.setOnColorChangeListener((colorBarPosition, alphaBarPosition, color) -> {
             textView.setTextColor(color);
             appColor = color;
+            // change=true;
             // DbUtils.putAppColorImmediately(appPackage, color);
         });
 
@@ -93,6 +95,7 @@ public class ColorSizeDialog extends Dialog {
 
         plus.setOnClickListener(view -> {
 
+            // change=true;
             appSize++;
 
             if (appSize >= DEFAULT_MAX_TEXT_SIZE) {
@@ -105,6 +108,7 @@ public class ColorSizeDialog extends Dialog {
         });
 
         minus.setOnClickListener(view -> {
+            //change=true;
             --appSize;
             if (appSize < DEFAULT_MIN_TEXT_SIZE) {
                 appSize = DEFAULT_MIN_TEXT_SIZE;
@@ -122,6 +126,7 @@ public class ColorSizeDialog extends Dialog {
                     return;
                 }
                 // increase value
+                // change=true;
                 appSize++;
 
                 if (appSize >= DEFAULT_MAX_TEXT_SIZE) {
@@ -147,6 +152,7 @@ public class ColorSizeDialog extends Dialog {
                 }
                 // decrease value
                 --appSize;
+                // change=true;
                 if (appSize < DEFAULT_MIN_TEXT_SIZE) {
                     appSize = DEFAULT_MIN_TEXT_SIZE;
                 }
@@ -167,5 +173,6 @@ public class ColorSizeDialog extends Dialog {
         super.onStop();
         DbUtils.putAppColor(appPackage, appColor);
         DbUtils.putAppSize(appPackage, appSize);
+
     }
 }

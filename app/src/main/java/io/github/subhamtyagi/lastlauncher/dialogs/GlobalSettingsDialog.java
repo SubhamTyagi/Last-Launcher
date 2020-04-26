@@ -21,6 +21,7 @@ package io.github.subhamtyagi.lastlauncher.dialogs;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
@@ -232,7 +233,6 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         launcherActivity.recreate();
     }
 
-
     private void showColorSnifferDialog() {
         cancel();
         Intent intent = context.getPackageManager().getLaunchIntentForPackage("ryey.colorsniffer");
@@ -289,22 +289,26 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         else {
             boolean b = DbUtils.saveDbTOFile();
             cancel();
-            Toast.makeText(getContext(), b ? R.string.backup_saved_to_downloads : R.string.some_error_occurred, Toast.LENGTH_SHORT).show();
+
+            Toast toast = Toast.makeText(getContext(), b ? R.string.backup_saved_to_downloads : R.string.some_error_occurred, Toast.LENGTH_LONG);
+            toast.getView().setBackgroundColor(Color.parseColor("#d5e0e2"));
+            toast.show();
         }
     }
 
-
-    //<editor-fold desc="restore backup">
     private void restore() {
         if (launcherActivity.isPermissionRequired())
             launcherActivity.requestPermission();
         else {
             launcherActivity.browseFile();
             cancel();
-            Toast.makeText(getContext(), R.string.choose_old_backup_file, Toast.LENGTH_SHORT).show();
+
+            Toast toast = Toast.makeText(getContext(), R.string.choose_old_backup_file, Toast.LENGTH_LONG);
+            toast.getView().setBackgroundColor(Color.parseColor("#d5e0e2"));
+            toast.show();
+
         }
     }
-    //</editor-fold>
 
     private void setFonts() {
         if (launcherActivity.isPermissionRequired())
@@ -314,7 +318,6 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             cancel();
         }
     }
-
 
     private void fontSelection(View view) {
 

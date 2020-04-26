@@ -18,6 +18,10 @@
 
 package io.github.subhamtyagi.lastlauncher.utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 
 import java.util.Arrays;
@@ -226,6 +230,16 @@ public class Utils {
 
         return Color.parseColor(colorPalette[a][b]);
 
+    }
+
+
+    private boolean isDefaultLauncher(Context ctx) {
+        final Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        final ResolveInfo resolveInfo =
+                ctx.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return resolveInfo != null &&
+                ctx.getPackageName().equals(resolveInfo.activityInfo.packageName);
     }
 
 

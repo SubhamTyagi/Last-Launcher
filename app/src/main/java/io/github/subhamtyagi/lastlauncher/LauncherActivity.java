@@ -30,6 +30,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -128,7 +129,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         //theme must be set before setContentView
         setTheme(theme);
 
-
         setContentView(R.layout.activity_launcher);
 
         // set the status bar color as per theme
@@ -140,8 +140,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         mHomeLayout = findViewById(R.id.home_layout);
         mHomeLayout.setOnLongClickListener(this);
+
         //set alignment default is center|center_vertical
         mHomeLayout.setGravity(DbUtils.getFlowLayoutAlignment());
+
         //set padding ..
         mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
 
@@ -149,9 +151,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         loadApps();
         // register the receiver for installed and  uninstall , update app
         registerForReceiver();
-
-        //this may not be needed
-        // SpUtils.getInstance().putBoolean(getString(R.string.sp_first_time_app_open), false);
 
     }
 
@@ -185,7 +184,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private void setFont() {
         // get and set fonts
         String fontsPath = DbUtils.getFonts();
-        if (fontsPath == null || DbUtils.isFirstStart()) {
+        if (fontsPath == null) {
             mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
         } else {
             mTypeface = Typeface.createFromFile(fontsPath);
@@ -193,14 +192,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     }
 
+    //TODO:  do something
     private void loadApps() {
-
-
         // get the apps installed on devices;
         Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
         PackageManager pm = getPackageManager();
+        List<ApplicationInfo> apps = pm.getInstalledApplications(0);
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
+
         int appsCount = activities.size();
 
         // check whether our app list is already initlaized so we can clear it
@@ -271,7 +272,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
             int openingCounts = DbUtils.getOpeningCounts(activity);
             // save all and add this is to app list
-            mAppsList.add(new Apps(activity, appName, getCustomView(), color, textSize, hide, freeze, openingCounts));
+            mAppsList.add(new Apps(false, activity, appName, getCustomView(), color, textSize, hide, freeze, openingCounts));
 
         }
 
@@ -280,7 +281,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     /**
-     * @param type sort type
+     * @param type sorting type
      */
     public void sortApps(final int type) {
         // remove the app view for home layout these needs to be add later after sorting
@@ -320,6 +321,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 // do nothing
                 break;
         }
+
         // now add the app textView to home
         for (Apps apps : mAppsList) {
             mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -327,7 +329,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     // increase the size of app and save this to DB
-    private void refreshAppSize(String activityName) {
+    private void increaseAppSize(String activityName) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().equalsIgnoreCase(activityName)) {
                 int size = apps.getSize() + 2;
@@ -337,9 +339,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
-    //  reset app size, color,name,freeze, etc and sort the app
-    // because there may be app name reset
-    private void refreshApps(String activityName, boolean sortNeeded) {
+    //  add a new app: generally called after reset
+    private void addNewApp(String activityName, boolean sortNeeded) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().equalsIgnoreCase(activityName)) {
                 mAppsList.remove(apps);
@@ -357,7 +358,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 boolean hide = apps.isHidden();
                 boolean freezeSize = apps.isSizeFrozen();
 
-                Apps newApp = new Apps(activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts);
+
+                Apps newApp = new Apps(apps.isShortcut(), activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts);
 
                 mAppsList.add(newApp);
                 if (sortNeeded)
@@ -379,7 +381,39 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         return textView;
     }
 
-    // show the option on long click
+    // app text is clicked
+    // so launch the app
+    @Override
+    public void onClick(View view) {
+        if (view instanceof TextView) {
+            // get the activity
+            String activity = (String) view.getTag();
+            //Log.d(TAG, "onClick: starting app   ::"+activity);
+            // split it into package name and class name
+            // bcz activity formatted as com.foo.bar/com.foo.bar.MainActivity
+            String[] strings = activity.split("/");
+            try {
+                final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+                intent.setClassName(strings[0], strings[1]);
+                intent.setComponent(new ComponentName(strings[0], strings[1]));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+                appOpened(activity);
+
+                if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
+                    increaseAppSize(activity);
+                    if (DbUtils.getSortsTypes() == SORT_BY_SIZE)
+                        sortApps(SORT_BY_SIZE);
+                }
+            } catch (Exception ignore) {
+                //  Log.e(TAG, "onClick: exception:::" + ignore);
+            }
+        }
+    }
+
+    //show the option on long click
     @Override
     public boolean onLongClick(View view) {
         if (view instanceof TextView) {
@@ -404,13 +438,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         PopupMenu popupMenu = new PopupMenu(context, view);
         popupMenu.getMenuInflater().inflate(R.menu.menu, popupMenu.getMenu());
 
+        /*for(int i=1;i<=popupMenu.getMenu().size();i++){
+            MenuItem menuItem = popupMenu.getMenu().getItem(i);
+            int item = menuItem.getItemId();
+            if (item==R.id.menu_hide||item==R.id.menu_uninstall||item==R.id.menu_reset_to_default){
 
-
-       /* for(int i=1;i<=popupMenu.getMenu().size();i++){
-            int item = popupMenu.getMenu().getItem(i).getItemId();
-            if (item==R.id.menu_hide||item==R.id.menu_uninstall||item==
-        }*/
-
+            }
+        }
+*/
 
         // set proper item based on Db value
         if (DbUtils.isAppFrozen(activityName)) {
@@ -456,7 +491,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private void resetAppColor(String activityName) {
         DbUtils.removeColor(activityName);
         boolean sortNeeded = (DbUtils.getSortsTypes() == SORT_BY_COLOR);
-        refreshApps(activityName, sortNeeded);
+        addNewApp(activityName, sortNeeded);
     }
 
     // as method name suggest
@@ -512,7 +547,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         DbUtils.removeAppName(activityName);
         DbUtils.removeColor(activityName);
         DbUtils.removeSize(activityName);
-        refreshApps(activityName, true);
+        addNewApp(activityName, true);
     }
 
     private void showAppInfo(String activityName) {
@@ -557,39 +592,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         dialog.show();
     }
 
-    // app text is clicked
-    // so launch the app
-    @Override
-    public void onClick(View view) {
-        if (view instanceof TextView) {
-            // get the activity
-            String activity = (String) view.getTag();
-            //Log.d(TAG, "onClick: starting app   ::"+activity);
-            // split it into package name and class name
-            // bcz activity formatted as com.foo.bar/com.foo.bar.MainActivity
-            String[] strings = activity.split("/");
-            try {
-                final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                intent.setClassName(strings[0], strings[1]);
-                intent.setComponent(new ComponentName(strings[0], strings[1]));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
-                appOpened(activity);
-
-                if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
-                    refreshAppSize(activity);
-                    if (DbUtils.getSortsTypes() == SORT_BY_SIZE)
-                        sortApps(SORT_BY_SIZE);
-                }
-            } catch (Exception ignore) {
-                //  Log.e(TAG, "onClick: exception:::" + ignore);
-            }
-        }
-    }
-
-    //TODO: multi thread check for memory leaks if any, or check any bad behaviour;
+    //TO1DO: multi thread check for memory leaks if any, or check any bad behaviour;
     private void appOpened(String activity) {
        /* new Thread() {
             @Override
@@ -629,6 +633,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             }
         };
         registerReceiver(broadcastReceiver, intentFilter);
+
+
+        IntentFilter if1 = new IntentFilter();
+
     }
 
 

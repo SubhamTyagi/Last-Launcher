@@ -79,9 +79,9 @@ public class DbUtils {
         return SpUtils.getInstance().loadSharedPreferencesFromFile(inputStream);
     }
 
-    public static boolean isFirstStart() {
+   /* public static boolean isFirstStart() {
         return SpUtils.getInstance().getBoolean("sp_first_time_app_open", true);
-    }
+    }*/
 
     public static void putAppOriginalName(String activityName, String value) {
         activityName = activityName.replaceAll("\\.", "_") + "_app_original_name";
@@ -168,14 +168,58 @@ public class DbUtils {
     }
 
     public static int getTheme() {
-        return SpUtils.getInstance().getInt(LAUNCHER_THEME, R.style.AppTheme);
+        int theme = SpUtils.getInstance().getInt(LAUNCHER_THEME, 2);
+        switch (theme) {
+            case 1:
+                return R.style.Wallpaper;
+            case 2:
+                return R.style.AppTheme;
+            case 3:
+                return R.style.White;
+            case 4:
+                return R.style.WhiteOnGrey;
+            case 5:
+                return R.style.Black;
+            case 6:
+                return R.style.BlackOnGrey;
+            case 7:
+                return R.style.Hacker_green;
+            case 8:
+                return R.style.Hacker_red;
+        }
+
+        return R.style.AppTheme;
     }
 
-    //Putting the theme this will break backups everytime when apps get updated
-    // every version have different ids
-    //Todo: change the way to save themes;
     public static void setTheme(int id) {
-        SpUtils.getInstance().putInt(LAUNCHER_THEME, id);
+        int theme = 0;
+        switch (id) {
+            case R.style.Wallpaper:
+                theme = 1;
+                break;
+            case R.style.AppTheme:
+                theme = 2;
+                break;
+            case R.style.White:
+                theme = 3;
+                break;
+            case R.style.WhiteOnGrey:
+                theme = 4;
+                break;
+            case R.style.Black:
+                theme = 5;
+                break;
+            case R.style.BlackOnGrey:
+                theme = 6;
+                break;
+            case R.style.Hacker_green:
+                theme = 7;
+                break;
+            case R.style.Hacker_red:
+                theme = 8;
+                break;
+        }
+        SpUtils.getInstance().putInt(LAUNCHER_THEME, theme);
     }
 
     public static String getFonts() {

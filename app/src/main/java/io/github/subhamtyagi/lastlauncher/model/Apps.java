@@ -30,7 +30,9 @@ public class Apps {
     // app activity name format package.name/package.name.ClassName
     // for eg. com.example.appname/com.example.appname.MainActivity
     // for eg  io.github.subhamtyagi.lastlauncher/io.github.subhamtyagi.lastlauncher.LauncherActivity
+    // if this shortcut than activity represent the URI string
     final private String activity;
+
     // app name to shown on screen
     private String appName;
     // a text view or a subclass
@@ -58,19 +60,25 @@ public class Apps {
     // app belongs to this categories
     private String categories;
 
+    // tell whether this is a shortcut or not if this shortcut then activity field hold the Uri not activity
+    private boolean isShortcut;
+
+
 
     /**
-     * @param activity   activity path
-     * @param appName    App name
-     * @param tv         a text view corresponding to App
-     * @param color      Text color
-     * @param size       Text Size
-     * @param isAppHidden       boolean to tell 'is app hide
-     * @param isSizeFrozen is app size to freeze
+     * @param isShortcut    tell whether this shortcut or not
+     * @param activity      activity path
+     * @param appName       App name
+     * @param tv            a text view corresponding to App
+     * @param color         Text color
+     * @param size          Text Size
+     * @param isAppHidden   boolean to tell 'is app hide
+     * @param isSizeFrozen  is app size to freeze
      * @param openingCounts how many time apps was opened before this addition
      */
-    public Apps(String activity, String appName, TextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen, int openingCounts) {
+    public Apps(boolean isShortcut, String activity, String appName, TextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen, int openingCounts) {
 
+        this.isShortcut = isShortcut;
         this.activity = activity;
         this.appName = appName;
         this.textView = tv;
@@ -78,7 +86,10 @@ public class Apps {
         this.size = size;
 
         textView.setText(appName);
+
+        // TODO: something here so we differentiate b/w apps and shortcut
         textView.setTag(activity);
+
         textView.setTextSize(size);
 
         // if color is not -1 then set this to color
@@ -91,6 +102,10 @@ public class Apps {
         setAppHidden(isAppHidden);
         setFreeze(isSizeFrozen);
 
+    }
+
+    public boolean isShortcut() {
+        return isShortcut;
     }
 
     public boolean isSizeFrozen() {
@@ -121,6 +136,7 @@ public class Apps {
         this.isSizeFrozen = freezeSize;
         DbUtils.freezeAppSize(activity, freezeSize);
     }
+
 
     public String getActivityName() {
         return activity;
