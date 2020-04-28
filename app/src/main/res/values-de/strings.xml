@@ -42,6 +42,7 @@
     <!--translation check required-->
     <string name="from_colorsniffer_app">Von der ColorSniffer App</string>
 
+
     <!--translation required    -->
     <string name="backup_saved_to_downloads">Backup saved to Downloads</string>
     <!--translation required    -->
@@ -65,7 +66,7 @@
     <string name="select_fonts">Select fonts</string>
     <string name="sort_apps_by">Sort Apps By</string>
 
-    <string name="by_opening_counts">Opening Counts</string>
+    <string name="by_opening_counts">App Usage</string>
     <string name="by_color">Color</string>
     <string name="custom">Custom</string>
     <string name="by_size">Size</string>

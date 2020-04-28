@@ -153,8 +153,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         // loads the apps
         loadApps();
-        // register the receiver for installed and  uninstall , update app
-        registerForReceiver();
+        // register the receiver for installed, uninstall, update apps and shortcut pwa add
+        registerForReceivers();
 
     }
 
@@ -377,6 +377,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private void addAppAfterReset(String activityName, boolean sortNeeded) {
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().equalsIgnoreCase(activityName)) {
+                //TODO:why i am removing this why not updating it?
                 mAppsList.remove(apps);
                 //now add new App
                 int color;
@@ -711,7 +712,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     // register the receiver
     // when new app installed, app updated and app uninstalled launcher have to reflect it
-    private void registerForReceiver() {
+    private void registerForReceivers() {
         //app install and uninstall receiver
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_PACKAGE_ADDED);

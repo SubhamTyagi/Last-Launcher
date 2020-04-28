@@ -18,16 +18,100 @@
 
 package io.github.subhamtyagi.lastlauncher.utils;
 
-import android.content.Context;
-import android.view.GestureDetector;
+import android.app.Activity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-//not in use
-@Deprecated
+
 public class OnSwipeTouchListener implements View.OnTouchListener {
 
-    private final GestureDetector gestureDetector;
+
+    private static final int MIN_DISTANCE = 100;
+    private Activity activity;
+    private float downX, downY, upX, upY;
+
+    public OnSwipeTouchListener(final Activity activity) {
+        this.activity = activity;
+    }
+
+    public final void onRightToLeftSwipe() {
+
+    }
+
+    public void onLeftToRightSwipe() {
+
+    }
+
+    public void onTopToBottomSwipe() {
+
+    }
+
+    public void onBottomToTopSwipe() {
+
+    }
+
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                downX = event.getX();
+                downY = event.getY();
+                //   return true;
+            }
+            case MotionEvent.ACTION_UP: {
+                upX = event.getX();
+                upY = event.getY();
+
+                float deltaX = downX - upX;
+                float deltaY = downY - upY;
+
+                // swipe horizontal?
+                if (Math.abs(deltaX) > MIN_DISTANCE) {
+                    // left or right
+                    if (deltaX < 0) {
+                        this.onLeftToRightSwipe();
+                        return true;
+                    }
+                    if (deltaX > 0) {
+                        this.onRightToLeftSwipe();
+                        return true;
+                    }
+                } else {
+
+                    Log.i("TAG", "Swipe was only " + Math.abs(deltaX) + " long, need at least " + MIN_DISTANCE);
+                }
+
+                // swipe vertical?
+                if (Math.abs(deltaY) > MIN_DISTANCE) {
+                    // top or down
+                    if (deltaY < 0) {
+                        this.onTopToBottomSwipe();
+                        return true;
+                    }
+                    if (deltaY > 0) {
+                        this.onBottomToTopSwipe();
+                        return true;
+                    }
+                } else {
+                    Log.i("TAG", "Swipe was only " + Math.abs(deltaX) + " long, need at least " + MIN_DISTANCE);
+                }
+
+
+            }
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
+   /* private final GestureDetector gestureDetector;
 
     public OnSwipeTouchListener(Context ctx) {
         gestureDetector = new GestureDetector(ctx, new GestureListener());
@@ -89,5 +173,5 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     }
 
     public void onSwipeBottom() {
-    }
+    }*/
 }

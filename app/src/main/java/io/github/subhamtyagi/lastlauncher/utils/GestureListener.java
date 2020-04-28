@@ -187,4 +187,5 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         void onDoubleTap();
     }
+
 }

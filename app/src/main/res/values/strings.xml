@@ -81,7 +81,7 @@
     <string name="sort_apps_by">Sort Apps By</string>
 
     <string name="by_name">Name</string>
-    <string name="by_opening_counts">Opening Counts</string>
+    <string name="by_opening_counts">App Usage</string>
     <string name="by_color">Color</string>
     <string name="custom">Customs</string>
     <string name="by_size">Size</string>
