@@ -373,18 +373,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
-    // increase the size of app and save this to DB
-    private void increaseAppSize(String activityName) {
-        for (Apps apps : mAppsList) {
-            if (apps.getActivityName().equalsIgnoreCase(activityName)) {
-                int size = apps.getSize() + 2;
-                apps.setSize(size);
-                break;
-            }
-        }
-        //NOTES to me ::This could be convert to O(1) by introducing DB and App POJO variables in AppTexyView
-    }
-
     //  add a new app: generally called after reset
     private void addAppAfterReset(String activityName, boolean sortNeeded) {
         for (Apps apps : mAppsList) {
@@ -435,16 +423,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         if (view instanceof AppTextView) {
             // get the activity
             AppTextView appTextView = (AppTextView) view;
+            String activity = (String) view.getTag();
 
             if (appTextView.isShortcut()) {
                 try {
                     startActivity(Intent.parseUri(appTextView.getUri(), 0));
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    appOpened(activity);
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
             } else {
                 //Notes to me:if view store package and component name then this could reduce this splits
-                String activity = (String) view.getTag();
                 String[] strings = activity.split("/");
                 try {
                     final Intent intent = new Intent(Intent.ACTION_MAIN, null);
@@ -453,22 +443,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
                     // tell the our db that app is opened
                     appOpened(activity);
-
-                    if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
-                        increaseAppSize(activity);
-                        if (DbUtils.getSortsTypes() == SORT_BY_SIZE)
-                            sortApps(SORT_BY_SIZE);
-                    }
                 } catch (Exception ignore) {
                     //  Log.e(TAG, "onClick: exception:::" + ignore);
                 }
             }
-            //Log.d(TAG, "onClick: starting app   ::"+activity);
-            // split it into package name and class name
-            // bcz activity formatted as com.foo.bar/com.foo.bar.MainActivity
 
         }
     }
@@ -697,19 +677,28 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     //TO1DO: multi thread check for memory leaks if any, or check any bad behaviour;
     private void appOpened(String activity) {
-       /* new Thread() {
+        /* new Thread() {
             @Override
             public void run() {
                 super.run();*/
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().equalsIgnoreCase(activity)) {
+                apps.increaseOpeningCounts();// save to Db that app is opened by user
                 if (DbUtils.getSortsTypes() == SORT_BY_OPENING_COUNTS) {
                     int counter = apps.getOpeningCounts();
                     if (counter % 5 == 0) {
                         sortApps(SORT_BY_OPENING_COUNTS);
                     }
                 }
-                apps.increaseOpeningCounts();
+                // increase the app view size if not frozen
+                if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
+                    int size = apps.getSize() + 2;
+                    apps.setSize(size);
+                    if (DbUtils.getSortsTypes() == SORT_BY_SIZE) {
+                        sortApps(SORT_BY_SIZE);
+                    }
+                }
+                break;
             }
         }
         /*   }

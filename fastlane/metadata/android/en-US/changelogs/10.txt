@@ -1,0 +1,7 @@
+*Preview release 10*
+
+- Sort App by Name, Size, Color, App usage
+- Show Apps Shortcut, Website Shortcuts and PWAs,
+- bug fix for theme is not correct after backup
+- bug fix for red item are not displayed correctly
+- performance improvements.

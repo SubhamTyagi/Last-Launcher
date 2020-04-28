@@ -34,17 +34,6 @@
         </activity>
 
 
-        <!-- <receiver
-             android:name="ShortcutReceiver"
-
-             android:permission="com.android.launcher.permission.INSTALL_SHORTCUT">
-             <intent-filter>
-                 <action android:name="com.android.launcher.action.INSTALL_SHORTCUT" />
-                 <action android:name="com.android.launcher.action.CREATE_SHORTCUT" />
-             </intent-filter>
-         </receiver>-->
-
-
     </application>
 
 </manifest>
