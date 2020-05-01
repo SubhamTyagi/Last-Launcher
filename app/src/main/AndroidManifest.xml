@@ -19,6 +19,7 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name=".LauncherActivity"
             android:excludeFromRecents="true"
             android:label="@string/app_name"

@@ -1,31 +1,37 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_screen_container"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
-    <!--
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-        <LinearLayout
+    <ScrollView
+        android:id="@+id/main_screen_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <org.apmem.tools.layouts.FlowLayout
+            android:id="@+id/home_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-             android:id="@+id/container"
-            android:paddingTop="150dp">
-    -->
+            android:gravity="center|center_horizontal|center_vertical"
+            android:orientation="horizontal" />
 
-    <org.apmem.tools.layouts.FlowLayout
-        android:id="@+id/home_layout"
-        android:layout_width="match_parent"
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/search_box"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:gravity="center|center_horizontal|center_vertical"
-
-        android:orientation="horizontal">
-
-
-    </org.apmem.tools.layouts.FlowLayout>
-
-
-    <!-- </LinearLayout>-->
-
-
-</ScrollView>
+        android:layout_gravity="center"
+        android:background="@drawable/search_box"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:imeOptions="actionDone|actionSend"
+        android:inputType="textPersonName"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:visibility="gone" />
+</LinearLayout>
 

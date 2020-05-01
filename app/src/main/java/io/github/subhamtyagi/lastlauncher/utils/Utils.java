@@ -242,6 +242,49 @@ public class Utils {
                 ctx.getPackageName().equals(resolveInfo.activityInfo.packageName);
     }
 
+    /**
+     * @param query   strings to be find
+     * @param strings strings where to find
+     * @return true if @query is sequentially found in @strings else false
+     */
+    public static boolean simpleFuzzySearch(CharSequence query, String strings) {
+        //convert to lowercase
+        query = query.toString().toLowerCase();
+        strings = strings.toLowerCase();
+
+        int patternIdx = 0;
+        int strIdx = 0;
+        int patternLength = query.length();
+        int strLength = strings.length();
+
+        while (patternIdx != patternLength && strIdx != strLength) {
+            char patternChar = query.charAt(patternIdx);
+            char strChar = strings.charAt(strIdx);
+            if (patternChar == strChar) ++patternIdx;
+            ++strIdx;
+        }
+        return patternLength != 0 && strLength != 0 && patternIdx == patternLength;
+
+    }
+
+    /**
+     * @param text string
+     * @return code points
+     */
+    public static int[] codepoints(CharSequence text) {
+        int idx = 0;
+        int idxCodepoint = 0;
+        int textLength = text.length();
+        int[] codepoints = new int[Character.codePointCount(text, 0, textLength)];
+        while (idx < textLength) {
+            int codepoint = Character.codePointAt(text, idx);
+            codepoints[idxCodepoint] = codepoint;
+            idx += Character.charCount(codepoint);
+            idxCodepoint += 1;
+        }
+        return codepoints;
+    }
+
 
 }
 

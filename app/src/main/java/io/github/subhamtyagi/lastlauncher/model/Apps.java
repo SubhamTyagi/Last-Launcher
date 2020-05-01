@@ -19,7 +19,6 @@
 package io.github.subhamtyagi.lastlauncher.model;
 
 import android.view.View;
-import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Utils;
@@ -149,7 +148,7 @@ public class Apps {
         return activity;
     }
 
-    public CharSequence getAppName() {
+    public String getAppName() {
         return appName;
     }
 
@@ -158,7 +157,7 @@ public class Apps {
         textView.setText(appName);
     }
 
-    public TextView getTextView() {
+    public AppTextView getTextView() {
         return textView;
     }
 

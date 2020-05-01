@@ -22,27 +22,18 @@ import android.app.Activity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-//not in use
-@Deprecated
-public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
-    // Swipe gestures type
-    public final static int SWIPE_UP = 1;
-    public final static int SWIPE_DOWN = 2;
-    public final static int SWIPE_LEFT = 3;
-    public final static int SWIPE_RIGHT = 4;
+public class Gestures extends GestureDetector.SimpleOnGestureListener {
 
-    public final static int MODE_TRANSPARENT = 0;
+    public enum Direction {
+        SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT
+    }
+
     public final static int MODE_SOLID = 1;
     public final static int MODE_DYNAMIC = 2;
 
     private final static int ACTION_FAKE = -13; // just an unlikely number
 
-    // Swipe distances
-    private int swipe_Min_Distance = 100;
-    private int swipe_Max_Distance = 200;
-
-    private int swipe_Min_Velocity = 50;
 
     private int mode = MODE_DYNAMIC;
     private boolean running = true;
@@ -50,14 +41,14 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     private Activity context;
     private GestureDetector detector;
-    private SimpleGestureListener listener;
+    private OnSwipeListener listener;
 
-    public GestureListener(Activity context,
-                           SimpleGestureListener simpleGestureListener) {
+    public Gestures(Activity context,
+                    OnSwipeListener onSwipeListener) {
 
         this.context = context;
         this.detector = new GestureDetector(context, this);
-        this.listener = simpleGestureListener;
+        this.listener = onSwipeListener;
     }
 
     public void onTouchEvent(MotionEvent event) {
@@ -83,41 +74,7 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         // else just do nothing, it's Transparent
     }
 
-    public int getMode() {
-        return this.mode;
-    }
 
-    public void setMode(int m) {
-        this.mode = m;
-    }
-
-    public void setEnabled(boolean status) {
-        this.running = status;
-    }
-
-    public int getSwipeMaxDistance() {
-        return this.swipe_Max_Distance;
-    }
-
-    public void setSwipeMaxDistance(int distance) {
-        this.swipe_Max_Distance = distance;
-    }
-
-    public int getSwipeMinDistance() {
-        return this.swipe_Min_Distance;
-    }
-
-    public void setSwipeMinDistance(int distance) {
-        this.swipe_Min_Distance = distance;
-    }
-
-    public int getSwipeMinVelocity() {
-        return this.swipe_Min_Velocity;
-    }
-
-    public void setSwipeMinVelocity(int distance) {
-        this.swipe_Min_Velocity = distance;
-    }
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
@@ -126,32 +83,42 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         final float xDistance = Math.abs(e1.getX() - e2.getX());
         final float yDistance = Math.abs(e1.getY() - e2.getY());
 
-        if (xDistance > this.swipe_Max_Distance
-                || yDistance > this.swipe_Max_Distance)
+       /* if (xDistance > this.swipe_Max_Distance || yDistance > this.swipe_Max_Distance)
             return false;
-
+*/
         velocityX = Math.abs(velocityX);
         velocityY = Math.abs(velocityY);
+
         boolean result = false;
 
-        if (velocityX > this.swipe_Min_Velocity && xDistance > this.swipe_Min_Distance) {
+        // Swipe distances
+        int swipeMinDistance = 400;
+        int swipeMinDistanceRightLeft = 300;
+
+        int swipeMinVelocity = 75;
+        int swipeMinVelocityRightLeft = 60;
+
+        if (velocityX > swipeMinVelocityRightLeft && xDistance > swipeMinDistanceRightLeft) {
             if (e1.getX() > e2.getX()) { // right to left
-                this.listener.onSwipe(SWIPE_LEFT);
+                this.listener.onSwipe(Direction.SWIPE_LEFT);
             } else {
-                this.listener.onSwipe(SWIPE_RIGHT);
+                this.listener.onSwipe(Direction.SWIPE_RIGHT);
             }
             result = true;
-        } else if (velocityY > this.swipe_Min_Velocity && yDistance > this.swipe_Min_Distance) {
+
+        } else if (velocityY > swipeMinVelocity && yDistance > swipeMinDistance) {
             if (e1.getY() > e2.getY()) { // bottom to up
-                this.listener.onSwipe(SWIPE_UP);
+                this.listener.onSwipe(Direction.SWIPE_UP);
             } else {
-                this.listener.onSwipe(SWIPE_DOWN);
+                this.listener.onSwipe(Direction.SWIPE_DOWN);
             }
             result = true;
         }
 
         return result;
+        // return false;
     }
+
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
@@ -182,9 +149,8 @@ public class GestureListener extends GestureDetector.SimpleOnGestureListener {
         return false;
     }
 
-    public interface SimpleGestureListener {
-        void onSwipe(int direction);
-
+    public interface OnSwipeListener {
+        void onSwipe(Direction direction);
         void onDoubleTap();
     }
 

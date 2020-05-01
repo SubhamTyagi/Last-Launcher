@@ -36,18 +36,26 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -69,6 +77,7 @@ import io.github.subhamtyagi.lastlauncher.dialogs.PaddingDialog;
 import io.github.subhamtyagi.lastlauncher.dialogs.RenameInputDialogs;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.Gestures;
 import io.github.subhamtyagi.lastlauncher.utils.Utils;
 import io.github.subhamtyagi.lastlauncher.views.textview.AppTextView;
 
@@ -96,7 +105,8 @@ import static android.content.Intent.ACTION_PACKAGE_REPLACED;
  * Reason: Small apk size
  */
 public class LauncherActivity extends Activity implements View.OnClickListener,
-        View.OnLongClickListener {
+        View.OnLongClickListener,
+        Gestures.OnSwipeListener {
 
     public static final int COLOR_SNIFFER_REQUEST = 154;
     public final static String DEFAULT_COLOR_FOR_APPS = "default_color_for_apps";
@@ -114,14 +124,45 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private static final int PERMISSION_REQUEST = 127;
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
-
-    // private final String TAG = "LauncherActivity";
-    private ArrayList<Apps> mAppsList;
+    private static ArrayList<Apps> mAppsList;
+    private static FlowLayout mHomeLayout;
+    private final String TAG = "LauncherActivity";
     private BroadcastReceiver broadcastReceiverAppInstall;
     private BroadcastReceiver broadcastReceiverShortcutInstall;
     private Typeface mTypeface;
-    private FlowLayout mHomeLayout;
 
+    //search box
+    private EditText mSearchBox;
+    private InputMethodManager imm;
+
+    private Gestures detector;
+    // when search bar is appear this will be true and show search result
+    private boolean searching = false;
+
+
+    private static void showSearchResult(ArrayList<Apps> filteredApps) {
+
+
+        mHomeLayout.removeAllViews();
+        //mHomeLayout.
+        mHomeLayout.setPadding(0, 150, 0, 0);
+        /*//sort the apps alphabetically
+        Collections.sort(filteredApps, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
+                a.getAppName(),
+                b.getAppName()
+        ));*/
+        for (Apps apps : filteredApps) {
+            mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        }
+
+
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        detector.onTouchEvent(ev);
+        return super.dispatchTouchEvent(ev);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +184,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         setFont();
 
         mHomeLayout = findViewById(R.id.home_layout);
+
+        //TODO: on release
+        mHomeLayout.setDebugDraw(BuildConfig.DEBUG);
+
         mHomeLayout.setOnLongClickListener(this);
+
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        mSearchBox = findViewById(R.id.search_box);
+        setSearchBoxListeners();
 
         //set alignment default is center|center_vertical
         mHomeLayout.setGravity(DbUtils.getFlowLayoutAlignment());
@@ -151,12 +201,51 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         //set padding ..
         mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
 
+        detector = new Gestures(this, this);
+
+        // initGestures();
+
         // loads the apps
         loadApps();
         // register the receiver for installed, uninstall, update apps and shortcut pwa add
         registerForReceivers();
 
     }
+
+    private void setSearchBoxListeners() {
+
+        mSearchBox.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //do here search
+                Log.d(TAG, "onTextChanged: " + charSequence + "  charsequence lenght" + charSequence.toString().length());
+                new SearchTask().execute(charSequence);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                // do everything
+            }
+        });
+
+        mSearchBox.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                mSearchBox.setVisibility(View.GONE);
+                imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
+                //do something on clicking enter
+                return true;
+            }
+            return false;
+        });
+    }
+
 
     /**
      * set the color of status bar and navigation bar as per theme
@@ -336,8 +425,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         //sort the apps alphabetically
         Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
-                a.getAppName().toString(),
-                b.getAppName().toString()
+                a.getAppName(),
+                b.getAppName()
         ));
 
         switch (type) {
@@ -368,8 +457,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
 
         // now add the app textView to home
+        // FlowLayoutManager.LayoutParams params = new FlowLayoutManager.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+        // params.setNewLine(true);
         for (Apps apps : mAppsList) {
             mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
         }
     }
 
@@ -423,8 +515,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     public void onClick(View view) {
         if (view instanceof AppTextView) {
             // get the activity
-            AppTextView appTextView = (AppTextView) view;
             String activity = (String) view.getTag();
+            AppTextView appTextView = (AppTextView) view;
+
+            if (searching) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
+                mSearchBox.setVisibility(View.GONE);
+            }
 
             if (appTextView.isShortcut()) {
                 try {
@@ -451,6 +549,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 }
             }
 
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: searching==" + searching);
+        if (searching = true) {
+            mSearchBox.setVisibility(View.GONE);
+            searching = false;
+            mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
+            sortApps(DbUtils.getSortsTypes());
         }
     }
 
@@ -495,7 +605,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         s = new SpannableString(getString(R.string.reset_to_default));
         s.setSpan(new ForegroundColorSpan(color), 0, s.length(), 0);
         popupMenu.getMenu().findItem(R.id.menu_reset_to_default).setTitle(s);
-
 
 
         // set proper item based on Db value
@@ -675,7 +784,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         dialog.show();
     }
 
-
     //TO1DO: multi thread check for memory leaks if any, or check any bad behaviour;
     private void appOpened(String activity) {
         /* new Thread() {
@@ -708,6 +816,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     @Override
     public void onBackPressed() {
+        mSearchBox.setVisibility(View.GONE);
+        if (searching = true) {
+            searching = false;
+            mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
+            sortApps(DbUtils.getSortsTypes());
+        }
     }
 
     // register the receiver
@@ -755,8 +869,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     }
 
-
-    // unregister the receiver on destroy
+    // unregister the receivers on destroy
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -794,7 +907,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
         return true;
     }
-
 
     // browse the backup file
     //TODO: move to SAF
@@ -992,4 +1104,50 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         DbUtils.addShortcut(uri, appName);
         sortApps(DbUtils.getSortsTypes());
     }
+
+
+    @Override
+    public void onSwipe(Gestures.Direction direction) {
+        if (direction == Gestures.Direction.SWIPE_UP) {
+            searching = true;
+            mSearchBox.setText("");
+            mSearchBox.setVisibility(View.VISIBLE);
+            mSearchBox.requestFocus();
+            imm.showSoftInput(mSearchBox, InputMethodManager.SHOW_IMPLICIT);
+        } else if (direction == Gestures.Direction.SWIPE_DOWN) {
+            if (searching) {
+                mSearchBox.setVisibility(View.GONE);
+                imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
+                onResume();
+            }
+        }
+    }
+
+    @Override
+    public void onDoubleTap() {
+    }
+
+    static class SearchTask extends AsyncTask<CharSequence, Void, ArrayList<Apps>> {
+        @Override
+        protected void onPostExecute(ArrayList<Apps> filteredApps) {
+            super.onPostExecute(filteredApps);
+            showSearchResult(filteredApps);
+        }
+
+        @Override
+        protected ArrayList<Apps> doInBackground(CharSequence... charSequences) {
+            ArrayList<Apps> filteredApps = new ArrayList<>();
+            for (Apps app : mAppsList) {
+                if (charSequences[0].length() == 0) {
+                    filteredApps.add(app);
+                } else if (Utils.simpleFuzzySearch(charSequences[0], app.getAppName())) {
+                    filteredApps.add(app);
+                }
+            }
+
+            Log.d("LaL", "searchFilter: counts" + filteredApps.size());
+            return filteredApps;
+        }
+    }
+
 }
