@@ -184,10 +184,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         setFont();
 
         mHomeLayout = findViewById(R.id.home_layout);
-
-        //TODO: on release
-        mHomeLayout.setDebugDraw(BuildConfig.DEBUG);
-
         mHomeLayout.setOnLongClickListener(this);
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -418,51 +414,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
      * @param type sorting type
      */
     public void sortApps(final int type) {
-        // remove the app view for home layout these needs to be add later after sorting
-        mHomeLayout.removeAllViews();
-
-        DbUtils.setAppsSortsType(type);
-
-        //sort the apps alphabetically
-        Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
-                a.getAppName(),
-                b.getAppName()
-        ));
-
-        switch (type) {
-            case SORT_BY_SIZE://descending
-                Collections.sort(mAppsList, (apps, t1) -> t1.getSize() - apps.getSize());
-                break;
-            case SORT_BY_OPENING_COUNTS://descending
-                Collections.sort(mAppsList, (apps, t1) -> t1.getOpeningCounts() - apps.getOpeningCounts());
-                break;
-            case SORT_BY_COLOR:
-                Collections.sort(mAppsList, (apps, t1) -> {
-                    float[] hsv = new float[3];
-                    Color.colorToHSV(apps.getColor(), hsv);
-                    float[] another = new float[3];
-                    Color.colorToHSV(t1.getColor(), another);
-
-                    for (int i = 0; i < 3; i++) {
-                        if (hsv[i] != another[i]) {
-                            return (hsv[i] < another[i]) ? -1 : 1;
-                        }
-                    }
-                    return 0;
-                });
-                break;
-            case SORT_BY_CUSTOM:
-                // do nothing
-                break;
-        }
-
-        // now add the app textView to home
-        // FlowLayoutManager.LayoutParams params = new FlowLayoutManager.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-        // params.setNewLine(true);
-        for (Apps apps : mAppsList) {
-            mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-        }
+        new SortTask().execute(type);
     }
 
     //  add a new app: generally called after reset
@@ -1105,7 +1057,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         sortApps(DbUtils.getSortsTypes());
     }
 
-
     @Override
     public void onSwipe(Gestures.Direction direction) {
         if (direction == Gestures.Direction.SWIPE_UP) {
@@ -1150,4 +1101,58 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
+    static class SortTask extends AsyncTask<Integer, Void, Void> {
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            mHomeLayout.removeAllViews();
+            // now add the app textView to home
+            // FlowLayoutManager.LayoutParams params = new FlowLayoutManager.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+            // params.setNewLine(true);
+            for (Apps apps : mAppsList) {
+                mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            }
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            int type = integers[0];
+            DbUtils.setAppsSortsType(type);
+
+            //sort the apps alphabetically
+            Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
+                    a.getAppName(),
+                    b.getAppName()
+            ));
+
+            switch (type) {
+                case SORT_BY_SIZE://descending
+                    Collections.sort(mAppsList, (apps, t1) -> t1.getSize() - apps.getSize());
+                    break;
+                case SORT_BY_OPENING_COUNTS://descending
+                    Collections.sort(mAppsList, (apps, t1) -> t1.getOpeningCounts() - apps.getOpeningCounts());
+                    break;
+                case SORT_BY_COLOR:
+                    Collections.sort(mAppsList, (apps, t1) -> {
+                        float[] hsv = new float[3];
+                        Color.colorToHSV(apps.getColor(), hsv);
+                        float[] another = new float[3];
+                        Color.colorToHSV(t1.getColor(), another);
+
+                        for (int i = 0; i < 3; i++) {
+                            if (hsv[i] != another[i]) {
+                                return (hsv[i] < another[i]) ? -1 : 1;
+                            }
+                        }
+                        return 0;
+                    });
+                    break;
+                case SORT_BY_CUSTOM:
+                    // do nothing
+                    break;
+            }
+            return null;
+        }
+    }
 }
