@@ -45,7 +45,6 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -126,7 +125,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
     private static ArrayList<Apps> mAppsList;
     private static FlowLayout mHomeLayout;
-    private final String TAG = "LauncherActivity";
+
+    //  private final String TAG = "LauncherActivity";
     private BroadcastReceiver broadcastReceiverAppInstall;
     private BroadcastReceiver broadcastReceiverShortcutInstall;
     private Typeface mTypeface;
@@ -135,6 +135,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private EditText mSearchBox;
     private InputMethodManager imm;
 
+    // gesture detector
     private Gestures detector;
     // when search bar is appear this will be true and show search result
     private boolean searching = false;
@@ -160,6 +161,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        //pass touch event to detector
         detector.onTouchEvent(ev);
         return super.dispatchTouchEvent(ev);
     }
@@ -188,7 +190,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        //our search box
         mSearchBox = findViewById(R.id.search_box);
+        //setup listeners on mSearchBox
         setSearchBoxListeners();
 
         //set alignment default is center|center_vertical
@@ -209,9 +213,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     private void setSearchBoxListeners() {
-
         mSearchBox.addTextChangedListener(new TextWatcher() {
-
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -220,7 +222,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //do here search
-                Log.d(TAG, "onTextChanged: " + charSequence + "  charsequence lenght" + charSequence.toString().length());
+                //        Log.d(TAG, "onTextChanged: " + charSequence + "  charsequence lenght" + charSequence.toString().length());
                 new SearchTask().execute(charSequence);
             }
 
@@ -281,7 +283,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     }
 
-    //TODO:  do something
     private void loadApps() {
         // get the apps installed on devices;
         Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
@@ -507,7 +508,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume: searching==" + searching);
         if (searching = true) {
             mSearchBox.setVisibility(View.GONE);
             searching = false;
@@ -1095,8 +1095,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     filteredApps.add(app);
                 }
             }
-
-            Log.d("LaL", "searchFilter: counts" + filteredApps.size());
             return filteredApps;
         }
     }

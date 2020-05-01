@@ -1,0 +1,9 @@
+*Beta release 1*
+
+* After a long time Last Launcher entered into beta release
+* What's New
+
+- Search through Apps.
+- Performance improvements.
+- Big reduction(23%) in apk size.
+- Further Reduce memory consumption.

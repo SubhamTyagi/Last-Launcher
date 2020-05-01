@@ -52,7 +52,6 @@
             android:gravity="center|center_horizontal|center_vertical"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="34"
             android:textSize="42sp" />
 
         <TextView

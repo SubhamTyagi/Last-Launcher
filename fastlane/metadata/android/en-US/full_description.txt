@@ -1,25 +1,32 @@
 Last Launcher is Simple, Minimalist, Customisable open source Android launcher. It aims to provide fastest and simplest ever user experience.
 
-*****************************
-**This is <font color="#ff0000"><b>Preview release</b></font>**
-*****************************
+***************************
+**This is <font color="#ff0000"><b>Beta release</b></font>**
+***************************
 
+<h2>🚀 Performance</h2>
+▶ Faster than Fastest :)
+▶ Small app size.
+▶ Lightweight.
+▶ Low memory and cpu usage (ideally zero*)
 
+<h2>💥 Features</h2>
 
-- Faster than Fastest :)
-- Small app size.
-- Lightweight.
-- Low memory and cpu usage (ideally zero*)
-- Smart and smarter.
-- Material design look and feel
-- No icon and widgets<strike>(may be a disadvantage)</strike>.
--
-- Resizable and colourful app names.
-- Restore/Backup
-- Random Colors
-- Multiple themes
-- Hide apps
-- Freeze apps size
-- For more <font color="#ff0000"><b>try launcher</b></font>
--
--To access Launcher settings long click on empty area
+▶ Search among apps.
+▶ Shortcuts and PWAs support.
+▶ Resizable and colourful app names.
+▶ Sorts apps through various ways.
+▶ Custom alignment and padding.
+▶ Random Colors.
+▶ Multiple themes.
+▶ Hide unwanted apps.
+▶ Freeze apps size.
+▶ Backup/Restore data.
+▶ No icon and widgets<strike>(may be a disadvantage)</strike>.
+▶ For more <font color="#ff0000"><b>try launcher</b></font>and see the difference.
+
+<h2>Navigation</h2>
+
+▶ Long click on empty area to get launcher settings.
+▶ Swipe up to access search bar.
+▶ To hide search bar either press back or swipe down.
