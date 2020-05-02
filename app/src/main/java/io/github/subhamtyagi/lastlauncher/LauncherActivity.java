@@ -45,7 +45,6 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -124,6 +123,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private static final int PERMISSION_REQUEST = 127;
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
+    private static final int PADDING_TOP_STATUS = 30;
 
     public static ArrayList<Apps> mAppsList;
     private static FlowLayout mHomeLayout;
@@ -147,8 +147,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         mHomeLayout.removeAllViews();
         //mHomeLayout.
-        Log.d("LAL", "showSearchResult: yes search result showed ");
-        mHomeLayout.setPadding(0, 150, 0, 0);
+        //Log.d("LAL", "showSearchResult: yes search result showed ");
+        mHomeLayout.setPadding(0, PADDING_TOP_STATUS + 150, 0, 0);
         /*//sort the apps alphabetically
         Collections.sort(filteredApps, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
                 a.getAppName(),
@@ -201,7 +201,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         mHomeLayout.setGravity(DbUtils.getFlowLayoutAlignment());
 
         //set padding ..
-        mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
+        mHomeLayout.setPadding(DbUtils.getPaddingLeft(), PADDING_TOP_STATUS + DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
 
         detector = new Gestures(this, this);
 
@@ -517,7 +517,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         if (searching) {
             mSearchBox.setVisibility(View.GONE);
             searching = false;
-            mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
+            imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
+            mHomeLayout.setPadding(DbUtils.getPaddingLeft(), PADDING_TOP_STATUS + DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
             sortApps(DbUtils.getSortsTypes());
         }
     }
@@ -777,7 +778,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         mSearchBox.setVisibility(View.GONE);
         if (searching) {
             searching = false;
-            mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
+            mHomeLayout.setPadding(DbUtils.getPaddingLeft(), PADDING_TOP_STATUS + DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
             sortApps(DbUtils.getSortsTypes());
         }
     }
@@ -937,7 +938,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 loadApps();
             } catch (Exception i) {
                 //i.printStackTrace();
-                //Log.e("LAL", "onActivityResult: "+i);
+
                 mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
             }
             // this handle the request of ColorSniffer app

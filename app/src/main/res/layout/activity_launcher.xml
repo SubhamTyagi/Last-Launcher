@@ -2,9 +2,9 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
 
+    android:orientation="vertical">
+    <!-- android:fitsSystemWindows="true"-->
     <ScrollView
         android:id="@+id/main_screen_container"
         android:layout_width="match_parent"
