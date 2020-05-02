@@ -1,4 +1,4 @@
-# Last Launcher
+# Last Launcher  [![translate](https://img.shields.io/badge/Translation-Crowdin-green)]
 
 Last Launcher is Simple, Minimal, Customizable and One Page Android launcher. It aims to provide fastest and simplest user experience.  
 
@@ -19,14 +19,11 @@ I always in quest of simple and minimal launcher that is light weight on RAM and
 
 ## Contribution and Donation
 1. Create a Pull Request. All codes are simple and well commented.
-2. Translate this app on Crowdin in your local language. T
+2. Translate this app on [Crowdin](https://crowdin.com/project/last-launcher) in your local language.
 
 ### To do
-* [ ] Search through Apps.
-* [ ] App Layout improvements.
-* [ ] Background color scheme.
-* [ ] Simple swipe gestures.
-
+* [ ] FlowLayout improvements.
+* [ ] Background colors.
 
 ## Screenshots
 | Home|Home|Home|Home|
