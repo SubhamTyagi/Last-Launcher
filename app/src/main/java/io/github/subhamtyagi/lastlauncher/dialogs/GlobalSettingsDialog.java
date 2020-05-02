@@ -35,7 +35,9 @@ import android.widget.Toast;
 import io.github.subhamtyagi.lastlauncher.BuildConfig;
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
+import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
+import io.github.subhamtyagi.lastlauncher.utils.Utils;
 
 /**
  * this the launcher setting Dialog
@@ -228,12 +230,23 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
     }
 
     private void randomColor() {
-        DbUtils.randomColor(!DbUtils.isRandomColor());
+        boolean rColor = !DbUtils.isRandomColor();
+        DbUtils.randomColor(rColor);
         cancel();
 
-        //TODO: iterate over app list and change the random color
-        // that will improve the performance
-        launcherActivity.recreate();
+        int color;
+        for (Apps app : LauncherActivity.mAppsList) {
+
+            color = DbUtils.getAppColor(app.getActivityName());
+
+            if (rColor) {
+                if (color == DbUtils.NULL_TEXT_COLOR)
+                    color = Utils.generateColorFromString(app.getActivityName());
+            } else {
+                color = DbUtils.getAppColor(app.getActivityName());
+            }
+            app.getTextView().setTextColor(color);
+        }
     }
 
     private void showColorSnifferDialog() {
@@ -282,7 +295,6 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
 
     private void defaultSettings() {
         DbUtils.clearDB();
-
         launcherActivity.recreate();
     }
 
@@ -343,7 +355,9 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                 case R.id.menu_default_font: {
                     if (DbUtils.isFontExists()) {
                         DbUtils.removeFont();
-                        launcherActivity.recreate();
+                        launcherActivity.setFont();
+                        launcherActivity.loadApps();
+                        cancel();
                         break;
                     }
                 }

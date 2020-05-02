@@ -45,6 +45,7 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -123,7 +124,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private static final int PERMISSION_REQUEST = 127;
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
-    private static ArrayList<Apps> mAppsList;
+
+    public static ArrayList<Apps> mAppsList;
     private static FlowLayout mHomeLayout;
 
     //  private final String TAG = "LauncherActivity";
@@ -138,14 +140,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // gesture detector
     private Gestures detector;
     // when search bar is appear this will be true and show search result
-    private boolean searching = false;
-
+    private static boolean searching = false;
 
     private static void showSearchResult(ArrayList<Apps> filteredApps) {
-
+        if (!searching) return;
 
         mHomeLayout.removeAllViews();
         //mHomeLayout.
+        Log.d("LAL", "showSearchResult: yes search result showed ");
         mHomeLayout.setPadding(0, 150, 0, 0);
         /*//sort the apps alphabetically
         Collections.sort(filteredApps, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
@@ -222,7 +224,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //do here search
-                //        Log.d(TAG, "onTextChanged: " + charSequence + "  charsequence lenght" + charSequence.toString().length());
+                //Log.d("LAL", "onTextChanged: " + charSequence + "  charsequence lenght" + charSequence.toString().length());
                 new SearchTask().execute(charSequence);
             }
 
@@ -272,18 +274,22 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
-    private void setFont() {
+    public void setFont() {
         // get and set fonts
         String fontsPath = DbUtils.getFonts();
         if (fontsPath == null) {
             mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
         } else {
-            mTypeface = Typeface.createFromFile(fontsPath);
+            try {
+                mTypeface = Typeface.createFromFile(fontsPath);
+            } catch (Exception i) {
+                mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
+            }
         }
 
     }
 
-    private void loadApps() {
+    public void loadApps() {
         // get the apps installed on devices;
         Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -508,7 +514,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        if (searching = true) {
+        if (searching) {
             mSearchBox.setVisibility(View.GONE);
             searching = false;
             mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
@@ -769,7 +775,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     @Override
     public void onBackPressed() {
         mSearchBox.setVisibility(View.GONE);
-        if (searching = true) {
+        if (searching) {
             searching = false;
             mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
             sortApps(DbUtils.getSortsTypes());
@@ -863,8 +869,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // browse the backup file
     //TODO: move to SAF
     public void browseFile() {
-        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+
+        Intent chooseFile;
+        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+        //   chooseFile = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        //}else {
+        chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+        // }
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+        //chooseFile.setType("application/x-font-ttf");
         chooseFile.setType("file/plain");
         Intent intent = Intent.createChooser(chooseFile, this.getString(R.string.choose_old_backup_files));
         startActivityForResult(intent, RESTORE_REQUEST);
@@ -876,9 +889,17 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         if (isPermissionRequired()) {
             requestPermission();
         }
-        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+
+        Intent chooseFile;
+        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+        //    chooseFile = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        // }else {
+        chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+        //}
+
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
-        chooseFile.setType("file/plain");
+        chooseFile.setType("application/x-font-ttf");
+        //chooseFile.setType("file/plain");
         Intent intent = Intent.createChooser(chooseFile, "Choose Fonts");
         startActivityForResult(intent, FONTS_REQUEST);
     }
@@ -902,6 +923,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // font request
         } else if (requestCode == FONTS_REQUEST) {
             try {
+
                 String[] proj = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(data.getData(), proj, null, null, null);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -909,11 +931,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 String path = cursor.getString(column_index);
                 cursor.close();
                 //Log.i(TAG, "onActivityResult: " + path);
-                DbUtils.setFonts(path);
                 mTypeface = Typeface.createFromFile(path);
+
+                DbUtils.setFonts(path);
                 loadApps();
             } catch (Exception i) {
-                i.printStackTrace();
+                //i.printStackTrace();
+                //Log.e("LAL", "onActivityResult: "+i);
+                mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
             }
             // this handle the request of ColorSniffer app
         } else if (requestCode == COLOR_SNIFFER_REQUEST) {
