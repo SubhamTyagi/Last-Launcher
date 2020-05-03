@@ -89,16 +89,23 @@ public class Utils {
                 "com.nextcloud.client",
                 "com.duckduckgo.mobile.android",
                 "eu.siacs.conversations",
-                "org.torproject.torbrowser_alpha",
-                "com.aurora.adroid", "net.osmand.plus",
-                "org.torproject.android", "com.mediatek.filemanager",
-                "com.sec.android.gallery3d", "com.sec.android.app.myfiles",
-                "com.android.dialer", "com.android.camera",
+                "org.torproject.torbrowser",
+                "com.aurora.adroid",
+                "net.osmand.plus",
+                "org.torproject.android",
+                "com.mediatek.filemanager",
+                "com.sec.android.gallery3d",
+                "com.sec.android.app.myfiles",
+                "com.android.dialer",
+                "com.android.camera",
                 "org.mozilla.fennec_fdroid",
                 "com.mi.android.globalFileexplorer",
                 "com.miui.gallery",
                 "com.miui.calculator",
-                "com.nonsenseapps.feeder"};
+                "com.nonsenseapps.feeder",
+                "com.foobnix.pro.pdf.reader"
+
+        };
         return Arrays.asList(list);
 
     }
