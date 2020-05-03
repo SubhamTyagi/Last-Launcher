@@ -1,4 +1,4 @@
-# Last Launcher  [![translate](https://img.shields.io/badge/Translation-Crowdin-green)]
+# Last Launcher  [![translate](https://img.shields.io/badge/Translation-Crowdin-green)](https://crowdin.com/project/last-launcher)
 
 Last Launcher is Simple, Minimal, Customizable and One Page Android launcher. It aims to provide fastest and simplest user experience.  
 
@@ -56,5 +56,5 @@ I always in quest of simple and minimal launcher that is light weight on RAM and
      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
      GNU General Public License for more details.
 
-     You should have received a copy of the GNU General Public     License
+     You should have received a copy of the GNU General Public License
      along with this program.  If not, see <http://www.gnu.org/licenses/>.

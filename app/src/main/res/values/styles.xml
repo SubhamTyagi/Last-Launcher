@@ -8,10 +8,11 @@
         <item name="android:listPreferredItemPaddingRight">5dp</item>
         <item name="android:backgroundDimEnabled">false</item>
 
-
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
         <!--<item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>-->
         <!--<item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>-->
         <!-- <item name="android:navigationBarColor" tools:targetApi="21">@android:color/transparent</item>-->
+
     </style>
 
 
