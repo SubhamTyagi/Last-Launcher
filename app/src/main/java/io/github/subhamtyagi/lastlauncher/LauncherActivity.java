@@ -825,7 +825,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 }
                 // increase the app view size if not frozen
                 if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
-                    int size = apps.getSize() + 2;
+                    int size = DbUtils.getAppSize(activity);
+
                     apps.setSize(size);
                     if (DbUtils.getSortsTypes() == SORT_BY_SIZE) {
                         sortApps(SORT_BY_SIZE);
@@ -1164,11 +1165,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     private void addShortcut(String uri, String appName) {
         if (mAppsList == null) return;
+
         mAppsList.add(new Apps(true, uri, appName, getCustomView(), DbUtils.NULL_TEXT_COLOR, DEFAUTL_TEXT_SIZE_NORMAL_APPS, false, false, 0));
 
         ShortcutUtils.addShortcut(new Shortcut(appName, uri));
 
-        Log.d("LAL", "addShortcut: shortcut name==" + appName);
+        Log.d(TAG, "addShortcut: shortcut name==" + appName);
         sortApps(DbUtils.getSortsTypes());
     }
 
@@ -1191,6 +1193,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     @Override
     public void onDoubleTap() {
+
     }
 
     static class SearchTask extends AsyncTask<CharSequence, Void, ArrayList<Apps>> {

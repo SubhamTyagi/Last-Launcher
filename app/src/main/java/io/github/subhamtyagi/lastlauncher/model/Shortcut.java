@@ -18,6 +18,9 @@
 
 package io.github.subhamtyagi.lastlauncher.model;
 
+/**
+ * Shortcut model
+ */
 public class Shortcut {
 
     private String name;

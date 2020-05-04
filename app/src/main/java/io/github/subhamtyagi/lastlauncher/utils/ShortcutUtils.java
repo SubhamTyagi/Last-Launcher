@@ -23,13 +23,19 @@ import java.util.HashSet;
 
 import io.github.subhamtyagi.lastlauncher.model.Shortcut;
 
+/**
+ * This class manages Shortcut installed by user
+ */
 public class ShortcutUtils {
+    //
     private static HashSet<String> shortcutName, shortcutUri;
 
+    // get all shortcut installed in this launcher
     public static ArrayList<Shortcut> getAllShortcuts() {
 
         shortcutName = DbUtils.getShortcutNames();
         shortcutUri = DbUtils.getShortcutUris();
+
         if (shortcutUri == null) return null;
         if (shortcutName == null) return null;
 
@@ -62,6 +68,12 @@ public class ShortcutUtils {
 
     }
 
+    /**
+     * Add new shortcut
+     *
+     * @param shortcut instance of shortcut to be added
+     * @return true if successfully adds shortcut
+     */
     public static boolean addShortcut(Shortcut shortcut) {
         shortcutName = DbUtils.getShortcutNames();
         shortcutUri = DbUtils.getShortcutUris();
@@ -80,6 +92,11 @@ public class ShortcutUtils {
         return b;
     }
 
+    /**
+     * remove the shortcuts
+     * @param shortcut to be removed
+     * @return true if successfully removed shortcut
+     */
     public static boolean removeShortcut(Shortcut shortcut) {
         shortcutName = DbUtils.getShortcutNames();
         shortcutUri = DbUtils.getShortcutUris();
@@ -97,12 +114,21 @@ public class ShortcutUtils {
 
     }
 
+    /**
+     * return true if shortcut is already install
+     * @param uri uri of shortcut
+     * @return true if already installed
+     */
     public static boolean isShortcutAlreadyAvailable(String uri) {
         shortcutUri = DbUtils.getShortcutUris();
         if (shortcutUri == null) return false;
         return shortcutUri.contains(uri);
     }
 
+    /**
+     * number of shortcut installed
+     * @return number of shortcut installed in this launcher
+     */
     public static int getShortcutCounts() {
         shortcutUri = DbUtils.getShortcutUris();
         if (shortcutUri == null) return 0;

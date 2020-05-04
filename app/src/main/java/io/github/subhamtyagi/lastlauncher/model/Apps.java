@@ -95,7 +95,6 @@ public class Apps {
 
         textView.setText(this.appName);
         textView.setTag(this.activity);
-        textView.setTextSize(this.size);
         textView.setShortcut(this.isShortcut);
 
         // if color is not -1 then set this to color
@@ -105,6 +104,7 @@ public class Apps {
 
         this.openingCounts = openingCounts;
 
+        setSize(size);
         setAppHidden(isAppHidden);
         setFreeze(isSizeFrozen);
 
