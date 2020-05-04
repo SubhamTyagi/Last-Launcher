@@ -65,7 +65,6 @@ public class Apps {
     private boolean isShortcut;
 
 
-
     /**
      * @param isShortcut    tell whether this shortcut or not
      * @param activity      activity path if this is shortcut then it will hold a unique strings

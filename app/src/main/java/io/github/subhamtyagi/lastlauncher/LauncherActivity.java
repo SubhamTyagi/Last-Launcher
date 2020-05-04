@@ -763,7 +763,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 // increase the app view size if not frozen
                 if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
                     int size = DbUtils.getAppSize(activity);
-
+                    size += 2;
                     apps.setSize(size);
                     if (DbUtils.getSortsTypes() == SORT_BY_SIZE) {
                         sortApps(SORT_BY_SIZE);

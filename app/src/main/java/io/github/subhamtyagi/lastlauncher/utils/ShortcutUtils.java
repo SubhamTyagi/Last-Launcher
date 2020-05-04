@@ -94,6 +94,7 @@ public class ShortcutUtils {
 
     /**
      * remove the shortcuts
+     *
      * @param shortcut to be removed
      * @return true if successfully removed shortcut
      */
@@ -116,6 +117,7 @@ public class ShortcutUtils {
 
     /**
      * return true if shortcut is already install
+     *
      * @param uri uri of shortcut
      * @return true if already installed
      */
@@ -127,6 +129,7 @@ public class ShortcutUtils {
 
     /**
      * number of shortcut installed
+     *
      * @return number of shortcut installed in this launcher
      */
     public static int getShortcutCounts() {

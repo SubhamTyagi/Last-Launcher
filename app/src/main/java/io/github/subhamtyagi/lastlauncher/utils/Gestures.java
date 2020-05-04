@@ -75,7 +75,6 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
     }
 
 
-
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                            float velocityY) {
@@ -151,6 +150,7 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
 
     public interface OnSwipeListener {
         void onSwipe(Direction direction);
+
         void onDoubleTap();
     }
 

@@ -62,7 +62,7 @@
     <style name="Black" parent="AppBaseTheme">
         <item name="android:background">@android:color/black</item>
         <item name="android:textColor">@android:color/white</item>
-       <!-- <item name="android:switchTextAppearance">@android:color/white</item>-->
+        <!-- <item name="android:switchTextAppearance">@android:color/white</item>-->
         <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/black</item>
         <item name="android:navigationBarColor" tools:targetApi="21">@android:color/black</item>
 
@@ -82,7 +82,7 @@
         <item name="android:background">#cdd8da</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#FFFFFFFF</item>
-       <!-- <item name="android:switchTextAppearance">#FFFFFFFF</item>-->
+        <!-- <item name="android:switchTextAppearance">#FFFFFFFF</item>-->
         <item name="android:statusBarColor" tools:targetApi="lollipop">#cdd8da</item>
         <item name="android:navigationBarColor" tools:targetApi="21">#cdd8da</item>
 
@@ -102,7 +102,7 @@
         <item name="android:background">#000000</item>
         <item name="android:shadowColor">@android:color/white</item>
         <item name="android:textColor">#00ff00</item>
-       <!-- <item name="android:switchTextAppearance">#FF00ff00</item>-->
+        <!-- <item name="android:switchTextAppearance">#FF00ff00</item>-->
         <item name="android:statusBarColor" tools:targetApi="lollipop">#000000</item>
         <item name="android:navigationBarColor" tools:targetApi="21">@android:color/black</item>
 

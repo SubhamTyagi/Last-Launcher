@@ -59,7 +59,6 @@ public class HiddenAppsDialogs extends Dialog {
     }
 
 
-
     private void confirmationAndRemove(Apps apps, View view) {
 
         Context ctx;
