@@ -45,6 +45,7 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -75,8 +76,10 @@ import io.github.subhamtyagi.lastlauncher.dialogs.HiddenAppsDialogs;
 import io.github.subhamtyagi.lastlauncher.dialogs.PaddingDialog;
 import io.github.subhamtyagi.lastlauncher.dialogs.RenameInputDialogs;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
+import io.github.subhamtyagi.lastlauncher.model.Shortcut;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Gestures;
+import io.github.subhamtyagi.lastlauncher.utils.ShortcutUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Utils;
 import io.github.subhamtyagi.lastlauncher.views.textview.AppTextView;
 
@@ -127,20 +130,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     public static ArrayList<Apps> mAppsList;
     private static FlowLayout mHomeLayout;
-
-    //  private final String TAG = "LauncherActivity";
+    // when search bar is appear this will be true and show search result
+    private static boolean searching = false;
+    private final String TAG = "LauncherActivity";
     private BroadcastReceiver broadcastReceiverAppInstall;
     private BroadcastReceiver broadcastReceiverShortcutInstall;
     private Typeface mTypeface;
-
+    private Dialog dialogs;
     //search box
     private EditText mSearchBox;
     private InputMethodManager imm;
-
     // gesture detector
     private Gestures detector;
-    // when search bar is appear this will be true and show search result
-    private static boolean searching = false;
 
     private static void showSearchResult(ArrayList<Apps> filteredApps) {
         if (!searching) return;
@@ -294,17 +295,23 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
+
         PackageManager pm = getPackageManager();
 
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
 
+        // check whether our app list is already initialized if yes then clear this(when new app or shortcut installed)
+        if (mAppsList != null) {
+            mAppsList.clear();
+        }
+
+        // shortcut or pwa counts
+        int installedShortcut = ShortcutUtils.getShortcutCounts();
+
+        Log.d(TAG, "loadApps: install shortcut sizes::" + installedShortcut);
         int appsCount = activities.size();
 
-        // check whether our app list is already initialized if yes then clear this(when new app or shortcut installed)
-        if (mAppsList != null)
-            mAppsList.clear();
-
-        mAppsList = new ArrayList<>(appsCount);
+        mAppsList = new ArrayList<>(appsCount + installedShortcut);
 
         // get the most used apps
         // a list of app that are popular on fdroid and some of my apps
@@ -371,45 +378,56 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         // now adds Shortcut
         // shortcut are stored in DB android system doesn't store them
-        // shortcut or pwa counts
-        int installedShortcut = DbUtils.getShortcutCount();
 
-        for (int i = 1; i <= installedShortcut; i++) {
-            // shortcut only have URI
-            String uri = DbUtils.getShortcutURI(i);
-            // shortcut name
-            String sName = DbUtils.getShortcutName(i);
+        ArrayList<Shortcut> shortcuts = ShortcutUtils.getAllShortcuts();
+        if (shortcuts != null) {
+            for (Shortcut s : shortcuts) {
 
-            // this is the unique code for each uri
-            // let store them in activity field app APP POJO
-            // As we have to store some uniquely identified info in Db
-            // this be used as key as i have done for Each apps(see above)
-            // Usually URI sting is too long and so it will take more memory and storage
-            String sActivity = String.valueOf(Utils.hash(uri));
+                // shortcut only have URI
+                String uri = s.getUri();
+                // shortcut name
+                String sName = s.getName();
 
-            // get color and size for this shortcut
-            int sColor = DbUtils.getAppColor(sActivity);
-            int sSize = DbUtils.getAppSize(sActivity);
+               /* if (uri.isEmpty()) {
+                    ++installedShortcut;
+                    continue;
+                }*/
 
-            if (sSize == DbUtils.NULL_TEXT_SIZE) {
-                sSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
-            }
+                Log.d(TAG, "loadApps: shortcut name==" + sName);
 
-            if (sColor == DbUtils.NULL_TEXT_COLOR) {
-                if (DbUtils.isRandomColor()) {
-                    sColor = Utils.generateColorFromString(sName);
-                } else {
-                    sColor = DbUtils.getAppsColorDefault();
+                Log.d(TAG, "loadApps: shortcut uri==" + uri);
+
+                // this is the unique code for each uri
+                // let store them in activity field app APP POJO
+                // As we have to store some uniquely identified info in Db
+                // this be used as key as i have done for Each apps(see above)
+                // Usually URI sting is too long and so it will take more memory and storage
+                String sActivity = String.valueOf(Utils.hash(uri));
+
+                // get color and size for this shortcut
+                int sColor = DbUtils.getAppColor(sActivity);
+                int sSize = DbUtils.getAppSize(sActivity);
+
+                if (sSize == DbUtils.NULL_TEXT_SIZE) {
+                    sSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
                 }
+
+                if (sColor == DbUtils.NULL_TEXT_COLOR) {
+                    if (DbUtils.isRandomColor()) {
+                        sColor = Utils.generateColorFromString(sName);
+                    } else {
+                        sColor = DbUtils.getAppsColorDefault();
+                    }
+                }
+
+                boolean sFreeze = DbUtils.isAppFrozen(sActivity);
+                int sOpeningCount = DbUtils.getOpeningCounts(sActivity);
+
+                // add this shortcut to list
+                // currently shortcut hide is disabled
+                mAppsList.add(new Apps(true, uri, sName, getCustomView(), sColor, sSize, false, sFreeze, sOpeningCount));
+
             }
-
-            boolean sFreeze = DbUtils.isAppFrozen(sActivity);
-            int sOpeningCount = DbUtils.getOpeningCounts(sActivity);
-
-            // add this shortcut to list
-            // currently shortcut hide is disabled
-            mAppsList.add(new Apps(true, uri, sName, getCustomView(), sColor, sSize, false, sFreeze, sOpeningCount));
-
         }
 
         // now sort the app list
@@ -422,6 +440,50 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
      */
     public void sortApps(final int type) {
         new SortTask().execute(type);
+
+       /* DbUtils.setAppsSortsType(type);
+
+        //sort the apps alphabetically
+        Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
+                a.getAppName(),
+                b.getAppName()
+        ));
+
+        switch (type) {
+            case SORT_BY_SIZE://descending
+                Collections.sort(mAppsList, (apps, t1) -> t1.getSize() - apps.getSize());
+                break;
+            case SORT_BY_OPENING_COUNTS://descending
+                Collections.sort(mAppsList, (apps, t1) -> t1.getOpeningCounts() - apps.getOpeningCounts());
+                break;
+            case SORT_BY_COLOR:
+                Collections.sort(mAppsList, (apps, t1) -> {
+                    float[] hsv = new float[3];
+                    Color.colorToHSV(apps.getColor(), hsv);
+                    float[] another = new float[3];
+                    Color.colorToHSV(t1.getColor(), another);
+
+                    for (int i = 0; i < 3; i++) {
+                        if (hsv[i] != another[i]) {
+                            return (hsv[i] < another[i]) ? -1 : 1;
+                        }
+                    }
+                    return 0;
+                });
+                break;
+            case SORT_BY_CUSTOM:
+                // do nothing
+                break;
+        }
+
+        mHomeLayout.removeAllViews();
+        // now add the app textView to home
+        // FlowLayoutManager.LayoutParams params = new FlowLayoutManager.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+        // params.setNewLine(true);
+        for (Apps apps : mAppsList) {
+            mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        }
+       */
     }
 
     //  add a new app: generally called after reset
@@ -531,7 +593,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             showPopup((String) view.getTag(), (AppTextView) view);
         } else if (view instanceof FlowLayout) {
             // show launcher setting
-            new GlobalSettingsDialog(this, this).show();
+            dialogs = new GlobalSettingsDialog(this, this);
+            dialogs.show();
         }
         return true;
     }
@@ -633,7 +696,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
      */
     private void removeShortcut(AppTextView view) {
         // view.setVisibility(View.GONE);
-        DbUtils.removeShortcut(view.getUri());
+        boolean b = ShortcutUtils.removeShortcut(new Shortcut(view.getText().toString(), view.getUri()));
+        Log.d(TAG, "removeShortcut: boolene" + b);
+        if (b)
         loadApps();
     }
 
@@ -668,15 +733,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     // show the app rename Dialog
     private void renameApp(String activityName, String appName) {
-        Dialog dialog = new RenameInputDialogs(this, activityName, appName, this);
-        Window window = dialog.getWindow();
+        dialogs = new RenameInputDialogs(this, activityName, appName, this);
+        Window window = dialogs.getWindow();
         if (window != null) {
             window.setGravity(Gravity.BOTTOM);
             window.setBackgroundDrawableResource(android.R.color.transparent);
             window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         }
 
-        dialog.show();
+        dialogs.show();
 
     }
 
@@ -730,9 +795,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 }
             }
         }
-        Dialog dialog = new ColorSizeDialog(this, activityName, color, view, size);
+        dialogs = new ColorSizeDialog(this, activityName, color, view, size);
 
-        Window window = dialog.getWindow();
+        Window window = dialogs.getWindow();
         if (window != null) {
             window.setGravity(Gravity.BOTTOM);
             window.setBackgroundDrawableResource(android.R.color.transparent);
@@ -740,7 +805,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
 
 
-        dialog.show();
+        dialogs.show();
     }
 
     //TO1DO: multi thread check for memory leaks if any, or check any bad behaviour;
@@ -786,45 +851,58 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // register the receiver
     // when new app installed, app updated and app uninstalled launcher have to reflect it
     private void registerForReceivers() {
+        /*if (broadcastReceiverShortcutInstall!=null){
+            unregisterReceiver(broadcastReceiverShortcutInstall);
+        }
+        if (broadcastReceiverAppInstall!=null){
+            unregisterReceiver(broadcastReceiverAppInstall);
+        }*/
         //app install and uninstall receiver
+
+        Log.d("WTF", "registerForReceivers: called ");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_PACKAGE_ADDED);
         intentFilter.addAction(ACTION_PACKAGE_REMOVED);
         intentFilter.addAction(ACTION_PACKAGE_REPLACED);
         intentFilter.addDataScheme("package");
-        broadcastReceiverAppInstall = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                loadApps();
-            }
-        };
-        registerReceiver(broadcastReceiverAppInstall, intentFilter);
+        if (broadcastReceiverAppInstall == null) {
+            broadcastReceiverAppInstall = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    loadApps();
+                }
+            };
+            registerReceiver(broadcastReceiverAppInstall, intentFilter);
+        }
 
         //shortcut install receiver
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.android.launcher.action.INSTALL_SHORTCUT");
         filter.addAction("com.android.launcher.action.CREATE_SHORTCUT");
 
-        broadcastReceiverShortcutInstall = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                Intent shortcutIntent = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
-                String uri = shortcutIntent.toUri(0);
-                // check this is already included in list
-                if (shortcutIntent.getAction() == null) {
-                    shortcutIntent.setAction(Intent.ACTION_VIEW);
+        if (broadcastReceiverShortcutInstall == null) {
+            broadcastReceiverShortcutInstall = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Intent shortcutIntent = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
+                    String uri = shortcutIntent.toUri(0);
+                    // check this is already included in list
+                    if (shortcutIntent.getAction() == null) {
+                        shortcutIntent.setAction(Intent.ACTION_VIEW);
 
+                    }
+                    String name = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
+                    // Log.d(TAG, "onReceive: uri:::" + uri);
+                    Log.d("LAL", "onReceive: name::" + name);
+
+                    //TODO: add this persistent
+                    if (!ShortcutUtils.isShortcutAlreadyAvailable(uri)) {
+                        addShortcut(uri, name);
+                    }
                 }
-                String name = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
-
-                // Log.d(TAG, "onReceive: uri:::" + uri);
-                // Log.d(TAG, "onReceive: name::" + name);
-                //TODO: add this persistent
-                addShortcut(uri, name);
-            }
-        };
-
-        registerReceiver(broadcastReceiverShortcutInstall, filter);
+            };
+            registerReceiver(broadcastReceiverShortcutInstall, filter);
+        }
 
     }
 
@@ -832,8 +910,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if (dialogs != null) {
+            dialogs.dismiss();
+            dialogs = null;
+        }
         unregisterReceiver(broadcastReceiverAppInstall);
         unregisterReceiver(broadcastReceiverShortcutInstall);
+        broadcastReceiverAppInstall = null;
+        broadcastReceiverShortcutInstall = null;
     }
 
     // request storage permission
@@ -1040,12 +1125,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     // show the hidden app dialog
     public void showHiddenApps() {
-        new HiddenAppsDialogs(this, mAppsList).show();
+        dialogs = new HiddenAppsDialogs(this, mAppsList);
+        dialogs.show();
     }
 
     // show the frozen app dialog
     public void showFrozenApps() {
-        new FrozenAppsDialogs(this, mAppsList).show();
+        dialogs = new FrozenAppsDialogs(this, mAppsList);
+        dialogs.show();
     }
 
     //set the flow layout alignment it is called from global settings
@@ -1055,31 +1142,33 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     public void setPadding() {
-        Dialog dialog = new PaddingDialog(this, mHomeLayout);
-        // Window window = dialog.getWindow();
+        dialogs = new PaddingDialog(this, mHomeLayout);
+        // Window window = dialogs.getWindow();
         // window.setGravity(Gravity.BOTTOM);
         // window.setBackgroundDrawableResource(android.R.color.transparent);
         // window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-        dialog.show();
+        dialogs.show();
     }
 
     public void setColorsAndSize() {
-        Dialog dialog = new GlobalColorSizeDialog(this, mAppsList);
+        dialogs = new GlobalColorSizeDialog(this, mAppsList);
 
-        Window window = dialog.getWindow();
+        Window window = dialogs.getWindow();
         if (window != null) {
             window.setGravity(Gravity.BOTTOM);
             window.setBackgroundDrawableResource(android.R.color.transparent);
             window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
         }
-        dialog.show();
+        dialogs.show();
     }
 
     private void addShortcut(String uri, String appName) {
         if (mAppsList == null) return;
         mAppsList.add(new Apps(true, uri, appName, getCustomView(), DbUtils.NULL_TEXT_COLOR, DEFAUTL_TEXT_SIZE_NORMAL_APPS, false, false, 0));
 
-        DbUtils.addShortcut(uri, appName);
+        ShortcutUtils.addShortcut(new Shortcut(appName, uri));
+
+        Log.d("LAL", "addShortcut: shortcut name==" + appName);
         sortApps(DbUtils.getSortsTypes());
     }
 
@@ -1129,6 +1218,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
             mHomeLayout.removeAllViews();
             // now add the app textView to home
             // FlowLayoutManager.LayoutParams params = new FlowLayoutManager.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
@@ -1136,7 +1226,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             for (Apps apps : mAppsList) {
                 mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             }
-            super.onPostExecute(aVoid);
+
         }
 
         @Override

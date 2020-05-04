@@ -35,6 +35,7 @@ import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 // utility to handle shared prefs
 class SpUtils {
@@ -118,6 +119,21 @@ class SpUtils {
     boolean getBoolean(String key, boolean def) {
         if (mPref != null) {
             return mPref.getBoolean(key, def);
+        } else throw new RuntimeException("First Initialize context");
+    }
+
+    Set<String> getStringSet(String key) {
+        if (mPref != null) {
+            return mPref.getStringSet(key, null);
+        } else throw new RuntimeException("First Initialize context");
+    }
+
+
+    void putStringSet(String key, Set<String> value) {
+        if (mPref != null) {
+            Editor editor = mPref.edit();
+            editor.putStringSet(key, value);
+            editor.apply();
         } else throw new RuntimeException("First Initialize context");
     }
 

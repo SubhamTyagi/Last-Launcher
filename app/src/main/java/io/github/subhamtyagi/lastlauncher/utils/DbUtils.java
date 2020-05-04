@@ -19,10 +19,11 @@
 package io.github.subhamtyagi.lastlauncher.utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 
 import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.github.subhamtyagi.lastlauncher.R;
 
@@ -63,9 +64,8 @@ public class DbUtils {
     private static final String APPS_COLORS_DEFAULT = "apps_color_default";
     private static final String APPS_SORTS_TYPE = "apps_sorts_types";
 
-    private static final String SHORTCUT_INSTALLED_COUNT = "shortcut_install_count";
-    private static final String SHORTCUT_NAME = "shortcut_name_%s";
-    private static final String SHORTCUT_URI = "shortcut_uri_%s";
+    private static final String SHORTCUT_INSTALLED_URIS = "shortcut_install_uris";
+    private static final String SHORTCUT_INSTALLED_NAMES = "shortcut_install_names";
 
 
     public static void init(Context context) {
@@ -396,67 +396,32 @@ public class DbUtils {
         SpUtils.getInstance().putInt(APPS_SORTS_TYPE, type);
     }
 
-    public static void addShortcut(String uri, String name) {
-        int count = getShortcutCount();
-        count++;
-        SpUtils.getInstance().putString(String.format(SHORTCUT_NAME, count), name);
-        SpUtils.getInstance().putString(String.format(SHORTCUT_URI, count), uri);
-        setShortcutCount(count);
+    static void setShortcutInstalledUris(Set<String> set) {
+        SpUtils.getInstance().putStringSet(SHORTCUT_INSTALLED_URIS, set);
     }
 
-    public static void removeShortcut(String uri) {
-        int installedShortcut = getShortcutCount();
-        for (int i = 1; i <= installedShortcut; i++) {
-            if (getShortcutURI(i).equalsIgnoreCase(uri)) {
-                Log.d("DB", "removeShortcut: removing uri matched");
-                SpUtils.getInstance().remove(String.format(SHORTCUT_NAME, i));
-                SpUtils.getInstance().remove(String.format(SHORTCUT_URI, i));
-                int count = getShortcutCount();
-                --count;
-                setShortcutCount(count);
-                break;
-            }
-        }
+    static void setShortcutInstalledNames(Set<String> set) {
+        SpUtils.getInstance().putStringSet(SHORTCUT_INSTALLED_NAMES, set);
     }
 
-    public static int getShortcutCount() {
-        return SpUtils.getInstance().getInt(SHORTCUT_INSTALLED_COUNT, 0);
+    static HashSet<String> getShortcutNames() {
+        return (HashSet<String>) SpUtils.getInstance().getStringSet(SHORTCUT_INSTALLED_NAMES);
     }
 
-    public static void setShortcutCount(int count) {
-        SpUtils.getInstance().putInt(SHORTCUT_INSTALLED_COUNT, count);
+    static HashSet<String> getShortcutUris() {
+        return (HashSet<String>) SpUtils.getInstance().getStringSet(SHORTCUT_INSTALLED_URIS);
     }
-
-    public static String getShortcutName(int index) {
-        return SpUtils.getInstance().getString(String.format(SHORTCUT_NAME, index));
-    }
-
-   /* public static void setShortcutName(String name){
-        int count=getShortcutCount();
-        count++;
-        SpUtils.getInstance().putString(String.format(SHORTCUT_NAME,count),name);
-    }*/
-
-    public static String getShortcutURI(int index) {
-        return SpUtils.getInstance().getString(String.format(SHORTCUT_URI, index));
-    }
-
-  /*  public static void setShortcutURI(String name){
-        int count=getShortcutCount();
-        count++;
-        SpUtils.getInstance().putString(String.format(SHORTCUT_URI,count),name);
-    }*/
 
     private static String codeCount(int count) {
         char[] map = "(e*+@_$k&m".toCharArray();
         int info = count ^ 86194;
-        String enc = "";
+        StringBuilder enc = new StringBuilder();
         while (info > 0) {
             int c = info % 10;
             info /= 10;
-            enc += map[c];
+            enc.append(map[c]);
         }
-        return enc;
+        return enc.toString();
     }
 
     private static int decodeCount(String text) {

@@ -1,0 +1,113 @@
+/*
+ * Last Launcher
+ * Copyright (C) 2019,2020 Shubham Tyagi
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package io.github.subhamtyagi.lastlauncher.utils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import io.github.subhamtyagi.lastlauncher.model.Shortcut;
+
+public class ShortcutUtils {
+    private static HashSet<String> shortcutName, shortcutUri;
+
+    public static ArrayList<Shortcut> getAllShortcuts() {
+
+        shortcutName = DbUtils.getShortcutNames();
+        shortcutUri = DbUtils.getShortcutUris();
+        if (shortcutUri == null) return null;
+        if (shortcutName == null) return null;
+
+        int size = shortcutUri.size();
+
+        String[] names = new String[size];
+        String[] uris = new String[size];
+
+        int ii = 0;
+
+        for (String s : shortcutUri) {
+            uris[ii] = s;
+            ii++;
+        }
+
+        ii = 0;
+        for (String s : shortcutName) {
+            names[ii] = s;
+            ii++;
+        }
+
+        ArrayList<Shortcut> list = new ArrayList<>(shortcutName.size());
+
+        for (int i = 0; i < names.length; i++) {
+            list.add(new Shortcut(names[i], uris[i]));
+        }
+
+        return list;
+
+
+    }
+
+    public static boolean addShortcut(Shortcut shortcut) {
+        shortcutName = DbUtils.getShortcutNames();
+        shortcutUri = DbUtils.getShortcutUris();
+
+        if (shortcutName == null) {
+            shortcutName = new HashSet<>();
+            shortcutUri = new HashSet<>();
+        }
+
+        shortcutName.add(shortcut.getName());
+        boolean b = shortcutUri.add(shortcut.getUri());
+
+        DbUtils.setShortcutInstalledNames(shortcutName);
+        DbUtils.setShortcutInstalledUris(shortcutUri);
+
+        return b;
+    }
+
+    public static boolean removeShortcut(Shortcut shortcut) {
+        shortcutName = DbUtils.getShortcutNames();
+        shortcutUri = DbUtils.getShortcutUris();
+
+        // this condition never true
+        if (shortcutUri == null) return false;
+
+        shortcutName.remove(shortcut.getName());
+        boolean b = shortcutUri.remove(shortcut.getUri());
+
+        DbUtils.setShortcutInstalledNames(shortcutName);
+        DbUtils.setShortcutInstalledUris(shortcutUri);
+
+        return b;
+
+    }
+
+    public static boolean isShortcutAlreadyAvailable(String uri) {
+        shortcutUri = DbUtils.getShortcutUris();
+        if (shortcutUri == null) return false;
+        return shortcutUri.contains(uri);
+    }
+
+    public static int getShortcutCounts() {
+        shortcutUri = DbUtils.getShortcutUris();
+        if (shortcutUri == null) return 0;
+        return shortcutUri.size();
+    }
+
+
+}
