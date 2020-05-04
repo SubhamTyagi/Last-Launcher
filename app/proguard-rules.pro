@@ -16,6 +16,7 @@
 #   public *;
 #}
 
+-optimizationpasses 3
 -dontpreverify
 -repackageclasses
 -allowaccessmodification

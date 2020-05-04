@@ -45,7 +45,6 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -127,12 +126,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
     private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
 
-
     public static ArrayList<Apps> mAppsList;
     private static FlowLayout mHomeLayout;
+
     // when search bar is appear this will be true and show search result
     private static boolean searching = false;
-    private final String TAG = "LauncherActivity";
+    // private final String TAG = "LauncherActivity";
     private BroadcastReceiver broadcastReceiverAppInstall;
     private BroadcastReceiver broadcastReceiverShortcutInstall;
     private Typeface mTypeface;
@@ -148,7 +147,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         mHomeLayout.removeAllViews();
         //mHomeLayout.
-        //Log.d("LAL", "showSearchResult: yes search result showed ");
+        //Log.d(TAG, "showSearchResult: yes search result showed ");
         mHomeLayout.setPadding(0, 150, 0, 0);
         /*//sort the apps alphabetically
         Collections.sort(filteredApps, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
@@ -247,7 +246,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         });
     }
 
-
     /**
      * set the color of status bar and navigation bar as per theme
      * if theme color is light then pass this to system so status icon color will turn into black
@@ -308,7 +306,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         // shortcut or pwa counts
         int installedShortcut = ShortcutUtils.getShortcutCounts();
 
-        Log.d(TAG, "loadApps: install shortcut sizes::" + installedShortcut);
+        // Log.d(TAG, "loadApps: install shortcut sizes::" + installedShortcut);
         int appsCount = activities.size();
 
         mAppsList = new ArrayList<>(appsCount + installedShortcut);
@@ -393,9 +391,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     continue;
                 }*/
 
-                Log.d(TAG, "loadApps: shortcut name==" + sName);
+                // Log.d(TAG, "loadApps: shortcut name==" + sName);
 
-                Log.d(TAG, "loadApps: shortcut uri==" + uri);
+                // Log.d(TAG, "loadApps: shortcut uri==" + uri);
 
                 // this is the unique code for each uri
                 // let store them in activity field app APP POJO
@@ -440,82 +438,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
      */
     public void sortApps(final int type) {
         new SortTask().execute(type);
-
-       /* DbUtils.setAppsSortsType(type);
-
-        //sort the apps alphabetically
-        Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
-                a.getAppName(),
-                b.getAppName()
-        ));
-
-        switch (type) {
-            case SORT_BY_SIZE://descending
-                Collections.sort(mAppsList, (apps, t1) -> t1.getSize() - apps.getSize());
-                break;
-            case SORT_BY_OPENING_COUNTS://descending
-                Collections.sort(mAppsList, (apps, t1) -> t1.getOpeningCounts() - apps.getOpeningCounts());
-                break;
-            case SORT_BY_COLOR:
-                Collections.sort(mAppsList, (apps, t1) -> {
-                    float[] hsv = new float[3];
-                    Color.colorToHSV(apps.getColor(), hsv);
-                    float[] another = new float[3];
-                    Color.colorToHSV(t1.getColor(), another);
-
-                    for (int i = 0; i < 3; i++) {
-                        if (hsv[i] != another[i]) {
-                            return (hsv[i] < another[i]) ? -1 : 1;
-                        }
-                    }
-                    return 0;
-                });
-                break;
-            case SORT_BY_CUSTOM:
-                // do nothing
-                break;
-        }
-
-        mHomeLayout.removeAllViews();
-        // now add the app textView to home
-        // FlowLayoutManager.LayoutParams params = new FlowLayoutManager.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-        // params.setNewLine(true);
-        for (Apps apps : mAppsList) {
-            mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        }
-       */
     }
 
-    //  add a new app: generally called after reset
-    private void addAppAfterReset(String activityName, boolean sortNeeded) {
-        for (Apps apps : mAppsList) {
-            if (apps.getActivityName().equalsIgnoreCase(activityName)) {
-                //TODO:why i am removing this why not updating it?
-                mAppsList.remove(apps);
-                //now add new App
-                int color;
-                if (DbUtils.isRandomColor()) {
-                    color = Utils.generateColorFromString(activityName);
-                } else {
-                    color = DbUtils.getAppsColorDefault();
-                }
-                String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
-
-                String appName = DbUtils.getAppName(activityName, appOriginalName);
-
-                int openingCounts = DbUtils.getOpeningCounts(activityName);
-                boolean hide = apps.isHidden();
-                boolean freezeSize = apps.isSizeFrozen();
-
-                Apps newApp = new Apps(apps.isShortcut(), activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts);
-
-                mAppsList.add(newApp);
-                if (sortNeeded)
-                    sortApps(DbUtils.getSortsTypes());
-                break;
-            }
-        }
-    }
 
     // the text view and set the various parameters
     //TODO: new animated field for this(test randomly)
@@ -689,26 +613,39 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         popupMenu.show();
     }
 
-    /**
-     * remove the shortcut
-     *
-     * @param view shortcut view to be removed...
-     */
-    private void removeShortcut(AppTextView view) {
-        // view.setVisibility(View.GONE);
-        boolean b = ShortcutUtils.removeShortcut(new Shortcut(view.getText().toString(), view.getUri()));
-        Log.d(TAG, "removeShortcut: boolene" + b);
-        if (b)
-        loadApps();
-    }
-
     //reset the app color to default color;
-    //TODO: port to new textview
     private void resetAppColor(String activityName) {
         DbUtils.removeColor(activityName);
         boolean sortNeeded = (DbUtils.getSortsTypes() == SORT_BY_COLOR);
         addAppAfterReset(activityName, sortNeeded);
     }
+
+    //  add a new app: generally called after reset
+    private void addAppAfterReset(String activityName, boolean sortNeeded) {
+        for (Apps apps : mAppsList) {
+            if (apps.getActivityName().equalsIgnoreCase(activityName)) {
+                mAppsList.remove(apps);
+                //now add new App
+                int color;
+                if (DbUtils.isRandomColor()) {
+                    color = Utils.generateColorFromString(activityName);
+                } else {
+                    color = DbUtils.getAppsColorDefault();
+                }
+                String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
+                String appName = DbUtils.getAppName(activityName, appOriginalName);
+                int openingCounts = DbUtils.getOpeningCounts(activityName);
+                boolean hide = apps.isHidden();
+                boolean freezeSize = apps.isSizeFrozen();
+                Apps newApp = new Apps(apps.isShortcut(), activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts);
+                mAppsList.add(newApp);
+                if (sortNeeded)
+                    sortApps(DbUtils.getSortsTypes());
+                break;
+            }
+        }
+    }
+
 
     // as method name suggest
     private void freezeAppSize(String activityName) {
@@ -860,7 +797,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }*/
         //app install and uninstall receiver
 
-        Log.d("WTF", "registerForReceivers: called ");
+        //  Log.d("WTF", "registerForReceivers: called ");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_PACKAGE_ADDED);
         intentFilter.addAction(ACTION_PACKAGE_REMOVED);
@@ -887,16 +824,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 public void onReceive(Context context, Intent intent) {
                     Intent shortcutIntent = intent.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
                     String uri = shortcutIntent.toUri(0);
-                    // check this is already included in list
                     if (shortcutIntent.getAction() == null) {
                         shortcutIntent.setAction(Intent.ACTION_VIEW);
 
                     }
                     String name = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
-                    // Log.d(TAG, "onReceive: uri:::" + uri);
-                    Log.d("LAL", "onReceive: name::" + name);
-
-                    //TODO: add this persistent
+                    //Log.d(TAG, "onReceive: name::" + name);
                     if (!ShortcutUtils.isShortcutAlreadyAvailable(uri)) {
                         addShortcut(uri, name);
                     }
@@ -923,7 +856,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     // request storage permission
-    //TODO: move to SAF
     public void requestPermission() {
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             requestPermissions(
@@ -933,7 +865,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
-    //TODO: move to SAF
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -944,7 +876,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
-    //TODO: move to SAF
+
     public boolean isPermissionRequired() {
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             return checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -954,7 +886,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     // browse the backup file
-    //TODO: move to SAF
     public void browseFile() {
 
         Intent chooseFile;
@@ -971,7 +902,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     // browse the fonts
-    //TODO: move to SAF
     public void browseFonts() {
         if (isPermissionRequired()) {
             requestPermission();
@@ -1061,7 +991,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 // DbUtils.putAppColor(appPackage, color);
             } else if (defaultColorSet) {
                 //set default color
-                //TODO:
                 DbUtils.putAppColor(appPackage, DEFAULT_COLOR);
                 textView.setTextColor(DEFAULT_COLOR);
             }//else do nothing theme default color will apply
@@ -1170,8 +1099,21 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         ShortcutUtils.addShortcut(new Shortcut(appName, uri));
 
-        Log.d(TAG, "addShortcut: shortcut name==" + appName);
+        // Log.d(TAG, "addShortcut: shortcut name==" + appName);
         sortApps(DbUtils.getSortsTypes());
+    }
+
+    /**
+     * remove the shortcut
+     *
+     * @param view shortcut view to be removed...
+     */
+    private void removeShortcut(AppTextView view) {
+        // view.setVisibility(View.GONE);
+        boolean b = ShortcutUtils.removeShortcut(new Shortcut(view.getText().toString(), view.getUri()));
+        // Log.d(TAG, "removeShortcut: boolene" + b);
+        if (b)
+            loadApps();
     }
 
     @Override
