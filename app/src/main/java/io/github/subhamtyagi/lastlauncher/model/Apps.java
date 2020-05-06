@@ -88,8 +88,10 @@ public class Apps {
         if (isShortcut) {
             this.activity = String.valueOf(Utils.hash(activity));
             textView.setUri(activity);
+            // textView.setUniqueCode(this.activity);
         } else {
             this.activity = activity;
+            //textView.setUniqueCode(String.valueOf(Utils.hash(activity)));
         }
 
         textView.setText(this.appName);

@@ -76,6 +76,7 @@ import io.github.subhamtyagi.lastlauncher.dialogs.PaddingDialog;
 import io.github.subhamtyagi.lastlauncher.dialogs.RenameInputDialogs;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.model.Shortcut;
+import io.github.subhamtyagi.lastlauncher.utils.CrashUtils;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Gestures;
 import io.github.subhamtyagi.lastlauncher.utils.ShortcutUtils;
@@ -173,6 +174,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         // initialize the shared prefs may be done in application class
         DbUtils.init(this);
+
+        if (BuildConfig.DEBUG) {
+            new CrashUtils(getApplicationContext(), "");
+        }
 
         int theme = DbUtils.getTheme();
         //theme must be set before setContentView
@@ -459,9 +464,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     @Override
     public void onClick(View view) {
         if (view instanceof AppTextView) {
+
             // get the activity
             String activity = (String) view.getTag();
             AppTextView appTextView = (AppTextView) view;
+
 
             if (searching) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
