@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Shared preference strings  -->
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Настройки</string>
     <!--App information related strings-->
     <!--app menu-->
-    <string name="color_for_this_entry">Colors &amp; Size</string>
-    <string name="rename">Rename</string>
+    <string name="color_for_this_entry">Цвета и размер</string>
+    <string name="rename">Переименовать</string>
     <!--launcher menu-->
     <!-- <string name="uninstall"><font fgcolor='#E53935'>Uninstall</font></string>-->
-    <string name="uninstall">Uninstall</string>
-    <string name="fonts">Fonts</string>
-    <string name="themes">Themes</string>
-    <string name="set_to_primary_colors">Set Primary Colors</string>
-    <string name="backup">Backup</string>
-    <string name="reset_to_default_settings">Reset to default Settings</string>
+    <string name="uninstall">Удалить</string>
+    <string name="fonts">Шрифты</string>
+    <string name="themes">Темы</string>
+    <string name="set_to_primary_colors">Установить главные цвета</string>
+    <string name="backup">Резервная копия</string>
+    <string name="reset_to_default_settings">Установить параметры по умолчанию</string>
     <!-- <string name="reset_to_default_settings"><font fgcolor='#E53935'>Reset to default Settings</font></string>
  -->
-    <string name="app_info">App Info</string>
-    <string name="random_colors">Random Colors</string>
+    <string name="app_info">О приложении</string>
+    <string name="random_colors">Случайные цвета</string>
     <string name="customize_with_color_sniffer">ColorSniffer…</string>
-    <string name="reset_to_default">Reset All</string>
+    <string name="reset_to_default">Сбросить всё</string>
     <!--<string name="reset_to_default"><font fgcolor='#E53935'>Reset All</font></string>
     -->
-    <string name="freeze_size">Freeze Size</string>
+    <string name="freeze_size">Заморозить размер</string>
     <!--<string name="hide"><font fgcolor='#E53935'>Hide</font></string>
 -->
-    <string name="hide">Hide</string>
-    <string name="unfreeze_size">Unfreeze size</string>
-    <string name="hidden_apps">Hidden Apps</string>
-    <string name="frozen_apps">Frozen Apps</string>
-    <string name="restore">Restore</string>
-    <string name="fixed_colors">Fixed Colors</string>
-    <string name="freeze_apps_size">Freeze Apps Size</string>
-    <string name="unfreeze_app_size">Unfreeze Apps Size</string>
-    <string name="default_theme">Default Theme</string>
-    <string name="background_wallpaper">Background Wallpaper</string>
-    <string name="white_on_black">White on Black</string>
-    <string name="black_on_white">Black on White</string>
-    <string name="white_on_grey">White on Grey</string>
-    <string name="black_on_grey">Black on Grey</string>
-    <string name="hacker_green">Hacker Green</string>
-    <string name="hacker_red">Hacker Red</string>
-    <string name="choose_old_backup_files">Choose previous backup file</string>
-    <string name="from_clipboard">From Clipboard</string>
+    <string name="hide">Скрыть</string>
+    <string name="unfreeze_size">Разморозить размер</string>
+    <string name="hidden_apps">Скрытые приложения</string>
+    <string name="frozen_apps">Замороженные приложения</string>
+    <string name="restore">Восстановить</string>
+    <string name="fixed_colors">Фиксированные цвета</string>
+    <string name="freeze_apps_size">Заморозить размер приложения</string>
+    <string name="unfreeze_app_size">Разморозить размер приложения</string>
+    <string name="default_theme">Стандартная тема</string>
+    <string name="background_wallpaper">Фоновые обои</string>
+    <string name="white_on_black">Белое на чёрном</string>
+    <string name="black_on_white">Чёрное на белом</string>
+    <string name="white_on_grey">Белый на сером</string>
+    <string name="black_on_grey">Черный на сером</string>
+    <string name="hacker_green">Зеленый на черном</string>
+    <string name="hacker_red">Красный на чёрном</string>
+    <string name="choose_old_backup_files">Выбрать предыдущий файл резервной копии</string>
+    <string name="from_clipboard">Из Буфера Обмена</string>
     <string name="from_colorsniffer_app">From ColorSniffer App</string>
-    <string name="backup_saved_to_downloads">Backup saved to Downloads</string>
-    <string name="some_error_occurred">Some error occurred</string>
-    <string name="choose_old_backup_file">Choose old backup file</string>
-    <string name="on">:On</string>
-    <string name="off">:Off</string>
-    <string name="alignment">Alignment</string>
-    <string name="start">Start</string>
-    <string name="center">Center</string>
-    <string name="end">End</string>
-    <string name="padding">Padding</string>
-    <string name="remove">Remove</string>
-    <string name="open">Open</string>
-    <string name="reset_color">Reset Color</string>
-    <string name="restore_default_fonts">Restore Default fonts</string>
-    <string name="select_fonts">Select fonts</string>
-    <string name="sort_apps_by">Sort Apps By</string>
-    <string name="by_name">Name</string>
-    <string name="by_opening_counts">App Usage</string>
-    <string name="by_color">Color</string>
+    <string name="backup_saved_to_downloads">Резервная копия сохранена в Загрузки</string>
+    <string name="some_error_occurred">Произошли ошибки</string>
+    <string name="choose_old_backup_file">Выберите файл резервной копии</string>
+    <string name="on">Вкл</string>
+    <string name="off">Выкл</string>
+    <string name="alignment">Выравнивание</string>
+    <string name="start">Слева</string>
+    <string name="center">По центру</string>
+    <string name="end">Справа</string>
+    <string name="padding">Отступ</string>
+    <string name="remove">Удалить</string>
+    <string name="open">Открыть</string>
+    <string name="reset_color">Сбросить цвет</string>
+    <string name="restore_default_fonts">Восстановить стандартный шрифт</string>
+    <string name="select_fonts">Выбрать шрифты</string>
+    <string name="sort_apps_by">Сортировка приложений по</string>
+    <string name="by_name">Название</string>
+    <string name="by_opening_counts">По кол-ву использования приложения</string>
+    <string name="by_color">Цвету</string>
     <string name="custom">Customs</string>
-    <string name="by_size">Size</string>
+    <string name="by_size">Размер</string>
 </resources>
