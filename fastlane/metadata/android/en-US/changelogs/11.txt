@@ -5,6 +5,9 @@
 * What's New in this release
 
 - Search through Apps.
-- Performance improvements(startup, sorting and Random color)
+- Performance improvements(startup, sorting and Random color).
 - Big reduction(23%) in apk size.
 - Further memory consumption reduction.
+- Fixed bug related to Shortcuts and PWAs that was further causing Memory leak. 
+
+- This update will remove old shortcut from this launcher so you readded them after this update.

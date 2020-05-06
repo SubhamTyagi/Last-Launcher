@@ -39,7 +39,7 @@ public class AppTextView extends TextView {
     // private int openingCounts;
 
 
-    private String uniqueCode;
+    //private String uniqueCode;
     private boolean isShortcut;
     private String uri;
 
@@ -56,13 +56,13 @@ public class AppTextView extends TextView {
         super(context, attrs, defStyleAttr);
     }
 
-    public String getUniqueCode() {
+   /* public String getUniqueCode() {
         return uniqueCode;
     }
 
     public void setUniqueCode(String uniqueCode) {
         this.uniqueCode = uniqueCode;
-    }
+    }*/
 
     public String getUri() {
         return uri;
