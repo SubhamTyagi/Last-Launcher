@@ -16,8 +16,8 @@
     <string name="reset_to_default_settings">Restablecer ajustes predeterminados</string>
     <!-- <string name="reset_to_default_settings"><font fgcolor='#E53935'>Reset to default Settings</font></string>
  -->
-    <string name="app_info">Información de la app</string>
-    <string name="random_colors">Color aleatorio</string>
+    <string name="app_info">Información de la aplicación</string>
+    <string name="random_colors">Colores aleatorios</string>
     <string name="customize_with_color_sniffer">Selector de color…</string>
     <string name="reset_to_default">Restablecer todo</string>
     <!--<string name="reset_to_default"><font fgcolor='#E53935'>Reset All</font></string>
@@ -32,7 +32,7 @@
     <string name="restore">Restaurar</string>
     <string name="fixed_colors">Colores fijos</string>
     <string name="freeze_apps_size">Bloquear tamaño de apps</string>
-    <string name="unfreeze_app_size">Desbloquear tamaño de apps</string>
+    <string name="unfreeze_app_size">Desbloquear tamaño de aplicaciones</string>
     <string name="default_theme">Tema predeterminado</string>
     <string name="background_wallpaper">Fondo de papel tapiz</string>
     <string name="white_on_black">Blanco sobre negro</string>
@@ -42,7 +42,7 @@
     <string name="hacker_green">Verde de hacker</string>
     <string name="hacker_red">Rojo de hacker</string>
     <string name="choose_old_backup_files">Elegir copia de seguridad previa</string>
-    <string name="from_clipboard">Desde portapapeles</string>
+    <string name="from_clipboard">Desde el porta papeles</string>
     <string name="from_colorsniffer_app">Desde la aplicación de selección de color</string>
     <string name="backup_saved_to_downloads">Copia de seguridad guardada en descargas</string>
     <string name="some_error_occurred">Se ha producido un error</string>
