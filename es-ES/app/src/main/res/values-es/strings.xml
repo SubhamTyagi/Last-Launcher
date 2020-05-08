@@ -31,7 +31,7 @@
     <string name="frozen_apps">Aplicaciones bloqueadas</string>
     <string name="restore">Restaurar</string>
     <string name="fixed_colors">Colores fijos</string>
-    <string name="freeze_apps_size">Bloquear tamaño de apps</string>
+    <string name="freeze_apps_size">Bloquear tamaño de Apps</string>
     <string name="unfreeze_app_size">Desbloquear tamaño de aplicaciones</string>
     <string name="default_theme">Tema predeterminado</string>
     <string name="background_wallpaper">Fondo de papel tapiz</string>
@@ -59,9 +59,9 @@
     <string name="reset_color">Restablecer color</string>
     <string name="restore_default_fonts">Restaurar tipografías predeterminadas</string>
     <string name="select_fonts">Seleccionar tipografía</string>
-    <string name="sort_apps_by">Ordenar apps por</string>
+    <string name="sort_apps_by">Ordenar aplicaciones por</string>
     <string name="by_name">Nombre</string>
-    <string name="by_opening_counts">Uso de la app</string>
+    <string name="by_opening_counts">Uso de la aplicación</string>
     <string name="by_color">Color</string>
     <string name="custom">Personalizados</string>
     <string name="by_size">Tamaño</string>
