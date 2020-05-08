@@ -21,6 +21,7 @@
 
 
     <array name="material_colors">
+        <item>#ff000000</item>
         <item>#FFF44336</item>
         <item>#FF9C27B0</item>
         <item>#FF3F51B5</item>
@@ -32,7 +33,29 @@
         <item>#FF795548</item>
         <item>#FF607D8B</item>
         <item>#FF8F8C8C</item>
+        <item>#ffffffff</item>
 
+    </array>
+
+    <array name="material_colors1">
+        <item>#ffffffff</item>
+        <item>#F44336</item>
+        <item>#E91E63</item>
+        <item>#9C27B0</item>
+        <item>#673AB7</item>
+        <item>#3F51B5</item>
+        <item>#2196F3</item>
+        <item>#03A9F4</item>
+        <item>#00BCD4</item>
+        <item>#009688</item>
+        <item>#4CAF50</item>
+        <item>#8BC34A</item>
+        <item>#CDDC39</item>
+        <item>#FFEB3B</item>
+        <item>#FFC107</item>
+        <item>#FF9800</item>
+        <item>#FF5722</item>
+        <item>#000000</item>
     </array>
 
 

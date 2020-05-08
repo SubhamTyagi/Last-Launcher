@@ -1,4 +1,4 @@
-# Last Launcher  [![translate](https://img.shields.io/badge/Translation-Weblate-green)](https://www.example.com)
+# Last Launcher  [![translate](https://img.shields.io/badge/Translation-Crowdin-green)](https://crowdin.com/project/last-launcher)
 
 Last Launcher is Simple, Minimal, Customizable and One Page Android launcher. It aims to provide fastest and simplest user experience.  
 
@@ -19,7 +19,7 @@ I always in quest of simple and minimal launcher that is light weight on RAM and
 
 ## Contribution and Donation
 1. Create a Pull Request. All codes are simple and well commented.
-2. Translate this app on [Weblate](https://www.example.com) in your local language.
+2. Translate this app on [Crowdin](https://crowdin.com/project/last-launcher) in your local language.
 
 ### To do
 * [ ] FlowLayout improvements.
