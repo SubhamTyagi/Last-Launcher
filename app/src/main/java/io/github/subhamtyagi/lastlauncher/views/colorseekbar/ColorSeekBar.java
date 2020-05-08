@@ -47,6 +47,7 @@ public class ColorSeekBar extends View {
             // 0xFFEAFEAF
     };
 
+
     private int mAlpha;
     private OnColorChangeListener mOnColorChangeLister;
     private Context mContext;
@@ -269,7 +270,9 @@ public class ColorSeekBar extends View {
         float colorPosition = (float) mColorBarPosition / mMaxPosition * mBarWidth;
 
         colorPaint.setAntiAlias(true);
+
         int color = isEnabled() ? getColor(false) : mDisabledColor;
+
         int colorStartTransparent = Color.argb(mAlphaMaxPosition, Color.red(color), Color.green(color), Color.blue(color));
         int colorEndTransparent = Color.argb(mAlphaMinPosition, Color.red(color), Color.green(color), Color.blue(color));
         colorPaint.setColor(color);
@@ -483,10 +486,13 @@ public class ColorSeekBar extends View {
         colorPosition -= i;
         int c0 = mColorSeeds[i];
         int c1 = mColorSeeds[i + 1];
-//         mAlpha = mix(Color.alpha(c0), Color.alpha(c1), colorPosition);
+
+        // mAlpha = mix(Color.alpha(c0), Color.alpha(c1), colorPosition);
+
         int mRed = mix(Color.red(c0), Color.red(c1), colorPosition);
         int mGreen = mix(Color.green(c0), Color.green(c1), colorPosition);
         int mBlue = mix(Color.blue(c0), Color.blue(c1), colorPosition);
+
         return Color.rgb(mRed, mGreen, mBlue);
     }
 
@@ -637,6 +643,11 @@ public class ColorSeekBar extends View {
         mAlpha = 255 - mAlphaBarPosition;
     }
 
+    private void setAlphaValue(int value) {
+        mAlpha = value;
+        mAlphaBarPosition = 255 - mAlpha;
+        // invalidate();
+    }
     public void setAlphaBarPosition(int value) {
         this.mAlphaBarPosition = value;
         setAlphaValue();
@@ -683,13 +694,27 @@ public class ColorSeekBar extends View {
      */
     public void setColorBarPosition(int value) {
         this.mColorBarPosition = value;
-        mColorBarPosition = mColorBarPosition > mMaxPosition ? mMaxPosition : mColorBarPosition;
-        mColorBarPosition = mColorBarPosition < 0 ? 0 : mColorBarPosition;
+        mColorBarPosition = Math.min(mColorBarPosition, mMaxPosition);
+        mColorBarPosition = Math.max(mColorBarPosition, 0);
+        invalidate();
+
+        if (mOnColorChangeLister != null) {
+            mOnColorChangeLister.onColorChangeListener(mColorBarPosition, mAlphaBarPosition, getColor());
+        }
+    }
+
+    public void setPosition(int colorBarPosition, int alphaBarPosition) {
+        this.mColorBarPosition = colorBarPosition;
+        mColorBarPosition = Math.min(mColorBarPosition, mMaxPosition);
+        mColorBarPosition = Math.max(mColorBarPosition, 0);
+        this.mAlphaBarPosition = alphaBarPosition;
+        setAlphaValue();
         invalidate();
         if (mOnColorChangeLister != null) {
             mOnColorChangeLister.onColorChangeListener(mColorBarPosition, mAlphaBarPosition, getColor());
         }
     }
+
 
     public void setOnInitDoneListener(OnInitDoneListener listener) {
         this.mOnInitDoneListener = listener;
@@ -702,10 +727,11 @@ public class ColorSeekBar extends View {
      */
     public void setColor(int color) {
         int withoutAlphaColor = Color.rgb(Color.red(color), Color.green(color), Color.blue(color));
-
         if (mInit) {
             int value = mCachedColors.indexOf(withoutAlphaColor);
+            setAlphaValue(Color.alpha(color));
             setColorBarPosition(value);
+
         } else {
             mColorsToInvoke = color;
         }
