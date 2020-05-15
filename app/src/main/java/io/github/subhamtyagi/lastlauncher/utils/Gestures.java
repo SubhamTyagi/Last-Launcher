@@ -20,6 +20,7 @@ package io.github.subhamtyagi.lastlauncher.utils;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -32,10 +33,21 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
     private final static int ACTION_FAKE = -13; // just an unlikely number
     private int mode = MODE_DYNAMIC;
     private boolean running = true;
+
+    private static int swipeMinVelocity;
+    private static int swipeMinVelocityRightLeft;
+    private static int swipeMinDistance = getSwipeMinDistance();
+    private static int swipeMinDistanceRightLeft = getSwipeMinDistanceRightLeft();
+
+
+
+
+
     private boolean tapIndicator = false;
     private Activity context;
     private GestureDetector detector;
     private OnSwipeListener listener;
+
     public Gestures(Activity context,
                     OnSwipeListener onSwipeListener) {
 
@@ -67,12 +79,24 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
         // else just do nothing, it's Transparent
     }
 
-    private int getScreenWidth() {
-        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    private static int getSwipeMinDistanceRightLeft() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels / 2;
     }
 
-    private int getScreenHeight() {
-        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    private static int getSwipeMinDistance() {
+        int x = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        if (x > 1900) {
+            swipeMinVelocity = 800;
+            return x / 3;//33%
+        } else if (x > 1200) {
+            swipeMinVelocity = 975;
+            return x * 2 / 5;//40%
+        } else {
+            swipeMinVelocity = 1100;
+            return x / 2; //50%
+        }
+
     }
 
     @Override
@@ -88,16 +112,12 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
         velocityX = Math.abs(velocityX);
         velocityY = Math.abs(velocityY);
 
+        Log.d("Gesture", "onFling: velocity==" + velocityY);
+        Log.d("Gesture", "onFling: min velocity==" + swipeMinVelocity);
+
         boolean result = false;
 
-        // Swipe distances
-        int swipeMinDistance = getScreenHeight() / 2;
 
-        int swipeMinDistanceRightLeft = getScreenWidth() / 2;
-
-        int swipeMinVelocity = 100;
-
-        int swipeMinVelocityRightLeft = 80;
 
         if (velocityX > swipeMinVelocityRightLeft && xDistance > swipeMinDistanceRightLeft) {
             if (e1.getX() > e2.getX()) { // right to left
