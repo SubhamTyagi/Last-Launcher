@@ -65,4 +65,6 @@
     <string name="by_color">Color</string>
     <string name="custom">Personalizados</string>
     <string name="by_size">Tamaño</string>
+    <string name="update_time">Update time</string>
+    <string name="recently_first">Recently first</string>
 </resources>
