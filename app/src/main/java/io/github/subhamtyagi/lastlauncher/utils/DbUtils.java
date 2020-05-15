@@ -345,7 +345,7 @@ public class DbUtils {
     }
 
     public static void setOpeningCounts(String activityName, int count) {
-        activityName = activityName.replaceAll("\\.", "_" + "_opening_counts");
+        activityName = activityName.replaceAll("\\.", "_") + "_opening_counts";
         SpUtils.getInstance().putString(activityName, codeCount(count));
     }
 
@@ -360,7 +360,7 @@ public class DbUtils {
     }
 
     public static int getOpeningCounts(String activityName) {
-        activityName = activityName.replaceAll("\\.", "_" + "_opening_counts");
+        activityName = activityName.replaceAll("\\.", "_") + "_opening_counts";
         return decodeCount(SpUtils.getInstance().getString(activityName, null));
     }
 

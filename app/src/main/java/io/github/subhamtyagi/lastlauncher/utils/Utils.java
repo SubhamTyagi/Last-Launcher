@@ -26,6 +26,7 @@ import android.graphics.Color;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Utils {
 
@@ -87,6 +88,28 @@ public class Utils {
         };
         return Arrays.asList(list);
 
+    }
+
+    public static List<String> getColoredAppsList() {
+        String[] list = {
+                "com.android.settings",
+                "com.android.contacts",
+                "com.android.calendar",
+                "org.telegram.messenger",
+                "com.whatsapp",
+                "org.fdroid.fdroid",
+                "org.mozilla.firefox",
+                "org.schabi.newpipe",
+                "com.aurora.adroid",
+                "com.android.dialer",
+                "com.android.camera",
+                "org.mozilla.fennec_fdroid",
+                "com.miui.gallery",
+                "com.miui.calculator",
+                "com.foobnix.pro.pdf.reader"
+
+        };
+        return Arrays.asList(list);
     }
 
     public static int generateColorFromString(String string) {
@@ -212,5 +235,20 @@ public class Utils {
         return codepoints;
     }
 
+    public static int getColor() {
+        Random random = new Random();
+        int c = random.nextInt(4);
+        switch (c) {
+            case 0:
+                return Color.parseColor("#FF5722");
+            case 1:
+                return Color.parseColor("#F44336");
+            case 2:
+                return Color.parseColor("#03A9F4");
+            case 3:
+                return Color.parseColor("#8BC34A");
+        }
+        return Color.parseColor("#FF5722");
+    }
 
 }

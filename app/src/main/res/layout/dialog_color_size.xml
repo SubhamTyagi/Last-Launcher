@@ -24,7 +24,7 @@
 
     <io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar
         android:id="@+id/colorSlider1"
-        app:colorSeeds="@array/material_colors"
+        app:colorSeeds="@array/material_colors1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="20dp" />

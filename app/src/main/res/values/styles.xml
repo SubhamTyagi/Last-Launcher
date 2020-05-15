@@ -17,7 +17,7 @@
 
 
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:textColor">#FF8F8C8C</item>
+        <item name="android:textColor">#8F8C8C</item>
         <!--<item name="android:switchTextAppearance">#FF8F8C8C</item>-->
         <item name="android:background">@android:color/black</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/black</item>

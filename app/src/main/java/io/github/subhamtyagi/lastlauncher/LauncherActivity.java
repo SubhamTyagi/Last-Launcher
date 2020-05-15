@@ -321,6 +321,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         // get the most used apps
         // a list of app that are popular on fdroid and some of my apps
         List<String> oftenApps = Utils.getOftenAppsList();
+        List<String> coloredAppsList = Utils.getColoredAppsList();
 
         String packageName, appName;
         int color, textSize;
@@ -359,6 +360,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // check for default color : set default colors if random color is not set
             if (!DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {
                 color = DbUtils.getAppsColorDefault();
+                if (coloredAppsList.contains(packageName)) {
+                    color = Utils.getColor();
+                }
+
             }
             // whether app size is freezed
             boolean freeze = DbUtils.isAppFrozen(activity);
@@ -491,8 +496,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
             if (appTextView.isShortcut()) {
                 try {
-
-                    startActivity(Intent.parseUri(appTextView.getUri(), 0));
+                    Intent intent = Intent.parseUri(appTextView.getUri(), 0);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     appOpened(activity);
                 } catch (Exception e) {

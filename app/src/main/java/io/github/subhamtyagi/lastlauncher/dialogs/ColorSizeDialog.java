@@ -69,7 +69,7 @@ public class ColorSizeDialog extends Dialog {
         colorSeekBar.setMaxPosition(100);
         //colorSeekBar.setColorSeeds(R.array.material_colors);
         colorSeekBar.setShowAlphaBar(true);
-        colorSeekBar.setBarHeight(5);
+        colorSeekBar.setBarHeight(8);
 
 
         // todo: is this still correct?
