@@ -61,7 +61,6 @@ import android.widget.TextView;
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -120,6 +119,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     public static final int SORT_BY_COLOR = 3;
     public static final int SORT_BY_OPENING_COUNTS = 4;
     public static final int SORT_BY_CUSTOM = 5;
+    public static final int SORT_BY_UPDATE_TIME = 6;
+    public static final int SORT_BY_RECENT_OPEN = 7;
 
     private static final int RESTORE_REQUEST = 125;
     private static final int FONTS_REQUEST = 126;
@@ -132,7 +133,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     // when search bar is appear this will be true and show search result
     private static boolean searching = false;
-    // private final String TAG = "LauncherActivity";
+    private static int recentlyUsedCounter = 0;
+    private final String TAG = "LauncherActivity";
     private BroadcastReceiver broadcastReceiverAppInstall;
     private BroadcastReceiver broadcastReceiverShortcutInstall;
     private Typeface mTypeface;
@@ -374,10 +376,22 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
 
             int openingCounts = DbUtils.getOpeningCounts(activity);
+
+            int updateTime = 0;
+            try {
+                //ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
+                long time = pm.getPackageInfo(packageName, 0).lastUpdateTime;
+                time = time / 10000;
+                updateTime = (int) time;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+                updateTime = 0;
+            }
             // save all and add this is to app list
-            mAppsList.add(new Apps(false, activity, appName, getCustomView(), color, textSize, hide, freeze, openingCounts));
+            mAppsList.add(new Apps(false, activity, appName, getCustomView(), color, textSize, hide, freeze, openingCounts, updateTime));
 
         }
+
 
         // now adds Shortcut
         // shortcut are stored in DB android system doesn't store them
@@ -428,7 +442,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
                 // add this shortcut to list
                 // currently shortcut hide is disabled
-                mAppsList.add(new Apps(true, uri, sName, getCustomView(), sColor, sSize, false, sFreeze, sOpeningCount));
+                mAppsList.add(new Apps(true, uri, sName, getCustomView(), sColor, sSize, false, sFreeze, sOpeningCount, 0));
 
             }
         }
@@ -444,7 +458,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     public void sortApps(final int type) {
         new SortTask().execute(type);
     }
-
 
     // the text view and set the various parameters
     //TODO: new animated field for this(test randomly)
@@ -478,10 +491,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
             if (appTextView.isShortcut()) {
                 try {
+
                     startActivity(Intent.parseUri(appTextView.getUri(), 0));
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     appOpened(activity);
-                } catch (URISyntaxException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
@@ -644,7 +658,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 int openingCounts = DbUtils.getOpeningCounts(activityName);
                 boolean hide = apps.isHidden();
                 boolean freezeSize = apps.isSizeFrozen();
-                Apps newApp = new Apps(apps.isShortcut(), activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts);
+                int appUpdateTime = apps.getUpdateTime();
+                Apps newApp = new Apps(apps.isShortcut(), activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts, appUpdateTime);
                 mAppsList.add(newApp);
                 if (sortNeeded)
                     sortApps(DbUtils.getSortsTypes());
@@ -652,7 +667,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             }
         }
     }
-
 
     // as method name suggest
     private void freezeAppSize(String activityName) {
@@ -761,12 +775,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         for (Apps apps : mAppsList) {
             if (apps.getActivityName().equalsIgnoreCase(activity)) {
                 apps.increaseOpeningCounts();// save to Db that app is opened by user
+                recentlyUsedCounter++;
+                apps.setRecentUsedWeight(recentlyUsedCounter);
+
                 if (DbUtils.getSortsTypes() == SORT_BY_OPENING_COUNTS) {
                     int counter = apps.getOpeningCounts();
                     if (counter % 5 == 0) {
                         sortApps(SORT_BY_OPENING_COUNTS);
                     }
+                } else if (DbUtils.getSortsTypes() == SORT_BY_RECENT_OPEN) {
+                    sortApps(SORT_BY_RECENT_OPEN);
                 }
+
                 // increase the app view size if not frozen
                 if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
                     int size = DbUtils.getAppSize(activity);
@@ -776,6 +796,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                         sortApps(SORT_BY_SIZE);
                     }
                 }
+
+
                 break;
             }
         }
@@ -1105,11 +1127,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     private void addShortcut(String uri, String appName) {
         if (mAppsList == null) return;
-
-        mAppsList.add(new Apps(true, uri, appName, getCustomView(), DbUtils.NULL_TEXT_COLOR, DEFAUTL_TEXT_SIZE_NORMAL_APPS, false, false, 0));
-
+        mAppsList.add(new Apps(true, uri, appName, getCustomView(), DbUtils.NULL_TEXT_COLOR, DEFAUTL_TEXT_SIZE_NORMAL_APPS, false, false, 0, (int) System.currentTimeMillis() / 1000));
         ShortcutUtils.addShortcut(new Shortcut(appName, uri));
-
         // Log.d(TAG, "addShortcut: shortcut name==" + appName);
         sortApps(DbUtils.getSortsTypes());
     }
@@ -1209,7 +1228,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                         Color.colorToHSV(apps.getColor(), hsv);
                         float[] another = new float[3];
                         Color.colorToHSV(t1.getColor(), another);
-
                         for (int i = 0; i < 3; i++) {
                             if (hsv[i] != another[i]) {
                                 return (hsv[i] < another[i]) ? -1 : 1;
@@ -1218,8 +1236,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                         return 0;
                     });
                     break;
-                case SORT_BY_CUSTOM:
-                    // do nothing
+                case SORT_BY_UPDATE_TIME://descending
+                    Collections.sort(mAppsList, (apps, t1) -> (int) (t1.getUpdateTime() - apps.getUpdateTime()));
+                    break;
+                case SORT_BY_RECENT_OPEN://descending
+                    Collections.sort(mAppsList, (apps, t1) -> (t1.getRecentUsedWeight() - apps.getRecentUsedWeight()));
                     break;
             }
             return null;

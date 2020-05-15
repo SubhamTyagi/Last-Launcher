@@ -63,6 +63,12 @@ public class Apps {
 
     // tell whether this is a shortcut or not if this shortcut then activity field hold the Uri not activity
     private boolean isShortcut;
+    // last updated date
+
+    private int updateTime = 0;
+
+    private int recentUsedWeight;
+
 
 
     /**
@@ -75,8 +81,9 @@ public class Apps {
      * @param isAppHidden   boolean to tell 'is app hide
      * @param isSizeFrozen  is app size to freeze
      * @param openingCounts how many time apps was opened before this addition
+     * @param updateTime    update time of this app since epoch (use for sorting)
      */
-    public Apps(boolean isShortcut, String activity, String appName, AppTextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen, int openingCounts) {
+    public Apps(boolean isShortcut, String activity, String appName, AppTextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen, int openingCounts, int updateTime) {
 
         this.isShortcut = isShortcut;
         this.textView = tv;
@@ -84,6 +91,7 @@ public class Apps {
 
         this.color = color;
         this.size = size;
+        this.updateTime = updateTime;
 
         if (isShortcut) {
             this.activity = String.valueOf(Utils.hash(activity));
@@ -203,5 +211,21 @@ public class Apps {
     public void setCategories(String categories) {
         this.categories = categories;
         DbUtils.setCategories(this.activity, categories);
+    }
+
+    public int getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(int updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public int getRecentUsedWeight() {
+        return recentUsedWeight;
+    }
+
+    public void setRecentUsedWeight(int recentUsedWeight) {
+        this.recentUsedWeight = recentUsedWeight;
     }
 }

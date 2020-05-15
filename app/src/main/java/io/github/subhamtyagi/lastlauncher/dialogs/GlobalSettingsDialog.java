@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -45,9 +46,9 @@ import io.github.subhamtyagi.lastlauncher.utils.Utils;
 public class GlobalSettingsDialog extends Dialog implements View.OnClickListener {
 
 
+    private static String TAG = "Global";/**/
     private TextView freezeSize;
     private LauncherActivity launcherActivity;
-
     private Context context;
 
     public GlobalSettingsDialog(Context context, LauncherActivity launcherActivity) {
@@ -186,6 +187,13 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                     break;*/
                 case R.id.menu_sort_by_size:
                     launcherActivity.sortApps(LauncherActivity.SORT_BY_SIZE);
+                    break;
+                case R.id.menu_sort_by_update_time:
+                    launcherActivity.sortApps(LauncherActivity.SORT_BY_UPDATE_TIME);
+                    Log.d(TAG, "sortApps: sort by update time");
+                    break;
+                case R.id.menu_sort_by_recent_use:
+                    launcherActivity.sortApps(LauncherActivity.SORT_BY_RECENT_OPEN);
                     break;
             }
             return true;

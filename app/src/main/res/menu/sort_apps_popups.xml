@@ -34,6 +34,14 @@
         android:id="@+id/menu_sort_by_color"
         android:title="@string/by_color" />
 
+    <item
+        android:id="@+id/menu_sort_by_update_time"
+
+        android:title="@string/update_time" />
+
+    <item
+        android:id="@+id/menu_sort_by_recent_use"
+        android:title="@string/recently_first" />
     <!--<item android:id="@+id/menu_sort_by_customs"
         android:title="@string/custom"/>-->
 </menu>
