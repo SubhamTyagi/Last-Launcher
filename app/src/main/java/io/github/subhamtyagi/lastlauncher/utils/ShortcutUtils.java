@@ -18,6 +18,8 @@
 
 package io.github.subhamtyagi.lastlauncher.utils;
 
+import android.content.Intent;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -136,6 +138,18 @@ public class ShortcutUtils {
         shortcutUri = DbUtils.getShortcutUris();
         if (shortcutUri == null) return 0;
         return shortcutUri.size();
+    }
+
+    public static boolean isShortcutToApp(String uri) {
+        try {
+            Intent intent = Intent.parseUri(uri, 0);
+            if (intent.getCategories() != null && intent.getCategories().contains(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(intent.getAction())) {
+                return true;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
     }
 
 

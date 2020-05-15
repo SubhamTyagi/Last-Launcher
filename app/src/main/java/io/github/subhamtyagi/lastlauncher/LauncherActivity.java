@@ -837,6 +837,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     }
                     String name = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
                     //Log.d(TAG, "onReceive: name::" + name);
+                    if (ShortcutUtils.isShortcutToApp(uri)) {
+                        return;
+                    }
+
                     if (!ShortcutUtils.isShortcutAlreadyAvailable(uri)) {
                         addShortcut(uri, name);
                     }
