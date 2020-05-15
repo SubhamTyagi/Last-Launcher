@@ -19,30 +19,23 @@
 package io.github.subhamtyagi.lastlauncher.utils;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 
 public class Gestures extends GestureDetector.SimpleOnGestureListener {
 
-    public enum Direction {
-        SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT
-    }
-
     public final static int MODE_SOLID = 1;
     public final static int MODE_DYNAMIC = 2;
 
     private final static int ACTION_FAKE = -13; // just an unlikely number
-
-
     private int mode = MODE_DYNAMIC;
     private boolean running = true;
     private boolean tapIndicator = false;
-
     private Activity context;
     private GestureDetector detector;
     private OnSwipeListener listener;
-
     public Gestures(Activity context,
                     OnSwipeListener onSwipeListener) {
 
@@ -74,6 +67,13 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
         // else just do nothing, it's Transparent
     }
 
+    private int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    }
+
+    private int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
@@ -91,11 +91,13 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
         boolean result = false;
 
         // Swipe distances
-        int swipeMinDistance = 400;
-        int swipeMinDistanceRightLeft = 300;
+        int swipeMinDistance = getScreenHeight() / 2;
 
-        int swipeMinVelocity = 75;
-        int swipeMinVelocityRightLeft = 60;
+        int swipeMinDistanceRightLeft = getScreenWidth() / 2;
+
+        int swipeMinVelocity = 100;
+
+        int swipeMinVelocityRightLeft = 80;
 
         if (velocityX > swipeMinVelocityRightLeft && xDistance > swipeMinDistanceRightLeft) {
             if (e1.getX() > e2.getX()) { // right to left
@@ -117,7 +119,6 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
         return result;
         // return false;
     }
-
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
@@ -146,6 +147,10 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
         }
 
         return false;
+    }
+
+    public enum Direction {
+        SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT
     }
 
     public interface OnSwipeListener {
