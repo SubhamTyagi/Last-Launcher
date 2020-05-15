@@ -1,0 +1,9 @@
+*Beta release 3*
+
+
+* What's New in this release
+
+- Sort Apps by Updates time, Recently first.
+- Brighter and material color.
+- Gesture improvement (FIX: Search bar was opening too much)
+- Shortcuts related bug fix.
