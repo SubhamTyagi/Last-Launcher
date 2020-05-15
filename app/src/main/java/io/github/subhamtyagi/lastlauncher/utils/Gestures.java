@@ -20,7 +20,6 @@ package io.github.subhamtyagi.lastlauncher.utils;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -31,18 +30,19 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
     public final static int MODE_DYNAMIC = 2;
 
     private final static int ACTION_FAKE = -13; // just an unlikely number
-    private int mode = MODE_DYNAMIC;
-    private boolean running = true;
+
+    private static final int SWIPE_AREA_LOWER = 100;
+    private static final int SWIPE_AREA_UPPER = 200;
 
     private static int swipeMinVelocity;
-    private static int swipeMinVelocityRightLeft;
+    private static int swipeMinVelocityRightLeft = 150;
     private static int swipeMinDistance = getSwipeMinDistance();
     private static int swipeMinDistanceRightLeft = getSwipeMinDistanceRightLeft();
 
-
-
-
-
+    private static int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private int mode = MODE_DYNAMIC;
+    private boolean running = true;
+    //private static int width=Resources.getSystem().getDisplayMetrics().widthPixels;
     private boolean tapIndicator = false;
     private Activity context;
     private GestureDetector detector;
@@ -54,6 +54,24 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
         this.context = context;
         this.detector = new GestureDetector(context, this);
         this.listener = onSwipeListener;
+    }
+
+    private static int getSwipeMinDistanceRightLeft() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels / 2;
+    }
+
+    private static int getSwipeMinDistance() {
+        if (height > 1900) {
+            swipeMinVelocity = 800;
+            return height / 3;//33%
+        } else if (height > 1200) {
+            swipeMinVelocity = 975;
+            return height * 3 / 8;//37.5%
+        } else {
+            swipeMinVelocity = 1050;
+            return height / 2; //50%
+        }
+
     }
 
     public void onTouchEvent(MotionEvent event) {
@@ -79,26 +97,6 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
         // else just do nothing, it's Transparent
     }
 
-    private static int getSwipeMinDistanceRightLeft() {
-        return Resources.getSystem().getDisplayMetrics().widthPixels / 2;
-    }
-
-    private static int getSwipeMinDistance() {
-        int x = Resources.getSystem().getDisplayMetrics().heightPixels;
-
-        if (x > 1900) {
-            swipeMinVelocity = 800;
-            return x / 3;//33%
-        } else if (x > 1200) {
-            swipeMinVelocity = 975;
-            return x * 2 / 5;//40%
-        } else {
-            swipeMinVelocity = 1100;
-            return x / 2; //50%
-        }
-
-    }
-
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                            float velocityY) {
@@ -112,12 +110,10 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
         velocityX = Math.abs(velocityX);
         velocityY = Math.abs(velocityY);
 
-        Log.d("Gesture", "onFling: velocity==" + velocityY);
-        Log.d("Gesture", "onFling: min velocity==" + swipeMinVelocity);
+        //Log.d("Gesture", "onFling: velocity==" + velocityY);
+        // Log.d("Gesture", "onFling: Y1 locat==" + e1.getY());
 
         boolean result = false;
-
-
 
         if (velocityX > swipeMinVelocityRightLeft && xDistance > swipeMinDistanceRightLeft) {
             if (e1.getX() > e2.getX()) { // right to left
@@ -128,12 +124,21 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
             result = true;
 
         } else if (velocityY > swipeMinVelocity && yDistance > swipeMinDistance) {
+
             if (e1.getY() > e2.getY()) { // bottom to up
-                this.listener.onSwipe(Direction.SWIPE_UP);
+
+                if (e1.getY() > (height - SWIPE_AREA_LOWER)) {
+                    result = true;
+                    this.listener.onSwipe(Direction.SWIPE_UP);
+                }
+
             } else {
-                this.listener.onSwipe(Direction.SWIPE_DOWN);
+                if (e1.getY() < SWIPE_AREA_UPPER) {
+                    result = true;
+                    this.listener.onSwipe(Direction.SWIPE_DOWN);
+                }
             }
-            result = true;
+
         }
 
         return result;
