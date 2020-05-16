@@ -65,6 +65,6 @@
     <string name="by_color">颜色</string>
     <string name="custom">自定义</string>
     <string name="by_size">大小</string>
-    <string name="update_time">Update time</string>
-    <string name="recently_first">Recently first</string>
+    <string name="update_time">更新时间</string>
+    <string name="recently_first">最近优先</string>
 </resources>
