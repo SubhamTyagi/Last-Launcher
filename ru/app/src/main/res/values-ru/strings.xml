@@ -43,7 +43,7 @@
     <string name="hacker_red">Красный на чёрном</string>
     <string name="choose_old_backup_files">Выбрать предыдущий файл резервной копии</string>
     <string name="from_clipboard">Из Буфера Обмена</string>
-    <string name="from_colorsniffer_app">From ColorSniffer App</string>
+    <string name="from_colorsniffer_app">Из ColorSniffer приложения</string>
     <string name="backup_saved_to_downloads">Резервная копия сохранена в Загрузки</string>
     <string name="some_error_occurred">Произошли ошибки</string>
     <string name="choose_old_backup_file">Выберите файл резервной копии</string>
@@ -63,8 +63,8 @@
     <string name="by_name">Название</string>
     <string name="by_opening_counts">По кол-ву использования приложения</string>
     <string name="by_color">Цвету</string>
-    <string name="custom">Customs</string>
+    <string name="custom">Индивидуальный</string>
     <string name="by_size">Размер</string>
-    <string name="update_time">Update time</string>
-    <string name="recently_first">Recently first</string>
+    <string name="update_time">Время обновления</string>
+    <string name="recently_first">Сначала недавние</string>
 </resources>
