@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Shared preference strings  -->
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Einstellungen</string>
     <!--App information related strings-->
     <!--app menu-->
-    <string name="color_for_this_entry">Colors &amp; Size</string>
-    <string name="rename">Rename</string>
+    <string name="color_for_this_entry">Farbe &amp; Größe</string>
+    <string name="rename">Umbenennen</string>
     <!--launcher menu-->
     <!-- <string name="uninstall"><font fgcolor='#E53935'>Uninstall</font></string>-->
-    <string name="uninstall">Uninstall</string>
-    <string name="fonts">Fonts</string>
-    <string name="themes">Themes</string>
-    <string name="set_to_primary_colors">Set Primary Colors</string>
-    <string name="backup">Backup</string>
-    <string name="reset_to_default_settings">Reset to default Settings</string>
+    <string name="uninstall">Deinstallieren</string>
+    <string name="fonts">Schriftarten</string>
+    <string name="themes">Designs</string>
+    <string name="set_to_primary_colors">Primärfarben festlegen</string>
+    <string name="backup">sichern</string>
+    <string name="reset_to_default_settings">Einstellungen zurücksetzen</string>
     <!-- <string name="reset_to_default_settings"><font fgcolor='#E53935'>Reset to default Settings</font></string>
  -->
-    <string name="app_info">App Info</string>
-    <string name="random_colors">Random Colors</string>
+    <string name="app_info">App-Info</string>
+    <string name="random_colors">Zufällige Farben</string>
     <string name="customize_with_color_sniffer">ColorSniffer…</string>
     <string name="reset_to_default">Reset All</string>
     <!--<string name="reset_to_default"><font fgcolor='#E53935'>Reset All</font></string>
