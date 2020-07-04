@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Shared preference strings  -->
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Paramètres</string>
     <!--App information related strings-->
     <!--app menu-->
-    <string name="color_for_this_entry">Colors &amp; Size</string>
-    <string name="rename">Rename</string>
+    <string name="color_for_this_entry">Couleurs &amp; Taille</string>
+    <string name="rename">Renommer</string>
     <!--launcher menu-->
     <!-- <string name="uninstall"><font fgcolor='#E53935'>Uninstall</font></string>-->
-    <string name="uninstall">Uninstall</string>
-    <string name="fonts">Fonts</string>
-    <string name="themes">Themes</string>
+    <string name="uninstall">Désinstaller</string>
+    <string name="fonts">Polices</string>
+    <string name="themes">Thèmes</string>
     <string name="set_to_primary_colors">Set Primary Colors</string>
     <string name="backup">Backup</string>
     <string name="reset_to_default_settings">Reset to default Settings</string>
