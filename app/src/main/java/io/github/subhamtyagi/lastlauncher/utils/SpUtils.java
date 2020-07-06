@@ -34,6 +34,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -198,7 +199,7 @@ class SpUtils {
     }
 
     boolean saveSharedPreferencesToFile() {
-        SimpleDateFormat df = new SimpleDateFormat("YYYY_MM_dd_HHSS");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd_HHSS", Locale.getDefault());
         df.format(new Date());
         String date = df.format(new Date());
         boolean res = false;

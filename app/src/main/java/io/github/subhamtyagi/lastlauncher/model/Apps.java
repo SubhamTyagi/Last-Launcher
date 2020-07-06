@@ -65,7 +65,7 @@ public class Apps {
     private boolean isShortcut;
     // last updated date
 
-    private int updateTime = 0;
+    private int updateTime;
 
     private int recentUsedWeight;
 

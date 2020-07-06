@@ -77,7 +77,7 @@ public class GlobalColorSizeDialog extends Dialog {
 
         if (colorDefault != DbUtils.NULL_TEXT_COLOR) {
             colorSeekBar.setColor(colorDefault);
-        } else {
+        //} else {
             //do something
         }
 

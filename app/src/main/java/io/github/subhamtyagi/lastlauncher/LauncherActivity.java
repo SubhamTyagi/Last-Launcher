@@ -382,7 +382,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
             int openingCounts = DbUtils.getOpeningCounts(activity);
 
-            int updateTime = 0;
+            int updateTime;
             try {
                 //ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
                 long time = pm.getPackageInfo(packageName, 0).lastUpdateTime;
@@ -1081,7 +1081,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         for (Apps apps : mAppsList) {
             try {
                 TextView textView = apps.getTextView();
-                String s = apps.getActivityName().toString();
+                String s = apps.getActivityName();
                 Integer newColor = colorsAndId.get(s);
                 if (newColor == null) continue;
                 textView.setTextColor(newColor);
