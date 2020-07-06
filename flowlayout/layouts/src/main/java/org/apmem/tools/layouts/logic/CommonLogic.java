@@ -127,9 +127,11 @@ public class CommonLogic {
     public static int findSize(int modeSize, int controlMaxSize, int contentSize) {
         int realControlSize;
         switch (modeSize) {
+            /* duplicate of default
             case View.MeasureSpec.UNSPECIFIED:
                 realControlSize = contentSize;
                 break;
+             */
             case View.MeasureSpec.AT_MOST:
                 realControlSize = Math.min(contentSize, controlMaxSize);
                 break;
@@ -172,7 +174,7 @@ public class CommonLogic {
 
         // if childGravity is still not specified - set default top - left gravity
         if ((childGravity & Gravity.HORIZONTAL_GRAVITY_MASK) == 0) {
-            childGravity |= Gravity.LEFT;
+            childGravity |= Gravity.START;
         }
         if ((childGravity & Gravity.VERTICAL_GRAVITY_MASK) == 0) {
             childGravity |= Gravity.TOP;
@@ -197,8 +199,8 @@ public class CommonLogic {
         if (config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL && (childGravity & Gravity.RELATIVE_LAYOUT_DIRECTION) != 0) {
             int ltrGravity = childGravity;
             childGravity = 0;
-            childGravity |= (ltrGravity & Gravity.LEFT) == Gravity.LEFT ? Gravity.RIGHT : 0;
-            childGravity |= (ltrGravity & Gravity.RIGHT) == Gravity.RIGHT ? Gravity.LEFT : 0;
+            childGravity |= (ltrGravity & Gravity.START) == Gravity.START ? Gravity.END : 0;
+            childGravity |= (ltrGravity & Gravity.END) == Gravity.END ? Gravity.START : 0;
         }
 
         return childGravity;

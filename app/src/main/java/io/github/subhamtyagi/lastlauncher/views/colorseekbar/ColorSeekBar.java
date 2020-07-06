@@ -442,11 +442,7 @@ public class ColorSeekBar extends View {
      * @return whether MotionEvent is performing on bar or not
      */
     private boolean isOnBar(RectF r, float x, float y) {
-        if (r.left - mThumbRadius < x && x < r.right + mThumbRadius && r.top - mThumbRadius < y && y < r.bottom + mThumbRadius) {
-            return true;
-        } else {
-            return false;
-        }
+        return r.left - mThumbRadius < x && x < r.right + mThumbRadius && r.top - mThumbRadius < y && y < r.bottom + mThumbRadius;
     }
 
     /**
