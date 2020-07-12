@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Shared preference strings  -->
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">تنظیمات</string>
     <!--App information related strings-->
     <!--app menu-->
-    <string name="color_for_this_entry">Colors &amp; Size</string>
-    <string name="rename">Rename</string>
+    <string name="color_for_this_entry">رنگ &amp; اندازه</string>
+    <string name="rename">تغییر نام</string>
     <!--launcher menu-->
     <!-- <string name="uninstall"><font fgcolor='#E53935'>Uninstall</font></string>-->
-    <string name="uninstall">Uninstall</string>
-    <string name="fonts">Fonts</string>
-    <string name="themes">Themes</string>
-    <string name="set_to_primary_colors">Set Primary Colors</string>
-    <string name="backup">Backup</string>
-    <string name="reset_to_default_settings">Reset to default Settings</string>
+    <string name="uninstall">حذف کردن</string>
+    <string name="fonts">قلم‌ها</string>
+    <string name="themes">پوسته‌ها</string>
+    <string name="set_to_primary_colors">تعیین رنگ‌های اصلی</string>
+    <string name="backup">پشتیبان‌گیری</string>
+    <string name="reset_to_default_settings">بازنشانی تنظیمات پیش‌فرض</string>
     <!-- <string name="reset_to_default_settings"><font fgcolor='#E53935'>Reset to default Settings</font></string>
  -->
-    <string name="app_info">App Info</string>
-    <string name="random_colors">Random Colors</string>
-    <string name="customize_with_color_sniffer">ColorSniffer…</string>
-    <string name="reset_to_default">Reset All</string>
+    <string name="app_info">اطلاعات برنامه</string>
+    <string name="random_colors">رنگ تصادفی</string>
+    <string name="customize_with_color_sniffer">رنگ‌بوکن…</string>
+    <string name="reset_to_default">بازنشانی همه</string>
     <!--<string name="reset_to_default"><font fgcolor='#E53935'>Reset All</font></string>
     -->
-    <string name="freeze_size">Freeze Size</string>
+    <string name="freeze_size">منجمدسازی اندازه‌ها</string>
     <!--<string name="hide"><font fgcolor='#E53935'>Hide</font></string>
 -->
-    <string name="hide">Hide</string>
-    <string name="unfreeze_size">Unfreeze size</string>
-    <string name="hidden_apps">Hidden Apps</string>
-    <string name="frozen_apps">Frozen Apps</string>
-    <string name="restore">Restore</string>
+    <string name="hide">پنهان‌سازی</string>
+    <string name="unfreeze_size">نامنحمدسازی اندازه‌ها</string>
+    <string name="hidden_apps">برنامه‌های پنهان</string>
+    <string name="frozen_apps">برنامه‌های منجمدشده</string>
+    <string name="restore">بازگردانی</string>
     <string name="fixed_colors">Fixed Colors</string>
     <string name="freeze_apps_size">Freeze Apps Size</string>
     <string name="unfreeze_app_size">Unfreeze Apps Size</string>
