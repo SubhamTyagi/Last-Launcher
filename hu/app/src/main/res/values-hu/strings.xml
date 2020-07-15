@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Shared preference strings  -->
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Beállítások</string>
     <!--App information related strings-->
     <!--app menu-->
-    <string name="color_for_this_entry">Colors &amp; Size</string>
-    <string name="rename">Rename</string>
+    <string name="color_for_this_entry">Színek és méret</string>
+    <string name="rename">Átnevezés</string>
     <!--launcher menu-->
     <!-- <string name="uninstall"><font fgcolor='#E53935'>Uninstall</font></string>-->
-    <string name="uninstall">Uninstall</string>
-    <string name="fonts">Fonts</string>
-    <string name="themes">Themes</string>
-    <string name="set_to_primary_colors">Set Primary Colors</string>
-    <string name="backup">Backup</string>
-    <string name="reset_to_default_settings">Reset to default Settings</string>
+    <string name="uninstall">Eltávolítás</string>
+    <string name="fonts">Betűtípusok</string>
+    <string name="themes">Témák</string>
+    <string name="set_to_primary_colors">Elsődleges színek beállítása</string>
+    <string name="backup">Biztonsági mentés</string>
+    <string name="reset_to_default_settings">Alapértelmezett beállítások visszaállítása</string>
     <!-- <string name="reset_to_default_settings"><font fgcolor='#E53935'>Reset to default Settings</font></string>
  -->
-    <string name="app_info">App Info</string>
-    <string name="random_colors">Random Colors</string>
-    <string name="customize_with_color_sniffer">ColorSniffer…</string>
-    <string name="reset_to_default">Reset All</string>
+    <string name="app_info">Alkalmazás információ</string>
+    <string name="random_colors">Véletlen színek</string>
+    <string name="customize_with_color_sniffer">Színválasztó…</string>
+    <string name="reset_to_default">Összes visszaállítása</string>
     <!--<string name="reset_to_default"><font fgcolor='#E53935'>Reset All</font></string>
     -->
-    <string name="freeze_size">Freeze Size</string>
+    <string name="freeze_size">Méret rögzítése</string>
     <!--<string name="hide"><font fgcolor='#E53935'>Hide</font></string>
 -->
-    <string name="hide">Hide</string>
-    <string name="unfreeze_size">Unfreeze size</string>
-    <string name="hidden_apps">Hidden Apps</string>
+    <string name="hide">Elrejtés</string>
+    <string name="unfreeze_size">Méret feloldása</string>
+    <string name="hidden_apps">Rejtett alkalmazások</string>
     <string name="frozen_apps">Frozen Apps</string>
     <string name="restore">Restore</string>
     <string name="fixed_colors">Fixed Colors</string>
@@ -35,36 +35,36 @@
     <string name="unfreeze_app_size">Unfreeze Apps Size</string>
     <string name="default_theme">Default Theme</string>
     <string name="background_wallpaper">Background Wallpaper</string>
-    <string name="white_on_black">White on Black</string>
-    <string name="black_on_white">Black on White</string>
-    <string name="white_on_grey">White on Grey</string>
-    <string name="black_on_grey">Black on Grey</string>
-    <string name="hacker_green">Hacker Green</string>
-    <string name="hacker_red">Hacker Red</string>
+    <string name="white_on_black">Fehér a feketén</string>
+    <string name="black_on_white">Fekete a fehéren</string>
+    <string name="white_on_grey">Fehér a szürkén</string>
+    <string name="black_on_grey">Fekete a szürkén</string>
+    <string name="hacker_green">Hacker zöld</string>
+    <string name="hacker_red">Hacker piros</string>
     <string name="choose_old_backup_files">Choose previous backup file</string>
-    <string name="from_clipboard">From Clipboard</string>
-    <string name="from_colorsniffer_app">From ColorSniffer App</string>
+    <string name="from_clipboard">A vágólapról</string>
+    <string name="from_colorsniffer_app">A színválasztó alkalmazásból</string>
     <string name="backup_saved_to_downloads">Backup saved to Downloads</string>
     <string name="some_error_occurred">Some error occurred</string>
     <string name="choose_old_backup_file">Choose old backup file</string>
     <string name="on">:On</string>
     <string name="off">:Off</string>
-    <string name="alignment">Alignment</string>
+    <string name="alignment">Igazítás</string>
     <string name="start">Start</string>
     <string name="center">Center</string>
     <string name="end">End</string>
     <string name="padding">Padding</string>
-    <string name="remove">Remove</string>
-    <string name="open">Open</string>
-    <string name="reset_color">Reset Color</string>
+    <string name="remove">Törlés</string>
+    <string name="open">Megnyitás</string>
+    <string name="reset_color">Szín visszaállítása</string>
     <string name="restore_default_fonts">Restore Default fonts</string>
     <string name="select_fonts">Select fonts</string>
-    <string name="sort_apps_by">Sort Apps By</string>
-    <string name="by_name">Name</string>
-    <string name="by_opening_counts">App Usage</string>
-    <string name="by_color">Color</string>
+    <string name="sort_apps_by">Alkalmazások rendezése</string>
+    <string name="by_name">Név</string>
+    <string name="by_opening_counts">Használat</string>
+    <string name="by_color">Szín</string>
     <string name="custom">Customs</string>
-    <string name="by_size">Size</string>
-    <string name="update_time">Update time</string>
+    <string name="by_size">Méret</string>
+    <string name="update_time">Frissítés ideje</string>
     <string name="recently_first">Recently first</string>
 </resources>
