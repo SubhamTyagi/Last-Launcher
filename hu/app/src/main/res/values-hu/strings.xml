@@ -31,7 +31,7 @@
     <string name="frozen_apps">Rögzített alkalmazások</string>
     <string name="restore">Visszaállítás</string>
     <string name="fixed_colors">Rögzített színek</string>
-    <string name="freeze_apps_size">Alkalmazás méretének rögzítése</string>
+    <string name="freeze_apps_size">Alkalmazások méretének rögzítése</string>
     <string name="unfreeze_app_size">Alkalmazás méretének feloldása</string>
     <string name="default_theme">Alapértelmezett téma</string>
     <string name="background_wallpaper">Háttérkép</string>
