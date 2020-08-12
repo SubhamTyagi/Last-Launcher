@@ -1,4 +1,4 @@
-# Last Launcher  [![translate](https://img.shields.io/badge/Translation-Crowdin-green)](https://crowdin.com/project/last-launcher)
+# Last Launcher [![Translate on Weblate](https://img.shields.io/badge/Translation-Weblate-green)](https://hosted.weblate.org/projects/last-launcher)  [![Translate on Crowdin](https://img.shields.io/badge/Translation-Crowdin-green)](https://crowdin.com/project/last-launcher)
 
 Last Launcher is a simple, minimal, and customizable single page Android launcher. It aims to provide the fastest and simplest user experience.
 
@@ -19,7 +19,7 @@ I have been questing for a simple and minimal launcher that is light weight on R
 
 ## Contribution and Donation
 1. Create a pull request. All code is simple and well commented.
-2. Translate this app on [Crowdin](https://crowdin.com/project/last-launcher) in your local language.
+2. Translate this app on [Weblate](https://hosted.weblate.org/projects/last-launcher) or [Crowdin](https://crowdin.com/project/last-launcher) in your local language.
 
 ### To do
 * [ ] FlowLayout improvements.
