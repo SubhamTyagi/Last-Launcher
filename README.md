@@ -1,25 +1,26 @@
-# Last Launcher [![Translate on Weblate](https://img.shields.io/badge/Translation-Weblate-green)](https://hosted.weblate.org/projects/last-launcher)  [![Translate on Crowdin](https://img.shields.io/badge/Translation-Crowdin-green)](https://crowdin.com/project/last-launcher)
+# Last Launcher [![Translate on Weblate](https://img.shields.io/badge/Translation-Weblate-green)](https://hosted.weblate.org/projects/last-launcher)
 
-Last Launcher is a simple, minimal, and customizable single page Android launcher. It aims to provide the fastest and simplest user experience.
+Last Launcher is a simple, minimal, and customizable single-page Android launcher aiming to provide the fastest and simplest user experience.
 
 [<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="50">](https://f-droid.org/packages/io.github.subhamtyagi.lastlauncher/)
 
 ### Short story:
-I have been questing for a simple and minimal launcher that is light weight on RAM and easy on device battery. I became fed up by the Android launchers that are available on F-Droid and Google Play Store, although some are great. So I started developing this launcher which is small in size, fast, and full featured.
+No simple and minimal launcher light on RAM and easy on battery could be found on F-Droid or Google Play.
+This launcher has been small, fast, and fullly-featured since its inception.
 
 ## Features
-* Low Battery and CPU usage.
+* Low battery and CPU usage.
 * Faster than fastest. :)
-* Always free and open source with no ads.
+* Always libre copylefted software with no ads.
 * Material design.
 * No icons and widgets.
-* Colorful app names.
-* Custom Font selection.
+* Colourful app names.
+* Custom font selection.
 
 
 ## Contribution and Donation
-1. Create a pull request. All code is simple and well commented.
-2. Translate this app on [Weblate](https://hosted.weblate.org/projects/last-launcher) or [Crowdin](https://crowdin.com/project/last-launcher) in your local language.
+1. Create a pull request. All code is simple and well-commented.
+2. Translate this app on [Weblate](https://hosted.weblate.org/projects/last-launcher) in your local language.
 
 ### To do
 * [ ] FlowLayout improvements.
@@ -34,9 +35,9 @@ I have been questing for a simple and minimal launcher that is light weight on R
 |:-:|:-:|:-:|:-:|
 | ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png?raw=true "Home")| ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png?raw=true )|
 
-## 3rd party Library and font.
+## Third-party Libraries and Fonts.
 * ### Android Libraries
-  * [android-flowlayout](https://github.com/ApmeM/android-flowlayout) by [Artem.Votincev](https://github.com/ApmeM), License [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
+  * [android-flowlayout](https://github.com/ApmeM/android-flowlayout) by [Artem.Votincev](https://github.com/ApmeM), License [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0)
   * [ColorSeekBar](https://github.com/rtugeek/ColorSeekBar) by [Jack Fu](https://github.com/rtugeek), License [WTFPL](http://www.wtfpl.net/)
 * ### Fonts 
   * [Raleway fonts](https://github.com/impallari/Raleway/) by [Pablo Impallari](https://github.com/impallari) License [SIL Open Font License, Version 1.1](http://scripts.sil.org/OFL)
@@ -44,7 +45,7 @@ I have been questing for a simple and minimal launcher that is light weight on R
 ## Copyright
 
       Last Launcher
-      Copyright (C) 2019,2020 Shubham Tyagi
+      Copyright © 2019–2020 Shubham Tyagi
 
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
@@ -57,4 +58,4 @@ I have been questing for a simple and minimal launcher that is light weight on R
      GNU General Public License for more details.
 
      You should have received a copy of the GNU General Public License
-     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+     along with this program.  If not, see <https://www.gnu.org/licenses/>.
