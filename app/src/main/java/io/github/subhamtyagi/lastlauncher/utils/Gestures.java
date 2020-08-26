@@ -28,8 +28,8 @@ public class Gestures extends GestureDetector.SimpleOnGestureListener {
     private static final int minScrollDistanceX = 50;
     private static final int minScrollDistanceY = 50;
 
-    private GestureDetector detector;
-    private OnSwipeListener listener;
+    private final GestureDetector detector;
+    private final OnSwipeListener listener;
 
     public Gestures(Activity context,
                     OnSwipeListener onSwipeListener) {

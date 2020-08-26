@@ -36,9 +36,9 @@ import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
 // color sniffer dialog
 public class ColorSnifferDialog extends Dialog implements View.OnClickListener {
-    private LauncherActivity launcherActivity;
+    private final LauncherActivity launcherActivity;
     private TextView onOffSwitch;
-    private Context context;
+    private final Context context;
     private TextView mStartColorSniffer;
     private boolean change = false;
 

@@ -37,7 +37,7 @@ public class Apps {
     // app name to shown on screen
     private String appName;
     // a text view or a subclass
-    private AppTextView textView;
+    private final AppTextView textView;
     // app color
     private int color;
     // app size
@@ -62,7 +62,7 @@ public class Apps {
     private String categories;
 
     // tell whether this is a shortcut or not if this shortcut then activity field hold the Uri not activity
-    private boolean isShortcut;
+    private final boolean isShortcut;
     // last updated date
 
     private int updateTime;

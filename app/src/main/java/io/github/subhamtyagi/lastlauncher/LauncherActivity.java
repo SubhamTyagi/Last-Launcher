@@ -150,7 +150,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         mHomeLayout.removeAllViews();
         //mHomeLayout.
-        //Log.d(TAG, "showSearchResult: yes search result showed ");
+        //Log.d(TAG, "showSearchResult: yes search result show ");
         mHomeLayout.setPadding(0, 150, 0, 0);
         /*//sort the apps alphabetically
         Collections.sort(filteredApps, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
@@ -954,8 +954,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         //}
 
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
-        chooseFile.setType("application/x-font-ttf");
-        //chooseFile.setType("file/plain");
+        //chooseFile.setType("application/x-font-ttf");
+        chooseFile.setType("file/plain");
         Intent intent = Intent.createChooser(chooseFile, "Choose Fonts");
         startActivityForResult(intent, FONTS_REQUEST);
     }
@@ -1046,12 +1046,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 ClipData clipData = clipboardManager.getPrimaryClip();
                 if (clipData.getItemCount() > 0) {
                     ClipData.Item item = clipData.getItemAt(0);
-                    String tabSepratedData = item.getText().toString();
+                    String tabSeparatedData = item.getText().toString();
                     //Log.d(TAG, "clipboardData: " + tabSepratedData);
-                    //validate tabSepratedData and get its data
+                    //validate tab Separated Data and get its data
                     //unique id bae73ae068dacc6cb659d1fb231e7b11 i.e LastLauncher-ColorSniffer MD5-128
 
-                    String[] line = tabSepratedData.split("\n");//get each line
+                    String[] line = tabSeparatedData.split("\n");//get each line
 
                     Map<String, Integer> colorsAndId = new ArrayMap<>(); // map to put all values in key and values format
                     // iterate over every line

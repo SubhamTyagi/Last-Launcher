@@ -29,7 +29,7 @@ import android.os.UserManager;
 @Deprecated
 @TargetApi(21)
 public class UserUtils {
-    private UserManager userManager;
+    private final UserManager userManager;
 
 
     public UserUtils(Context context) {

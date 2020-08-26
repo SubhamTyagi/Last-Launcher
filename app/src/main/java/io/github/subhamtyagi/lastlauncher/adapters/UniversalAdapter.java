@@ -35,8 +35,8 @@ import io.github.subhamtyagi.lastlauncher.model.Apps;
 //
 public class UniversalAdapter extends ArrayAdapter<Apps> {
 
-    private Context context;
-    private ArrayList<Apps> list;
+    private final Context context;
+    private final ArrayList<Apps> list;
     private OnClickListener listener;
 
     public UniversalAdapter(Context context, ArrayList<Apps> list) {

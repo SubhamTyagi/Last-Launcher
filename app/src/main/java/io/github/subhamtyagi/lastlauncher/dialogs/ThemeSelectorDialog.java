@@ -31,7 +31,7 @@ import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
 public class ThemeSelectorDialog extends Dialog implements View.OnClickListener {
 
-    private LauncherActivity context;
+    private final LauncherActivity context;
 
     ThemeSelectorDialog(Context context, LauncherActivity launcherActivity) {
         super(context);

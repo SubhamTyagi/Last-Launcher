@@ -35,7 +35,7 @@ import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 public class RenameInputDialogs extends Dialog implements TextView.OnEditorActionListener {
 
     final private String appPackage;
-    private LauncherActivity launcherActivity;
+    private final LauncherActivity launcherActivity;
     private final String oldAppName;
 
 

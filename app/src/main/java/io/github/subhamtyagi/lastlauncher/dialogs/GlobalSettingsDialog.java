@@ -46,10 +46,10 @@ import io.github.subhamtyagi.lastlauncher.utils.Utils;
 public class GlobalSettingsDialog extends Dialog implements View.OnClickListener {
 
 
-    private static String TAG = "Global";/**/
+    private static final String TAG = "Global";/**/
     private TextView freezeSize;
-    private LauncherActivity launcherActivity;
-    private Context context;
+    private final LauncherActivity launcherActivity;
+    private final Context context;
 
     public GlobalSettingsDialog(Context context, LauncherActivity launcherActivity) {
         super(context);

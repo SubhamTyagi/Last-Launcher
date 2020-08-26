@@ -77,18 +77,18 @@ public class ColorSeekBar extends View {
 
     private int mBarRadius;
 
-    private List<Integer> mCachedColors = new ArrayList<>();
+    private final List<Integer> mCachedColors = new ArrayList<>();
     private int mColorsToInvoke = -1;
     private boolean mInit = false;
     private boolean mFirstDraw = true;
     private boolean mShowThumb = true;
     private OnInitDoneListener mOnInitDoneListener;
 
-    private Paint colorPaint = new Paint();
-    private Paint alphaThumbGradientPaint = new Paint();
-    private Paint alphaBarPaint = new Paint();
-    private Paint mDisabledPaint = new Paint();
-    private Paint thumbGradientPaint = new Paint();
+    private final Paint colorPaint = new Paint();
+    private final Paint alphaThumbGradientPaint = new Paint();
+    private final Paint alphaBarPaint = new Paint();
+    private final Paint mDisabledPaint = new Paint();
+    private final Paint thumbGradientPaint = new Paint();
 
     public ColorSeekBar(Context context) {
         super(context);

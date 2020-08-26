@@ -74,9 +74,8 @@ public class ShortcutUtils {
      * Add new shortcut
      *
      * @param shortcut instance of shortcut to be added
-     * @return true if successfully adds shortcut
      */
-    public static boolean addShortcut(Shortcut shortcut) {
+    public static void addShortcut(Shortcut shortcut) {
         shortcutName = DbUtils.getShortcutNames();
         shortcutUri = DbUtils.getShortcutUris();
 
@@ -91,7 +90,6 @@ public class ShortcutUtils {
         DbUtils.setShortcutInstalledNames(shortcutName);
         DbUtils.setShortcutInstalledUris(shortcutUri);
 
-        return b;
     }
 
     /**

@@ -45,12 +45,12 @@ public class GlobalColorSizeDialog extends Dialog {
 
 
     private final Handler handler = new Handler();
-    private ArrayList<Apps> mAppsList;
+    private final ArrayList<Apps> mAppsList;
     private Runnable runnable;
 
     private int appSize;
     private int mColor;
-    private List<String> oftenApps = Utils.getOftenAppsList();
+    private final List<String> oftenApps = Utils.getOftenAppsList();
 
     public GlobalColorSizeDialog(Context context, ArrayList<Apps> appsList) {
         super(context);

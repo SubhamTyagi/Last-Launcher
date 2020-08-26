@@ -38,7 +38,7 @@ public class FrozenAppsDialogs extends Dialog {
 
     private final ArrayList<Apps> mAppsList;
     private ListView listView;
-    private Context context;
+    private final Context context;
 
     public FrozenAppsDialogs(Context context, ArrayList<Apps> appsList) {
         super(context);

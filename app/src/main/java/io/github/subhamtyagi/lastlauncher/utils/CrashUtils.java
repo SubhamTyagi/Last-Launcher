@@ -43,10 +43,10 @@ public class CrashUtils implements Thread.UncaughtExceptionHandler {
     private static final String TAG = "CrashUtils";
 
 
-    private Thread.UncaughtExceptionHandler exceptionHandler;
+    private final Thread.UncaughtExceptionHandler exceptionHandler;
 
-    private Context applicationContext;
-    private String crashReportPath;
+    private final Context applicationContext;
+    private final String crashReportPath;
 
     public CrashUtils(Context context, String crashReportSavePath) {
         this.exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();

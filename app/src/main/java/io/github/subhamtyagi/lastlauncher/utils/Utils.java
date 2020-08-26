@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class Utils {
 
     // popular and often used app on fdroid and in android system

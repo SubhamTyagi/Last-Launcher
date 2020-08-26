@@ -57,57 +57,51 @@ class SpUtils {
         return mInstance;
     }
 
-    SpUtils init(Context context) {
+    void init(Context context) {
         if (mPref == null) {
             mPref = PreferenceManager.getDefaultSharedPreferences(context);
         }
-        return this;
     }
 
-    SpUtils putString(String key, String value) {
+    void putString(String key, String value) {
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.putString(key, value);
             editor.apply();
-            return this;
         } else throw new RuntimeException("First Initialize context");
     }
 
-    SpUtils putLong(String key, long value) {
+    void putLong(String key, long value) {
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.putLong(key, value);
             editor.apply();
-            return this;
         } else throw new RuntimeException("First Initialize context");
     }
 
-    SpUtils putInt(String key, int value) {
+    void putInt(String key, int value) {
 
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.putInt(key, value);
             editor.apply();
-            return this;
         } else throw new RuntimeException("First Initialize context");
     }
 
-    SpUtils putIntCommit(String key, int value) {
+    void putIntCommit(String key, int value) {
 
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.putInt(key, value);
             editor.commit();
-            return this;
         } else throw new RuntimeException("First Initialize context");
     }
 
-    SpUtils putBoolean(String key, boolean value) {
+    void putBoolean(String key, boolean value) {
         if (mPref != null) {
             Editor editor = mPref.edit();
             editor.putBoolean(key, value);
             editor.apply();
-            return this;
         } else throw new RuntimeException("First Initialize context");
     }
 
@@ -228,12 +222,14 @@ class SpUtils {
 
 
     //stub
+    @SuppressWarnings("unchecked")
     boolean loadSharedPreferencesFromFile(InputStream inputS) {
         boolean res = false;
         ObjectInputStream input = null;
         try {
             input = new ObjectInputStream(inputS);
             clear();
+            //noinspection unchecked
             Map<String, ?> entries = (Map<String, ?>) input.readObject();
             for (Map.Entry<String, ?> entry : entries.entrySet()) {
                 Object v = entry.getValue();

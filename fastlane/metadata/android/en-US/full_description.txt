@@ -28,5 +28,5 @@ Last Launcher is Simple, Minimalist, Customisable open source Android launcher. 
 <h2>Navigation</h2>
 
 ▶ Long click on empty area to access launcher settings.
-▶ Swipe up from bottom to access Search Bar.
+▶ Swipe LEFT or RIGHT to access Search Bar.
 ▶ To hide search bar press Back/Home or Swipe down the screen.
