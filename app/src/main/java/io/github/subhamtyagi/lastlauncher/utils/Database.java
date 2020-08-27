@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import io.github.subhamtyagi.lastlauncher.model.Shortcut;
 
 //This is new database based on SQLITE
-// Why not ROOM: simply make this launcher lightweight
+// Why not ROOM: simply make this launcher lightweight, BTW This app database is too small :)
 public class Database extends SQLiteOpenHelper {
 
 
@@ -78,7 +78,7 @@ public class Database extends SQLiteOpenHelper {
         ContentValues cValues = new ContentValues();
         cValues.put(SHORTCUT_NAME, name);
         cValues.put(SHORTCUT_URI, uri);
-        long newRowId = db.insert(TABLE_NAME_SHORTCUTS, null, cValues);
+        db.insert(TABLE_NAME_SHORTCUTS, null, cValues);
         db.close();
     }
 

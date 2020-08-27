@@ -1,18 +1,11 @@
 <resources>
 
 
-    <!--Shared preference strings  -->
-    <string name="action_settings">Settings</string>
-
-
-    <!--App information related strings-->
-
-    <!--app menu-->
-
     <string name="color_for_this_entry">Colors &amp; Size</string>
+    <!--Rename app-->
     <string name="rename">Rename</string>
-    <!--launcher menu-->
-    <!-- <string name="uninstall"><font fgcolor='#E53935'>Uninstall</font></string>-->
+
+    <!--Uninstall apps : as same as android settings-->
     <string name="uninstall">Uninstall</string>
     <string name="fonts">Fonts</string>
     <string name="themes">Themes</string>
@@ -20,27 +13,22 @@
     <string name="backup">Backup</string>
 
     <string name="reset_to_default_settings">Reset to default Settings</string>
-    <!-- <string name="reset_to_default_settings"><font fgcolor='#E53935'>Reset to default Settings</font></string>
- -->
     <string name="app_info">App Info</string>
-
 
     <string name="random_colors">Random Colors</string>
 
-    <string name="customize_with_color_sniffer">ColorSniffer…</string>
+
+    <string name="customize_with_color_sniffer" translatable="false">ColorSniffer…</string>
 
     <string name="reset_to_default">Reset All</string>
-    <!--<string name="reset_to_default"><font fgcolor='#E53935'>Reset All</font></string>
-    -->
     <string name="freeze_size">Freeze Size</string>
 
-    <!--<string name="hide"><font fgcolor='#E53935'>Hide</font></string>
--->
     <string name="hide">Hide</string>
 
     <string name="unfreeze_size">Unfreeze size</string>
 
     <string name="hidden_apps">Hidden Apps</string>
+
     <string name="frozen_apps">Frozen Apps</string>
 
     <string name="restore">Restore</string>
@@ -49,23 +37,34 @@
     <string name="unfreeze_app_size">Unfreeze Apps Size</string>
     <string name="default_theme">Default Theme</string>
     <string name="background_wallpaper">Background Wallpaper</string>
+    <!--THIS IS THEME NAME-->
     <string name="white_on_black">White on Black</string>
+    <!--THIS IS THEME NAME-->
     <string name="black_on_white">Black on White</string>
+    <!--THIS IS THEME NAME-->
     <string name="white_on_grey">White on Grey</string>
+    <!--THIS IS THEME NAME-->
     <string name="black_on_grey">Black on Grey</string>
+    <!--THIS IS THEME NAME-->
     <string name="hacker_green">Hacker Green</string>
+    <!--THIS IS THEME NAME-->
     <string name="hacker_red">Hacker Red</string>
 
 
     <string name="choose_old_backup_files">Choose previous backup file</string>
 
     <string name="color_sniffer" translatable="false">Color Sniffer</string>
+
     <string name="from_clipboard">From Clipboard</string>
-    <string name="from_colorsniffer_app">From ColorSniffer App</string>
+
+    <string name="from_color_sniffer_app">From ColorSniffer App</string>
+
     <string name="backup_saved_to_downloads">Backup saved to Downloads</string>
     <string name="some_error_occurred">Some error occurred</string>
     <string name="choose_old_backup_file">Choose old backup file</string>
+    <!--a switch for on -->
     <string name="on">:On</string>
+    <!--a switch for off -->
     <string name="off">:Off</string>
     <string name="alignment">Alignment</string>
     <string name="start">Start</string>
@@ -73,19 +72,29 @@
     <string name="end">End</string>
 
     <string name="padding">Padding</string>
+    <!--asking user to remove something-->
     <string name="remove">Remove</string>
+    <!--asking user to open app-->
     <string name="open">Open</string>
     <string name="reset_color">Reset Color</string>
     <string name="restore_default_fonts">Restore Default fonts</string>
+
     <string name="select_fonts">Select fonts</string>
     <string name="sort_apps_by">Sort Apps By</string>
 
+    <!--Sort Apps By: NAME-->
     <string name="by_name">Name</string>
+    <!--Sort Apps By: APP USAGE TIME-->
     <string name="by_opening_counts">App Usage</string>
+    <!--Sort Apps By: APP COLOR-->
     <string name="by_color">Color</string>
+    <!--Sort Apps By: CUSTOM-->
     <string name="custom">Customs</string>
+    <!--Sort Apps By: APP SIZE-->
     <string name="by_size">Size</string>
+    <!--Sort Apps By: UPDATE TIME-->
     <string name="update_time">Update time</string>
+    <!--Sort Apps IN : RECENTLY USED FIRST ORDER -->
     <string name="recently_first">Recently first</string>
 
 

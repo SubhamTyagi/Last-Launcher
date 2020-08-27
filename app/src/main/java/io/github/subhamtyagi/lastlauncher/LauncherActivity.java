@@ -113,7 +113,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     public final static String DEFAULT_COLOR_FOR_APPS = "default_color_for_apps";
     //various sorting constant
     //why constant? Why not enums for this ?
-    // may be lack from DB side
+    // may be lack from Shared Preference DB
     public static final int SORT_BY_NAME = 1;
     public static final int SORT_BY_SIZE = 2;
     public static final int SORT_BY_COLOR = 3;
@@ -125,8 +125,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private static final int RESTORE_REQUEST = 125;
     private static final int FONTS_REQUEST = 126;
     private static final int PERMISSION_REQUEST = 127;
-    private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
-    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
+    private static final int DEFAULT_TEXT_SIZE_NORMAL_APPS = 20;
+    private static final int DEFAULT_TEXT_SIZE_OFTEN_APPS = 36;
 
     public static ArrayList<Apps> mAppsList;
     private static FlowLayout mHomeLayout;
@@ -234,7 +234,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //do here search
-                //Log.d("LAL", "onTextChanged: " + charSequence + "  charsequence lenght" + charSequence.toString().length());
                 new SearchTask().execute(charSequence);
             }
 
@@ -324,7 +323,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         mAppsList = new ArrayList<>(appsCount + installedShortcut);
 
         // get the most used apps
-        // a list of app that are popular on fdroid and some of my apps
+        // a list of app that are popular on f-droid and some of my apps
         List<String> oftenApps = Utils.getOftenAppsList();
         List<String> coloredAppsList = Utils.getColoredAppsList();
 
@@ -351,9 +350,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // size is null(-1) when user installed this app
             if (textSize == DbUtils.NULL_TEXT_SIZE) {
                 if (oftenApps.contains(packageName)) {
-                    textSize = DEFAUTL_TEXT_SIZE_OFTEN_APPS;
+                    textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
                 } else {
-                    textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+                    textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
                 }
 
                 /// DbUtils.putAppSize(activity, textSize);
@@ -370,7 +369,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 }
 
             }
-            // whether app size is freezed
+            // whether app size is frozen
             boolean freeze = DbUtils.isAppFrozen(activity);
 
             // this is a separate implementation of ColorSniffer app
@@ -420,12 +419,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     continue;
                 }*/
 
-                // Log.d(TAG, "loadApps: shortcut name==" + sName);
-
-                // Log.d(TAG, "loadApps: shortcut uri==" + uri);
 
                 // this is the unique code for each uri
-                // let store them in activity field app APP POJO
+                // let store them in activity field app
                 // As we have to store some uniquely identified info in Db
                 // this be used as key as i have done for Each apps(see above)
                 // Usually URI sting is too long and so it will take more memory and storage
@@ -436,7 +432,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 int sSize = DbUtils.getAppSize(sActivity);
 
                 if (sSize == DbUtils.NULL_TEXT_SIZE) {
-                    sSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+                    sSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
                 }
 
                 if (sColor == DbUtils.NULL_TEXT_COLOR) {
@@ -670,7 +666,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 boolean hide = apps.isHidden();
                 boolean freezeSize = apps.isSizeFrozen();
                 int appUpdateTime = apps.getUpdateTime();
-                Apps newApp = new Apps(apps.isShortcut(), activityName, appName, getCustomView(), color, DEFAUTL_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts, appUpdateTime);
+                Apps newApp = new Apps(apps.isShortcut(), activityName, appName, getCustomView(), color, DEFAULT_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts, appUpdateTime);
                 mAppsList.add(newApp);
                 if (sortNeeded)
                     sortApps(DbUtils.getSortsTypes());
@@ -986,8 +982,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         } else if (requestCode == FONTS_REQUEST) {
             try {
 
-                String[] proj = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getContentResolver().query(data.getData(), proj, null, null, null);
+                String[] projection = {MediaStore.Images.Media.DATA};
+                Cursor cursor = getContentResolver().query(data.getData(), projection, null, null, null);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
                 String path = cursor.getString(column_index);
@@ -1053,7 +1049,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 if (clipData.getItemCount() > 0) {
                     ClipData.Item item = clipData.getItemAt(0);
                     String tabSeparatedData = item.getText().toString();
-                    //Log.d(TAG, "clipboardData: " + tabSepratedData);
+
                     //validate tab Separated Data and get its data
                     //unique id bae73ae068dacc6cb659d1fb231e7b11 i.e LastLauncher-ColorSniffer MD5-128
 
@@ -1065,8 +1061,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                         String[] activityIdAndColor = entry.split("\t");// split line into id and color
                         int color = Color.parseColor(activityIdAndColor[1]);
                         colorsAndId.put(activityIdAndColor[0], color);// put id and color to map
-
-                        //   Log.d(TAG, "clipboardData: app:" + activityIdAndColor[0] + "  color==" + color);
 
                     }
                     setAppsColorFromClipboard(colorsAndId);
@@ -1139,7 +1133,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     private void addShortcut(String uri, String appName) {
         if (mAppsList == null) return;
-        mAppsList.add(new Apps(true, uri, appName, getCustomView(), DbUtils.NULL_TEXT_COLOR, DEFAUTL_TEXT_SIZE_NORMAL_APPS, false, false, 0, (int) System.currentTimeMillis() / 1000));
+        mAppsList.add(new Apps(true, uri, appName, getCustomView(), DbUtils.NULL_TEXT_COLOR, DEFAULT_TEXT_SIZE_NORMAL_APPS, false, false, 0, (int) System.currentTimeMillis() / 1000));
         shortcutUtils.addShortcut(new Shortcut(appName, uri));
         // Log.d(TAG, "addShortcut: shortcut name==" + appName);
         sortApps(DbUtils.getSortsTypes());

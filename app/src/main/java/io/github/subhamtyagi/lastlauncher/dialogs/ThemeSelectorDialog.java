@@ -57,7 +57,6 @@ public class ThemeSelectorDialog extends Dialog implements View.OnClickListener 
                 break;
             case R.id.t2:
                 setTheme(R.style.Wallpaper);
-
                 break;
             case R.id.t3:
                 setTheme(R.style.Black);
@@ -71,14 +70,11 @@ public class ThemeSelectorDialog extends Dialog implements View.OnClickListener 
             case R.id.t6:
                 setTheme(R.style.BlackOnGrey);
                 break;
-
             case R.id.t35:
                 setTheme(R.style.Hacker_green);
-
                 break;
             case R.id.t36:
                 setTheme(R.style.Hacker_red);
-
                 break;
         }
     }

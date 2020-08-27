@@ -36,7 +36,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 // utility to handle shared prefs
 class SpUtils {
@@ -117,7 +116,7 @@ class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    Set<String> getStringSet(String key) {
+   /* Set<String> getStringSet(String key) {
         if (mPref != null) {
             return mPref.getStringSet(key, null);
         } else throw new RuntimeException("First Initialize context");
@@ -130,7 +129,7 @@ class SpUtils {
             editor.putStringSet(key, value);
             editor.apply();
         } else throw new RuntimeException("First Initialize context");
-    }
+    }*/
 
 
     String getString(String key) {

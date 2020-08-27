@@ -32,7 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-
+//ONLY included in DEBUG BUILD:
 public class CrashUtils implements Thread.UncaughtExceptionHandler {
 
     private static final String EXCEPTION_SUFFIX = "_exception";

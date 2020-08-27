@@ -28,43 +28,43 @@ import io.github.subhamtyagi.lastlauncher.views.textview.AppTextView;
 // a model class that hold everything related to an app
 public class Apps {
 
-    // app activity name format package.name/package.name.ClassName
-    // for eg. com.example.appname/com.example.appname.MainActivity
-    // for eg  io.github.subhamtyagi.lastlauncher/io.github.subhamtyagi.lastlauncher.LauncherActivity
-    // if this shortcut than activity represent the URI string
+    // App activity name format package.name/package.name.ClassName
+    // For eg. com.example.app_name/com.example.app_name.MainActivity
+    // For eg  io.github.subhamtyagi.lastlauncher/io.github.subhamtyagi.lastlauncher.LauncherActivity
+    // if this is a shortcut then this field represent a unique URI string
     final private String activity;
 
     // app name to shown on screen
     private String appName;
-    // a text view or a subclass
+
+    // a text view or a subclass of TextView
     private final AppTextView textView;
-    // app color
+    // app text color
     private int color;
-    // app size
+    // app text size
     private int size;
-    // is app size frozen
+    // is app text size frozen
     private boolean isSizeFrozen;
     // is app hidden from home screen
     private boolean isAppHidden;
 
     //store how many time this app is opened by user
-    // save this to DB. So launcher can sort the app based on it uses:
-    // (take precaution while saving this: encrypt this it contains sensitive info)
-    // in theory this is a tracking count which store how many time user opens this apps
-    // nothing will send to anywhere only locally and privately saved to user device and btw this
-    // launcher doesn't have internet permission
+    // save this to DB. So launcher can sort the app based on this
+    // in theory this is a tracking count which store how many time user opened this apps
+    // Only locally and privately saved to user device
+    // and btw this launcher doesn't have INTERNET PERMISSION
     private int openingCounts;
 
-    // This field is use for grouping the app
+    // This field is use for grouping the app: not in use
     private String groupPrefix;
 
-    // app belongs to this categories
+    // app belongs to this categories,,: not in use
     private String categories;
 
-    // tell whether this is a shortcut or not if this shortcut then activity field hold the Uri not activity
+    // tell whether this is a shortcut or not if this is shortcut then activity field wll holds the Uri not an activity
     private final boolean isShortcut;
-    // last updated date
 
+    // last updated date and time
     private int updateTime;
 
     private int recentUsedWeight;
@@ -185,10 +185,6 @@ public class Apps {
         return openingCounts;
     }
 
-    public void setOpeningCounts(int openingCounts) {
-        this.openingCounts = openingCounts;
-        DbUtils.setOpeningCounts(this.activity, openingCounts);
-    }
 
     public void increaseOpeningCounts() {
         this.openingCounts++;

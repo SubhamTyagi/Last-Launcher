@@ -3,8 +3,6 @@
 
     <string name="app_name">Last Launcher</string>
 
-    <!--Shared preference strings  -->
-    <string name="action_settings">Ajustes</string>
 
     <!--App information related strings-->
     <!--app menu-->
@@ -49,7 +47,7 @@
     <string name="choose_old_backup_files">Elegir copia de seguridad anterior</string>
 
     <string name="from_clipboard">Desde el portapapeles</string>
-    <string name="from_colorsniffer_app">Desde ColorSniffer</string>
+    <string name="from_color_sniffer_app">Desde ColorSniffer</string>
     <string name="backup_saved_to_downloads">Copia de seguridad guardada en Descargas</string>
     <string name="some_error_occurred">Un error ha ocurrido</string>
     <string name="choose_old_backup_file">Elegir copia de seguridad antigua</string>

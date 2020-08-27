@@ -30,8 +30,8 @@ import java.util.ArrayList;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
 
-//  adapter class
-// this is used in freezed app list and hidden app list
+//
+// this adapter class is used for Frozen app list and Hidden app list
 //
 public class UniversalAdapter extends ArrayAdapter<Apps> {
 

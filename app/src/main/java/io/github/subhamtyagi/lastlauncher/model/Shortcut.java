@@ -19,7 +19,7 @@
 package io.github.subhamtyagi.lastlauncher.model;
 
 /**
- * Shortcut model
+ * AND THE........Shortcut model
  */
 public class Shortcut {
 

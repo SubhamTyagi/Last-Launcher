@@ -82,7 +82,7 @@ public class FrozenAppsDialogs extends Dialog {
 
     private void updateList(ArrayList<Apps> appsList) {
         ArrayList<Apps> appsList2 = new ArrayList<>();
-        // only show freezd app
+        // only show frozen app
         for (Apps apps : appsList) {
             if (apps.isSizeFrozen()) {
                 appsList2.add(apps);

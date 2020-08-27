@@ -1,7 +1,6 @@
 <resources>
 
-    <!--Shared preference strings  -->
-    <string name="action_settings">Einstellungen</string>
+
     <string name="color_for_this_entry">Farben &amp; Größe</string>
     <string name="rename">Umbenenen</string>
     <!--launcher menu-->
@@ -40,7 +39,7 @@
     <!--translation check required-->
     <string name="from_clipboard">Aus der Zwischenablage</string>
     <!--translation check required-->
-    <string name="from_colorsniffer_app">Von der ColorSniffer App</string>
+    <string name="from_color_sniffer_app">Von der ColorSniffer App</string>
 
 
     <!--translation required    -->

@@ -72,7 +72,7 @@ public class RenameInputDialogs extends Dialog implements TextView.OnEditorActio
             String temp = mAppName.getText().toString();
             if (!temp.isEmpty()) {
                 DbUtils.putAppName(appPackage, temp);
-                //Sp Db is slow to reflect this so pass app new name:editor.apply()
+                //reflect this on screen immediately
                 launcherActivity.onAppRenamed(appPackage, temp);
                 cancel();
             }

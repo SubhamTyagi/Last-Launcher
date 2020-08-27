@@ -93,6 +93,7 @@ public class ShortcutUtils {
         return db.shortcutsExists(name);
     }
 
+
     /**
      * number of shortcut installed
      *

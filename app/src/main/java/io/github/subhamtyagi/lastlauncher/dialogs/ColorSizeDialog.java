@@ -34,7 +34,6 @@ public class ColorSizeDialog extends Dialog {
 
     private static final int DELAY = 25;
     // private static final String TAG="ChooseSize";
-
     private final static int DEFAULT_MIN_TEXT_SIZE = DbUtils.getMinAppSize();
     private final static int DEFAULT_MAX_TEXT_SIZE = DbUtils.getMaxAppSize();
 

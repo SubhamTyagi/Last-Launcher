@@ -28,16 +28,14 @@ import io.github.subhamtyagi.lastlauncher.R;
 /**
  * This is the our database class
  * This is purely based on Shared prefs bcz -
- * 1. faster than Sqlite3 Db
- * 2. low memory usage than Sqlite3 db
- * 3. low Cpu usage than sqlite3 db
+ * 1. faster than Sql Db
+ * 2. low memory usage than Sql db
+ * 3. low Cpu usage than sql db
  * 4. easy to add new column when updating the db
  * 5. easy to backup and restore.
- * 6. built in android(no cpp code) and no other library need such as room
- * 7. no overhead when updating db version
+ * 6. no overhead when updating db version.
  * <p>
  * <p>
- * NB: all column are conceptual
  */
 public class DbUtils {
 
@@ -63,8 +61,6 @@ public class DbUtils {
     private static final String APPS_COLORS_DEFAULT = "apps_color_default";
     private static final String APPS_SORTS_TYPE = "apps_sorts_types";
 
-    private static final String SHORTCUT_INSTALLED_URIS = "shortcut_install_uris";
-    private static final String SHORTCUT_INSTALLED_NAMES = "shortcut_install_names";
 
 
     public static void init(Context context) {
@@ -83,9 +79,6 @@ public class DbUtils {
         return SpUtils.getInstance().loadSharedPreferencesFromFile(inputStream);
     }
 
-   /* public static boolean isFirstStart() {
-        return SpUtils.getInstance().getBoolean("sp_first_time_app_open", true);
-    }*/
 
     public static void putAppOriginalName(String activityName, String value) {
         activityName = activityName.replaceAll("\\.", "_") + "_app_original_name";
@@ -395,22 +388,9 @@ public class DbUtils {
         SpUtils.getInstance().putInt(APPS_SORTS_TYPE, type);
     }
 
-  /*  static void setShortcutInstalledUris(Set<String> set) {
-        SpUtils.getInstance().putStringSet(SHORTCUT_INSTALLED_URIS, set);
-    }
 
-    static void setShortcutInstalledNames(Set<String> set) {
-        SpUtils.getInstance().putStringSet(SHORTCUT_INSTALLED_NAMES, set);
-    }
-
-    static HashSet<String> getShortcutNames() {
-        return (HashSet<String>) SpUtils.getInstance().getStringSet(SHORTCUT_INSTALLED_NAMES);
-    }
-
-    static HashSet<String> getShortcutUris() {
-        return (HashSet<String>) SpUtils.getInstance().getStringSet(SHORTCUT_INSTALLED_URIS);
-    }*/
-
+    //  a simple encrypted counter: opening counter is a privacy thing
+    // rest is on device security
     private static String codeCount(int count) {
         char[] map = "(e*+@_$k&m".toCharArray();
         int info = count ^ 86194;

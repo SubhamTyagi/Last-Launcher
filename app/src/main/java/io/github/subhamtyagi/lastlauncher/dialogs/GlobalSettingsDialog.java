@@ -210,7 +210,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
 
         Context context;
         // set theme
-        // if theme wallpaper ie transparent then we have to show other theme
+        // if theme is  wallpaper i.e. transparent then we have to show other theme:
         if (DbUtils.getTheme() == R.style.Wallpaper)
             context = new ContextThemeWrapper(getContext(), R.style.AppTheme);
         else
@@ -264,6 +264,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         // if color snifer app is not installed then send user to install it
         // else show color sniffer option
         if (intent == null) {
+            //Change this to proper url , currently this also show BASTARD PLAY STORE
             Uri uri = Uri.parse("market://details?id=ryey.colorsniffer");
             Intent i = new Intent(Intent.ACTION_VIEW, uri);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

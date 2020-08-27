@@ -105,8 +105,6 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
         topInt = DbUtils.getPaddingTop();
         bottomInt = DbUtils.getPaddingBottom();
 
-        // Log.d(TAG, "onCreate: top value::::"+topInt);
-
         left.setText(String.valueOf(leftInt));
         right.setText(String.valueOf(rightInt));
         top.setText(String.valueOf(topInt));
@@ -115,12 +113,12 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
 
     }
 
-    // private static final String TAG = "PaddingDialog";
+
     @Override
     protected void onStop() {
         super.onStop();
-        //Log.d("PaddingDialog", "onStop: values are being saved to db");
-        // dialog is about to finish so store the latest values to DB
+
+        // dialog is about to finish, so store the updated values to DB
         DbUtils.setPaddingLeft(leftInt);
         DbUtils.setPaddingRight(rightInt);
         DbUtils.setPaddingTop(topInt);

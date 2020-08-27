@@ -27,7 +27,7 @@ import android.widget.TextView;
 /**
  * App TextView class
  * Simple TextView no cosmetic, no styling..
- * only hold some fields that are associated with App
+ * only hold some extra fields that are useful for this launcher
  */
 public class AppTextView extends TextView {
 

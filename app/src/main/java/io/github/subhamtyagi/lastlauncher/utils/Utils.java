@@ -32,22 +32,22 @@ import java.util.Random;
 public class Utils {
 
     // popular and often used app on fdroid and in android system
-    // and some my favourite apps
+    // and some of my favourite apps
     public static List<String> getOftenAppsList() {
         String[] list = {
-                "com.google.android.apps.maps",
-                "com.android.gallery3d",
+                "com.google.android.apps.maps",//map
+                "com.android.gallery3d",//
                 "com.android.settings",
                 "com.android.mms",
                 "com.android.contacts",
                 "com.android.email",
-                "com.android.vending",
+                "com.android.vending",//play store
                 "com.android.chrome",
                 "com.android.calendar",
                 "org.thoughtcrime.securesms",
                 "org.telegram.messenger",
                 "com.whatsapp",
-                "org.sufficientlysecure.viewer",
+                "org.sufficientlysecure.viewer", //pdf viewer
                 "org.fdroid.fdroid",
                 "org.mozilla.firefox",
                 "org.schabi.newpipe",

@@ -90,11 +90,11 @@ public class GlobalColorSizeDialog extends Dialog {
                 // only change the color of app, which had not set yet
                 if (DbUtils.getAppColor(apps.getActivityName()) == DbUtils.NULL_TEXT_COLOR) {
                     // change only the text view color
-                    // do not save the color to individuals apps
+                    // do not save the color of individuals apps
                     apps.getTextView().setTextColor(color);
                 }
             }
-            // save global color to Db
+            // idea: save global color to Db
         });
 
 
@@ -129,7 +129,7 @@ public class GlobalColorSizeDialog extends Dialog {
                         /// DbUtils.putAppSize(activity, textSize);
                     }
                     apps.setSize(++textSize);
-                    //  Log.d(TAG, "onCreate: text size === "+(++textSize));
+
                 }
             }
             size.setText(String.valueOf(appSize));
