@@ -145,6 +145,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // gesture detector
     private Gestures detector;
 
+    private ShortcutUtils shortcutUtils;
+
     private static void showSearchResult(ArrayList<Apps> filteredApps) {
         if (!searching) return;
 
@@ -176,6 +178,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         // initialize the shared prefs may be done in application class
         DbUtils.init(this);
+        shortcutUtils = ShortcutUtils.getInstance(this);
 
         if (BuildConfig.DEBUG) {
             new CrashUtils(getApplicationContext(), "");
@@ -311,7 +314,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
 
         // shortcut or pwa counts
-        int installedShortcut = ShortcutUtils.getShortcutCounts();
+
+
+        int installedShortcut = shortcutUtils.getShortcutCounts();
 
         // Log.d(TAG, "loadApps: install shortcut sizes::" + installedShortcut);
         int appsCount = activities.size();
@@ -399,9 +404,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
 
         // now adds Shortcut
-        // shortcut are stored in DB android system doesn't store them
+        // shortcut are stored in DB, android doesn't store them
 
-        ArrayList<Shortcut> shortcuts = ShortcutUtils.getAllShortcuts();
+        ArrayList<Shortcut> shortcuts = shortcutUtils.getAllShortcuts();
         if (shortcuts != null) {
             for (Shortcut s : shortcuts) {
 
@@ -864,12 +869,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
                     }
                     String name = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
-                    //Log.d(TAG, "onReceive: name::" + name);
-                    if (ShortcutUtils.isShortcutToApp(uri)) {
+
+                    if (shortcutUtils.isShortcutToApp(uri)) {
                         return;
                     }
 
-                    if (!ShortcutUtils.isShortcutAlreadyAvailable(uri)) {
+                    if (!shortcutUtils.isShortcutAlreadyAvailable(name)) {
                         addShortcut(uri, name);
                     }
                 }
@@ -892,6 +897,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         unregisterReceiver(broadcastReceiverShortcutInstall);
         broadcastReceiverAppInstall = null;
         broadcastReceiverShortcutInstall = null;
+        shortcutUtils.close();
     }
 
     // request storage permission
@@ -1134,7 +1140,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private void addShortcut(String uri, String appName) {
         if (mAppsList == null) return;
         mAppsList.add(new Apps(true, uri, appName, getCustomView(), DbUtils.NULL_TEXT_COLOR, DEFAUTL_TEXT_SIZE_NORMAL_APPS, false, false, 0, (int) System.currentTimeMillis() / 1000));
-        ShortcutUtils.addShortcut(new Shortcut(appName, uri));
+        shortcutUtils.addShortcut(new Shortcut(appName, uri));
         // Log.d(TAG, "addShortcut: shortcut name==" + appName);
         sortApps(DbUtils.getSortsTypes());
     }
@@ -1146,10 +1152,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
      */
     private void removeShortcut(AppTextView view) {
         // view.setVisibility(View.GONE);
-        boolean b = ShortcutUtils.removeShortcut(new Shortcut(view.getText().toString(), view.getUri()));
-        // Log.d(TAG, "removeShortcut: boolene" + b);
-        if (b)
-            loadApps();
+        shortcutUtils.removeShortcut(new Shortcut(view.getText().toString(), view.getUri()));
+
+        // if (b)
+        loadApps();
     }
 
     @Override
@@ -1243,7 +1249,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     });
                     break;
                 case SORT_BY_UPDATE_TIME://descending
-                    Collections.sort(mAppsList, (apps, t1) -> (int) (t1.getUpdateTime() - apps.getUpdateTime()));
+                    Collections.sort(mAppsList, (apps, t1) -> t1.getUpdateTime() - apps.getUpdateTime());
                     break;
                 case SORT_BY_RECENT_OPEN://descending
                     Collections.sort(mAppsList, (apps, t1) -> (t1.getRecentUsedWeight() - apps.getRecentUsedWeight()));

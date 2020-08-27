@@ -18,56 +18,46 @@
 
 package io.github.subhamtyagi.lastlauncher.utils;
 
+import android.content.Context;
 import android.content.Intent;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import io.github.subhamtyagi.lastlauncher.model.Shortcut;
 
 /**
  * This class manages Shortcut installed by user
+ * most of the methods are now wrapper to Database
  */
 public class ShortcutUtils {
-    //
-    private static HashSet<String> shortcutName, shortcutUri;
 
-    // get all shortcut installed in this launcher
-    public static ArrayList<Shortcut> getAllShortcuts() {
+    private volatile static Database db;
+    private static ShortcutUtils mInstance;
 
-        shortcutName = DbUtils.getShortcutNames();
-        shortcutUri = DbUtils.getShortcutUris();
-
-        if (shortcutUri == null) return null;
-        if (shortcutName == null) return null;
-
-        int size = shortcutUri.size();
-
-        String[] names = new String[size];
-        String[] uris = new String[size];
-
-        int ii = 0;
-
-        for (String s : shortcutUri) {
-            uris[ii] = s;
-            ii++;
+    public static ShortcutUtils getInstance(Context context) {
+        if (null == db) {
+            synchronized (ShortcutUtils.class) {
+                if (null == db) {
+                    db = new Database(context);
+                    mInstance = new ShortcutUtils();
+                }
+            }
         }
+        return mInstance;
+    }
 
-        ii = 0;
-        for (String s : shortcutName) {
-            names[ii] = s;
-            ii++;
+    public void close() {
+        db.close();
+    }
+
+    private void checkDB() throws Throwable {
+        if (db == null) {
+            throw new Throwable("Db is null");
         }
+    }
 
-        ArrayList<Shortcut> list = new ArrayList<>(shortcutName.size());
-
-        for (int i = 0; i < names.length; i++) {
-            list.add(new Shortcut(names[i], uris[i]));
-        }
-
-        return list;
-
-
+    public ArrayList<Shortcut> getAllShortcuts() {
+        return db.getAllShortcuts();
     }
 
     /**
@@ -75,56 +65,32 @@ public class ShortcutUtils {
      *
      * @param shortcut instance of shortcut to be added
      */
-    public static void addShortcut(Shortcut shortcut) {
-        shortcutName = DbUtils.getShortcutNames();
-        shortcutUri = DbUtils.getShortcutUris();
 
-        if (shortcutName == null) {
-            shortcutName = new HashSet<>();
-            shortcutUri = new HashSet<>();
-        }
+    public void addShortcut(Shortcut shortcut) {
 
-        shortcutName.add(shortcut.getName());
-        boolean b = shortcutUri.add(shortcut.getUri());
-
-        DbUtils.setShortcutInstalledNames(shortcutName);
-        DbUtils.setShortcutInstalledUris(shortcutUri);
-
+        db.insertShortcut(shortcut.getName(), shortcut.getUri());
     }
 
     /**
      * remove the shortcuts
      *
      * @param shortcut to be removed
-     * @return true if successfully removed shortcut
      */
-    public static boolean removeShortcut(Shortcut shortcut) {
-        shortcutName = DbUtils.getShortcutNames();
-        shortcutUri = DbUtils.getShortcutUris();
 
-        // this condition never true
-        if (shortcutUri == null) return false;
 
-        shortcutName.remove(shortcut.getName());
-        boolean b = shortcutUri.remove(shortcut.getUri());
-
-        DbUtils.setShortcutInstalledNames(shortcutName);
-        DbUtils.setShortcutInstalledUris(shortcutUri);
-
-        return b;
-
+    public void removeShortcut(Shortcut shortcut) {
+        db.deleteShortcuts(shortcut.getName());
     }
+
 
     /**
      * return true if shortcut is already install
      *
-     * @param uri uri of shortcut
+     * @param name uri of shortcut
      * @return true if already installed
      */
-    public static boolean isShortcutAlreadyAvailable(String uri) {
-        shortcutUri = DbUtils.getShortcutUris();
-        if (shortcutUri == null) return false;
-        return shortcutUri.contains(uri);
+    public boolean isShortcutAlreadyAvailable(String name) {
+        return db.shortcutsExists(name);
     }
 
     /**
@@ -132,13 +98,11 @@ public class ShortcutUtils {
      *
      * @return number of shortcut installed in this launcher
      */
-    public static int getShortcutCounts() {
-        shortcutUri = DbUtils.getShortcutUris();
-        if (shortcutUri == null) return 0;
-        return shortcutUri.size();
+    public int getShortcutCounts() {
+        return db.getShortcutsCounts();
     }
 
-    public static boolean isShortcutToApp(String uri) {
+    public boolean isShortcutToApp(String uri) {
         try {
             Intent intent = Intent.parseUri(uri, 0);
             if (intent.getCategories() != null && intent.getCategories().contains(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(intent.getAction())) {

@@ -26,6 +26,10 @@ public class Shortcut {
     private String name;
     private String uri;
 
+    public Shortcut() {
+
+    }
+
     public Shortcut(String name, String uris) {
         this.name = name;
         this.uri = uris;

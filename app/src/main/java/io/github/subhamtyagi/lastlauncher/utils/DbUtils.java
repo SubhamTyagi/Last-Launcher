@@ -22,8 +22,6 @@ import android.content.Context;
 import android.view.Gravity;
 
 import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Set;
 
 import io.github.subhamtyagi.lastlauncher.R;
 
@@ -45,6 +43,7 @@ public class DbUtils {
 
     public static final int NULL_TEXT_SIZE = -1;
     public final static int NULL_TEXT_COLOR = -1;
+
     private static final String PADDING_TOP = "padding_top";
     private static final String RANDOM_COLOR_FOR_APPS = "random_color_for_apps";
     private static final String READ_WRITE_PERMISSION = "read_write_permission";
@@ -396,7 +395,7 @@ public class DbUtils {
         SpUtils.getInstance().putInt(APPS_SORTS_TYPE, type);
     }
 
-    static void setShortcutInstalledUris(Set<String> set) {
+  /*  static void setShortcutInstalledUris(Set<String> set) {
         SpUtils.getInstance().putStringSet(SHORTCUT_INSTALLED_URIS, set);
     }
 
@@ -410,7 +409,7 @@ public class DbUtils {
 
     static HashSet<String> getShortcutUris() {
         return (HashSet<String>) SpUtils.getInstance().getStringSet(SHORTCUT_INSTALLED_URIS);
-    }
+    }*/
 
     private static String codeCount(int count) {
         char[] map = "(e*+@_$k&m".toCharArray();
