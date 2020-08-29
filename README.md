@@ -1,39 +1,50 @@
-# Last Launcher [![Translate on Weblate](https://img.shields.io/badge/Translation-Weblate-green)](https://hosted.weblate.org/projects/last-launcher)
+<p align="center"><a href="https://f-droid.org/packages/io.github.subhamtyagi.lastlauncher"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="50"></a></p>
+<h1 align="center"><b>Last Launcher</b></h1>
+<h4 align="center">Last Launcher is a fast,simple, minimal and customizable single-page Android launcher aiming to provide the fastest and simplest ever user experience.</h4>
+<p align="center">
+<a href="https://hosted.weblate.org/projects/last-launcher" alt="Translate on Weblate"><img src="https://img.shields.io/badge/Translation-Weblate-red" ></a>
+</p>
+<hr>
 
-Last Launcher is a simple, minimal, and customizable single-page Android launcher aiming to provide the fastest and simplest user experience.
+<h2 align="center"><b>A short Introduction</b></h2>
+<h4 align="center">This launcher has been tiny, quick, and fully-featured since its inception</h4>
 
-[<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="50">](https://f-droid.org/packages/io.github.subhamtyagi.lastlauncher/)
+<h2 align="center"><b> Features</b></h2>
 
-### Short story:
-No simple and minimal launcher light on RAM and easy on battery could be found on F-Droid or Google Play.
-This launcher has been small, fast, and fullly-featured since its inception.
-
-## Features
 * Low battery and CPU usage.
 * Faster than fastest. :)
-* Always libre copylefted software with no ads.
+* Always free(As in Beer and also as in freedom) and libre copylefted software with no ads.
 * Material design.
 * No icons and widgets.
 * Colourful app names.
 * Custom font selection.
 
 
-## Contribution and Donation
+<h2 align="center"><b> Contribution, Donation and Translation</b></h2>
+
 1. Create a pull request. All code is simple and well-commented.
-2. Translate this app on [Weblate](https://hosted.weblate.org/projects/last-launcher) in your local language.
+2. Donation: No donation, Use this as free.
+3. Translate this app on [Weblate](https://hosted.weblate.org/projects/last-launcher) in your local language.
+
+
+[![Translation status](https://hosted.weblate.org/widgets/last-launcher/-/last-launcher/multi-blue.svg)](https://hosted.weblate.org/engage/last-launcher/?utm_source=widget)
+
 
 ### To do
 * [ ] FlowLayout improvements.
 * [ ] Background colors.
 
-## Screenshots
+<h2 align="center"><b> Screenshots</b><h2>
+ 
 | Home|Home|Home|Home|
 |:-:|:-:|:-:|:-:|
 | ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true "Home")| ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png?raw=true )|
 
+
 | Home|Home|Home|Home|
 |:-:|:-:|:-:|:-:|
 | ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png?raw=true "Home")| ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/7.png?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/8.png?raw=true )|
+
 
 ## Third-party Libraries and Fonts.
 * ### Android Libraries
