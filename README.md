@@ -1,6 +1,6 @@
 <p align="center"><a href="https://f-droid.org/packages/io.github.subhamtyagi.lastlauncher"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="50"></a></p>
 <h1 align="center"><b>Last Launcher</b></h1>
-<h4 align="center">Last Launcher is a fast,simple, minimal and customizable single-page Android launcher aiming to provide the fastest and simplest ever user experience.</h4>
+<h4 align="center">Last Launcher is a fast, simple, minimal and customizable single-page Android launcher aiming to provide the fastest and simplest ever user experience.</h4>
 <p align="center">
 <a href="https://hosted.weblate.org/projects/last-launcher" alt="Translate on Weblate"><img src="https://img.shields.io/badge/Translation-Weblate-red" ></a>
 </p>

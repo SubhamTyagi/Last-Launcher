@@ -1,0 +1,11 @@
+*Beta release 5*
+
+*ALL PREVIOUS INSALLED SHORTCUTS WILL NOT BE ACCESSIABLE*
+
+* What's New in this release
+
+- Bug fixes for "Shortcuts are not working well after deletion".
+- Most of the work is done under the hood.
+- Translation for French, German, Hungrain, Norwegian Bokmāl and  Russian
+
+
