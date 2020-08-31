@@ -18,6 +18,7 @@
 * No icons and widgets.
 * Colourful app names.
 * Custom font selection.
+* See a shot in [YouTube Video](https://www.youtube.com/watch?v=SzhJgH4a2cU)
 
 
 <h2 align="center"><b> Contribution, Donation and Translation</b></h2>
