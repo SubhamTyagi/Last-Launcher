@@ -1,0 +1,9 @@
+* Wersja beta 3 *
+
+
+* Co nowego w tej wersji
+
+- Sortuj aplikacje według czasu aktualizacji, najpierw ostatnie.
+- Jaśniejszy i material kolor.
+- Ulepszenie gestów (NAPRAWA: Pasek wyszukiwania otwierał się zbyt mocno)
+- Naprawiono błąd związany ze skrótami.

@@ -1,0 +1,10 @@
+* Wersja zapoznawcza 3 *
+-Aby uzyskać dostęp do ustawień Launchera, kliknij i przytrzymaj pusty obszar
+
+-Zamroź/odblokuj rozmiar aplikacji
+-Ukryj aplikacje (tymczasowo)
+-Niestandardowe czcionki
+-Wiele motywów
+-Zresetuj do ustawień domyślnych
+-Ustawienia kopii zapasowych i przywracania
+-Losowe kolory

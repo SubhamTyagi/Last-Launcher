@@ -1,0 +1,9 @@
+* Wersja beta 5 *
+
+* WSZYSTKIE POPRZEDNIE ZAINSTALOWANE SKRÓTY NIE BĘDĄ DOSTĘPNE *
+
+* Co nowego w tej wersji
+
+- Poprawki błędów „Skróty nie działają dobrze po usunięciu”.
+- Większość prac wykonywana jest pod maską.
+- Tłumaczenie na francuski, niemiecki, węgierski, norweski bokmāl i rosyjski

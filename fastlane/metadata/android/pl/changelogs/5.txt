@@ -1,0 +1,5 @@
+* Wersja próbna 5 *
+
+- Lista aplikacji Hide and Freeze
+- poprzednie ustawienia mogą <font color="#ff000"> <b> przerwać </b> </font>
+- poprzedni plik kopii zapasowej może <font color="#ff000"> <b> nie działał </b> </font>

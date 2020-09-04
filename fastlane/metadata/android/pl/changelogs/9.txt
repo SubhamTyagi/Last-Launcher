@@ -1,0 +1,9 @@
+* Wersja zapoznawcza 9 *
+
+- Możliwość uruchamiania ukrytych aplikacji.
+- Możliwość resetowania kolorów aplikacji.
+- Wybór koloru i rozmiaru na całym świecie.
+- Możliwość przywrócenia domyślnych czcionek.
+- Poprawki kolorów umożliwiające nieodwołalne działanie.
+- Zwiększone limity wypełnienia.
+- Poprawka błędu związana z resetowaniem nie działa w przypadku rozmiaru aplikacji.

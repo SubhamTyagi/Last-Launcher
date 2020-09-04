@@ -1,0 +1,40 @@
+Last Launcher to szybki, prosty, minimalistyczny, konfigurowalny program uruchamiający system Android. Ma na celu zapewnienie najszybszego i najprostszego w historii doznania użytkownika.
+
+<p>
+*************************
+** To jest <font color="#FF6E40"> <b> wersja beta </b> </font> **
+*************************
+</p>
+
+<h2> Projekt </h2>
+
+▶ Zawsze za darmo (Gratis i Wolny).
+▶ Wyłącznie F-droid.
+
+<h2> 🚀 Wydajność</h2>
+▶ Szybciej niż najszybciej :)
+▶ Lekki i mały rozmiar apk mniejszy niż 100KB.
+▶ Niskie zużycie pamięci i procesora.
+
+<h2> 💥 Funkcje </h2>
+
+▶ Szukaj wśród aplikacji.
+▶ Obsługa skrótów i PWA.
+▶ Zmiana rozmiaru i kolorowe nazwy aplikacji.
+▶ Sortuje aplikacje na różne sposoby.
+▶ Niestandardowe wyrównanie i wypełnienie.
+▶ Losowe kolory.
+▶ Wiele motywów.
+▶ Ukryj aplikacje.
+▶ Zablokuj rozmiar aplikacji.
+▶ Kopia zapasowa/przywracanie danych launcher.
+▶ Brak ikon i widżetów <strike> (może to być wada) </strike>.
+▶ Więcej <font color="#FF6E40"> <b> wypróbuj launcher </b> </font> i zobacz różnicę.
+
+<h2> Nawigacja </h2>
+
+▶ <font color="#00ffb2"> Długie kliknięcie na PUSTY OBSZAR, aby uzyskać dostęp do ustawień programu uruchamiającego. </font>
+▶ <font color="#00ffb2"> Przesuń w PRAWO, aby uzyskać dostęp do paska wyszukiwania. </font>
+▶ <font color="#00ffb2"> Aby ukryć pasek wyszukiwania, naciśnij Wstecz/Ekran główny lub Przesuń w LEWO ekran. </font>
+
+<h4> Przetłumacz tę aplikację na <a href="https://hosted.weblate.org/projects/last-launcher"> Weblate </a> w swoim lokalnym języku. </h4>
