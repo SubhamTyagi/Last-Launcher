@@ -1,0 +1,10 @@
+* Wersja zapoznawcza 2 *
+
+- Zmień nazwę aplikacji
+- Uzyskaj informacje o aplikacji jednym kliknięciem
+- Opcja odinstalowania
+- Więcej kontroli kolorów
+- Udoskonalenie interfejsu użytkownika dotyczącego koloru i rozmiaru
+
+- Kod dostępu do ustawień globalnych (nie zaimplementowany)
+   Aby uzyskać dostęp do długiego kliknięcia w obszarze tła

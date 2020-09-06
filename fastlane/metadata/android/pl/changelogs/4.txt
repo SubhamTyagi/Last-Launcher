@@ -1,0 +1,4 @@
+* Wersja próbna *
+
+* Aktualizacje awaryjne
+* naprawienie aplikacji znikającej z programów uruchamiających

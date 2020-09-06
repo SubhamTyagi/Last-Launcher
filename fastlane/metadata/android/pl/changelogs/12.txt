@@ -1,0 +1,11 @@
+* Wersja beta 2 *
+
+
+* Co nowego w tej wersji
+
+- Szukaj w aplikacjach.
+- Ulepszenia wydajności (uruchamianie, sortowanie i losowy kolor).
+- Dalsza redukcja zużycia pamięci.
+- Naprawiono błąd związany ze skrótami i PWA, który dalej powodował wyciek pamięci.
+
+- Ta aktualizacja usunie stary skrót z tego programu uruchamiającego, więc przeczytałeś je po tej aktualizacji.

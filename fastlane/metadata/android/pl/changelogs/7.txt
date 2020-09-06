@@ -1,0 +1,7 @@
+* Wersja próbna 7 *
+
+- Pasek stanu i kolor paska nawigacji zgodnie z wybranym motywem.
+- Generuj ten sam losowy kolor za każdym razem dla aplikacji perticular (dzięki Sylvia).
+- Wyrównanie (środek, lewa i prawa) aplikacji.
+- Zmiana kolejności elementów PopMenu i Cautious Red dla niektórych pozycji.
+- Poprawka błędu motywu Hacker Red.

@@ -1,0 +1,8 @@
+* Wersja zapoznawcza 8 *
+
+- Dopełnienie ekranu głównego.
+- Połączone menu kolorów i rozmiarów dla szybkiego i wygodnego dostępu.
+- Nowy interfejs wyboru rozmiaru dla dokładnych wartości.
+- Poprawa kodu źródłowego aplikacji w celu lepszego zrozumienia.
+
+- już wkrótce: pasek wyszukiwania aplikacji

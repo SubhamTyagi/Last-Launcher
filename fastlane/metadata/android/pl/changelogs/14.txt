@@ -1,0 +1,8 @@
+* Wersja beta 4 *
+
+
+* Co nowego w tej wersji
+
+- Pasek wyszukiwania jest teraz dostępny poprzez przesunięcie w LEWO/W PRAWO zamiast w GÓRĘ
+- Kopia zapasowa naprawiona dla Androida 6 lub wcześniejszego.
+- Hiszpańskie tłumaczenie
