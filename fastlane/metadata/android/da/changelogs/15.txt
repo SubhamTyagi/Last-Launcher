@@ -1,0 +1,9 @@
+*Beta udgivelse 5*
+
+*ALLE TIDLIGERE INSTALLEREDE GENVEJE VIL IKKE VÆRE TILGÆNGELIGE*
+
+* Hvad er nyt denne udgivelse
+
+- Fejlrettelser til "Genveje fungerer ikke godt efter sletning".
+- Det er meste baggrunds arbejde.
+- Oversættelse til Fransk, Tysk, Ungarsk, Norsk Bokmål og Russisk

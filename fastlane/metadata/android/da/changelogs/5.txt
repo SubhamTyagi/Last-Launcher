@@ -1,0 +1,5 @@
+*Smugkig udgivelse 5*
+
+- Skjul og Lås appliste
+- tidligere indstillinger kan i <font color="#ff000"><b>stykker</b></font>
+- tidligere Sikkerhedskopiering fil <font color="#ff000"><b>fungerede muligvis ikke</b></font>

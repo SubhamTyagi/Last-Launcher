@@ -1,0 +1,7 @@
+*Smugkig udgivelse 7*
+
+- Statuslinje og navigationslinjefarve pr. Valgt tema.
+- Generér den samme tilfældige farve hver gang til en bestemt app (tak til Sylvia).
+- Justeringer(midt, venstre og højre) af Apps.
+- Ombestilling af popmenupunkter og forsigtig rød farve for nogle emner. 
+- Fejlrettelse af Hacker Rød tema.

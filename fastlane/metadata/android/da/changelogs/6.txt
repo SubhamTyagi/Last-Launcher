@@ -1,0 +1,10 @@
+*Smugkig udgivelse 6*
+
+- Forbedringer af forstørrelseslinje i App størrelse.
+- App Farvefelt forbedringer.
+- App Omdøb feltforbedringer.
+- App åbning animation. 
+- Layouts ydeevne forbedring.
+- Fejlrettelse relateret til den seneste menu.
+- Fejlrettelse relateret til app størrelsesreduktion ved tryk.
+- Fejlrettelse relateret til en eller anden app, der ikke åbnes.

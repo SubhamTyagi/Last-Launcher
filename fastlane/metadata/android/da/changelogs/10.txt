@@ -1,0 +1,7 @@
+*Smugkig udgivelse 10*
+
+- Sortér App efter Navn, Størrelse, Farve, App brug
+- Vis genveje til apps, webstedsgenveje og PWA'er,
+- fejlrettelse til tema er ikke korrekt efter sikkerhedskopiering
+- fejlrettelse for røde elementer vises ikke korrekt
+- forbedringer af ydeevnen.

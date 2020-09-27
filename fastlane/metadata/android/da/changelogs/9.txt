@@ -1,0 +1,9 @@
+*Smugkig udgivelse 9*
+
+- Mulighed for at skjulte apps.
+- Mulighed for at nulstille Appfarver.
+- Valg af Farve og Størrelse Globalt.
+- Mulighed for at gendanne standardskrifttyper.
+- Farveforbedringer til uigenkaldelig drift.
+- Øgede Tilpasning af startskærm.
+- Fejlrettelse relateret til nulstilling fungerer ikke for appstørrelse.

@@ -1,0 +1,40 @@
+Last Launcher er Hurtig, Enkel, Minimalistisk, Tilpasselig Android launcher. Det sigter mod at give den hurtigste og enkleste brugeroplevelse nogensinde.
+
+<p>
+*************************
+**Dette er <font color="#FF6E40"><b>Beta udgivelse</b></font>**
+*************************
+</p>
+
+<h2>Projekt</h2>
+
+▶ Altid Fri som i Frihed og reklamefri.
+▶ F-droid eksklusiv.
+
+<h2>🚀 Ydeevne</h2>
+▶ Hurtigere end hurtigt :)
+▶ Let og lille størrelse apk mindre end 100 KB.
+▶ Lav hukommelse og cpu forbrug.
+
+<h2>💥 Funktioner</h2>
+
+▶ Søg blandt apps.
+▶ Genveje og understøtter PWA'er.
+▶ Ændre skriftstørrelse og farverige appnavne.
+▶ Sortér apps på forskellige måder.
+▶ Tilpas efter eget behov.
+▶ Tilfældige Farver.
+▶ Flere temaer.
+▶ Skjul apps.
+▶ Lås apps størrelse.
+▶ Sikkerhedskopiering/Gendannelse af launcher data.
+▶ Ingen ikoner og widgets<strike>(kan være en ulempe)</strike>.
+▶ For mere <font color="#FF6E40"><b>prøv launcheren</b></font> og se forskellen.
+
+<h2>Navigation</h2>
+
+▶<font color="#00ffb2"> Langt tryk på TOMT OMRÅDE for at få adgang til launcher indstillinger.</font>
+▶<font color="#00ffb2"> Swipe HØJRE for at få adgang til Søgelinjen.</font>
+▶<font color="#00ffb2"> For at skjule søgefeltet skal du trykke på Tilbage / Hjem eller Swipe VENSTRE på skærmen.</font>
+
+<h4>Oversæt denne app på <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a> til dit lokale sprog.</h4>

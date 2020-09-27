@@ -1,0 +1,9 @@
+*Beta udgivelse 3*
+
+
+* Hvad er nyt denne udgivelse
+
+- Sortér apps efter Sidst opdateret, Sidst brugt.
+- Lysere og materiel farve.
+- Gestusforbedring (FIX: Søgelinjen åbnede for meget)
+- Genvejsrelateret fejlrettelse.

@@ -1,0 +1,10 @@
+*Smugkig udgivelse 2*
+
+- Omdøb Appnavn
+- Få appoplysninger med et enkelt klik
+- Afinstallér mulighed
+- Bedre Farvekontrol
+- Forbedring af Farve og Størrelse UI
+
+- Globale Indstillinger (ikke implementeret)
+   For at få adgang til langt tryk på baggrundsområdet
