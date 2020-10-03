@@ -1,0 +1,8 @@
+*Smugkig udgivelse 8*
+
+- Øgede Tilpasning af startskærm.
+- Kombineret menu med Farve og Størrelse giver hurtig og nem adgang.
+- En ny størrelse UX til nøjagtige værdier.
+- Forbedring af appkildekode for bedre forståelse. 
+
+- kommer snart: App søgefelt
