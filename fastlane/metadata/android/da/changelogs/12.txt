@@ -1,0 +1,11 @@
+*Beta udgivelse 2*
+
+
+* Hvad er nyt denne udgivelse
+
+- Søg i gennem App.
+- Ydelsesforbedringer (opstart, sortering og tilfældig farve).
+- Yderligere hukommelsesforbrugsreduktion.
+- Fejlrettelse relateret til genveje og PWA'er, der yderligere forårsagede hukommelseslækage. 
+
+- Denne opdatering fjerner den gamle genvej fra denne launcher, så du skal genlæse dem efter denne opdatering.

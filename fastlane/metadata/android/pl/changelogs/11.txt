@@ -1,0 +1,13 @@
+* Wersja beta 1 *
+
+* Po wielu wersjach zapoznawczych Last Launcher wszedł do fazy beta.
+
+* Co nowego w tej wersji
+
+- Szukaj w aplikacjach.
+- Ulepszenia wydajności (uruchamianie, sortowanie i losowy kolor).
+- Duża redukcja (23%) w rozmiarze apk.
+- Dalsza redukcja zużycia pamięci.
+- Naprawiono błąd związany ze skrótami i PWA, który dalej powodował wyciek pamięci.
+
+- Ta aktualizacja usunie stary skrót z tego programu uruchamiającego, więc przeczytałeś je po tej aktualizacji.

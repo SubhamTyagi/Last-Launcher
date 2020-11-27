@@ -1,0 +1,13 @@
+*Beta udgivelse 1*
+
+* Efter tidligere smugkig udgivelser gik Last Launcher ind i beta fase.
+
+* Hvad er nyt denne udgivelse
+
+- Søg i gennem App.
+- Ydelsesforbedringer (opstart, sortering og tilfældig farve).
+- Stor reduktion (23%) i apk-størrelse.
+- Yderligere hukommelsesforbrugsreduktion.
+- Rettet fejl relateret til genveje og PWA'er, der yderligere forårsagede hukommelseslækage. 
+
+- Denne opdatering fjerner den gamle genvej fra denne launcher, så du skal genlæse dem efter denne opdatering.

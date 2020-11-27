@@ -1,0 +1,7 @@
+* Pregled izdanja 10 *
+
+- razvrstajvanje programa po imenu, veličini, boji, upotrebi
+- prikaz prečaca za programe, web mjesta i PWA-ove,
+- ispravljena greška: temu nije ispravna nakon sigurnosne kopije
+- ispravljena greška: crveni elementi se ne prikazuju ispravno
+- poboljšanja učinkovitosti.

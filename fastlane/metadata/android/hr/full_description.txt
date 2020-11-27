@@ -1,0 +1,40 @@
+„Zadnji pokretač” je brz, jednostavan, minimalistički, prilagodljiv pokretač za Android. Cilj mu je pružiti najbrže i najjednostavnije korisničko iskustvo ikad.
+
+<p>
+*************************
+**Ovo je <font color="#FF6E40">Beta izdanje</font>**
+*************************
+</p>
+
+<h2>Projekt</h2>
+
+▶ Uvijek slobodan (besplatan i slobodan).
+▶ Ekskluzivno za F-droid.
+
+<h2>🚀 Učinkovitost</h2>
+▶ Brži od najbržeg :)
+▶ Lagan i mali program manji od 100 KB.
+▶ Niska upotreba memorije i procesora.
+
+<h2>💥 Funkcije</h2>
+
+▶ Pretraživanje programa.
+▶ Podrška za prečace i PWA.
+▶ Promjenjiva i živopisna imena programa.
+▶ Razvrstavanje programa na razne načine.
+▶ Prilagođeno poravnanje i odmaci.
+▶ Slučajni odabir boja.
+▶ Razne teme.
+▶ Skrivanje programa.
+▶ Zaključavanje veličine programa.
+▶ Izrada sigurnosnih kopija / obnavljanje podataka pokretača.
+▶ Bez ikona i dodataka <strike>(može biti nedostatak)</strike>.
+▶ Za sve ostalo, <font color="#FF6E40">isprobaj pokretača</b></font> i doživi razliku.
+
+<h2>Navigacija</h2>
+
+▶ <font color="#00ffb2"> Pritisni dugo na PRAZNO PODRUČJE za pristup postavkama pokretača.</font>
+▶ <font color="#00ffb2"> Povuci prst udesno za pristup traci pretrage.</font>
+▶ <font color="#00ffb2"> Za skrivanje trake pretrage, pritisni Natrag/Početna ili povuci prstom LIJEVO na ekranu.</font>
+
+<h4>Prevedi program na <a href="https://hosted.weblate.org/projects/last-launcher">Weblateu</a> na tvoj jezik.</h4>

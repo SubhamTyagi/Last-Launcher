@@ -1,0 +1,10 @@
+*Smugkig udgivelse*
+-For at få adgang til Launcher indstillinger langt tryk på tom område.
+
+-Lås/frigør app størrelse.
+-Skjul apps (midlertidigt)
+-Tilpas skrifttyper
+-Flere temaer
+-Nulstil til standardindstillinger
+-Sikkerhedskopier og gendan indstillinger
+-Tilfældige farver

@@ -1,0 +1,7 @@
+* Wersja testowa 10 *
+
+- Sortuj aplikację według nazwy, rozmiaru, koloru, użycia aplikacji
+- Pokaż skróty do aplikacji, skróty do stron internetowych i PWA,
+- poprawka błędu dla motywu nie jest poprawna po utworzeniu kopii zapasowej
+- poprawka błędu dla czerwonego przedmiotu nie jest wyświetlana poprawnie
+- ulepszenia w wydajności.

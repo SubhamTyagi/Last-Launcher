@@ -1,0 +1,10 @@
+* Wersja próbna 6 *
+
+- Ulepszenia paska wyszukiwania rozmiaru aplikacji.
+- Ulepszenia paska kolorów aplikacji.
+- Ulepszenia pola zmiany nazwy aplikacji.
+- Animacja otwierania aplikacji.
+- Poprawiono wydajności układów.
+- Naprawiono błąd związany z ostatnim menu.
+- Naprawiono błąd związany ze zmniejszaniem rozmiaru aplikacji po kliknięciu.
+- Naprawiono błąd związany z brakiem otwierania niektórych aplikacji.

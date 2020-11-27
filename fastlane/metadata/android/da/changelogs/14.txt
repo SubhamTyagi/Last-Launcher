@@ -1,0 +1,8 @@
+Beta udgivelse 4*
+
+
+* Hvad er nyt denne udgivelse
+
+- Søgefeltet er nu tilgængelig ved at swipe VENSTRE/HØJRE i stedet for OP
+- Sikkerhedskopiering bug er rettet til Android 6 eller tidligere.
+- Spansk oversættelse
