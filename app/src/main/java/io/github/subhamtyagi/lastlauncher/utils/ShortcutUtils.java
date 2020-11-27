@@ -31,19 +31,16 @@ import io.github.subhamtyagi.lastlauncher.model.Shortcut;
  */
 public class ShortcutUtils {
 
-    private volatile static Database db;
-    private static ShortcutUtils mInstance;
+    private Database db;
 
-    public static ShortcutUtils getInstance(Context context) {
+    public ShortcutUtils(Context context) {
         if (null == db) {
             synchronized (ShortcutUtils.class) {
                 if (null == db) {
                     db = new Database(context);
-                    mInstance = new ShortcutUtils();
                 }
             }
         }
-        return mInstance;
     }
 
     public void close() {

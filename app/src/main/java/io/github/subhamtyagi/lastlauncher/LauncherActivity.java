@@ -178,7 +178,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         // initialize the shared prefs may be done in application class
         DbUtils.init(this);
-        shortcutUtils = ShortcutUtils.getInstance(this);
+        shortcutUtils = new ShortcutUtils(this);
 
         if (BuildConfig.DEBUG) {
             new CrashUtils(getApplicationContext(), "");

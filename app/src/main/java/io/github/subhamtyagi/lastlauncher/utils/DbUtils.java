@@ -389,7 +389,7 @@ public class DbUtils {
     }
 
 
-    //  a simple encrypted counter: opening counter is a privacy thing
+    //  a simple ciphered counter: "opening counter" is a private thing
     // rest is on device security
     private static String codeCount(int count) {
         char[] map = "(e*+@_$k&m".toCharArray();

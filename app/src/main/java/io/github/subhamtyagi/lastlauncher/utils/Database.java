@@ -31,7 +31,7 @@ import io.github.subhamtyagi.lastlauncher.model.Shortcut;
 
 //This is new database based on SQLITE
 // Why not ROOM: simply make this launcher lightweight, BTW This app database is too small :)
-public class Database extends SQLiteOpenHelper {
+class Database extends SQLiteOpenHelper {
 
 
     private static final String DB_NAME = "launcher.db";
