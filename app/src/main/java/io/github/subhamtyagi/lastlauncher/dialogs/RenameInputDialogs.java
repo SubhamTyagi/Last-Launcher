@@ -52,7 +52,6 @@ public class RenameInputDialogs extends Dialog implements TextView.OnEditorActio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.dialog_rename_input);
         mAppName = findViewById(R.id.ed_input);
         mAppName.setText(oldAppName);
