@@ -53,4 +53,6 @@
     <string name="rename">Premenovať</string>
     <string name="color_for_this_entry">Farby &amp; Veľkosť</string>
     <string name="action_settings">Nastavenia</string>
+    <string name="recently_first">Nedávneho použitia</string>
+    <string name="custom">Vlastné</string>
 </resources>
