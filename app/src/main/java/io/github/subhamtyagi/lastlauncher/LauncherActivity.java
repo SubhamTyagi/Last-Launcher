@@ -83,6 +83,7 @@ import io.github.subhamtyagi.lastlauncher.utils.Utils;
 import io.github.subhamtyagi.lastlauncher.views.textview.AppTextView;
 
 import static android.content.Intent.ACTION_PACKAGE_ADDED;
+import static android.content.Intent.ACTION_PACKAGE_CHANGED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
 import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 
@@ -528,7 +529,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        loadApps();
+
         if (searching) {
             mSearchBox.setVisibility(View.GONE);
             searching = false;
@@ -837,6 +838,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         //  Log.d("WTF", "registerForReceivers: called ");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ACTION_PACKAGE_ADDED);
+        intentFilter.addAction(ACTION_PACKAGE_CHANGED);
         intentFilter.addAction(ACTION_PACKAGE_REMOVED);
         intentFilter.addAction(ACTION_PACKAGE_REPLACED);
         intentFilter.addDataScheme("package");
