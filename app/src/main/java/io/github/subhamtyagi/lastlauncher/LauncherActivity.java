@@ -528,6 +528,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
+        loadApps();
         if (searching) {
             mSearchBox.setVisibility(View.GONE);
             searching = false;
