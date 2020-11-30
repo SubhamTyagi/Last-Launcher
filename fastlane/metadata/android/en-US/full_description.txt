@@ -6,6 +6,8 @@ Last Launcher is Quick, Simple, Minimalist, Customizable Android launcher. It ai
 *************************
 </p>
 
+<h4>Translate this app on <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a> in your local language.</h4>
+
 <h2>Project</h2>
 
 ▶ Always Free(Gratis and Libre).

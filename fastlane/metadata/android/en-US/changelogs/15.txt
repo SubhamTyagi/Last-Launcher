@@ -5,7 +5,9 @@
 * What's New in this release
 
 - Bug fixes for "Shortcuts are not working well after deletion".
+- Bug fixes for "App is not showing or disappearing after enable or disable"
 - Most of the work is done under the hood.
-- Translation for French, German, Hungrain, Norwegian Bokmāl and  Russian
+- Translation for French, German, Hungarian, Norwegian Bokmāl, Russian, Danish, Polish, Slovak, Croatian and Spanish.
+- Thanks to all translators
 
 
