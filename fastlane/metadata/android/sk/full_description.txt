@@ -1,0 +1,42 @@
+Last Launcher je Rýchla, Jednoduchá, Minimalistická, Upraviteľná domovská obrazovka pre Android. Jej cieľom je čo najrýchlejšie a najjednoduchšie používanie. 
+
+<p>
+*************************
+**Toto je <font color="#FF6E40"><b>Beta vydanie</b></font>**
+*************************
+</p>
+
+<h4>Pomôcť s prekladom do Vášho jazyka môžete na stránke <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a>.</h4>
+
+<h2>Projekt</h2>
+
+▶ Navždy otvorený (Zadarmo a Slobodný).
+▶ Exkluzívne na F-Droid.
+
+<h2>🚀 Výkon</h2>
+▶ Rýchlejší ako najrýchlejší :)
+▶ Ľahký s malou veľkosťou apk súboru aplikácie, menšou ako 100 KB. 
+▶ Nízke pamäťové a CPU nároky.
+
+<h2>💥 Funkcie</h2>
+
+▶ Vyhľadávanie medzi aplikáciami. 
+▶ Rýchle odkazy a podpora PWAs.
+▶ Meniteľné veľkosti a farvy názvov aplikácií.
+▶ Zoraďovanie aplikácii na základe rôznych vlastností.
+▶ Voliteľné zarovnanie a odsadenie. 
+▶ Náhodné farby.
+▶ Viaceré témy vzhľadu.
+▶ Skrytie aplikácií.
+▶ Uzamknutie veľkostí názvov aplikácií.
+▶ Záloha/Obnovenie dát/nastavení.
+▶ Žiadne ikony a widgety<strike>(môže byť nevýhoda)</strike>.
+▶ Pre viac informácií <font color="#FF6E40"><b>vyskúšajte túto domovskú obrazovku</b></font> a zistite ten rozdiel oproti klasickým.
+
+<h2>Navigácia</h2>
+
+▶<font color="#00ffb2"> Dlhý klik na PRÁZDNE MIESTO pre prístup do nastavení domovskej obrazovky. </font>
+▶<font color="#00ffb2"> Potiahnutie DOPRAVA pre vyhľadávanie.</font>
+▶<font color="#00ffb2"> Pre skrytie vyhľadávania stlačte Naspäť/Domov alebo potiahnite prstom DOĽAVA po obrazovke.</font>
+
+<h4>Pomôcť s prekladom do Vášho jazyka môžete na stránke <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a>.</h4>
