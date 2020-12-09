@@ -1,0 +1,13 @@
+*Beta izdanje 1*
+
+* Nakon mnogih predizdanja, „Last Launcher” se nalazi u beta fazi.
+
+* Novosti u ovom izdanju
+
+- Pretraži aplikacije.
+- Poboljšanja performanse (pokretanje, razvrstavanje i slučajna boja).
+- Značajno smanjenje (23 %) apk veličine.
+- Daljnje smanjenje potrošnje memorije.
+- Ispravljena je greška koja se odnosi na prečace i PWA-e, koja je dodatno uzrokovala gubljenje memorije. 
+
+- Ova verzija uklanja stari prečac iz pokretača, stoga se mora ponovo dodati nakon ovog aktualiziranja.
