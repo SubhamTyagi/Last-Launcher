@@ -1,10 +1,12 @@
-„Zadnji pokretač” je brz, jednostavan, minimalistički, prilagodljiv pokretač za Android. Cilj mu je pružiti najbrže i najjednostavnije korisničko iskustvo ikad.
+„Last Launcher” je brz, jednostavan, minimalistički, prilagodljiv pokretač za Android. Cilj mu je pružiti najbrže i najjednostavnije korisničko iskustvo ikad.
 
 <p>
 *************************
-**Ovo je <font color="#FF6E40">Beta izdanje</font>**
+**Ovo je <font color="#FF6E40">beta izdanje</font>**
 *************************
 </p>
+
+<h4>Prevedi program na <a href="https://hosted.weblate.org/projects/last-launcher">Weblateu</a> na tvoj jezik.</h4>
 
 <h2>Projekt</h2>
 
