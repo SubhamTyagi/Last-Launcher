@@ -56,4 +56,5 @@
     <string name="action_settings">Beállítások</string>
     <string name="rename">Átnevezés</string>
     <string name="color_for_this_entry">Színek és méret</string>
+    <string name="from_color_sniffer_app">A színválasztó alkalmazásból</string>
 </resources>
