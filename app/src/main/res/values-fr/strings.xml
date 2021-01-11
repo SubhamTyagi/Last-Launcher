@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="recently_first">Récemment d\'abord</string>
+    <string name="recently_first">Récemment d’abord</string>
     <string name="update_time">Heure de mise à jour</string>
     <string name="by_size">Taille</string>
     <string name="custom">Personnalisé</string>
@@ -9,14 +9,14 @@
     <string name="by_name">Nom</string>
     <string name="sort_apps_by">Trier les applis par</string>
     <string name="select_fonts">Sélectionnez les polices</string>
-    <string name="restore_default_fonts">Rétablir les polices par défauts</string>
+    <string name="restore_default_fonts">Rétablir les polices par défaut</string>
     <string name="reset_color">Réinitialiser la couleur</string>
     <string name="open">Ouvrir</string>
     <string name="remove">Retirer</string>
     <string name="padding">Rembourrer</string>
     <string name="end">Fin</string>
     <string name="center">Centrer</string>
-    <string name="start">Démarrer</string>
+    <string name="start">Début</string>
     <string name="alignment">Alignement</string>
     <string name="off">:Désactivé</string>
     <string name="on">:Activé</string>
@@ -24,7 +24,7 @@
     <string name="some_error_occurred">Une erreur s’est produite</string>
     <string name="backup_saved_to_downloads">Sauvegarde sauvegardée dans les téléchargements</string>
     <string name="from_colorsniffer_app">Depuis l’application ColorSniffer</string>
-    <string name="from_clipboard">À partir du presse-papiers</string>
+    <string name="from_clipboard">À partir du presse-papier</string>
     <string name="choose_old_backup_files">Choisissez le fichier de sauvegarde précédent</string>
     <string name="hacker_red">Rouge hacker</string>
     <string name="hacker_green">Vert hacker</string>
@@ -54,7 +54,7 @@
     <string name="fonts">Polices</string>
     <string name="uninstall">Désinstaller</string>
     <string name="rename">Renommer</string>
-    <string name="color_for_this_entry">Couleurs et taille</string>
+    <string name="color_for_this_entry">Couleur et taille</string>
     <string name="action_settings">Paramètres</string>
-    <string name="from_color_sniffer_app">De l\'application ColorSniffer</string>
+    <string name="from_color_sniffer_app">De l’application ColorSniffer</string>
 </resources>
