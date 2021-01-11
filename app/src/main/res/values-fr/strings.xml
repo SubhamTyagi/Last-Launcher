@@ -13,7 +13,7 @@
     <string name="reset_color">Réinitialiser la couleur</string>
     <string name="open">Ouvrir</string>
     <string name="remove">Retirer</string>
-    <string name="padding">Rembourrer</string>
+    <string name="padding">Remplir</string>
     <string name="end">Fin</string>
     <string name="center">Centrer</string>
     <string name="start">Début</string>
@@ -22,7 +22,7 @@
     <string name="on">:Activé</string>
     <string name="choose_old_backup_file">Choisissez un ancien fichier de sauvegarde</string>
     <string name="some_error_occurred">Une erreur s’est produite</string>
-    <string name="backup_saved_to_downloads">Sauvegarde sauvegardée dans les téléchargements</string>
+    <string name="backup_saved_to_downloads">Sauvegarde placée dans les téléchargements</string>
     <string name="from_colorsniffer_app">Depuis l’application ColorSniffer</string>
     <string name="from_clipboard">À partir du presse-papier</string>
     <string name="choose_old_backup_files">Choisissez le fichier de sauvegarde précédent</string>
@@ -34,8 +34,8 @@
     <string name="white_on_black">Blanc sur noir</string>
     <string name="background_wallpaper">Fond d’écran</string>
     <string name="default_theme">Thème par défaut</string>
-    <string name="unfreeze_app_size">Dégeler la taille des applis</string>
-    <string name="freeze_apps_size">Geler la taille des applis</string>
+    <string name="unfreeze_app_size">Défiger les tailles</string>
+    <string name="freeze_apps_size">Figer les tailles</string>
     <string name="fixed_colors">Couleurs fixes</string>
     <string name="restore">Restaurer</string>
     <string name="frozen_apps">Applis gelées</string>
