@@ -4,7 +4,7 @@
     <string name="unfreeze_size">Разморозить размер</string>
     <string name="freeze_size">Заморозить размер</string>
     <string name="recently_first">Недавние сначала</string>
-    <string name="update_time">Время обновления</string>
+    <string name="update_time">Времени обновления</string>
     <string name="by_size">Размеру</string>
     <string name="custom">Настраиваемые</string>
     <string name="by_color">Цвету</string>
@@ -30,11 +30,11 @@
     <string name="from_clipboard">Из буфера обмена</string>
     <string name="choose_old_backup_files">Выберите файл предыдущей резервной копии</string>
     <string name="hacker_red">Хакерский красный</string>
-    <string name="hacker_green">Хакерский зеленый</string>
-    <string name="black_on_grey">Черное на сером</string>
+    <string name="hacker_green">Хакерский зелёный</string>
+    <string name="black_on_grey">Чёрное на сером</string>
     <string name="white_on_grey">Белое на сером</string>
-    <string name="black_on_white">Черное на белом</string>
-    <string name="white_on_black">Белое на черном</string>
+    <string name="black_on_white">Чёрное на белом</string>
+    <string name="white_on_black">Белое на чёрном</string>
     <string name="background_wallpaper">Фоновое изображение</string>
     <string name="default_theme">Тема по умолчанию</string>
     <string name="unfreeze_app_size">Разморозить размер приложений</string>
@@ -56,4 +56,5 @@
     <string name="rename">Переименовать</string>
     <string name="color_for_this_entry">Цвета и размер</string>
     <string name="action_settings">Настройки</string>
+    <string name="from_color_sniffer_app">Из приложения ColorSniffer</string>
 </resources>
