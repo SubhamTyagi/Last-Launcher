@@ -64,6 +64,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ColorSizeDialog;
@@ -652,9 +653,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     //  add a new app: generally called after reset
     private void addAppAfterReset(String activityName, boolean sortNeeded) {
-        for (Apps apps : mAppsList) {
-            if (apps.getActivityName().equalsIgnoreCase(activityName)) {
-                mAppsList.remove(apps);
+        for (ListIterator<Apps> iterator = mAppsList.listIterator(); iterator.hasNext();) {
+            Apps app = iterator.next();
+            if (app.getActivityName().equalsIgnoreCase(activityName)) {
+                iterator.remove();
                 //now add new App
                 int color;
                 if (DbUtils.isRandomColor()) {
@@ -665,10 +667,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
                 String appName = DbUtils.getAppName(activityName, appOriginalName);
                 int openingCounts = DbUtils.getOpeningCounts(activityName);
-                boolean hide = apps.isHidden();
-                boolean freezeSize = apps.isSizeFrozen();
-                int appUpdateTime = apps.getUpdateTime();
-                Apps newApp = new Apps(apps.isShortcut(), activityName, appName, getCustomView(), color, DEFAULT_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts, appUpdateTime);
+                boolean hide = app.isHidden();
+                boolean freezeSize = app.isSizeFrozen();
+                int appUpdateTime = app.getUpdateTime();
+                Apps newApp = new Apps(app.isShortcut(), activityName, appName, getCustomView(), color, DEFAULT_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts, appUpdateTime);
                 mAppsList.add(newApp);
                 if (sortNeeded)
                     sortApps(DbUtils.getSortsTypes());
