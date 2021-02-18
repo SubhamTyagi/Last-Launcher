@@ -1,0 +1,9 @@
+* Versão de pré-lançamento 9 *
+
+- Opção para executar aplicativos ocultos.
+- Opção para redefinir as Cores do Aplicativo.
+- Seleção de Cor e Tamanho Global.
+- Opção para restaurar as fontes padrão.
+- Melhorias de cor para funcionamento perfeito.
+- Limites de preenchimento aumentados.
+- A correção do bug relacionado à "redefinição não está funcionando para o tamanho do aplicativo".

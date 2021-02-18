@@ -1,0 +1,8 @@
+* Versão de pré-lançamento 8 *
+
+- Preenchimento da tela inicial.
+- Menu de Cores e Tamanhos combinados para acesso rápido e conveniente.
+- Uma nova UX de seleção de tamanho para valores exatos.
+- Melhoria do código fonte do aplicativo para melhor compreensão.
+
+- em breve: Barra de pesquisa de aplicativos

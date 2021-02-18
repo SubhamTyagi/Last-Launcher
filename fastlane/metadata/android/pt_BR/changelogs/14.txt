@@ -1,0 +1,8 @@
+* Versão beta 4 *
+
+
+* O Que Há de Novo Nesta Versão
+
+- A barra de pesquisa agora está acessível deslizando para a ESQUERDA/DIREITA em vez de PARA CIMA
+- Backup corrigido para o Android 6 ou anterior.
+- Tradução para o Espanhol
