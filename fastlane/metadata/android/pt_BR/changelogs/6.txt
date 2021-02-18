@@ -1,0 +1,10 @@
+* Versão de pré-lançamento 6 *
+
+- Melhorias na barra de busca do Tamanho do Aplicativo.
+- Melhorias na barra de Cores do Aplicativo.
+- Melhorias no campo Renomear Aplicativo
+- Animação na abertura do aplicativo.
+- Melhoria de performance de layouts.
+- Correção do bug relacionado ao menu recente.
+- Correção do bug relacionado à diminuição do tamanho do aplicativo com um clique.
+- Correção do bug relacionado a algum aplicativo não abrir.

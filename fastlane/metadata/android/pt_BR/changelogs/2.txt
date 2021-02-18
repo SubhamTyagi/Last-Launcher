@@ -1,0 +1,10 @@
+* Versão de pré-lançamento 2 *
+
+- Renomear o nome do aplicativo
+- Obtenha informações do aplicativo com um único clique
+- Opção de desinstalação
+- Mais controles de cores
+- Refinamento da IU de cor e tamanho
+
+- Stub de configurações globais (não implementado)
+    Para acessar dê um clique longo na área de fundo

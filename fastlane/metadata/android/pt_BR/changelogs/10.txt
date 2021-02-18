@@ -1,0 +1,7 @@
+** Versão de pré-lançamento 10 *
+
+- Classifica o aplicativo por Nome, Tamanho, Cor, Uso do Aplicativo
+- Mostra Atalhos de Aplicativos, Atalhos de Sites e PWAs,
+- Correção do bug do tema não correto após o backup
+- Correção de bug do item vermelho não exibido corretamente
+- Melhorias de desempenho.

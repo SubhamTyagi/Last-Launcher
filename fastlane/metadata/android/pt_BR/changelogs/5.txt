@@ -1,0 +1,5 @@
+*Versão de pré-lançamento 5*
+
+- Lista de ocultar ou congelar aplicativos
+- configurações anteriores podem <font color="#ff000"><b>falhar</b></font>
+- backups anteriores podem <font color="#ff000"><b>não funcionar</b></font>

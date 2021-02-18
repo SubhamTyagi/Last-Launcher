@@ -1,0 +1,10 @@
+* Versão de pré-lançamento 3 *
+- Para acessar as configurações do Launcher, dê um clique longo na área vazia
+
+- Congelar/descongelar o tamanho do aplicativo
+-Ocultar aplicativos (temporariamente)
+-Fontes personalizadas
+-Múltiplos Temas
+-Redefinir para as configurações padrão
+-Backup e restaurar configurações
+-Cores aleatórias

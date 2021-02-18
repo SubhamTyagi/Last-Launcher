@@ -1,0 +1,7 @@
+* Versão de pré-lançamento 7 *
+
+- Barra de status e cor da barra de navegação de acordo com o tema selecionado.
+- Gera a mesma cor aleatória a cada vez para um aplicativo em particular (graças à Sylvia).
+- Alinhamentos (centro, esquerda e direita) dos Aplicativos.
+- Reordenamento de itens do PopMenu e a cor vermelha de atenção para alguns itens.
+- Correção de bug do tema Vermelho Hacker.

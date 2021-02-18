@@ -1,0 +1,4 @@
+*Versão de pré-lançamento *
+
+* Atualizações de Emergência
+* Correção do Aplicativo desaparecendo do inicializador
