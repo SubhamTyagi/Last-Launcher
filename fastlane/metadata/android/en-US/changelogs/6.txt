@@ -8,5 +8,3 @@
 - Fix bug related to recent menu.
 - Fix bug related to app size decrease on click.
 - Fix bug related to some app not opening.
-
-

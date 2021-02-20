@@ -9,5 +9,3 @@
 - Most of the work is done under the hood.
 - Translation for French, German, Hungarian, Norwegian Bokmāl, Russian, Danish, Polish, Slovak, Croatian and Spanish.
 - Thanks to all translators
-
-
