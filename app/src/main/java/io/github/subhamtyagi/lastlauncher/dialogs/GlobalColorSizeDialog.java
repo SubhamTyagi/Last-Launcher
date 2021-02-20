@@ -46,11 +46,10 @@ public class GlobalColorSizeDialog extends Dialog {
 
     private final Handler handler = new Handler();
     private final ArrayList<Apps> mAppsList;
+    private final List<String> oftenApps = Utils.getOftenAppsList();
     private Runnable runnable;
-
     private int appSize;
     private int mColor;
-    private final List<String> oftenApps = Utils.getOftenAppsList();
 
     public GlobalColorSizeDialog(Context context, ArrayList<Apps> appsList) {
         super(context);
@@ -77,7 +76,7 @@ public class GlobalColorSizeDialog extends Dialog {
 
         if (colorDefault != DbUtils.NULL_TEXT_COLOR) {
             colorSeekBar.setColor(colorDefault);
-        //} else {
+            //} else {
             //do something
         }
 

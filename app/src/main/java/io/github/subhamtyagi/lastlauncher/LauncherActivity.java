@@ -653,7 +653,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     //  add a new app: generally called after reset
     private void addAppAfterReset(String activityName, boolean sortNeeded) {
-        for (ListIterator<Apps> iterator = mAppsList.listIterator(); iterator.hasNext();) {
+        for (ListIterator<Apps> iterator = mAppsList.listIterator(); iterator.hasNext(); ) {
             Apps app = iterator.next();
             if (app.getActivityName().equalsIgnoreCase(activityName)) {
                 iterator.remove();

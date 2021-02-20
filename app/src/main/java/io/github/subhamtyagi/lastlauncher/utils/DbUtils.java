@@ -62,7 +62,6 @@ public class DbUtils {
     private static final String APPS_SORTS_TYPE = "apps_sorts_types";
 
 
-
     public static void init(Context context) {
         SpUtils.getInstance().init(context);
     }

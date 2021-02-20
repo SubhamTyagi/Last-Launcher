@@ -32,6 +32,12 @@ import io.github.subhamtyagi.lastlauncher.R;
 // NOT in priority
 public class ColorSeekBar extends View {
 
+    private final List<Integer> mCachedColors = new ArrayList<>();
+    private final Paint colorPaint = new Paint();
+    private final Paint alphaThumbGradientPaint = new Paint();
+    private final Paint alphaBarPaint = new Paint();
+    private final Paint mDisabledPaint = new Paint();
+    private final Paint thumbGradientPaint = new Paint();
     private int[] mColorSeeds = new int[]{
             0xFFFFFFFF,
             0xFF9900FF,
@@ -46,8 +52,6 @@ public class ColorSeekBar extends View {
             0xFF000000
             // 0xFFEAFEAF
     };
-
-
     private int mAlpha;
     private OnColorChangeListener mOnColorChangeLister;
     private Context mContext;
@@ -57,7 +61,6 @@ public class ColorSeekBar extends View {
     private boolean mMovingAlphaBar;
     private Bitmap mTransparentBitmap;
     private RectF mColorRect;
-
     private int mThumbHeight = 20;
     private float mThumbRadius;
     private int mBarHeight = 2;
@@ -71,24 +74,14 @@ public class ColorSeekBar extends View {
     private int mAlphaBarPosition;
     private int mDisabledColor;
     private int mBarMargin = 5;
-
     private int mAlphaMinPosition = 0;
     private int mAlphaMaxPosition = 255;
-
     private int mBarRadius;
-
-    private final List<Integer> mCachedColors = new ArrayList<>();
     private int mColorsToInvoke = -1;
     private boolean mInit = false;
     private boolean mFirstDraw = true;
     private boolean mShowThumb = true;
     private OnInitDoneListener mOnInitDoneListener;
-
-    private final Paint colorPaint = new Paint();
-    private final Paint alphaThumbGradientPaint = new Paint();
-    private final Paint alphaBarPaint = new Paint();
-    private final Paint mDisabledPaint = new Paint();
-    private final Paint thumbGradientPaint = new Paint();
 
     public ColorSeekBar(Context context) {
         super(context);
@@ -391,6 +384,10 @@ public class ColorSeekBar extends View {
         super.setEnabled(enabled);
     }
 
+    public int getAlphaMaxPosition() {
+        return mAlphaMaxPosition;
+    }
+
     /***
      *
      * @param alphaMaxPosition <= 255 && > alphaMinPosition
@@ -409,8 +406,8 @@ public class ColorSeekBar extends View {
         invalidate();
     }
 
-    public int getAlphaMaxPosition() {
-        return mAlphaMaxPosition;
+    public int getAlphaMinPosition() {
+        return mAlphaMinPosition;
     }
 
     /***
@@ -429,10 +426,6 @@ public class ColorSeekBar extends View {
             mAlphaBarPosition = mAlphaMinPosition;
         }
         invalidate();
-    }
-
-    public int getAlphaMinPosition() {
-        return mAlphaMinPosition;
     }
 
     /**
@@ -507,6 +500,24 @@ public class ColorSeekBar extends View {
     }
 
     /**
+     * Set color,the mCachedColors must contains the specified color, if not ,invoke setColorBarPosition(0);
+     *
+     * @param color
+     */
+    public void setColor(int color) {
+        int withoutAlphaColor = Color.rgb(Color.red(color), Color.green(color), Color.blue(color));
+        if (mInit) {
+            int value = mCachedColors.indexOf(withoutAlphaColor);
+            setAlphaValue(Color.alpha(color));
+            setColorBarPosition(value);
+
+        } else {
+            mColorsToInvoke = color;
+        }
+
+    }
+
+    /**
      * @param withAlpha
      * @return
      */
@@ -534,17 +545,20 @@ public class ColorSeekBar extends View {
         return mAlphaBarPosition;
     }
 
+    public void setAlphaBarPosition(int value) {
+        this.mAlphaBarPosition = value;
+        setAlphaValue();
+        invalidate();
+    }
+
     public int getAlphaValue() {
         return mAlpha;
     }
 
-    public interface OnColorChangeListener {
-        /**
-         * @param colorBarPosition between 0-maxValue
-         * @param alphaBarPosition between 0-255
-         * @param color            return the color contains alpha value whether showAlphaBar is true or without alpha value
-         */
-        void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color);
+    private void setAlphaValue(int value) {
+        mAlpha = value;
+        mAlphaBarPosition = 255 - mAlpha;
+        // invalidate();
     }
 
     /**
@@ -553,7 +567,6 @@ public class ColorSeekBar extends View {
     public void setOnColorChangeListener(OnColorChangeListener onColorChangeListener) {
         this.mOnColorChangeLister = onColorChangeListener;
     }
-
 
     public int dp2px(float dpValue) {
         final float scale = mContext.getResources().getDisplayMetrics().density;
@@ -590,22 +603,14 @@ public class ColorSeekBar extends View {
         return mCachedColors;
     }
 
-    public boolean isShowAlphaBar() {
-        return mIsShowAlphaBar;
-    }
-
-    private void refreshLayoutParams() {
-        setLayoutParams(getLayoutParams());
-    }
-
 //    public void setVertical(boolean vertical) {
 //        mIsVertical = vertical;
 //        refreshLayoutParams();
 //        invalidate();
 //    }
 
-    public boolean isVertical() {
-        return mIsVertical;
+    public boolean isShowAlphaBar() {
+        return mIsShowAlphaBar;
     }
 
     public void setShowAlphaBar(boolean show) {
@@ -617,13 +622,12 @@ public class ColorSeekBar extends View {
         }
     }
 
-    /**
-     * @param dp
-     */
-    public void setBarHeight(float dp) {
-        mBarHeight = dp2px(dp);
-        refreshLayoutParams();
-        invalidate();
+    private void refreshLayoutParams() {
+        setLayoutParams(getLayoutParams());
+    }
+
+    public boolean isVertical() {
+        return mIsVertical;
     }
 
     /**
@@ -637,17 +641,6 @@ public class ColorSeekBar extends View {
 
     private void setAlphaValue() {
         mAlpha = 255 - mAlphaBarPosition;
-    }
-
-    private void setAlphaValue(int value) {
-        mAlpha = value;
-        mAlphaBarPosition = 255 - mAlpha;
-        // invalidate();
-    }
-    public void setAlphaBarPosition(int value) {
-        this.mAlphaBarPosition = value;
-        setAlphaValue();
-        invalidate();
     }
 
     public int getMaxValue() {
@@ -665,38 +658,10 @@ public class ColorSeekBar extends View {
      *
      * @param mBarMargin
      */
-    public void setBarMargin(float mBarMargin) {
-        this.mBarMargin = dp2px(mBarMargin);
-        refreshLayoutParams();
-        invalidate();
-    }
-
-    /**
-     * set margin between bars
-     *
-     * @param mBarMargin
-     */
     public void setBarMarginPx(int mBarMargin) {
         this.mBarMargin = mBarMargin;
         refreshLayoutParams();
         invalidate();
-    }
-
-
-    /**
-     * Set the value of color bar, if out of bounds , it will be 0 or maxValue;
-     *
-     * @param value
-     */
-    public void setColorBarPosition(int value) {
-        this.mColorBarPosition = value;
-        mColorBarPosition = Math.min(mColorBarPosition, mMaxPosition);
-        mColorBarPosition = Math.max(mColorBarPosition, 0);
-        invalidate();
-
-        if (mOnColorChangeLister != null) {
-            mOnColorChangeLister.onColorChangeListener(mColorBarPosition, mAlphaBarPosition, getColor());
-        }
     }
 
     public void setPosition(int colorBarPosition, int alphaBarPosition) {
@@ -711,39 +676,8 @@ public class ColorSeekBar extends View {
         }
     }
 
-
     public void setOnInitDoneListener(OnInitDoneListener listener) {
         this.mOnInitDoneListener = listener;
-    }
-
-    /**
-     * Set color,the mCachedColors must contains the specified color, if not ,invoke setColorBarPosition(0);
-     *
-     * @param color
-     */
-    public void setColor(int color) {
-        int withoutAlphaColor = Color.rgb(Color.red(color), Color.green(color), Color.blue(color));
-        if (mInit) {
-            int value = mCachedColors.indexOf(withoutAlphaColor);
-            setAlphaValue(Color.alpha(color));
-            setColorBarPosition(value);
-
-        } else {
-            mColorsToInvoke = color;
-        }
-
-    }
-
-    /**
-     * set thumb's height by dpi
-     *
-     * @param dp
-     */
-    public void setThumbHeight(float dp) {
-        this.mThumbHeight = dp2px(dp);
-        mThumbRadius = mThumbHeight / 2;
-        refreshLayoutParams();
-        invalidate();
     }
 
     /**
@@ -762,24 +696,68 @@ public class ColorSeekBar extends View {
         return mBarHeight;
     }
 
+    /**
+     * @param dp
+     */
+    public void setBarHeight(float dp) {
+        mBarHeight = dp2px(dp);
+        refreshLayoutParams();
+        invalidate();
+    }
+
     public int getThumbHeight() {
         return mThumbHeight;
+    }
+
+    /**
+     * set thumb's height by dpi
+     *
+     * @param dp
+     */
+    public void setThumbHeight(float dp) {
+        this.mThumbHeight = dp2px(dp);
+        mThumbRadius = mThumbHeight / 2;
+        refreshLayoutParams();
+        invalidate();
     }
 
     public int getBarMargin() {
         return mBarMargin;
     }
 
+    /**
+     * set margin between bars
+     *
+     * @param mBarMargin
+     */
+    public void setBarMargin(float mBarMargin) {
+        this.mBarMargin = dp2px(mBarMargin);
+        refreshLayoutParams();
+        invalidate();
+    }
+
     public float getColorBarValue() {
         return mColorBarPosition;
     }
 
-    public interface OnInitDoneListener {
-        void done();
-    }
-
     public int getColorBarPosition() {
         return mColorBarPosition;
+    }
+
+    /**
+     * Set the value of color bar, if out of bounds , it will be 0 or maxValue;
+     *
+     * @param value
+     */
+    public void setColorBarPosition(int value) {
+        this.mColorBarPosition = value;
+        mColorBarPosition = Math.min(mColorBarPosition, mMaxPosition);
+        mColorBarPosition = Math.max(mColorBarPosition, 0);
+        invalidate();
+
+        if (mOnColorChangeLister != null) {
+            mOnColorChangeLister.onColorChangeListener(mColorBarPosition, mAlphaBarPosition, getColor());
+        }
     }
 
     public int getDisabledColor() {
@@ -812,6 +790,19 @@ public class ColorSeekBar extends View {
     public void setBarRadius(int barRadiusInPx) {
         this.mBarRadius = barRadiusInPx;
         invalidate();
+    }
+
+    public interface OnColorChangeListener {
+        /**
+         * @param colorBarPosition between 0-maxValue
+         * @param alphaBarPosition between 0-255
+         * @param color            return the color contains alpha value whether showAlphaBar is true or without alpha value
+         */
+        void onColorChangeListener(int colorBarPosition, int alphaBarPosition, int color);
+    }
+
+    public interface OnInitDoneListener {
+        void done();
     }
 
 }

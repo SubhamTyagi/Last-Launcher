@@ -57,6 +57,14 @@ public class CrashUtils implements Thread.UncaughtExceptionHandler {
         }
     }
 
+    private static String getStackTrace(Throwable e) {
+        final Writer result = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(result);
+        e.printStackTrace(printWriter);
+        String crashLog = result.toString();
+        printWriter.close();
+        return crashLog;
+    }
 
     @Override
     public void uncaughtException(Thread thread, Throwable throwable) {
@@ -64,14 +72,12 @@ public class CrashUtils implements Thread.UncaughtExceptionHandler {
         exceptionHandler.uncaughtException(thread, throwable);
     }
 
-
     private void saveCrashReport(final Throwable throwable) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String filename = dateFormat.format(new Date()) + CRASH_SUFFIX + FILE_EXTENSION;
         writeToFile(crashReportPath, filename, getStackTrace(throwable));
 
     }
-
 
     private void writeToFile(String crashReportPath, String filename, String crashLog) {
 
@@ -97,15 +103,6 @@ public class CrashUtils implements Thread.UncaughtExceptionHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private static String getStackTrace(Throwable e) {
-        final Writer result = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(result);
-        e.printStackTrace(printWriter);
-        String crashLog = result.toString();
-        printWriter.close();
-        return crashLog;
     }
 
     private String getDefaultPath() {

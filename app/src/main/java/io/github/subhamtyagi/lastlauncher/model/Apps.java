@@ -33,12 +33,12 @@ public class Apps {
     // For eg  io.github.subhamtyagi.lastlauncher/io.github.subhamtyagi.lastlauncher.LauncherActivity
     // if this is a shortcut then this field represent a unique URI string
     final private String activity;
-
-    // app name to shown on screen
-    private String appName;
-
     // a text view or a subclass of TextView
     private final AppTextView textView;
+    // tell whether this is a shortcut or not if this is shortcut then activity field wll holds the Uri not an activity
+    private final boolean isShortcut;
+    // app name to shown on screen
+    private String appName;
     // app text color
     private int color;
     // app text size
@@ -47,28 +47,20 @@ public class Apps {
     private boolean isSizeFrozen;
     // is app hidden from home screen
     private boolean isAppHidden;
-
     //store how many time this app is opened by user
     // save this to DB. So launcher can sort the app based on this
     // in theory this is a tracking count which store how many time user opened this apps
     // Only locally and privately saved to user device
     // and btw this launcher doesn't have INTERNET PERMISSION
     private int openingCounts;
-
     // This field is use for grouping the app: not in use
     private String groupPrefix;
-
     // app belongs to this categories,,: not in use
     private String categories;
-
-    // tell whether this is a shortcut or not if this is shortcut then activity field wll holds the Uri not an activity
-    private final boolean isShortcut;
-
     // last updated date and time
     private int updateTime;
 
     private int recentUsedWeight;
-
 
 
     /**

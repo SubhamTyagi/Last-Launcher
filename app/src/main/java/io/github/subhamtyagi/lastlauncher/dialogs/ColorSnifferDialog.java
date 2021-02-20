@@ -39,8 +39,8 @@ import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 //Color sniffer developer halted the development of that app!!
 public class ColorSnifferDialog extends Dialog implements View.OnClickListener {
     private final LauncherActivity launcherActivity;
-    private TextView onOffSwitch;
     private final Context context;
+    private TextView onOffSwitch;
     private TextView mStartColorSniffer;
     private boolean change = false;
 

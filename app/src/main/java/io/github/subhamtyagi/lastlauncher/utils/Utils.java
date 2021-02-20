@@ -209,15 +209,6 @@ public class Utils {
 
     }
 
-    private boolean isDefaultLauncher(Context ctx) {
-        final Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        final ResolveInfo resolveInfo =
-                ctx.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        return resolveInfo != null &&
-                ctx.getPackageName().equals(resolveInfo.activityInfo.packageName);
-    }
-
     /**
      * @param text string
      * @return code points
@@ -250,6 +241,15 @@ public class Utils {
                 return Color.parseColor("#8BC34A");
         }
         return Color.parseColor("#FF5722");
+    }
+
+    private boolean isDefaultLauncher(Context ctx) {
+        final Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        final ResolveInfo resolveInfo =
+                ctx.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        return resolveInfo != null &&
+                ctx.getPackageName().equals(resolveInfo.activityInfo.packageName);
     }
 
 }

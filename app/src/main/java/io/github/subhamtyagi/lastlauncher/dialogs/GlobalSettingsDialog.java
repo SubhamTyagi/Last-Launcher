@@ -47,9 +47,9 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
 
 
     private static final String TAG = "Global";/**/
-    private TextView freezeSize;
     private final LauncherActivity launcherActivity;
     private final Context context;
+    private TextView freezeSize;
 
     public GlobalSettingsDialog(Context context, LauncherActivity launcherActivity) {
         super(context);

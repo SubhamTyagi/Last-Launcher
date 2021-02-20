@@ -39,8 +39,8 @@ import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 public class HiddenAppsDialogs extends Dialog {
 
     private final ArrayList<Apps> mAppsList;
-    private ListView listView;
     private final Context context;
+    private ListView listView;
 
     public HiddenAppsDialogs(Context context, ArrayList<Apps> appsList) {
         super(context);
