@@ -1,0 +1,11 @@
+* Versão beta 2 *
+
+
+* O Que Há de Novo Nesta Versão
+
+- Pesquisar Aplicativos.
+- Melhorias de desempenho (inicialização, classificação e cor aleatória).
+- Maior redução do consumo de memória.
+- Corrigido bug relacionado a atalhos e PWAs que estava causando vazamento de memória.
+
+- Esta atualização removerá o atalho antigo deste inicializador, então você deve adicioná-lo novamente após esta atualização.

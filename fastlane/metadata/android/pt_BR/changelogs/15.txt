@@ -1,0 +1,11 @@
+*Versão Beta 5*
+
+* TODOS OS ATALHOS INSTALADOS ANTERIORMENTE NÃO ESTARÃO ACESSÍVEIS *
+
+* O Que Há de Novo Nesta Versão
+
+- Correções do bug "Atalhos não estão funcionado bem após o delete".
+- Correções do bug "App não está aparecendo ou desaparecendo após o habilitar ou desabilitar".
+- A maioria das tarefas é feita internamente.
+- Tradução para o Francês, Alemão, Húngaro, Norueguês, Bokmāl, Russo, Dinamarquês, Polonês, Eslovaco, Croata e Espanhol.
+- Obrigado a todos os tradutores

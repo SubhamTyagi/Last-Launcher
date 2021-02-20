@@ -1,0 +1,9 @@
+* Versão beta 3 *
+
+
+* O Que Há de Novo Nesta Versão
+
+- Classifica os aplicativos por tempo de atualizações, as mais recentes primeiro.
+- Cor mais brilhante e material.
+- Melhoria gestual (CORREÇÃO: a barra de pesquisa estava abrindo muito)
+- Correção de erros relacionados a atalhos.
