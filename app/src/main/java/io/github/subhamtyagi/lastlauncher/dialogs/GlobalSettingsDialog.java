@@ -37,6 +37,7 @@ import io.github.subhamtyagi.lastlauncher.BuildConfig;
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.model.Apps;
+import io.github.subhamtyagi.lastlauncher.utils.Constants;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Utils;
 
@@ -174,26 +175,26 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             cancel();
             switch (menuItem.getItemId()) {
                 case R.id.menu_sort_by_name:
-                    launcherActivity.sortApps(LauncherActivity.SORT_BY_NAME);
+                    launcherActivity.sortApps(Constants.SORT_BY_NAME);
                     break;
                 case R.id.menu_sort_by_opening_counts:
-                    launcherActivity.sortApps(LauncherActivity.SORT_BY_OPENING_COUNTS);
+                    launcherActivity.sortApps(Constants.SORT_BY_OPENING_COUNTS);
                     break;
                 case R.id.menu_sort_by_color:
-                    launcherActivity.sortApps(LauncherActivity.SORT_BY_COLOR);
+                    launcherActivity.sortApps(Constants.SORT_BY_COLOR);
                     break;
                /* case R.id.menu_sort_by_customs:
                     launcherActivity.sortApps(LauncherActivity.SORT_BY_CUSTOM);
                     break;*/
                 case R.id.menu_sort_by_size:
-                    launcherActivity.sortApps(LauncherActivity.SORT_BY_SIZE);
+                    launcherActivity.sortApps(Constants.SORT_BY_SIZE);
                     break;
                 case R.id.menu_sort_by_update_time:
-                    launcherActivity.sortApps(LauncherActivity.SORT_BY_UPDATE_TIME);
+                    launcherActivity.sortApps(Constants.SORT_BY_UPDATE_TIME);
                     Log.d(TAG, "sortApps: sort by update time");
                     break;
                 case R.id.menu_sort_by_recent_use:
-                    launcherActivity.sortApps(LauncherActivity.SORT_BY_RECENT_OPEN);
+                    launcherActivity.sortApps(Constants.SORT_BY_RECENT_OPEN);
                     break;
             }
             return true;
@@ -315,7 +316,8 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             cancel();
 
             Toast toast = Toast.makeText(getContext(), b ? R.string.backup_saved_to_downloads : R.string.some_error_occurred, Toast.LENGTH_LONG);
-            toast.getView().setBackgroundColor(Color.parseColor("#d5e0e2"));
+            final TextView tv = (TextView) toast.getView().findViewById(android.R.id.message);
+            tv.setTextColor(Color.parseColor("#d5e0e2"));
             toast.show();
         }
     }
@@ -326,9 +328,9 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         else {
             launcherActivity.browseFile();
             cancel();
-
             Toast toast = Toast.makeText(getContext(), R.string.choose_old_backup_file, Toast.LENGTH_LONG);
-            toast.getView().setBackgroundColor(Color.parseColor("#d5e0e2"));
+            final TextView tv = (TextView) toast.getView().findViewById(android.R.id.message);
+            tv.setTextColor(Color.parseColor("#d5e0e2"));
             toast.show();
 
         }

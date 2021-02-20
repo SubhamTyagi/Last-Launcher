@@ -38,6 +38,7 @@ public class FrozenAppsDialogs extends Dialog {
 
     private final ArrayList<Apps> mAppsList;
     private final Context context;
+    ArrayList<Apps> frozenApps = new ArrayList<>();
     private ListView listView;
 
     public FrozenAppsDialogs(Context context, ArrayList<Apps> appsList) {
@@ -52,7 +53,11 @@ public class FrozenAppsDialogs extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_hidden_apps);
         listView = findViewById(R.id.hidden_app_list);
-        updateList(mAppsList);
+
+        UniversalAdapter adapter = new UniversalAdapter(context, frozenApps);
+        listView.setAdapter(adapter);
+
+        adapter.setOnClickListener(this::confirmationAndRemove);
 
     }
 
@@ -70,7 +75,7 @@ public class FrozenAppsDialogs extends Dialog {
 
             if (menuItem.getItemId() == R.id.menu_remove_this) {
                 apps.setFreeze(false);
-                updateList(mAppsList);
+                updateFrozenList();
             }
             return true;
 
@@ -79,26 +84,14 @@ public class FrozenAppsDialogs extends Dialog {
 
     }
 
-
-    private void updateList(ArrayList<Apps> appsList) {
-        ArrayList<Apps> appsList2 = new ArrayList<>();
+    public int updateFrozenList() {
         // only show frozen app
-        for (Apps apps : appsList) {
+        for (Apps apps : mAppsList) {
             if (apps.isSizeFrozen()) {
-                appsList2.add(apps);
+                frozenApps.add(apps);
             }
         }
-
-        if (appsList2.isEmpty()) {
-            cancel();
-            dismiss();
-            return;
-        }
-
-        UniversalAdapter adapter = new UniversalAdapter(context, appsList2);
-        listView.setAdapter(adapter);
-
-        adapter.setOnClickListener(this::confirmationAndRemove);
+        return frozenApps.size();
     }
 
 }

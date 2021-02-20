@@ -34,15 +34,15 @@ import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Utils;
 import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_MAX_TEXT_SIZE;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_MIN_TEXT_SIZE;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_TEXT_SIZE_NORMAL_APPS;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_TEXT_SIZE_OFTEN_APPS;
+
+
 public class GlobalColorSizeDialog extends Dialog {
-    private static final int DEFAULT_MAX_TEXT_SIZE = 10;
-    private static final int DEFAULT_MIN_TEXT_SIZE = -10;
 
     private static final long DELAY = 100;
-
-    private static final int DEFAUTL_TEXT_SIZE_NORMAL_APPS = 20;
-    private static final int DEFAUTL_TEXT_SIZE_OFTEN_APPS = 36;
-
 
     private final Handler handler = new Handler();
     private final ArrayList<Apps> mAppsList;
@@ -121,9 +121,9 @@ public class GlobalColorSizeDialog extends Dialog {
                     // size is null(-1) when user installed this app
                     if (textSize == DbUtils.NULL_TEXT_SIZE) {
                         if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
-                            textSize = DEFAUTL_TEXT_SIZE_OFTEN_APPS;
+                            textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
                         } else {
-                            textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+                            textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
                         }
                         /// DbUtils.putAppSize(activity, textSize);
                     }
@@ -147,9 +147,9 @@ public class GlobalColorSizeDialog extends Dialog {
                     // size is null(-1) when user installed this app
                     if (textSize == DbUtils.NULL_TEXT_SIZE) {
                         if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
-                            textSize = DEFAUTL_TEXT_SIZE_OFTEN_APPS;
+                            textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
                         } else {
-                            textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+                            textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
                         }
 
                         /// DbUtils.putAppSize(activity, textSize);
@@ -181,9 +181,9 @@ public class GlobalColorSizeDialog extends Dialog {
                         // size is null(-1) when user installed this app
                         if (textSize == DbUtils.NULL_TEXT_SIZE) {
                             if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
-                                textSize = DEFAUTL_TEXT_SIZE_OFTEN_APPS;
+                                textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
                             } else {
-                                textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+                                textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
                             }
 
                             /// DbUtils.putAppSize(activity, textSize);
@@ -219,9 +219,9 @@ public class GlobalColorSizeDialog extends Dialog {
                         // size is null(-1) when user installed this app
                         if (textSize == DbUtils.NULL_TEXT_SIZE) {
                             if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
-                                textSize = DEFAUTL_TEXT_SIZE_OFTEN_APPS;
+                                textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
                             } else {
-                                textSize = DEFAUTL_TEXT_SIZE_NORMAL_APPS;
+                                textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
                             }
 
                             /// DbUtils.putAppSize(activity, textSize);

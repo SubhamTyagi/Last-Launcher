@@ -35,7 +35,7 @@ public class Colors {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int size = width * height;
-        int pixels[] = new int[size];
+        int[] pixels = new int[size];
         //Bitmap bitmap2 = bitmap.copy(Bitmap.Config.ARGB_4444, false);
         bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
         int color;
@@ -79,7 +79,7 @@ public class Colors {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int size = width * height;
-        int pixels[] = new int[size];
+        int[] pixels = new int[size];
 
         Bitmap bitmap2 = bitmap.copy(Bitmap.Config.ARGB_4444, false);
 
@@ -142,7 +142,7 @@ public class Colors {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         int size = width * height;
-        int pixels[] = new int[size];
+        int[] pixels = new int[size];
 
         Bitmap bitmap2 = bitmap.copy(Bitmap.Config.ARGB_4444, false);
 

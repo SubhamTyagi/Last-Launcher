@@ -57,6 +57,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apmem.tools.layouts.FlowLayout;
 
@@ -87,6 +88,19 @@ import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_CHANGED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
 import static android.content.Intent.ACTION_PACKAGE_REPLACED;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.COLOR_SNIFFER_REQUEST;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_COLOR_FOR_APPS;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_TEXT_SIZE_NORMAL_APPS;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_TEXT_SIZE_OFTEN_APPS;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.FONTS_REQUEST;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.PERMISSION_REQUEST;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.RESTORE_REQUEST;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_COLOR;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_NAME;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_OPENING_COUNTS;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_RECENT_OPEN;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_SIZE;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_UPDATE_TIME;
 
 /**
  * --------------------------------------------------------------------------
@@ -111,28 +125,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         View.OnLongClickListener,
         Gestures.OnSwipeListener {
 
-    public static final int COLOR_SNIFFER_REQUEST = 154;
-    public final static String DEFAULT_COLOR_FOR_APPS = "default_color_for_apps";
-    //various sorting constant
-    //why constant? Why not enums for this ?
-    // may be lack from Shared Preference DB
-    public static final int SORT_BY_NAME = 1;
-    public static final int SORT_BY_SIZE = 2;
-    public static final int SORT_BY_COLOR = 3;
-    public static final int SORT_BY_OPENING_COUNTS = 4;
-    public static final int SORT_BY_CUSTOM = 5;
-    public static final int SORT_BY_UPDATE_TIME = 6;
-    public static final int SORT_BY_RECENT_OPEN = 7;
-
-    private static final int RESTORE_REQUEST = 125;
-    private static final int FONTS_REQUEST = 126;
-    private static final int PERMISSION_REQUEST = 127;
-    private static final int DEFAULT_TEXT_SIZE_NORMAL_APPS = 20;
-    private static final int DEFAULT_TEXT_SIZE_OFTEN_APPS = 36;
-
+    //region Field declarations
     public static ArrayList<Apps> mAppsList;
     private static FlowLayout mHomeLayout;
-
     // when search bar is appear this will be true and show search result
     private static boolean searching = false;
     private static int recentlyUsedCounter = 0;
@@ -146,8 +141,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private InputMethodManager imm;
     // gesture detector
     private Gestures detector;
-
     private ShortcutUtils shortcutUtils;
+    //endregion
 
     private static void showSearchResult(ArrayList<Apps> filteredApps) {
         if (!searching) return;
@@ -301,7 +296,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     public void loadApps() {
         // get the apps installed on devices;
-        Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
+        final Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
 
@@ -316,11 +311,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         // shortcut or pwa counts
 
-
-        int installedShortcut = shortcutUtils.getShortcutCounts();
+        final int installedShortcut = shortcutUtils.getShortcutCounts();
 
         // Log.d(TAG, "loadApps: install shortcut sizes::" + installedShortcut);
-        int appsCount = activities.size();
+        final int appsCount = activities.size();
 
         mAppsList = new ArrayList<>(appsCount + installedShortcut);
 
@@ -402,7 +396,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             mAppsList.add(new Apps(false, activity, appName, getCustomView(), color, textSize, hide, freeze, openingCounts, updateTime));
 
         }
-
 
         // now adds Shortcut
         // shortcut are stored in DB, android doesn't store them
@@ -671,7 +664,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 boolean freezeSize = app.isSizeFrozen();
                 int appUpdateTime = app.getUpdateTime();
                 Apps newApp = new Apps(app.isShortcut(), activityName, appName, getCustomView(), color, DEFAULT_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts, appUpdateTime);
-                mAppsList.add(newApp);
+
+                //mAppsList.add(newApp);
+                iterator.add(newApp);
                 if (sortNeeded)
                     sortApps(DbUtils.getSortsTypes());
                 break;
@@ -911,7 +906,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -921,7 +915,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             }
         }
     }
-
 
     public boolean isPermissionRequired() {
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -942,7 +935,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         // }
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
         //chooseFile.setType("application/x-font-ttf");
-        chooseFile.setType("file/plain");
+        //chooseFile.setType("file/plain");
+        chooseFile.setType("*/*");
         Intent intent = Intent.createChooser(chooseFile, this.getString(R.string.choose_old_backup_files));
         startActivityForResult(intent, RESTORE_REQUEST);
     }
@@ -962,7 +956,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
         //chooseFile.setType("application/x-font-ttf");
-        chooseFile.setType("file/plain");
+        // chooseFile.setType("file/plain");
+        chooseFile.setType("*/*");
         Intent intent = Intent.createChooser(chooseFile, "Choose Fonts");
         startActivityForResult(intent, FONTS_REQUEST);
     }
@@ -1020,7 +1015,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     //may be override of abstract class method to be called from color sniffer #3 types
     public void colorSnifferCall(Bundle bundle) {
         boolean defaultColorSet = false;// for change set
-        int DEFAULT_COLOR = bundle.getInt(DEFAULT_COLOR_FOR_APPS);//keys
+        final int DEFAULT_COLOR = bundle.getInt(DEFAULT_COLOR_FOR_APPS);//keys
         // not set by ColorSniffer
         if (DEFAULT_COLOR != DbUtils.NULL_TEXT_COLOR) { //NULL_TEXT_COLOR=-1
             defaultColorSet = true;// to save cpu cycle
@@ -1099,14 +1094,32 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     // show the hidden app dialog
     public void showHiddenApps() {
-        dialogs = new HiddenAppsDialogs(this, mAppsList);
-        dialogs.show();
+        HiddenAppsDialogs dialogs = new HiddenAppsDialogs(this, mAppsList);
+        if (dialogs.updateHiddenList() != 0) {
+            dialogs.show();
+        } else {
+            //TODO: show no hidden apps
+            Toast tst = Toast.makeText(this, "No apps to show", Toast.LENGTH_SHORT);
+            TextView tv = (TextView) tst.getView().findViewById(android.R.id.message);
+            tv.setTextColor(Color.parseColor("#d5e0e2"));
+            tst.show();
+
+        }
     }
 
     // show the frozen app dialog
     public void showFrozenApps() {
-        dialogs = new FrozenAppsDialogs(this, mAppsList);
-        dialogs.show();
+        FrozenAppsDialogs dialogs = new FrozenAppsDialogs(this, mAppsList);
+        if (dialogs.updateFrozenList() != 0) {
+            dialogs.show();
+        } else {
+            //TODO: show no frozen apps
+            Toast tst = Toast.makeText(this, "No apps to show", Toast.LENGTH_SHORT);
+            TextView tv = (TextView) tst.getView().findViewById(android.R.id.message);
+            tv.setTextColor(Color.parseColor("#d5e0e2"));
+            tst.show();
+
+        }
     }
 
     //set the flow layout alignment it is called from global settings
@@ -1205,19 +1218,23 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
             mHomeLayout.removeAllViews();
+            mHomeLayout.removeAllViewsInLayout();
             // now add the app textView to home
             // FlowLayoutManager.LayoutParams params = new FlowLayoutManager.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
             // params.setNewLine(true);
-            for (Apps apps : mAppsList) {
-                mHomeLayout.addView(apps.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+            for (Apps app : mAppsList) {
+                mHomeLayout.addView(app.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             }
+
 
         }
 
         @Override
-        protected Void doInBackground(Integer... integers) {
-            int type = integers[0];
+        protected Void doInBackground(final Integer... integers) {
+            final int type = integers[0];
             DbUtils.setAppsSortsType(type);
 
             //sort the apps alphabetically
@@ -1228,7 +1245,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
             switch (type) {
                 case SORT_BY_SIZE://descending
-                    Collections.sort(mAppsList, (apps, t1) -> t1.getSize() - apps.getSize());
+                    Collections.sort(mAppsList, (apps, t1) -> (t1.getSize() - apps.getSize()));
                     break;
                 case SORT_BY_OPENING_COUNTS://descending
                     Collections.sort(mAppsList, (apps, t1) -> t1.getOpeningCounts() - apps.getOpeningCounts());

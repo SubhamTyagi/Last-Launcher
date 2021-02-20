@@ -15,7 +15,7 @@ Last Launcher is Quick, Simple, Minimalist, Customizable Android launcher. It ai
 
 <h2>🚀 Performance</h2>
 ▶ Faster than Fastest :)
-▶ Lightweight and small size apk less than 100KB.
+▶ Lightweight and small size apk less than 130KB.
 ▶ Low memory and cpu usage.
 
 <h2>💥 Features</h2>

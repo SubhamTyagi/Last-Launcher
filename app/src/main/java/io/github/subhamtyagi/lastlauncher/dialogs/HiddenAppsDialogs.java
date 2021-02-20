@@ -40,7 +40,7 @@ public class HiddenAppsDialogs extends Dialog {
 
     private final ArrayList<Apps> mAppsList;
     private final Context context;
-    private ListView listView;
+    ArrayList<Apps> hiddenApps = new ArrayList<>();
 
     public HiddenAppsDialogs(Context context, ArrayList<Apps> appsList) {
         super(context);
@@ -53,8 +53,11 @@ public class HiddenAppsDialogs extends Dialog {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_hidden_apps);
-        listView = findViewById(R.id.hidden_app_list);
-        updateList(mAppsList);
+        ListView listView = findViewById(R.id.hidden_app_list);
+
+        UniversalAdapter adapter = new UniversalAdapter(context, hiddenApps);
+        listView.setAdapter(adapter);
+        adapter.setOnClickListener(this::confirmationAndRemove);
 
     }
 
@@ -74,7 +77,7 @@ public class HiddenAppsDialogs extends Dialog {
 
             if (menuItem.getItemId() == R.id.menu_remove_this) {
                 apps.setAppHidden(false);
-                updateList(mAppsList);
+                updateHiddenList();
             } else if (menuItem.getItemId() == R.id.menu_run_this_app) {
                 if (!apps.isShortcut()) {
                     String[] strings = apps.getActivityName().split("/");
@@ -94,23 +97,13 @@ public class HiddenAppsDialogs extends Dialog {
     }
 
 
-    private void updateList(ArrayList<Apps> appsList) {
-        ArrayList<Apps> appsList2 = new ArrayList<>();
-        for (Apps apps : appsList) {
+    public int updateHiddenList() {
+        for (Apps apps : mAppsList) {
             if (apps.isHidden()) {
-                appsList2.add(apps);
+                hiddenApps.add(apps);
             }
         }
-        if (appsList2.isEmpty()) {
-            cancel();
-            dismiss();
-            return;
-        }
-
-        UniversalAdapter adapter = new UniversalAdapter(context, appsList2);
-        listView.setAdapter(adapter);
-
-        adapter.setOnClickListener(this::confirmationAndRemove);
+        return hiddenApps.size();
     }
 
 }

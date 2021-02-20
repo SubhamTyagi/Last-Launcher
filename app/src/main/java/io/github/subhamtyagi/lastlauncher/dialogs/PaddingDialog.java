@@ -31,16 +31,16 @@ import org.apmem.tools.layouts.FlowLayout;
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.MAX_PADDING_BOTTOM;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.MAX_PADDING_LEFT;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.MAX_PADDING_RIGHT;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.MAX_PADDING_TOP;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.MIN_PADDING;
+
 public class PaddingDialog extends Dialog implements View.OnLongClickListener, View.OnClickListener {
 
     private static final long DELAY = 10;
 
-    private static final int MAX_PADDING_LEFT = 99;
-    private static final int MAX_PADDING_RIGHT = 99;
-    private static final int MAX_PADDING_TOP = 999;
-    private static final int MAX_PADDING_BOTTOM = 999;
-
-    private static final int MIN_PADDING = 0;
     private final FlowLayout homeLayout;
 
     private final Handler handler = new Handler();

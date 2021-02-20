@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
 import io.github.subhamtyagi.lastlauncher.R;
+import io.github.subhamtyagi.lastlauncher.utils.Constants;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
 
@@ -88,8 +89,8 @@ public class ColorSnifferDialog extends Dialog implements View.OnClickListener {
             //Is it required to send default colors of apps : YES
             // is it required/ to send theme related data for better experience : ask for color sniffer developer
             // 2121= dummy value
-            intent.putExtra(LauncherActivity.DEFAULT_COLOR_FOR_APPS, 2121);
-            launcherActivity.startActivityForResult(intent, LauncherActivity.COLOR_SNIFFER_REQUEST);
+            intent.putExtra(Constants.DEFAULT_COLOR_FOR_APPS, 2121);
+            launcherActivity.startActivityForResult(intent, Constants.COLOR_SNIFFER_REQUEST);
             // for activity result see LauncherActivity line 509
             cancel();
         } catch (ActivityNotFoundException e) {

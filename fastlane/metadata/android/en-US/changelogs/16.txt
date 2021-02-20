@@ -1,7 +1,12 @@
 *Beta release 6*
 
-
 * What's New in this release
 
-- Orientation lock got liberty, Enjoy all Orientations.
--
+- Orientation gots liberty, Enjoy Orientations.
+- Bug fix for "Can't select files to restore"
+- Bug fix for "ConcurrentModificationException"(Thanks @btimofeev).
+- Bug fix for "Toast Text not visible".
+- Translation update for Slovak, Croatian, Hungarian, Portuguese, Ukrainian, Chinese via Weblate(Thanks all contributors)
+- Fix typos.
+- Don't show empty 'Hidden' or 'Frozen' Apps.
+- Code improvement.
