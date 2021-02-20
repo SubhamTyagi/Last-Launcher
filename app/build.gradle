@@ -8,20 +8,30 @@ android {
         applicationId "io.github.subhamtyagi.lastlauncher"
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 15
-        versionName "0.15"
+        versionCode 16
+        versionName "0.16"
         //resConfigs "en", "de"
         buildConfigField "boolean", "enableColorSniffer", "false"
     }
     buildTypes {
         debug {
+            def workingBranch = getGitWorkingBranch()
+            def normalizedWorkingBranch = workingBranch.replaceFirst("^[^A-Za-z]+", "").replaceAll("[^0-9A-Za-z]+", "")
+            if (normalizedWorkingBranch.isEmpty() || workingBranch == "master" ) {
+                applicationIdSuffix ".debug"
+                resValue "string", "app_name", "Debug Last Launcher"
+            } else {
+                archivesBaseName = 'Last_Launcher_' + normalizedWorkingBranch
+                applicationIdSuffix ".debug." + normalizedWorkingBranch
+                resValue "string", "app_name", "Last Launcher" + workingBranch
+            }
+
             debuggable true
             jniDebuggable true
             versionNameSuffix "-debug"
             minifyEnabled false
             shrinkResources false
-            applicationIdSuffix = '.debug'
-            resValue "string", "app_name", "Debug Last Launcher"
+
         }
         release {
             debuggable false
@@ -38,6 +48,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
@@ -58,4 +69,20 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':flowlayout:layouts')
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+}
+
+static String getGitWorkingBranch() {
+    try {
+        def gitProcess = "git rev-parse --abbrev-ref HEAD".execute()
+        gitProcess.waitFor()
+        if (gitProcess.exitValue() == 0) {
+            return gitProcess.text.trim()
+        } else {
+            // .git folder not present
+            return ""
+        }
+    } catch (IOException ignored) {
+        // git is not installed
+        return ""
+    }
 }

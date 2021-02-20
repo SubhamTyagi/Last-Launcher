@@ -1,0 +1,7 @@
+*Beta release 6*
+
+
+* What's New in this release
+
+- Orientation lock got liberty, Enjoy all Orientations.
+-
