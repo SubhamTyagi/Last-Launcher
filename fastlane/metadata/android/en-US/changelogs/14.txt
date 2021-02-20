@@ -5,4 +5,4 @@
 
 - Search Bar is now accessiable via LEFT/RIGHT swipe instead of UP
 - Backup fixed for Android 6 or prior.
-- Spanish Translation 
+- Spanish Translation

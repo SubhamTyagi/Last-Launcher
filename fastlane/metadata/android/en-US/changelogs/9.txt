@@ -6,4 +6,4 @@
 - Option to restore default fonts.
 - Color improvements for irrevocable operation.
 - Increased padding limits.
-- Bug fix related to reset is not working for app size. 
+- Bug fix related to reset is not working for app size.

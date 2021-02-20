@@ -6,4 +6,3 @@
 - App source code improvement for better understanding. 
 
 - comming soon: App Search bar
- 
