@@ -1,4 +1,4 @@
-„Last Launcher” je brz, jednostavan, minimalistički, prilagodljiv pokretač za Android. Cilj mu je pružiti najbrže i najjednostavnije korisničko iskustvo ikad.
+Last Launcher je brz, jednostavan, minimalistički, prilagodljiv pokretač za Android. Cilj mu je pružiti najbrže i najjednostavnije korisničko iskustvo ikad.
 
 <p>
 *************************
@@ -6,7 +6,7 @@
 *************************
 </p>
 
-<h4>Prevedi program na <a href="https://hosted.weblate.org/projects/last-launcher">Weblateu</a> na tvoj jezik.</h4>
+<h4>Prevedi program na <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a> stranicama na tvoj jezik.</h4>
 
 <h2>Projekt</h2>
 
@@ -15,7 +15,7 @@
 
 <h2>🚀 Učinkovitost</h2>
 ▶ Brži od najbržeg :)
-▶ Lagan i mali program manji od 100 KB.
+▶ Jednostavan i mali program s manje od 130 KB.
 ▶ Niska upotreba memorije i procesora.
 
 <h2>💥 Funkcije</h2>
@@ -39,4 +39,4 @@
 ▶ <font color="#00ffb2"> Povuci prst udesno za pristup traci pretrage.</font>
 ▶ <font color="#00ffb2"> Za skrivanje trake pretrage, pritisni Natrag/Početna ili povuci prstom LIJEVO na ekranu.</font>
 
-<h4>Prevedi program na <a href="https://hosted.weblate.org/projects/last-launcher">Weblateu</a> na tvoj jezik.</h4>
+<h4>Prevedi program na <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a> stranicama na tvoj jezik.</h4>
