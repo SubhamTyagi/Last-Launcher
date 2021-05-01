@@ -1,42 +1,40 @@
-Last Launcher is Quick, Simple, Minimalist, Customizable Android launcher. It aims to provide fastest and simplest ever user experience.
-
-<p>
-*************************
-**This is <font color="#FF6E40"><b>Beta release</b></font>**
-*************************
-</p>
-
-<h4>Translate this app on <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a> in your local language.</h4>
+Simple and customizable Android launcher.
+Try it and experience the difference.
 
 <h2>Project</h2>
 
-▶ Always Free (Gratis and Libre).
+▶ Copylefted libre software (GPLv3+).
+▶ Gratis.
 ▶ F-droid exclusive.
 
 <h2>🚀 Performance</h2>
-▶ Faster than Fastest :)
-▶ Lightweight and small APK size of less than 130KB.
 ▶ Low memory and CPU usage.
+▶ Less than 130KB.
 
 <h2>💥 Features</h2>
 
-▶ Search among apps.
-▶ Shortcuts and PWAs support.
+▶ Search.
+▶ Shortcuts.
 ▶ Resizable and colourful app names.
-▶ Sorts apps by various ways.
-▶ Custom alignment and padding.
-▶ Random Colors.
+▶ Random colors.
 ▶ Multiple themes.
+▶ Multiple ways to sorts apps.
+▶ Custom alignment and padding.
 ▶ Hide apps.
 ▶ Freeze apps size.
 ▶ Backup/restore launcher data.
-▶ No icon and widgets <strike>(may be a disadvantage)</strike>.
-▶ For more <font color="#FF6E40"><b>try launcher</b></font> and see the difference.
+▶ PWA support.
+
+
+<h2>😎 Not bugs</h2>
+
+▶ No icons.
+▶ No widgets.
 
 <h2>Navigation</h2>
 
-▶<font color="#00ffb2"> Long click on EMPTY AREA to access launcher settings.</font>
-▶<font color="#00ffb2"> Swipe RIGHT to access Search Bar.</font>
-▶<font color="#00ffb2"> To hide search bar press Back/Home or Swipe LEFT onthe screen.</font>
+▶<font color="#00ffb2"> Launcher settings — long-click an empty area.</font>
+▶<font color="#00ffb2"> Search            — swipe ➡.</font>
+▶<font color="#00ffb2"> Hide search       — swipe ⬅ or press \"Back/Home\".</font>
 
-<h4>Translate this app on <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a> in your local language.</h4>
+<h4>Translate this app on <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a>.</h4>
