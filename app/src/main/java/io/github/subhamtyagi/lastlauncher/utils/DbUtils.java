@@ -71,8 +71,8 @@ public class DbUtils {
         SpUtils.getInstance().clear();
     }
 
-    public static Map<String, ?> getDBData(){
-     return   SpUtils.getInstance().getAll();
+    public static Map<String, ?> getDBData() {
+        return SpUtils.getInstance().getAll();
     }
 
     public static boolean loadDbFromFile(InputStream inputStream) {

@@ -33,7 +33,7 @@ import io.github.subhamtyagi.lastlauncher.views.colorseekbar.ColorSeekBar;
 public class ColorSizeDialog extends Dialog {
 
     private static final int DELAY = 25;
-    // private static final String TAG="ChooseSize";
+    //private static final String TAG = "ChooseSize";
     private final static int DEFAULT_MIN_TEXT_SIZE = DbUtils.getMinAppSize();
     private final static int DEFAULT_MAX_TEXT_SIZE = DbUtils.getMaxAppSize();
 
@@ -74,7 +74,6 @@ public class ColorSizeDialog extends Dialog {
         // todo: is this still correct?
         if (appColor != DbUtils.NULL_TEXT_COLOR)
             colorSeekBar.setColor(appColor);
-
         // set the color and save this to database
         colorSeekBar.setOnColorChangeListener((colorBarPosition, alphaBarPosition, color) -> {
             textView.setTextColor(color);

@@ -22,7 +22,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -84,7 +88,9 @@ public class Utils {
                 "com.miui.gallery",
                 "com.miui.calculator",
                 "com.nonsenseapps.feeder",
-                "com.foobnix.pro.pdf.reader"
+                "com.foobnix.pro.pdf.reader",
+                "com.mixplorer",
+                "io.github.subhamtyagi.ocr"
 
         };
         return Arrays.asList(list);
@@ -107,7 +113,9 @@ public class Utils {
                 "org.mozilla.fennec_fdroid",
                 "com.miui.gallery",
                 "com.miui.calculator",
-                "com.foobnix.pro.pdf.reader"
+                "com.foobnix.pro.pdf.reader",
+                "com.mixplorer",
+                "io.github.subhamtyagi.ocr"
 
         };
         return Arrays.asList(list);
@@ -209,23 +217,7 @@ public class Utils {
 
     }
 
-    /**
-     * @param text string
-     * @return code points
-     */
-    public static int[] codepoints(CharSequence text) {
-        int idx = 0;
-        int idxCodepoint = 0;
-        int textLength = text.length();
-        int[] codepoints = new int[Character.codePointCount(text, 0, textLength)];
-        while (idx < textLength) {
-            int codepoint = Character.codePointAt(text, idx);
-            codepoints[idxCodepoint] = codepoint;
-            idx += Character.charCount(codepoint);
-            idxCodepoint += 1;
-        }
-        return codepoints;
-    }
+
 
     public static int getColor() {
         Random random = new Random();
@@ -234,13 +226,70 @@ public class Utils {
             case 0:
                 return Color.parseColor("#FF5722");
             case 1:
-                return Color.parseColor("#F44336");
+                return Color.parseColor("#FFEB3B");
             case 2:
                 return Color.parseColor("#03A9F4");
             case 3:
                 return Color.parseColor("#8BC34A");
         }
         return Color.parseColor("#FF5722");
+    }
+
+    public static int getDominantColor(Bitmap bitmap) {
+        if (bitmap == null) {
+            return Color.TRANSPARENT;
+        }
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int size = width * height;
+        int[] pixels = new int[size];
+        //Bitmap bitmap2 = bitmap.copy(Bitmap.Config.ARGB_4444, false);
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+        int color;
+        int r = 0;
+        int g = 0;
+        int b = 0;
+        int a;
+        int count = 0;
+        for (int i = 0; i < pixels.length; i++) {
+            color = pixels[i];
+            a = Color.alpha(color);
+            if (a > 0) {
+                r += Color.red(color);
+                g += Color.green(color);
+                b += Color.blue(color);
+                count++;
+            }
+        }
+        r /= count;
+        g /= count;
+        b /= count;
+        r = (r << 16) & 0x00FF0000;
+        g = (g << 8) & 0x0000FF00;
+        b = b & 0x000000FF;
+        color = 0xFF000000 | r | g | b;
+        return color;
+    }
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if(bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     private boolean isDefaultLauncher(Context ctx) {

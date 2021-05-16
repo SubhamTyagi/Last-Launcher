@@ -24,7 +24,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -33,7 +33,6 @@ import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -56,7 +55,7 @@ import static io.github.subhamtyagi.lastlauncher.utils.Constants.RESTORE_REQUEST
 public class GlobalSettingsDialog extends Dialog implements View.OnClickListener {
 
 
-    private static final String TAG = "Global";/**/
+    //private static final String TAG = "Global";/**/
     private final LauncherActivity launcherActivity;
     private final Context context;
     private TextView freezeSize;
@@ -200,7 +199,6 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                     break;
                 case R.id.menu_sort_by_update_time:
                     launcherActivity.sortApps(Constants.SORT_BY_UPDATE_TIME);
-                    Log.d(TAG, "sortApps: sort by update time");
                     break;
                 case R.id.menu_sort_by_recent_use:
                     launcherActivity.sortApps(Constants.SORT_BY_RECENT_OPEN);
@@ -251,19 +249,17 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         boolean rColor = !DbUtils.isRandomColor();
         DbUtils.randomColor(rColor);
         cancel();
-
-        int color;
-        for (Apps app : LauncherActivity.mAppsList) {
-
-            color = DbUtils.getAppColor(app.getActivityName());
-
-            if (rColor) {
-                if (color == DbUtils.NULL_TEXT_COLOR)
-                    color = Utils.generateColorFromString(app.getActivityName());
-            } else {
+        if (rColor) {
+            int color;
+            for (Apps app : LauncherActivity.mAppsList) {
                 color = DbUtils.getAppColor(app.getActivityName());
+                if (color == DbUtils.NULL_TEXT_COLOR) {
+                    color = Utils.generateColorFromString(app.getActivityName());
+                    app.getTextView().setTextColor(color);
+                }
             }
-            app.getTextView().setTextColor(color);
+        } else {
+            launcherActivity.recreate();
         }
     }
 
@@ -295,10 +291,8 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
     }
 
     private void frozenApps() {
-
         launcherActivity.showFrozenApps();
         cancel();
-
     }
 
     //show hidden apps
@@ -313,8 +307,19 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
     }
 
     private void defaultSettings() {
-        DbUtils.clearDB();
-        launcherActivity.recreate();
+        if (!BuildConfig.DEBUG) {
+            DbUtils.clearDB();
+            launcherActivity.recreate();
+        } else {
+            String TAG = "Testing";
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            launcherActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+            Log.d(TAG, "height==" + height);
+            Log.d(TAG, "width==" + width);
+        }
+
     }
 
     private void backup() {
@@ -322,8 +327,9 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         Intent intentBackupFiles;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             intentBackupFiles = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-        }else {
-            intentBackupFiles =  new Intent(Intent.ACTION_GET_CONTENT);;
+        } else {
+            intentBackupFiles = new Intent(Intent.ACTION_GET_CONTENT);
+            ;
         }
         intentBackupFiles.addCategory(Intent.CATEGORY_OPENABLE);
 
@@ -346,11 +352,11 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         intentRestoreFiles.addCategory(Intent.CATEGORY_OPENABLE);
         intentRestoreFiles.setType("*/*");
         Intent intent = Intent.createChooser(intentRestoreFiles, launcherActivity.getString(R.string.choose_old_backup_files));
-        launcherActivity. startActivityForResult(intent, RESTORE_REQUEST);
+        launcherActivity.startActivityForResult(intent, RESTORE_REQUEST);
     }
 
     private void setFonts() {
-            cancel();
+        cancel();
         Intent intentSetFonts = new Intent(Intent.ACTION_GET_CONTENT);
 
         intentSetFonts.addCategory(Intent.CATEGORY_OPENABLE);

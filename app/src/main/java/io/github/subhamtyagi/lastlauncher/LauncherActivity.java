@@ -307,9 +307,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         final Intent startupIntent = new Intent(Intent.ACTION_MAIN, null);
         startupIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-
         PackageManager pm = getPackageManager();
-
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
 
         // check whether our app list is already initialized if yes then clear this(when new app or shortcut installed)
@@ -320,7 +318,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
 
         // shortcut or pwa counts
-
         final int installedShortcut = shortcutUtils.getShortcutCounts();
 
         // Log.d(TAG, "loadApps: install shortcut sizes::" + installedShortcut);
@@ -366,6 +363,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
             // get app color
             color = DbUtils.getAppColor(activity);
+
+            /*Drawable icon = null;
+            try {
+                icon = getPackageManager().getApplicationIcon(packageName);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            color= Utils.getDominantColor(Utils.drawableToBitmap(icon));*/
+
 
             // check for default color : set default colors if random color is not set
             if (!DbUtils.isRandomColor() && color == DbUtils.NULL_TEXT_COLOR) {

@@ -35,21 +35,18 @@ public class Constants {
 
     public static final int RESTORE_REQUEST = 125;
     public static final int FONTS_REQUEST = 126;
-    public static final int PERMISSION_REQUEST = 127;
     public static final int BACKUP_REQUEST = 128;
-
-    public static final int DEFAULT_TEXT_SIZE_NORMAL_APPS = 20;
-    public static final int DEFAULT_TEXT_SIZE_OFTEN_APPS = 36;
-
     public static final int DEFAULT_MAX_TEXT_SIZE = 10;
     public static final int DEFAULT_MIN_TEXT_SIZE = -10;
-
     public static final int MAX_PADDING_LEFT = 99;
     public static final int MAX_PADDING_RIGHT = 99;
     public static final int MAX_PADDING_TOP = 999;
     public static final int MAX_PADDING_BOTTOM = 999;
-
     public static final int MIN_PADDING = 0;
+    //TODO: Dynamic height
+    public static int dynamicHeight = 20;
+    public static final int DEFAULT_TEXT_SIZE_NORMAL_APPS = dynamicHeight;
+    public static final int DEFAULT_TEXT_SIZE_OFTEN_APPS = dynamicHeight * 9 / 5;
 
 
 }

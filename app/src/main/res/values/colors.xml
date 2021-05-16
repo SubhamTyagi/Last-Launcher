@@ -20,23 +20,6 @@
     <color name="default_apps_colors">#8F8C8C</color>
 
 
-    <!--  <array name="material_colors">
-          <item>#ff000000</item>
-          <item>#FFF44336</item>
-          <item>#FF9C27B0</item>
-          <item>#FF3F51B5</item>
-          <item>#FF03A9F4</item>
-          <item>#FF009688</item>
-          <item>#FF8BC34A</item>
-          <item>#FFFFEB3B</item>
-          <item>#FFFF9800</item>
-          <item>#FF795548</item>
-          <item>#FF607D8B</item>
-          <item>#FF8F8C8C</item>
-          <item>#ffffffff</item>
-
-      </array>-->
-
     <array name="material_colors1">
         <item>#8F8C8C</item>
         <item>#F44336</item>
