@@ -18,7 +18,6 @@
 
 package io.github.subhamtyagi.lastlauncher;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -32,14 +31,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.ParcelFileDescriptor;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
@@ -61,7 +59,13 @@ import android.widget.Toast;
 
 import org.apmem.tools.layouts.FlowLayout;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -88,12 +92,12 @@ import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_CHANGED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
 import static android.content.Intent.ACTION_PACKAGE_REPLACED;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.BACKUP_REQUEST;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.COLOR_SNIFFER_REQUEST;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_COLOR_FOR_APPS;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_TEXT_SIZE_NORMAL_APPS;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_TEXT_SIZE_OFTEN_APPS;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.FONTS_REQUEST;
-import static io.github.subhamtyagi.lastlauncher.utils.Constants.PERMISSION_REQUEST;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.RESTORE_REQUEST;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_COLOR;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_NAME;
@@ -125,19 +129,25 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         View.OnLongClickListener,
         Gestures.OnSwipeListener {
 
+
     //region Field declarations
     public static ArrayList<Apps> mAppsList;
+    // home layout
     private static FlowLayout mHomeLayout;
     // when search bar is appear this will be true and show search result
     private static boolean searching = false;
+    //todo: save this to db
     private static int recentlyUsedCounter = 0;
     private final String TAG = "LauncherActivity";
+    // broadcast receiver
     private BroadcastReceiver broadcastReceiverAppInstall;
     private BroadcastReceiver broadcastReceiverShortcutInstall;
     private Typeface mTypeface;
+    //multi dialogs
     private Dialog dialogs;
     //search box
     private EditText mSearchBox;
+
     private InputMethodManager imm;
     // gesture detector
     private Gestures detector;
@@ -148,8 +158,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         if (!searching) return;
 
         mHomeLayout.removeAllViews();
-        //mHomeLayout.
-        //Log.d(TAG, "showSearchResult: yes search result show ");
         mHomeLayout.setPadding(0, 150, 0, 0);
         /*//sort the apps alphabetically
         Collections.sort(filteredApps, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
@@ -307,6 +315,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         // check whether our app list is already initialized if yes then clear this(when new app or shortcut installed)
         if (mAppsList != null) {
             mAppsList.clear();
+            mHomeLayout.removeAllViews();
+            mHomeLayout.removeAllViewsInLayout();
         }
 
         // shortcut or pwa counts
@@ -482,7 +492,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // get the activity
             String activity = (String) view.getTag();
             AppTextView appTextView = (AppTextView) view;
-
 
             if (searching) {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -896,120 +905,95 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         shortcutUtils.close();
     }
 
-    // request storage permission
-    public void requestPermission() {
-        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            requestPermissions(
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
-                    PERMISSION_REQUEST
-            );
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 148) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                DbUtils.permissionRequired(false);
-            }
-        }
-    }
-
-    public boolean isPermissionRequired() {
-        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            return checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED;
-        }
-        return true;
-    }
-
-    // browse the backup file
-    public void browseFile() {
-
-        Intent chooseFile;
-        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-        //   chooseFile = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        //}else {
-        chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-        // }
-        chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
-        //chooseFile.setType("application/x-font-ttf");
-        //chooseFile.setType("file/plain");
-        chooseFile.setType("*/*");
-        Intent intent = Intent.createChooser(chooseFile, this.getString(R.string.choose_old_backup_files));
-        startActivityForResult(intent, RESTORE_REQUEST);
-    }
-
-    // browse the fonts
-    public void browseFonts() {
-        if (isPermissionRequired()) {
-            requestPermission();
-        }
-
-        Intent chooseFile;
-        // if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-        //    chooseFile = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        // }else {
-        chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-        //}
-
-        chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
-        //chooseFile.setType("application/x-font-ttf");
-        // chooseFile.setType("file/plain");
-        chooseFile.setType("*/*");
-        Intent intent = Intent.createChooser(chooseFile, "Choose Fonts");
-        startActivityForResult(intent, FONTS_REQUEST);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) return;
         // restore request
-        if (requestCode == RESTORE_REQUEST) {
-            Uri uri = data.getData();
-            ContentResolver cr = getContentResolver();
-            try {
-                boolean b = DbUtils.loadDbFromFile(cr.openInputStream(uri));
-                if (b) {
-                    recreate();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            // font request
-        } else if (requestCode == FONTS_REQUEST) {
-            try {
+        switch (requestCode) {
 
-                String[] projection = {MediaStore.Images.Media.DATA};
+            case RESTORE_REQUEST:
+
+                Uri uri = data.getData();
+                ContentResolver cr = getContentResolver();
+                try {
+                    boolean b = DbUtils.loadDbFromFile(cr.openInputStream(uri));
+                    if (b) {
+                        recreate();
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case FONTS_REQUEST:
+
+                try {
+
+               /* String[] projection = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(data.getData(), projection, null, null, null);
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
                 String path = cursor.getString(column_index);
-                cursor.close();
-                //Log.i(TAG, "onActivityResult: " + path);
-                mTypeface = Typeface.createFromFile(path);
+                cursor.close();*/
+                    ///new
+                    Uri uri1 = data.getData();
+                    ContentResolver cr1 = getContentResolver();
 
-                DbUtils.setFonts(path);
-                loadApps();
-            } catch (Exception i) {
-                //i.printStackTrace();
+                    File fontFile = new File(getFilesDir(), "font.ttf");
+                    try (InputStream inputFontStream = cr1.openInputStream(uri1);
+                         OutputStream out = new FileOutputStream(fontFile);) {
+                        byte[] buf = new byte[1024];
+                        int len;
+                        while ((len = inputFontStream.read(buf)) > 0) {
+                            out.write(buf, 0, len);
+                        }
+                    } catch (IOException ioe) {
+                        ioe.printStackTrace();
+                    }
 
-                mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
-            }
-            // this handle the request of ColorSniffer app
-        } else if (requestCode == COLOR_SNIFFER_REQUEST) {
-            //
-            //GET DATA FROM COLOR SNIFFER APPS:
-            //K,V ??? no
-            // bundle yes
-            // is it complex: may be
-            //get the data
-            colorSnifferCall(data.getBundleExtra("color_bundle"));
+                    String path = fontFile.getPath();
+                    //Log.i(TAG, "onActivityResult: " + path);
+                    mTypeface = Typeface.createFromFile(path);
+                    DbUtils.setFonts(path);
+                    loadApps();
+                } catch (Exception i) {
+                    //i.printStackTrace();
+                    mTypeface = Typeface.createFromAsset(getAssets(), "fonts/raleway_bold.ttf");
+                }
+                break;
+
+            case BACKUP_REQUEST:
+
+                Uri uri2 = data.getData();
+                ObjectOutputStream output = null;
+                try {
+                    ParcelFileDescriptor pfd = this.getContentResolver().openFileDescriptor(uri2, "w");
+                    FileOutputStream fileOutputStream = new FileOutputStream(pfd.getFileDescriptor());
+                    output = new ObjectOutputStream(fileOutputStream);
+                    output.writeObject(DbUtils.getDBData());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (output != null) {
+                            output.flush();
+                            output.close();
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                break;
 
 
+            case COLOR_SNIFFER_REQUEST:
+
+                colorSnifferCall(data.getBundleExtra("color_bundle"));
+
+                break;
         }
+
     }
 
     //may be override of abstract class method to be called from color sniffer #3 types

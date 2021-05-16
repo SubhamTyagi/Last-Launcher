@@ -116,21 +116,6 @@ class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-   /* Set<String> getStringSet(String key) {
-        if (mPref != null) {
-            return mPref.getStringSet(key, null);
-        } else throw new RuntimeException("First Initialize context");
-    }
-
-
-    void putStringSet(String key, Set<String> value) {
-        if (mPref != null) {
-            Editor editor = mPref.edit();
-            editor.putStringSet(key, value);
-            editor.apply();
-        } else throw new RuntimeException("First Initialize context");
-    }*/
-
 
     String getString(String key) {
         if (mPref != null) {
@@ -191,33 +176,7 @@ class SpUtils {
         } else throw new RuntimeException("First Initialize context");
     }
 
-    boolean saveSharedPreferencesToFile() {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd_HHSS", Locale.getDefault());
-        df.format(new Date());
-        String date = df.format(new Date());
-        boolean res = false;
-        File dst = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Backup_LastLauncher_" + date);
-        ObjectOutputStream output = null;
-        try {
-            output = new ObjectOutputStream(new FileOutputStream(dst));
-            output.writeObject(mPref.getAll());
-            res = true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (output != null) {
-                    output.flush();
-                    output.close();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-        return res;
-    }
+
 
 
     //stub

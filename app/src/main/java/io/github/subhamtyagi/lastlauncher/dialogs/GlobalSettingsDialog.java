@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -31,7 +32,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import io.github.subhamtyagi.lastlauncher.BuildConfig;
 import io.github.subhamtyagi.lastlauncher.LauncherActivity;
@@ -40,6 +45,10 @@ import io.github.subhamtyagi.lastlauncher.model.Apps;
 import io.github.subhamtyagi.lastlauncher.utils.Constants;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Utils;
+
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.BACKUP_REQUEST;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.FONTS_REQUEST;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.RESTORE_REQUEST;
 
 /**
  * this the launcher setting Dialog
@@ -309,40 +318,48 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
     }
 
     private void backup() {
-        if (launcherActivity.isPermissionRequired())
-            launcherActivity.requestPermission();
-        else {
-            boolean b = DbUtils.saveDbTOFile();
-            cancel();
-
-            Toast toast = Toast.makeText(getContext(), b ? R.string.backup_saved_to_downloads : R.string.some_error_occurred, Toast.LENGTH_LONG);
-            final TextView tv = (TextView) toast.getView().findViewById(android.R.id.message);
-            tv.setTextColor(Color.parseColor("#d5e0e2"));
-            toast.show();
+        cancel();
+        Intent intentBackupFiles;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            intentBackupFiles = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        }else {
+            intentBackupFiles =  new Intent(Intent.ACTION_GET_CONTENT);;
         }
+        intentBackupFiles.addCategory(Intent.CATEGORY_OPENABLE);
+
+        intentBackupFiles.setType("*/*");
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd_HHSS", Locale.getDefault());
+        df.format(new Date());
+        String date = df.format(new Date());
+
+        intentBackupFiles.putExtra(Intent.EXTRA_TITLE, "Backup_LastLauncher_" + date);
+
+        Intent intent = Intent.createChooser(intentBackupFiles, launcherActivity.getString(R.string.choose_old_backup_files));
+        launcherActivity.startActivityForResult(intent, BACKUP_REQUEST);
     }
 
     private void restore() {
-        if (launcherActivity.isPermissionRequired())
-            launcherActivity.requestPermission();
-        else {
-            launcherActivity.browseFile();
-            cancel();
-            Toast toast = Toast.makeText(getContext(), R.string.choose_old_backup_file, Toast.LENGTH_LONG);
-            final TextView tv = (TextView) toast.getView().findViewById(android.R.id.message);
-            tv.setTextColor(Color.parseColor("#d5e0e2"));
-            toast.show();
-
-        }
+        cancel();
+        Intent intentRestoreFiles;
+        intentRestoreFiles = new Intent(Intent.ACTION_GET_CONTENT);
+        intentRestoreFiles.addCategory(Intent.CATEGORY_OPENABLE);
+        intentRestoreFiles.setType("*/*");
+        Intent intent = Intent.createChooser(intentRestoreFiles, launcherActivity.getString(R.string.choose_old_backup_files));
+        launcherActivity. startActivityForResult(intent, RESTORE_REQUEST);
     }
 
     private void setFonts() {
-        if (launcherActivity.isPermissionRequired())
-            launcherActivity.requestPermission();
-        else {
-            launcherActivity.browseFonts();
             cancel();
-        }
+        Intent intentSetFonts = new Intent(Intent.ACTION_GET_CONTENT);
+
+        intentSetFonts.addCategory(Intent.CATEGORY_OPENABLE);
+        //intentSetFonts.setType("application/x-font-ttf");
+        // intentSetFonts.setType("file/plain");
+        intentSetFonts.setType("*/*");
+        Intent intent = Intent.createChooser(intentSetFonts, "Choose Fonts");
+        launcherActivity.startActivityForResult(intent, FONTS_REQUEST);
+
     }
 
     private void fontSelection(View view) {

@@ -22,6 +22,7 @@ import android.content.Context;
 import android.view.Gravity;
 
 import java.io.InputStream;
+import java.util.Map;
 
 import io.github.subhamtyagi.lastlauncher.R;
 
@@ -70,8 +71,8 @@ public class DbUtils {
         SpUtils.getInstance().clear();
     }
 
-    public static boolean saveDbTOFile() {
-        return SpUtils.getInstance().saveSharedPreferencesToFile();
+    public static Map<String, ?> getDBData(){
+     return   SpUtils.getInstance().getAll();
     }
 
     public static boolean loadDbFromFile(InputStream inputStream) {

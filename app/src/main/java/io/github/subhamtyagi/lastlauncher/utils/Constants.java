@@ -36,6 +36,7 @@ public class Constants {
     public static final int RESTORE_REQUEST = 125;
     public static final int FONTS_REQUEST = 126;
     public static final int PERMISSION_REQUEST = 127;
+    public static final int BACKUP_REQUEST = 128;
 
     public static final int DEFAULT_TEXT_SIZE_NORMAL_APPS = 20;
     public static final int DEFAULT_TEXT_SIZE_OFTEN_APPS = 36;
