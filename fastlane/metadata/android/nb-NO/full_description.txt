@@ -1,0 +1,43 @@
+Last Launcher er en rask, enkel, minimalistisk, tilpasningsvennlig Android-oppstarter.
+Den tar sikte på å gi den enkleste og raskeste brukeropplevelsen.
+
+<p>
+*************************
+**Dette er en <font color="#FF6E40"><b>betautgave</b></font>**
+*************************
+</p>
+
+<h4>Oversett dette programmet på <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a> på ditt lokale språk.</h4>
+
+<h2>Prosjekt</h2>
+
+▶ Alltid gratis og fritt.
+▶ Eksklusivt på F-droid.
+
+<h2>🚀 Ytelse</h2>
+▶ Raskere enn raskt :)
+▶ Lett og liten APK-størrelse på mindre enn 130 KB.
+▶ Lite minne- og prosessorbruk.
+
+<h2>💥 Funksjoner</h2>
+
+▶ Søk etter programmer.
+▶ Snarveier og PWA-støtte.
+▶ Fargerike programnavn som kan endre størrelse.
+▶ Sorter programmer på forskjellige vis.
+▶ Egendefinert justering og utfylling.
+▶ Tilfeldige farger.
+▶ Flere drakter.
+▶ Skjul programmer.
+▶ Frys programstørrelse.
+▶ Sikkerhetskopier/gjenopprett opppstarterdata.
+▶ Ingen ikoner eller miniprogrammer <strike>(kan være en bakdel)</strike>.
+▶ For mer info, <font color="#FF6E40"><b>prøv oppstarteren</b></font> og opplev forskjellen.
+
+<h2>Navigasjon</h2>
+
+▶<font color="#00ffb2"> Trykk lenge på et tomt område for å få tilgang til oppstarterinnstillinger.</font>
+▶<font color="#00ffb2"> Dra til høyre for å få tilgang til søkefelt.</font>
+▶<font color="#00ffb2"> For å skjule søkefeltet kan du trykke tilbake/hjem eller dra til venstre på skjermen.</font>
+
+<h4>Oversett dette programmet på <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a> på ditt lokale språk.</h4>

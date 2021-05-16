@@ -1,0 +1,7 @@
+*Forhåndsutgivelse 10*
+
+- Sorter programmer etter navn, størrelse, farge, bruk.
+- Vis programsnarveier, nettsidesnarveier, og PWA-er.
+- Feilfiks for drakt som ikke er rett etter oppstart.
+- Feilfiks for element som ikke vises rett.
+- Ytelsesforbedringer.

@@ -52,4 +52,7 @@
     <string name="rename">Alinomi</string>
     <string name="color_for_this_entry">Koloro kaj Grando</string>
     <string name="action_settings">Agordoj</string>
+    <string name="choose_old_backup_file">Elektu malnovan savkopion</string>
+    <string name="choose_old_backup_files">Elektu antaŭan savkopion</string>
+    <string name="update_time">Ĝisdatigi tempon</string>
 </resources>
