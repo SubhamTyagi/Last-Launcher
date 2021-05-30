@@ -1,0 +1,18 @@
+*Beta release 7*
+
+* What's New in this release
+- Increased MAX app size to 90.
+- Option to restart Launcher.
+- Bug fix for "Can't select fonts".
+- Bug fix for "Crashing the Launcher on Updating apps".
+- Bug fix for "Random color generation to fixed color show white color".
+- Performance improvements.
+- Removed Storage permission.
+- Move Backup/restore to SAF.
+
+* Project Source codes Changes.
+
+- Translation update.
+- Source Code improvement.
+- Fix possible memory leak in TextWatcher.
+- SDK targets 28->29(android 10).

@@ -164,15 +164,6 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                 break;
             case R.id.settings_restart_launcher:
                 launcherActivity.recreate();
-                /*
-                Intent mStartActivity = new Intent(launcherActivity, LauncherActivity.class);
-                int mPendingIntentId = 956;
-                PendingIntent mPendingIntent = PendingIntent.getActivity(launcherActivity, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-                AlarmManager alarmManager = (AlarmManager)launcherActivity.getSystemService(Context.ALARM_SERVICE);
-                alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 500, mPendingIntent);
-                System.exit(0);
-                */
-
                 break;
 
         }
