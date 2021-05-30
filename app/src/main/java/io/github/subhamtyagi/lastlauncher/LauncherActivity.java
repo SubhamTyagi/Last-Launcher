@@ -152,6 +152,26 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // gesture detector
     private Gestures detector;
     private ShortcutUtils shortcutUtils;
+
+    private static final TextWatcher mTextWatcher= new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            //do here search
+           mSearchTask.execute(charSequence);
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+            // do everything
+        }
+    };
+    private static final SearchTask mSearchTask=new SearchTask();
     //endregion
 
     private static void showSearchResult(ArrayList<Apps> filteredApps) {
@@ -230,25 +250,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     private void setSearchBoxListeners() {
-        mSearchBox.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //do here search
-                new SearchTask().execute(charSequence);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                // do everything
-            }
-        });
-
+        mSearchBox.addTextChangedListener(mTextWatcher);
         mSearchBox.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 mSearchBox.setVisibility(View.GONE);
