@@ -24,8 +24,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -90,6 +88,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         findViewById(R.id.settings_padding).setOnClickListener(this);
         findViewById(R.id.settings_color_size).setOnClickListener(this);
         findViewById(R.id.settings_sort_app_by).setOnClickListener(this);
+        findViewById(R.id.settings_restart_launcher).setOnClickListener(this);
 
         //TODO: remove this var
         TextView colorSniffer = findViewById(R.id.settings_color_sniffer);
@@ -162,6 +161,18 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             case R.id.settings_padding:
                 launcherActivity.setPadding();
                 cancel();
+                break;
+            case R.id.settings_restart_launcher:
+                launcherActivity.recreate();
+                /*
+                Intent mStartActivity = new Intent(launcherActivity, LauncherActivity.class);
+                int mPendingIntentId = 956;
+                PendingIntent mPendingIntent = PendingIntent.getActivity(launcherActivity, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager alarmManager = (AlarmManager)launcherActivity.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + 500, mPendingIntent);
+                System.exit(0);
+                */
+
                 break;
 
         }
@@ -311,7 +322,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             DbUtils.clearDB();
             launcherActivity.recreate();
         } else {
-         //DO SOME ESTER EGG.. FOR DEBUG BUILD..
+            //DO SOME ESTER EGG.. FOR DEBUG BUILD..
         }
 
     }
