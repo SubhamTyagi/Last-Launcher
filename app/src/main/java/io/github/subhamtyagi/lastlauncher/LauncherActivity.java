@@ -154,9 +154,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private ShortcutUtils shortcutUtils;
 
     private static final TextWatcher mTextWatcher= new TextWatcher() {
+
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            mSearchTask=new SearchTask();
         }
 
         @Override
@@ -171,7 +172,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // do everything
         }
     };
-    private static final SearchTask mSearchTask=new SearchTask();
+    private static  SearchTask mSearchTask;
     //endregion
 
     private static void showSearchResult(ArrayList<Apps> filteredApps) {
