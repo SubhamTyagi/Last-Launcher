@@ -26,7 +26,6 @@
     <string name="choose_old_backup_file">Выберите старый файл резервной копии</string>
     <string name="some_error_occurred">Произошла какая-то ошибка</string>
     <string name="backup_saved_to_downloads">Резервная копия сохранена в папке загрузок</string>
-    <string name="from_colorsniffer_app">Из приложения ColorSniffer</string>
     <string name="from_clipboard">Из буфера обмена</string>
     <string name="choose_old_backup_files">Выберите файл предыдущей резервной копии</string>
     <string name="hacker_red">Хакерский красный</string>

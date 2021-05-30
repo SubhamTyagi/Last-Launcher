@@ -23,7 +23,7 @@
     <string name="choose_old_backup_file">Choisissez un ancien fichier de sauvegarde</string>
     <string name="some_error_occurred">Une erreur s’est produite</string>
     <string name="backup_saved_to_downloads">Sauvegarde placée dans les téléchargements</string>
-    <string name="from_colorsniffer_app">Depuis l’application ColorSniffer</string>
+
     <string name="from_clipboard">À partir du presse-papier</string>
     <string name="choose_old_backup_files">Choisissez le fichier de sauvegarde précédent</string>
     <string name="hacker_red">Rouge hacker</string>

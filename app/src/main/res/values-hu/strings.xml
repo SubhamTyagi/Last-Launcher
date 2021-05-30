@@ -23,7 +23,7 @@
     <string name="on">:Be</string>
     <string name="choose_old_backup_file">Régi biztonságimentés-fájl kiválasztása</string>
     <string name="some_error_occurred">Hiba történt</string>
-    <string name="from_colorsniffer_app">Színválasztó alkalmazásból</string>
+
     <string name="from_clipboard">Vágólapról</string>
     <string name="choose_old_backup_files">Előző biztonságimentés-fájl kiválasztása</string>
     <string name="hacker_red">Hacker vörös</string>
