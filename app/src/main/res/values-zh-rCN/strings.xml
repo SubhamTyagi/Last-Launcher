@@ -55,4 +55,5 @@
     <string name="rename">重命名</string>
     <string name="color_for_this_entry">颜色&amp;尺寸</string>
     <string name="action_settings">设置</string>
+    <string name="restart_launcher">重启启动器</string>
 </resources>
