@@ -47,6 +47,8 @@ public class Constants {
     public static int dynamicHeight = 20;
     public static final int DEFAULT_TEXT_SIZE_NORMAL_APPS = dynamicHeight;
     public static final int DEFAULT_TEXT_SIZE_OFTEN_APPS = dynamicHeight * 9 / 5;
+    public static final int MAX_TEXT_SIZE_FOR_APPS=90;
+    public static final int MIN_TEXT_SIZE_FOR_APPS=14;
 
 
 }

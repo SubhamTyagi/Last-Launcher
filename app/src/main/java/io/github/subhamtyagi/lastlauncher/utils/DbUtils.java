@@ -277,7 +277,7 @@ public class DbUtils {
     }
 
     public static int getMaxAppSize() {
-        return SpUtils.getInstance().getInt(MAX_APP_SIZE, 80);
+        return SpUtils.getInstance().getInt(MAX_APP_SIZE, Constants.MAX_TEXT_SIZE_FOR_APPS);
     }
 
     public static void setMaxAppSize(int size) {
@@ -285,7 +285,7 @@ public class DbUtils {
     }
 
     public static int getMinAppSize() {
-        return SpUtils.getInstance().getInt(MIN_APP_SIZE, 14);
+        return SpUtils.getInstance().getInt(MIN_APP_SIZE, Constants.MIN_TEXT_SIZE_FOR_APPS);
     }
 
     public static void setMinAppSize(int size) {

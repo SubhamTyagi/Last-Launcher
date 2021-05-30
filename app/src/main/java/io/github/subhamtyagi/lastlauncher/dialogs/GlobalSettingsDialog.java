@@ -311,13 +311,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             DbUtils.clearDB();
             launcherActivity.recreate();
         } else {
-            String TAG = "Testing";
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            launcherActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int height = displayMetrics.heightPixels;
-            int width = displayMetrics.widthPixels;
-            Log.d(TAG, "height==" + height);
-            Log.d(TAG, "width==" + width);
+         //DO SOME ESTER EGG.. FOR DEBUG BUILD..
         }
 
     }
