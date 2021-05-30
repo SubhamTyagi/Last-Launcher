@@ -55,4 +55,5 @@
     <string name="choose_old_backup_file">Elektu malnovan savkopion</string>
     <string name="choose_old_backup_files">Elektu antaŭan savkopion</string>
     <string name="update_time">Ĝisdatigi tempon</string>
+    <string name="restart_launcher">Relanĉi ĉi tiun programon</string>
 </resources>
