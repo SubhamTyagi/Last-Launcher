@@ -55,4 +55,5 @@
     <string name="backup_saved_to_downloads">Sigurnosna kopija spremljena u Preuzimanja</string>
     <string name="unfreeze_size">Otključaj veličinu</string>
     <string name="freeze_size">Zaključaj veličinu</string>
+    <string name="restart_launcher">Ponovo pokreni program</string>
 </resources>
