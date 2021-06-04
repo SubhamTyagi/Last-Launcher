@@ -33,10 +33,15 @@ Last Launcher je brz, jednostavan, minimalistički, prilagodljiv pokretač za An
 ▶ Bez ikona i dodataka <strike>(može biti nedostatak)</strike>.
 ▶ Za sve ostalo, <font color="#FF6E40">isprobaj pokretača</b></font> i doživi razliku.
 
+<h2> Privatnost <h2>
+▶ Bez dozvole za pristup internetu.
+▶ Bez dozvole za pristup spremištu.
+▶ Svi se podaci spremaju u privatno spremište tvog uređaja, a osjetljivi podaci šifriraju se jednostavnim algoritmom.
+
 <h2>Navigacija</h2>
 
-▶ <font color="#00ffb2"> Pritisni dugo na PRAZNO PODRUČJE za pristup postavkama pokretača.</font>
-▶ <font color="#00ffb2"> Povuci prst udesno za pristup traci pretrage.</font>
-▶ <font color="#00ffb2"> Za skrivanje trake pretrage, pritisni Natrag/Početna ili povuci prstom LIJEVO na ekranu.</font>
+▶ <font color="#FF6E40"> Pritisni dugo na PRAZNO PODRUČJE za pristup postavkama pokretača.</font>
+▶ <font color="#FF6E40"> Povuci prst udesno za pristup traci pretrage.</font>
+▶ <font color="#FF6E40"> Za skrivanje trake pretrage, pritisni Natrag/Početna ili povuci prstom LIJEVO na ekranu.</font>
 
 <h4>Prevedi program na <a href="https://hosted.weblate.org/projects/last-launcher">Weblate</a> stranicama na tvoj jezik.</h4>
