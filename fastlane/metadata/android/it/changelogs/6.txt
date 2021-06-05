@@ -1,0 +1,10 @@
+*Anteprima versione 6*
+
+- Miglioramenti della barra di ricerca delle dimensioni dell'app.
+- Miglioramenti della barra dei colori dell'app.
+- Miglioramenti al campo Rinomina app.
+- Animazione di apertura dell'app.
+- Miglioramento delle prestazioni dei layout.
+- Risolto bug relativo al menu recente.
+- Risolto bug relativo alla riduzione delle dimensioni dell'app al clic.
+- Risolto bug relativo ad alcune app che non si aprivano.

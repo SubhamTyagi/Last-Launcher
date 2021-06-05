@@ -1,0 +1,10 @@
+*Anteprima versione 3*
+-Per accedere alle impostazioni del Launcher fare clic a lungo sull'area vuota
+
+-Blocca/sblocca la dimensione dell'app
+-Nascondi app (temporanee)
+-Caratteri personalizzati
+-Temi multipli
+-Ripristina le impostazioni predefinite
+-Backup e ripristino delle impostazioni
+-Colori casuali

@@ -1,0 +1,44 @@
+Last Launcher è un launcher Android veloce, semplice, minimalista e personalizzabile. Ha lo scopo di fornire un'esperienza utente più rapida e semplice di sempre.
+
+<p>
+*************************
+**This is <font color="#FF6E40"><b>Versione beta</b></font>***
+*************************
+</p>
+
+<h4>Traduci quest'app su <a href="https://hosted.weblate.org/projects/last-launcher">Weblate(https://hosted.weblate.org/projects/last-launcher)</a> nella tua lingua.</h4>
+
+<h2>Progetto</h2>
+▶ Sempre Gratuito (Gratis e Libre).
+▶ Esclusiva F-droid.
+
+<h2>🚀 Performance</h2>
+▶ Più veloce del più veloce :)
+▶ Leggero e piccolo apk di dimensioni inferiori a 130KB.
+▶ Utilizza poca memoria e CPU.
+
+<h2>💥 Features</h2>
+▶ Cerca tra le app.
+▶ Supporto per scorciatoie e PWA.
+▶ Nomi di app ridimensionabili e colorati.
+▶ Ordina le app in vari modi.
+▶ Allineamento e riempimento personalizzati.
+▶ Colori Casuali.
+▶ Temi multipli.
+▶ Nascondi app.
+▶ Blocca dimensioni app.
+▶ Backup/ripristino dati launcher.
+▶ Nessuna icona e widgets <strike>(potrebbe essere uno svantaggio)</strike>.
+▶ Per saperne di più <font color="#FF6E40"><b>prova il launcher</b></font> e vedi la differenza.
+
+<h2> Privacy<h2>
+▶ Nessuna autorizzazione per l'accesso a Internet.
+▶ Nessuna autorizzazione per l'accesso all'archivio.
+▶ Tutti i dati sono archiviati nella memoria privata del tuo dispositivo e i dati sensibili sono cifrati con un semplice algoritmo.
+
+<h2>Navigazione</h2>
+▶<font color="#FF6E40"> Fare clic a lungo su AREA VUOTA per accedere alle impostazioni del launcher.</font>
+▶<font color="#FF6E40"> Scorri a DESTRA per accedere alla barra di ricerca.</font>
+▶<font color="#FF6E40"> Per nascondere la barra di ricerca, premi Indietro/Home o scorri a SINISTRA sullo schermo.</font>
+
+<h4>Traduci quest'app su <a href="https://hosted.weblate.org/projects/last-launcher">Weblate(https://hosted.weblate.org/projects/last-launcher)</a> nella tua lingua.</h4>

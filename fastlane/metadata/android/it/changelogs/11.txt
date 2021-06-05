@@ -1,0 +1,11 @@
+*Versione beta 1*
+
+* Dopo un sacco di versioni in anteprima, Last Launcher è entrato in fase beta.
+
+* Novità di questa versione
+
+- Cerca tra le app.
+- Miglioramenti delle prestazioni (avvio, ordinamento e colore casuale).
+- Grande riduzione (23%) della dimensione dell'apk.
+- Ulteriore riduzione del consumo di memoria.
+- Risolto bug relativo a scorciatoie e PWA che causava ulteriori perdite di memoria.

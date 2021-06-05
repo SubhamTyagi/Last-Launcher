@@ -1,0 +1,11 @@
+*versione beta 5*
+
+*TUTTE LE SCORCIATOIE PRECEDENTI NON SARANNO ACCESSIBILI*
+
+* Novità di questa versione
+
+- Correzioni di bug per "I collegamenti non funzionano bene dopo l'eliminazione".
+- Correzioni di bug per "L'app non viene visualizzata o scompare dopo l'attivazione o la disattivazione"
+- Miglioramenti del codice.
+- Traduzione per francese, tedesco, ungherese, norvegese Bokmāl, russo, danese, polacco, slovacco, croato e spagnolo.
+- Grazie a tutti i traduttori

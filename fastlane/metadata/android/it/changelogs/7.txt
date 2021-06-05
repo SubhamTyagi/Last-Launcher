@@ -1,0 +1,7 @@
+*Anteprima versione 7*
+
+- Colore della barra di stato e della barra di navigazione in base al tema selezionato.
+- Genera lo stesso colore casuale ogni volta per un'app specifica (grazie a Sylvia).
+- Allineamenti (centro, sinistra e destra) delle app.
+- Riordino delle voci del menu pop e colore rosso prudente per alcune voci.
+- Correzione di bug del tema Rosso Hacker.
