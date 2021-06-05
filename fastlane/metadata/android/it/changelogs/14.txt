@@ -1,0 +1,8 @@
+*versione beta 4*
+
+
+* Novità di questa versione
+
+- La barra di ricerca è ora accessibile scorrendo a SINISTRA/DESTRA invece di SU
+- Risolto il backup per Android 6 o precedente.
+- Traduzione in spagnolo

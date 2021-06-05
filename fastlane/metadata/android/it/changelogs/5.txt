@@ -1,0 +1,5 @@
+*Anteprima versione 5*
+
+- Nascondi e blocca l'elenco delle app
+- le impostazioni precedenti potrebbero <font color="#ff000"><b>rompersi</b></font>
+- Il file di backup precedente potrebbe <font color="#ff000"><b>non funzionare</b></font>

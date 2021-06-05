@@ -1,0 +1,8 @@
+*Anteprima versione 8*
+
+- Spaziatura nella schermata iniziale.
+- Menu combinato Colore e Dimensione per un accesso rapido e conveniente.
+- Una nuova UX di selezione delle dimensioni per i valori esatti.
+- Miglioramento del codice sorgente dell'app per una migliore comprensione.
+
+- prossimamente: barra di ricerca app

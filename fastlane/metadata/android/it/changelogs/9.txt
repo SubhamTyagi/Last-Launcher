@@ -1,0 +1,9 @@
+*Anteprima versione 9*
+
+- Possibilità di eseguire app nascoste.
+- Opzione per ripristinare i colori dell'app.
+- Selezione colore e dimensione a livello globale.
+- Opzione per ripristinare i caratteri predefiniti.
+- Miglioramenti del colore per un funzionamento irrevocabile.
+- Aumento dei limiti di spaziatura.
+- Correzione bug relativa al reset per la dimensione dell'app.

@@ -1,0 +1,9 @@
+*versione beta 3*
+
+
+* Novità di questa versione
+
+- Ordina le app in base all'ora degli aggiornamenti, prima le recenti.
+- Colore più luminoso e colore 'material'.
+- Miglioramento dei gesti (FIX: la barra di ricerca si apriva troppo)
+- Correzione di bug relativi alle scorciatoie.

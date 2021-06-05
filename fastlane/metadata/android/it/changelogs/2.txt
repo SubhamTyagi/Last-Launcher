@@ -1,0 +1,10 @@
+*Anteprima versione 2*
+
+- Rinomina il nome dell'app
+- Ottieni informazioni sull'app con un solo clic
+- Opzione di disinstallazione
+- Più controlli sui Colori
+- Perfezionamento dell'interfaccia utente di colore e dimensione
+
+- Stub delle impostazioni globali (non implementato)
+    Per accedere cliccare a lungo sull'area di sfondo

@@ -1,0 +1,7 @@
+*Anteprima versione 10*
+
+- Ordina app per nome, dimensione, colore, utilizzo app
+- Mostra scorciatoie per app, scorciatoie per siti web e PWA,
+- Correzione bug per il tema non è corretto dopo il backup
+- Correzione bug per l'elemento rosso non viene visualizzato correttamente
+- miglioramenti delle prestazioni.
