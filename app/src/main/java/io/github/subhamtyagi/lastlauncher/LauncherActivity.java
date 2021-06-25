@@ -555,6 +555,21 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (dialogs != null) {
+            dialogs.dismiss();
+            dialogs = null;
+        }
+
+        if (mSearchTask!=null) {
+            mSearchTask.cancel(true);
+            mSearchTask=null;
+        }
+    }
+
     //show the option on long click
     @Override
     public boolean onLongClick(View view) {
@@ -836,8 +851,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     @Override
     public void onBackPressed() {
         mSearchBox.setVisibility(View.GONE);
+
         if (searching) {
+            //check this line
+            imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
+
             searching = false;
+            if (mSearchTask!=null) {
+                mSearchTask.cancel(true);
+                mSearchTask=null;
+            }
             mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
             sortApps(DbUtils.getSortsTypes());
         }
@@ -911,6 +934,19 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             dialogs.dismiss();
             dialogs = null;
         }
+
+        if (mSearchTask!=null) {
+            mSearchTask.cancel(true);
+            mSearchTask=null;
+        }
+
+        if (imm!=null){
+            if(imm.isActive()){
+                imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
+            }
+            imm=null;
+        }
+
         unregisterReceiver(broadcastReceiverAppInstall);
         unregisterReceiver(broadcastReceiverShortcutInstall);
         broadcastReceiverAppInstall = null;
