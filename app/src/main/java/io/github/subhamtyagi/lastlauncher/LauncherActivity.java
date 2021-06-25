@@ -18,6 +18,7 @@
 
 package io.github.subhamtyagi.lastlauncher;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -47,6 +48,7 @@ import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
@@ -125,6 +127,7 @@ import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_UPDATE_
  * This Activity extends the api 14 Activity Class not latest AppCompatActivity
  * Reason: Small apk size
  */
+@SuppressLint("NonConstantResourceId")
 public class LauncherActivity extends Activity implements View.OnClickListener,
         View.OnLongClickListener,
         Gestures.OnSwipeListener {
@@ -269,6 +272,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
      *
      * @param theme current theme applied to launcher
      */
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void setNavigationAndStatusBarColor(int theme) {
 
@@ -1219,7 +1223,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // params.setNewLine(true);
 
             for (Apps app : mAppsList) {
-                mHomeLayout.addView(app.getTextView(), new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                AppTextView textView=app.getTextView();
+                if (textView.getParent()!=null){
+                    ( (ViewGroup)textView.getParent()).removeView(textView);
+                }
+                mHomeLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             }
 
 
