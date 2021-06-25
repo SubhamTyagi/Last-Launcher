@@ -34,7 +34,7 @@ Last Launcher is Quick, Simple, Minimalist, Customizable Android launcher. It ai
 <h2> Privacy<h2>
 ▶ No Internet access permission.
 ▶ No Storage access permission.
-▶ All data is stored on your device private storage and sensitive data is cipher with simple algorithm.
+▶ All data is stored on your device private storage and sensitive data is cipher with a simple algorithm.
 
 <h2>Navigation</h2>
 ▶<font color="#FF6E40"> Long click on EMPTY AREA to access launcher settings.</font>

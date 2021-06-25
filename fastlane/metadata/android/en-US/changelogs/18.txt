@@ -1,0 +1,10 @@
+*Beta release 8*
+
+* What's New in this release
+
+- Bug fix for "Crashing the Launcher on Updating apps".
+- Fix memory leak
+
+* Project Source codes Changes.
+
+- Translation update.
