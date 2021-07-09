@@ -55,4 +55,5 @@
     <string name="rename">Змінити назву</string>
     <string name="color_for_this_entry">Кольори і розмір</string>
     <string name="action_settings">Налаштування</string>
+    <string name="restart_launcher">Перезапустити запускач</string>
 </resources>
