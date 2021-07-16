@@ -20,8 +20,8 @@
     <string name="frozen_apps">Eingefrorene Apps</string>
     <string name="restore">Wiederherstellen</string>
     <string name="fixed_colors">Feste Farben</string>
-    <string name="freeze_apps_size">Appgrößen einfrieren</string>
-    <string name="unfreeze_app_size">Appgröße nicht mehr einfrieren</string>
+    <string name="freeze_apps_size">Größe einfrieren</string>
+    <string name="unfreeze_app_size">Größe nicht mehr einfrieren</string>
     <string name="default_theme">Standarddesign</string>
     <string name="background_wallpaper">Hintergrundbild</string>
     <string name="white_on_black">Weiß auf Schwarz</string>
@@ -40,31 +40,31 @@
 
 
     <!--translation required    -->
-    <string name="backup_saved_to_downloads">Sicherung im Heruntergeladen-Ordner gespeichert</string>
+    <string name="backup_saved_to_downloads">Sicherung im Download-Ordner gespeichert</string>
     <!--translation required    -->
     <string name="some_error_occurred">Ein Fehler ist aufgetreten</string>
     <!--translation required    -->
-    <string name="choose_old_backup_file">Alte Sicherungsdatei auswählen</string>
+    <string name="choose_old_backup_file">Sicherungsdatei auswählen</string>
     <!--translation required -->
     <string name="on">:An</string>
     <!--translation required -->
     <string name="off">:Aus</string>
     <string name="alignment">Ausrichtung</string>
-    <string name="start">Starten</string>
-    <string name="center">Zentrieren</string>
-    <string name="end">Ende</string>
-    <string name="padding">Polsterung</string>
+    <string name="start">linksbündig</string>
+    <string name="center">zentriert</string>
+    <string name="end">rechtsbündig</string>
+    <string name="padding">Randabstand</string>
     <string name="remove">Entfernen</string>
     <string name="open">Öffnen</string>
     <string name="reset_color">Farbe zurücksetzen</string>
     <string name="restore_default_fonts">Standardschriftarten wiederherstellen</string>
-    <string name="select_fonts">Wählen Sie Schriftarten aus</string>
-    <string name="sort_apps_by">Anwendungen sortieren nach</string>
-    <string name="by_opening_counts">Verwendung der Anwendung</string>
+    <string name="select_fonts">Schriftart wählen</string>
+    <string name="sort_apps_by">Sortierung</string>
+    <string name="by_opening_counts">Meist genutzt</string>
     <string name="by_color">Farbe</string>
     <string name="custom">Benutzerdefiniert</string>
     <string name="by_size">Größe</string>
     <string name="by_name">Name</string>
-    <string name="recently_first">Vor kurzem zuerst</string>
-    <string name="update_time">Aktualisierungszeit</string>
+    <string name="recently_first">Neueste</string>
+    <string name="update_time">zuletzt Aktualisiert</string>
 </resources>
