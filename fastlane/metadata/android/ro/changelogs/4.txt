@@ -1,0 +1,4 @@
+*Preview release *
+
+* Actualizări de urgență
+* Fix App dispare din lansatoare

@@ -1,0 +1,7 @@
+*Preview release 7*
+
+- Culoarea barei de stare și a barei de navigare în funcție de tema selectată.
+- Generarea aceleiași culori aleatorii de fiecare dată pentru o aplicație perticulară (mulțumiri lui Sylvia).
+- Alinieri (centru, stânga și dreapta) ale aplicațiilor.
+- Reordonarea elementelor din PopMenu și culoare roșie prudentă pentru unele elemente.
+- Corectarea erorilor din tema Hacker Red.

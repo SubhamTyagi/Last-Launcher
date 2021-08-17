@@ -1,0 +1,44 @@
+Last Launcher este un lansator Android rapid, simplu, minimalist și personalizabil. Scopul său este de a oferi cea mai rapidă și mai simplă experiență de utilizare vreodată.
+
+<p>
+*************************
+**Aceasta este <font color="#FF6E40"><b>Beta release</b></font>***
+*************************
+</p>
+
+<h4>Traduceți această aplicație pe <a href="https://hosted.weblate.org/projects/last-launcher">Weblate(https://hosted.weblate.org/projects/last-launcher)</a> în limba dvs. locală. </h4>.
+
+<h2>Proiect</h2>
+▶ Always Free (Gratis și Liber).
+▶ Exclusiv pentru F-droid.
+
+<h2>🚀 Performanță</h2>
+▶ Mai rapid decât cel mai rapid :)
+▶ APK ușor și de dimensiuni mici de mai puțin de 130KB.
+▶ Utilizare redusă a memoriei și a procesorului.
+
+<h2>💥 Caracteristici</h2>
+▶ Căutare printre aplicații.
+▶ Suport pentru comenzi rapide și PWA-uri.
+▶ Nume de aplicații redimensionabile și colorate.
+▶ Sortați aplicațiile în diverse moduri.
+▶ Aliniere și padding personalizate.
+▶ Culori aleatorii.
+▶ Teme multiple.
+▶ Ascundeți aplicațiile.
+▶ Îngheață dimensiunea aplicațiilor.
+▶ Copie de rezervă/restaurare a datelor lansatorului.
+▶ Fără pictograme și widget-uri <strike>(poate fi un dezavantaj)</strike>.
+▶ Pentru mai multe <font color="#FF6E40"><b>încercați launcher</b></font> și vedeți diferența.
+
+<h2> Confidențialitate<h2>
+▶ Fără permisiune de acces la internet.
+▶ Fără permisiune de acces la stocare.
+▶ Toate datele sunt stocate în memoria privată a dispozitivului, iar datele sensibile sunt cifrate cu un algoritm simplu.
+
+<h2>Navigație</h2>
+▶<font color="#FF6E40"> Faceți clic lung pe EMPTY AREA pentru a accesa setările lansatorului.</font>.
+▶<font color="#FF6E40"> Glisați spre dreapta pentru a accesa bara de căutare.</font>.
+▶<font color="#FF6E40"> Pentru a ascunde bara de căutare apăsați Back/Home sau Swipe LEFT pe ecran.</font>.
+
+<h4>Traduceți această aplicație pe <a href="https://hosted.weblate.org/projects/last-launcher">Weblate(https://hosted.weblate.org/projects/last-launcher)</a> în limba dvs. locală.</h4>

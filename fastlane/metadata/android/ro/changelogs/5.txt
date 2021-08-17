@@ -1,0 +1,5 @@
+*Preview release 5*
+
+- Ascundeți și înghețați lista de aplicații
+- setările anterioare pot <font color="#ff000"><b>întrerupe</b></font>
+- fișierul de backup anterior poate <font color="#ff000"><b>să nu funcționeze</b></font>

@@ -1,0 +1,9 @@
+*Beta release 3*
+
+
+* Ce este nou în această versiune
+
+- Sortați aplicațiile în funcție de timpul de actualizare, mai întâi cele mai recente.
+- Culoare mai luminoasă și materială.
+- Îmbunătățirea gesturilor (FIX: Bara de căutare se deschidea prea mult).
+- Corectarea bug-urilor legate de scurtături.

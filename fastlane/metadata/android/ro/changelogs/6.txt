@@ -1,0 +1,10 @@
+*Preview release 6*
+
+- Îmbunătățiri ale barei de căutare App Size.
+- Îmbunătățiri la bara de culori a aplicației.
+- Îmbunătățiri ale câmpului de redenumire a aplicației.
+- Animație de deschidere a aplicației.
+- Îmbunătățirea performanțelor Layout-urilor.
+- Corectarea unei erori legate de meniul recent.
+- Corectare eroare legată de scăderea dimensiunii aplicației la clic.
+- Corectarea unei erori legate de unele aplicații care nu se deschid.
