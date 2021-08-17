@@ -1,0 +1,11 @@
+*Beta release 5*
+
+*TOATE COMENZILE RAPIDE INSTALATE ANTERIOR NU VOR MAI FI ACCESIBILE*
+
+* Ce este nou în această versiune
+
+- Corecții de erori pentru "Shortcuts are not working well after deletion".
+- Corecții de erori pentru "Aplicația nu se afișează sau dispare după activare sau dezactivare"
+- Cea mai mare parte a muncii se face sub capotă.
+- Traducere pentru franceză, germană, maghiară, norvegiană Bokmāl, rusă, daneză, poloneză, slovacă, croată și spaniolă.
+- Mulțumim tuturor traducătorilor

@@ -1,0 +1,9 @@
+*Preview release 9*
+
+- Opțiunea de a rula aplicații ascunse.
+- Opțiunea de resetare a culorilor aplicațiilor.
+- Selectarea culorilor și a dimensiunilor la nivel global.
+- Opțiunea de a restabili fonturile implicite.
+- Îmbunătățiri de culoare pentru funcționarea irevocabilă.
+- Limite de umplutură mărite.
+- Corectare eroare legată de resetarea nu funcționează pentru dimensiunea aplicației.

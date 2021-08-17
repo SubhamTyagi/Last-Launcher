@@ -1,0 +1,10 @@
+*Preview release 3*
+-Pentru a accesa setările lansatorului, faceți clic lung pe o zonă goală.
+
+-Înghețare/dezghețare a dimensiunii aplicației
+-Ascundeți aplicațiile (temporar)
+-Fonturi personalizate
+-Multe teme
+-Resetare la setările implicite
+-Salvare și restaurare setări
+-Culori aleatorii

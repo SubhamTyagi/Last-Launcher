@@ -1,0 +1,10 @@
+*Beta release 8*
+
+* Ce este nou în această versiune
+
+- Corectare de eroare pentru "Blocajul lansatorului la actualizarea aplicațiilor".
+- Corectarea scurgerii de memorie
+
+* Modificări ale codurilor sursă ale proiectului.
+
+- Actualizare traducere.

@@ -1,0 +1,7 @@
+*Preview release 10*
+
+- Sortează aplicația după nume, mărime, culoare, utilizarea aplicației
+- Afișați comenzile rapide ale aplicațiilor, comenzile rapide ale site-urilor web și PWA-urile,
+- remedierea unei erori pentru tema nu este corectă după backup
+- remediere de erori pentru elementul roșu nu este afișat corect
+- îmbunătățiri de performanță.

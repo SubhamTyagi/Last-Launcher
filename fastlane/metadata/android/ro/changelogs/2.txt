@@ -1,0 +1,10 @@
+*Preview release 2*
+
+- Redenumiți numele aplicației
+- Obțineți informații despre aplicație cu un singur clic
+- Opțiunea de dezinstalare
+- Mai multe controale de culori
+- Culoare și dimensiune rafinament UI UI
+
+- Stub de setări globale (neimplementat)
+   Pentru a accesa clic lung pe zona de fundal

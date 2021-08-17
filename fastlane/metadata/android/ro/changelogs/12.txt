@@ -1,0 +1,11 @@
+*Beta release 2*
+
+
+* Ce este nou în această versiune
+
+- Căutare prin aplicații.
+- Îmbunătățiri de performanță (pornire, sortare și culoare aleatorie).
+- Reducerea suplimentară a consumului de memorie.
+- Corectarea unui bug legat de Shortcuts și PWAs care provoca în continuare pierderi de memorie.
+
+- Această actualizare va elimina vechile scurtături din acest lansator, astfel încât să le readuceți după această actualizare.

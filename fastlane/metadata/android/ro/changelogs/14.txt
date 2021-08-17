@@ -1,0 +1,8 @@
+*Beta release 4*
+
+
+* Ce este nou în această versiune
+
+- Bara de căutare este acum accesibilă prin glisare stânga/dreapta în loc de sus
+- Backup fixat pentru Android 6 sau anterior.
+- Traducere în limba spaniolă
