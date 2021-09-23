@@ -70,6 +70,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -1218,6 +1219,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 mSearchBox.setVisibility(View.GONE);
                 imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
                 onResume();
+            }
+        } else if (direction == Gestures.Direction.SWIPE_DOWN) {
+            try {
+                Object sbservice = getSystemService("statusbar");
+                Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+                Method showsb;
+                showsb = statusbarManager.getMethod("expandNotificationsPanel");
+                showsb.invoke(sbservice);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
