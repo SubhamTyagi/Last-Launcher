@@ -90,4 +90,5 @@
     <!--Sort Apps IN : RECENTLY USED FIRST ORDER -->
     <string name="recently_first">Recently first</string>
     <string name="restart_launcher">Restart Launcher</string>
+    <string name="device_admin_description">To be able to use double tap to lock, you have to enable device admin for Last Launcher</string>
 </resources>

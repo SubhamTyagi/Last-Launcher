@@ -68,6 +68,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':flowlayout:layouts')
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 }
 
