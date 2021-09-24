@@ -97,6 +97,7 @@ import static android.content.Intent.ACTION_PACKAGE_ADDED;
 import static android.content.Intent.ACTION_PACKAGE_CHANGED;
 import static android.content.Intent.ACTION_PACKAGE_REMOVED;
 import static android.content.Intent.ACTION_PACKAGE_REPLACED;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.BACKUP_REQUEST;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.COLOR_SNIFFER_REQUEST;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_COLOR_FOR_APPS;
@@ -518,7 +519,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             if (appTextView.isShortcut()) {
                 try {
                     Intent intent = Intent.parseUri(appTextView.getUri(), 0);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     appOpened(activity);
@@ -532,7 +533,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     final Intent intent = new Intent(Intent.ACTION_MAIN, null);
                     intent.setClassName(strings[0], strings[1]);
                     intent.setComponent(new ComponentName(strings[0], strings[1]));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     // tell the our db that app is opened
@@ -635,6 +636,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // consider it later
             popupMenu.getMenu().findItem(R.id.menu_rename).setVisible(false);
             popupMenu.getMenu().findItem(R.id.menu_app_info).setVisible(false);
+            popupMenu.getMenu().findItem(R.id.menu_app_market).setVisible(false);
         }
 
         popupMenu.setOnMenuItemClickListener(menuItem -> {
@@ -660,6 +662,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     break;
                 case R.id.menu_app_info:
                     showAppInfo(activityName);
+                    break;
+                case R.id.menu_app_market:
+                    showInAppMarket(activityName);
                     break;
                 case R.id.menu_reset_to_default:
                     resetApp(activityName);
@@ -774,6 +779,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + activityName.split("/")[0]));
         startActivity(intent);
+    }
+
+    // shows the app in android app market
+    private void showInAppMarket(String activityName) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://details?id=" + activityName.split("/")[0]));
+            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (android.content.ActivityNotFoundException anfe) {
+            Toast.makeText(this, "There is no app market is found on this device!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void uninstallApp(String activityName) {
@@ -1233,6 +1250,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
     }
 
+    // double tap locks the screen using device admin
     @Override
     public void onDoubleTap() {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
