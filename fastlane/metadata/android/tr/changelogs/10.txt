@@ -1,0 +1,7 @@
+*Önizleme sürümü 10*
+
+- Uygulamaları isim, boyut, renk ve kullanıma gore sıralama
+- Uygulama, website kısayollarını ve PWA'ları gösterme
+- Yedeklemeden sonra temanın doğru olmaması için hata düzeltmesi
+- Kırmızı şeylerin düzgün görüntülenmemesi için hata düzeltmesi
+- Performans geliştirmeleri.
