@@ -1,4 +1,4 @@
-Last Launcher je brz, jednostavan, minimalistički, prilagodljiv pokretač za Android. Cilj mu je pružiti najbrže i najjednostavnije korisničko iskustvo ikad.
+Last Launcher je brz, jednostavan, minimalistički, prilagodljiv pokretač za Android. Cilj mu je pružiti najbrže i najjednostavnije korisničko iskustvo ikada.
 
 <p>
 *************************
