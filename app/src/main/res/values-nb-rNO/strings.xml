@@ -57,4 +57,5 @@
     <string name="rename">Gi nytt navn</string>
     <string name="color_for_this_entry">Farger og størrelse</string>
     <string name="from_color_sniffer_app">Fra ColorSniffer-program</string>
+    <string name="restart_launcher">Start oppstarter på ny</string>
 </resources>
