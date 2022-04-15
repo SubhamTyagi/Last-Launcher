@@ -56,4 +56,5 @@
     <string name="color_for_this_entry">Цвета и размер</string>
     <string name="action_settings">Настройки</string>
     <string name="from_color_sniffer_app">Из приложения ColorSniffer</string>
+    <string name="restart_launcher">Перезапустить лаунчер</string>
 </resources>
