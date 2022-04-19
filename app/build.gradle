@@ -68,6 +68,12 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':flowlayout:layouts')
+
+    //https://github.com/promeG/TinyPinyin
+    implementation 'com.github.promeg:tinypinyin:2.0.3' // Core lib of TinyPinyin, it is only 80KB.
+
+    testImplementation 'junit:junit:4.13.2'
+
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 }
 
