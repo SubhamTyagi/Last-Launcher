@@ -26,8 +26,8 @@ import java.util.Map;
 
 public class PinYinSearchUtils {
     static {
-        // add customize dictionary for last launcher scenario,
-        // which means we add some Chinese App name to a customized correct PinYin.
+        // Add custom dictionary for last launcher scenario,
+        // which means we manually put some words used frequently in Chinese Apps' names to correct PinYin-s.
         Pinyin.init(Pinyin.newConfig()
                 .with(new PinyinMapDict() {
                     @Override
