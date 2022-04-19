@@ -72,6 +72,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 import java.util.Map;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ColorSizeDialog;
@@ -86,6 +87,7 @@ import io.github.subhamtyagi.lastlauncher.model.Shortcut;
 import io.github.subhamtyagi.lastlauncher.utils.CrashUtils;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Gestures;
+import io.github.subhamtyagi.lastlauncher.utils.PinYinSearchUtils;
 import io.github.subhamtyagi.lastlauncher.utils.ShortcutUtils;
 import io.github.subhamtyagi.lastlauncher.utils.Utils;
 import io.github.subhamtyagi.lastlauncher.views.textview.AppTextView;
@@ -137,7 +139,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     public static ArrayList<Apps> mAppsList;
     // home layout
     private static FlowLayout mHomeLayout;
-    // when search bar is appear this will be true and show search result
+    // when search bar appears this will be true and show search result
     private static boolean searching = false;
     //todo: save this to db
     private static int recentlyUsedCounter = 0;
@@ -251,6 +253,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         // register the receiver for installed, uninstall, update apps and shortcut pwa add
         registerForReceivers();
 
+        mLocale = this.getResources().getConfiguration().locale;
     }
 
     private void setSearchBoxListeners() {
@@ -1225,6 +1228,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     }
 
+    private static Locale mLocale;
     static class SearchTask extends AsyncTask<CharSequence, Void, ArrayList<Apps>> {
         @Override
         protected void onPostExecute(ArrayList<Apps> filteredApps) {
@@ -1240,6 +1244,24 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     filteredApps.add(app);
                 } else if (Utils.simpleFuzzySearch(charSequences[0], app.getAppName())) {
                     filteredApps.add(app);
+                } else{
+                    // Support for searching non-ascii languages Apps using ascii characters.
+                    boolean isMatch = false;
+                    switch (mLocale.getLanguage()){
+                        case "zh":{
+                            // In case of Chinese, PinYin Search is supported.
+                            isMatch = PinYinSearchUtils.pinYinSimpleFuzzySearch(charSequences[0], app.getAppName());
+                            break;
+                        }
+//                        You can add new non-ascii language search to be supported here.
+//                        case "xx":{
+//                            break;
+//                        }
+                        default:
+                            break;
+                    }
+                    if (isMatch)
+                        filteredApps.add(app);
                 }
             }
             return filteredApps;
