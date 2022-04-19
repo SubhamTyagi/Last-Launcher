@@ -81,7 +81,7 @@ public class PinYinSearchUtils {
      * @param strings text string
      * @return true if @query is sequentially found in @strings else false, and @query can be Chinese Pinyin .
      * For example, "LL" is sequentially found in "Last Launcher", so return true;
-     * "yyds" is sequentailly found in "你是永远滴神", so it is also true.
+     * "yyds" is sequentially found in "你是永远滴神", so it is also true.
      * This method supports Chinese Pinyin Search with "Duoyinzi".
      * For example, "yin yue" matches "音乐" while "yin le" doesn't.
      */
