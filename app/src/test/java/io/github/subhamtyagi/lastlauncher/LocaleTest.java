@@ -33,7 +33,7 @@ public class LocaleTest {
         assertEquals("TW", zh_TW.getCountry());
         assertEquals("", zh.getCountry());
         assertEquals("zh-CN", zh_CN.toLanguageTag());
-        assertEquals("zh-TW", zh.toLanguageTag());
+        assertEquals("zh-TW", zh_TW.toLanguageTag());
         assertEquals("zh", zh.toLanguageTag());
     }
 }
