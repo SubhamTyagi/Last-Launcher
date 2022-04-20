@@ -71,6 +71,7 @@ public class PinYinSearchUtilsTest {
         assertEquals("CHONG QING LIAN TONG", PinYinSearchUtils.toPinyin("重庆联通", " "));
         assertEquals("DONG E CHUAN MEI", PinYinSearchUtils.toPinyin("东阿传媒", " "));
         assertEquals("PAN YU MIN SHENG KA", PinYinSearchUtils.toPinyin("番禺民生卡", " "));
+        assertEquals("FAN QIE ZHONG", PinYinSearchUtils.toPinyin("番茄钟", " "));
         assertEquals("LE SHAN SHANG YE YIN HANG", PinYinSearchUtils.toPinyin("乐山商业银行", " "));
         assertEquals("ZHONG ZHUANG SHANG ZHEN", PinYinSearchUtils.toPinyin("重装上阵", " "));
         assertEquals("CHONG FAN DI GUO", PinYinSearchUtils.toPinyin("重返帝国", " "));
@@ -132,8 +133,9 @@ public class PinYinSearchUtilsTest {
     @Test
     public void testPinYinSearchWhenTextIsNotAllChinese(){
         assertTrue(PinYinSearchUtils.pinYinSimpleFuzzySearch("Lst Laun", "Last Launcher"));
-        assertTrue(PinYinSearchUtils.pinYinSimpleFuzzySearch("LL ", "Last Launcher"));
-        assertTrue(PinYinSearchUtils.pinYinSimpleFuzzySearch("啟動器", "Last Launcher 让您爱不释手的最终启动器"));
+        assertTrue(PinYinSearchUtils.pinYinSimpleFuzzySearch("ll ", "Last Launcher"));
+        assertTrue(PinYinSearchUtils.pinYinSimpleFuzzySearch("aa ", "Last Launcher"));
+        assertTrue(PinYinSearchUtils.pinYinSimpleFuzzySearch("啟動器", "Last Launcher 让您爱不释手的究极启动器"));
         assertTrue(PinYinSearchUtils.pinYinSimpleFuzzySearch("LLQ", "Last Launcher 萊斯特啟動器"));
     }
 }
