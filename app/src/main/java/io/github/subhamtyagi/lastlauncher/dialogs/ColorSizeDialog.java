@@ -16,7 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 package io.github.subhamtyagi.lastlauncher.dialogs;
+
+
+/**
+ *
+ */
 
 import android.app.Dialog;
 import android.content.Context;
@@ -46,6 +52,7 @@ public class ColorSizeDialog extends Dialog {
     private int appColor;
     // boolean change=false;
 
+
     public ColorSizeDialog(Context context, String appPackage, int appColor, TextView textView, int appSize) {
         super(context);
         this.appPackage = appPackage;
@@ -54,6 +61,11 @@ public class ColorSizeDialog extends Dialog {
         this.appSize = appSize;
     }
 
+    /**
+     * This method assigns some functions for each control button.
+     *
+     * @param savedInstanceState: saved instance state to be operate
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +103,9 @@ public class ColorSizeDialog extends Dialog {
         size.setText(String.valueOf(appSize));
 
 
+        /**
+         * set properties of "+" button
+         */
         plus.setOnClickListener(view -> {
 
             // change=true;
@@ -99,6 +114,11 @@ public class ColorSizeDialog extends Dialog {
             if (appSize >= DEFAULT_MAX_TEXT_SIZE) {
                 appSize = DEFAULT_MAX_TEXT_SIZE;
                 //   plus.setClickable(false);
+            }
+
+            //According to apps' name's length, set its max size to avoid lines change
+            if(appSize >= 520/textView.getText().length()){
+                appSize = 520/textView.getText().length();
             }
 
             size.setText(String.valueOf(appSize));
@@ -116,7 +136,9 @@ public class ColorSizeDialog extends Dialog {
             textView.setTextSize(appSize);
         });
 
-
+        /**
+         * set properties of "+" button for long click
+         */
         plus.setOnLongClickListener(view -> {
             runnable = () -> {
                 if (!plus.isPressed()) {
@@ -130,6 +152,11 @@ public class ColorSizeDialog extends Dialog {
                 if (appSize >= DEFAULT_MAX_TEXT_SIZE) {
                     appSize = DEFAULT_MAX_TEXT_SIZE;
                     //   plus.setClickable(false);
+                }
+
+                //According to apps' name's length, set its max size to avoid lines change
+                if(appSize >= 520/textView.getText().length()){
+                    appSize = 520/textView.getText().length();
                 }
 
                 size.setText(String.valueOf(appSize));
