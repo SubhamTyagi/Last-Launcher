@@ -169,6 +169,11 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         }
     }
 
+    /**This method is used to control the order of apps.
+     * The code block we added is to give the newly added buttons the ability to sort them by name.
+     *
+     * @param view
+     */
     private void sortApps(View view) {
         Context context;
         // set theme
@@ -184,8 +189,12 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             cancel();
             switch (menuItem.getItemId()) {
-                case R.id.menu_sort_by_name:
-                    launcherActivity.sortApps(Constants.SORT_BY_NAME);
+//                case R.id.menu_sort_by_name:
+//                    launcherActivity.sortApps(Constants.SORT_BY_NAME);
+//                    break;
+                ///CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/157
+                case R.id.menu_sort_by_name_modify:
+                    launcherActivity.sortApps(Constants.SORT_BY_NAME_MODIFY);
                     break;
                 case R.id.menu_sort_by_opening_counts:
                     launcherActivity.sortApps(Constants.SORT_BY_OPENING_COUNTS);

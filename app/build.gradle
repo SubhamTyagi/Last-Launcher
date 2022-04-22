@@ -68,6 +68,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':flowlayout:layouts')
+    testImplementation 'junit:junit:4.13.1'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 }
 

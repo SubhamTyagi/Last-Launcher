@@ -19,8 +19,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_sort_by_name"
-        android:title="@string/by_name" />
+        android:id="@+id/menu_sort_by_name_modify"
+        android:title="@string/by_name_modify" />
+
+<!--    <item-->
+<!--            android:id="@+id/menu_sort_by_name"-->
+<!--            android:title="@string/by_name" />-->
 
     <item
         android:id="@+id/menu_sort_by_opening_counts"
