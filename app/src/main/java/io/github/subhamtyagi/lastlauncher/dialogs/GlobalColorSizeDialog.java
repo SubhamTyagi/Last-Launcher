@@ -113,8 +113,8 @@ public class GlobalColorSizeDialog extends Dialog {
                 appSize = DEFAULT_MAX_TEXT_SIZE;
                 //   plus.setClickable(false);
 
-            } else {
-
+            }
+            else {
                 for (Apps apps : mAppsList) {
                     int textSize = DbUtils.getAppSize(apps.getActivityName());
                     // check if text size is null then set the size to default size

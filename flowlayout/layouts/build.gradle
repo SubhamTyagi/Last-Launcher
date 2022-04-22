@@ -5,21 +5,18 @@ android {
 
 
     defaultConfig {
-        versionCode 2
-        versionName "0.2"
         minSdkVersion 14
         targetSdkVersion 29
     }
     buildTypes {
         release {
-            debuggable false
             jniDebuggable false
             minifyEnabled true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    lintOptions {
+    lint {
         abortOnError false
     }
 }
