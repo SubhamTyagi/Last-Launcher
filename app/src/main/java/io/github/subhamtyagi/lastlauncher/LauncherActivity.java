@@ -158,17 +158,17 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private Gestures detector;
     private ShortcutUtils shortcutUtils;
 
-    private static final TextWatcher mTextWatcher= new TextWatcher() {
+    private static final TextWatcher mTextWatcher = new TextWatcher() {
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            mSearchTask=new SearchTask();
+            mSearchTask = new SearchTask();
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             //do here search
-           mSearchTask.execute(charSequence);
+            mSearchTask.execute(charSequence);
         }
 
         @Override
@@ -177,7 +177,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // do everything
         }
     };
-    private static  SearchTask mSearchTask;
+    private static SearchTask mSearchTask;
     //endregion
 
     private static void showSearchResult(ArrayList<Apps> filteredApps) {
@@ -567,9 +567,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             dialogs = null;
         }
 
-        if (mSearchTask!=null) {
+        if (mSearchTask != null) {
             mSearchTask.cancel(true);
-            mSearchTask=null;
+            mSearchTask = null;
         }
     }
 
@@ -860,9 +860,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
 
             searching = false;
-            if (mSearchTask!=null) {
+            if (mSearchTask != null) {
                 mSearchTask.cancel(true);
-                mSearchTask=null;
+                mSearchTask = null;
             }
             mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
             sortApps(DbUtils.getSortsTypes());
@@ -938,16 +938,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             dialogs = null;
         }
 
-        if (mSearchTask!=null) {
+        if (mSearchTask != null) {
             mSearchTask.cancel(true);
-            mSearchTask=null;
+            mSearchTask = null;
         }
 
-        if (imm!=null){
-            if(imm.isActive()){
+        if (imm != null) {
+            if (imm.isActive()) {
                 imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
             }
-            imm=null;
+            imm = null;
         }
 
         unregisterReceiver(broadcastReceiverAppInstall);
@@ -1229,6 +1229,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     }
 
     private static Locale mLocale;
+
     static class SearchTask extends AsyncTask<CharSequence, Void, ArrayList<Apps>> {
         @Override
         protected void onPostExecute(ArrayList<Apps> filteredApps) {
@@ -1244,11 +1245,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     filteredApps.add(app);
                 } else if (Utils.simpleFuzzySearch(charSequences[0], app.getAppName())) {
                     filteredApps.add(app);
-                } else{
+                } else {
                     // Support for searching non-ascii languages Apps using ascii characters.
                     boolean isMatch = false;
-                    switch (mLocale.getLanguage()){
-                        case "zh":{
+                    switch (mLocale.getLanguage()) {
+                        case "zh": {
                             // In case of Chinese, PinYin Search is supported.
                             isMatch = PinYinSearchUtils.pinYinSimpleFuzzySearch(charSequences[0], app.getAppName());
                             break;
@@ -1281,9 +1282,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // params.setNewLine(true);
 
             for (Apps app : mAppsList) {
-                AppTextView textView=app.getTextView();
-                if (textView.getParent()!=null){
-                    ( (ViewGroup)textView.getParent()).removeView(textView);
+                AppTextView textView = app.getTextView();
+                if (textView.getParent() != null) {
+                    ((ViewGroup) textView.getParent()).removeView(textView);
                 }
                 mHomeLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             }
@@ -1305,7 +1306,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             switch (type) {
                 case SORT_BY_SIZE://descending
                     Collections.sort(mAppsList, (apps, t1) -> {
-                        //CS304 Issue link:
+                        //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
                         if (apps.getSize() != t1.getSize()) {
                             return t1.getSize() - apps.getSize();
                         } else {
@@ -1315,10 +1316,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     break;
                 case SORT_BY_OPENING_COUNTS://descending
                     Collections.sort(mAppsList, (apps, t1) -> {
-                        //CS304 Issue link:
+                        //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
                         if (t1.getOpeningCounts() != apps.getOpeningCounts()) {
                             return t1.getOpeningCounts() - apps.getOpeningCounts();
-                        }else {
+                        } else {
                             return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
                         }
                     });
@@ -1334,16 +1335,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                                 return (hsv[i] < another[i]) ? -1 : 1;
                             }
                         }
-                        //CS304 Issue link:
+                        //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
                         return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
                     });
                     break;
                 case SORT_BY_UPDATE_TIME://descending
                     Collections.sort(mAppsList, (apps, t1) -> {
-                        //CS304 Issue link:
-                        if (t1.getUpdateTime()!=apps.getUpdateTime()){
+                        //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
+                        if (t1.getUpdateTime() != apps.getUpdateTime()) {
                             return t1.getUpdateTime() - apps.getUpdateTime();
-                        }else {
+                        } else {
                             return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
                         }
                     });
