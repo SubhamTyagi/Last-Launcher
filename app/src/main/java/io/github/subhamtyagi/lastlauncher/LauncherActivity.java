@@ -157,6 +157,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // gesture detector
     private Gestures detector;
     private ShortcutUtils shortcutUtils;
+    
+    private static boolean judge;
+                
 
     private static final TextWatcher mTextWatcher= new TextWatcher() {
 
@@ -217,7 +220,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         int theme = DbUtils.getTheme();
         //theme must be set before setContentView
-        setTheme(theme);
+        if(judge){
+            int hour = new Date(System.currentTimeMillis()).getHours();
+            setTheme(hour<=19 && hour>=7 ? R.style.BlackOnGrey : R.style.Black);
+            judge = false;
+        }
+        else{
+            setTheme(theme);
+        }
 
         setContentView(R.layout.activity_launcher);
 
