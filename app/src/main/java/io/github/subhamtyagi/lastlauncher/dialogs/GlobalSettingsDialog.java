@@ -189,12 +189,8 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             cancel();
             switch (menuItem.getItemId()) {
-//                case R.id.menu_sort_by_name:
-//                    launcherActivity.sortApps(Constants.SORT_BY_NAME);
-//                    break;
-                //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/165
-                case R.id.menu_sort_by_name_modify:
-                    launcherActivity.sortApps(Constants.SORT_BY_NAME_MODIFY);
+                case R.id.menu_sort_by_name:
+                    launcherActivity.sortApps(Constants.SORT_BY_NAME);
                     break;
                 case R.id.menu_sort_by_opening_counts:
                     launcherActivity.sortApps(Constants.SORT_BY_OPENING_COUNTS);

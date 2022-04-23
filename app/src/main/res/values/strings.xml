@@ -77,8 +77,6 @@
     <string name="sort_apps_by">Sort Apps By</string>
     <!--Sort Apps By: NAME-->
     <string name="by_name">Name</string>
-    <!--Sort Apps By: NAME-->
-    <string name="by_name_modify">App Name</string>
     <!--Sort Apps By: APP USAGE TIME-->
     <string name="by_opening_counts">App Usage</string>
     <!--Sort Apps By: APP COLOR-->
