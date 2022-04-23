@@ -32,6 +32,8 @@ public class Constants {
     public static final int SORT_BY_CUSTOM = 5;
     public static final int SORT_BY_UPDATE_TIME = 6;
     public static final int SORT_BY_RECENT_OPEN = 7;
+    //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/165
+    public static final int SORT_BY_NAME_MODIFY = 1;
 
     public static final int RESTORE_REQUEST = 125;
     public static final int FONTS_REQUEST = 126;
@@ -47,8 +49,8 @@ public class Constants {
     public static int dynamicHeight = 20;
     public static final int DEFAULT_TEXT_SIZE_NORMAL_APPS = dynamicHeight;
     public static final int DEFAULT_TEXT_SIZE_OFTEN_APPS = dynamicHeight * 9 / 5;
-    public static final int MAX_TEXT_SIZE_FOR_APPS=90;
-    public static final int MIN_TEXT_SIZE_FOR_APPS=14;
+    public static final int MAX_TEXT_SIZE_FOR_APPS = 90;
+    public static final int MIN_TEXT_SIZE_FOR_APPS = 14;
 
 
 }
