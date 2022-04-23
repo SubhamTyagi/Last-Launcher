@@ -139,7 +139,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     public static ArrayList<Apps> mAppsList;
     // home layout
     private static FlowLayout mHomeLayout;
-    // when search bar appears this will be true and show search result
+    // when search bar is appear this will be true and show search result
     private static boolean searching = false;
     //todo: save this to db
     private static int recentlyUsedCounter = 0;
@@ -157,7 +157,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // gesture detector
     private Gestures detector;
     private ShortcutUtils shortcutUtils;
-
+    private Thread thread;
+    private static boolean judge = true;
     private static final TextWatcher mTextWatcher= new TextWatcher() {
 
         @Override
@@ -168,7 +169,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             //do here search
-           mSearchTask.execute(charSequence);
+            mSearchTask.execute(charSequence);
         }
 
         @Override
@@ -216,8 +217,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
 
         int theme = DbUtils.getTheme();
+        if(judge){
+            int hour = new Date(System.currentTimeMillis()).getHours();
+            setTheme(hour<=19 && hour>=7 ? R.style.BlackOnGrey : R.style.Black);
+            judge = false;
+        }
+        else{
+            setTheme(theme);
+        }
+
+
         //theme must be set before setContentView
-        setTheme(theme);
+        //setTheme(theme);
 
         setContentView(R.layout.activity_launcher);
 
@@ -253,7 +264,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         // register the receiver for installed, uninstall, update apps and shortcut pwa add
         registerForReceivers();
 
-        mLocale = this.getResources().getConfiguration().locale;
     }
 
     private void setSearchBoxListeners() {
@@ -557,11 +567,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             sortApps(DbUtils.getSortsTypes());
         }
     }
-
+    @Override
+    protected void onStart(){
+        super.onStart();
+        thread = new Thread(new MyThread());
+        thread.start();
+   }
     @Override
     protected void onStop() {
         super.onStop();
-
+        thread.interrupt();
         if (dialogs != null) {
             dialogs.dismiss();
             dialogs = null;
@@ -586,6 +601,44 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
         return true;
     }
+
+    class MyThread implements Runnable{
+        @Override
+        public void run(){
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    Thread.sleep(59900);
+                    Date date = new Date(System.currentTimeMillis());
+                    int hour = date.getHours();
+                    int minute = date.getMinutes();
+                    if(hour==11&&minute==32){
+                        backup();
+                    }
+                }
+            }
+            catch(InterruptedException e){
+            }
+
+        }
+    }
+
+    private void backup(){
+        Intent intentBackupFiles;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            intentBackupFiles = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        } else {
+            intentBackupFiles = new Intent(Intent.ACTION_GET_CONTENT);
+            ;
+        }
+        intentBackupFiles.addCategory(Intent.CATEGORY_OPENABLE);
+        intentBackupFiles.setType("*/*");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd_HHSS", Locale.getDefault());
+        df.format(new Date());
+        String date = df.format(new Date());
+        intentBackupFiles.putExtra(Intent.EXTRA_TITLE, "Backup_LastLauncher_" + date);
+        this.startActivityForResult(intentBackupFiles, BACKUP_REQUEST);
+    }
+
 
     private void showPopup(String activityName, AppTextView view) {
 
@@ -741,8 +794,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         Window window = dialogs.getWindow();
         if (window != null) {
             window.setGravity(Gravity.BOTTOM);
-            window.setBackgroundDrawableResource(android.R.color.transparent);
             window.setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+            window.setBackgroundDrawableResource(android.R.color.holo_blue_bright);
         }
 
         dialogs.show();
@@ -1228,7 +1281,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     }
 
-    private static Locale mLocale;
     static class SearchTask extends AsyncTask<CharSequence, Void, ArrayList<Apps>> {
         @Override
         protected void onPostExecute(ArrayList<Apps> filteredApps) {
@@ -1244,24 +1296,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     filteredApps.add(app);
                 } else if (Utils.simpleFuzzySearch(charSequences[0], app.getAppName())) {
                     filteredApps.add(app);
-                } else{
-                    // Support for searching non-ascii languages Apps using ascii characters.
-                    boolean isMatch = false;
-                    switch (mLocale.getLanguage()){
-                        case "zh":{
-                            // In case of Chinese, PinYin Search is supported.
-                            isMatch = PinYinSearchUtils.pinYinSimpleFuzzySearch(charSequences[0], app.getAppName());
-                            break;
-                        }
-//                        You can add new non-ascii language search to be supported here.
-//                        case "xx":{
-//                            break;
-//                        }
-                        default:
-                            break;
-                    }
-                    if (isMatch)
-                        filteredApps.add(app);
                 }
             }
             return filteredApps;
