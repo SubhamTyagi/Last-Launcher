@@ -68,8 +68,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
@@ -158,7 +160,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private Gestures detector;
     private ShortcutUtils shortcutUtils;
     private Thread thread;
-    private static boolean judge = true;
+
     private static final TextWatcher mTextWatcher= new TextWatcher() {
 
         @Override
@@ -217,18 +219,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
 
         int theme = DbUtils.getTheme();
-        if(judge){
-            int hour = new Date(System.currentTimeMillis()).getHours();
-            setTheme(hour<=19 && hour>=7 ? R.style.BlackOnGrey : R.style.Black);
-            judge = false;
-        }
-        else{
-            setTheme(theme);
-        }
-
 
         //theme must be set before setContentView
-        //setTheme(theme);
+        setTheme(theme);
 
         setContentView(R.layout.activity_launcher);
 
@@ -572,7 +565,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         super.onStart();
         thread = new Thread(new MyThread());
         thread.start();
-   }
+    }
     @Override
     protected void onStop() {
         super.onStop();
@@ -611,7 +604,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     Date date = new Date(System.currentTimeMillis());
                     int hour = date.getHours();
                     int minute = date.getMinutes();
-                    if(hour==11&&minute==32){
+                    if(hour==12&&minute==0){
                         backup();
                     }
                 }
