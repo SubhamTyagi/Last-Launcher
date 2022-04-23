@@ -32,8 +32,6 @@ public class Constants {
     public static final int SORT_BY_CUSTOM = 5;
     public static final int SORT_BY_UPDATE_TIME = 6;
     public static final int SORT_BY_RECENT_OPEN = 7;
-    //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/165
-    public static final int SORT_BY_NAME_MODIFY = 1;
 
     public static final int RESTORE_REQUEST = 125;
     public static final int FONTS_REQUEST = 126;
