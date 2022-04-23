@@ -158,7 +158,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private Gestures detector;
     private ShortcutUtils shortcutUtils;
     
-    private static boolean judge;
+    private static boolean judge = true;
                 
 
     private static final TextWatcher mTextWatcher= new TextWatcher() {
