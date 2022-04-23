@@ -1304,10 +1304,24 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
             switch (type) {
                 case SORT_BY_SIZE://descending
-                    Collections.sort(mAppsList, (apps, t1) -> (t1.getSize() - apps.getSize()));
+                    Collections.sort(mAppsList, (apps, t1) -> {
+                        //CS304 Issue link:
+                        if (apps.getSize() != t1.getSize()) {
+                            return t1.getSize() - apps.getSize();
+                        } else {
+                            return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
+                        }
+                    });
                     break;
                 case SORT_BY_OPENING_COUNTS://descending
-                    Collections.sort(mAppsList, (apps, t1) -> t1.getOpeningCounts() - apps.getOpeningCounts());
+                    Collections.sort(mAppsList, (apps, t1) -> {
+                        //CS304 Issue link:
+                        if (t1.getOpeningCounts() != apps.getOpeningCounts()) {
+                            return t1.getOpeningCounts() - apps.getOpeningCounts();
+                        }else {
+                            return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
+                        }
+                    });
                     break;
                 case SORT_BY_COLOR:
                     Collections.sort(mAppsList, (apps, t1) -> {
@@ -1320,11 +1334,19 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                                 return (hsv[i] < another[i]) ? -1 : 1;
                             }
                         }
-                        return 0;
+                        //CS304 Issue link:
+                        return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
                     });
                     break;
                 case SORT_BY_UPDATE_TIME://descending
-                    Collections.sort(mAppsList, (apps, t1) -> t1.getUpdateTime() - apps.getUpdateTime());
+                    Collections.sort(mAppsList, (apps, t1) -> {
+                        //CS304 Issue link:
+                        if (t1.getUpdateTime()!=apps.getUpdateTime()){
+                            return t1.getUpdateTime() - apps.getUpdateTime();
+                        }else {
+                            return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
+                        }
+                    });
                     break;
                 case SORT_BY_RECENT_OPEN://descending
                     Collections.sort(mAppsList, (apps, t1) -> (t1.getRecentUsedWeight() - apps.getRecentUsedWeight()));
