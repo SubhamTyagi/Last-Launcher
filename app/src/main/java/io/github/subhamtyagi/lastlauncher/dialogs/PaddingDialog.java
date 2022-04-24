@@ -106,9 +106,6 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
         btnIntervalPlus.setOnLongClickListener(this);
         btnIntervalPlus.setOnClickListener(this);
 
-//        namelabel = findViewById(R.id.name_label);
-//        namelabel.setOnLongClickListener(this);
-//        namelabel.setOnClickListener(this);
 
 
 
