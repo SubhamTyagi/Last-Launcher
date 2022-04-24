@@ -677,15 +677,21 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         popupMenu.show();
     }
 
-    //reset the app color to default color;
+    //reset the app color to default color; modified for issue 154
     private void resetAppColor(String activityName) {
         DbUtils.removeColor(activityName);
-        boolean sortNeeded = (DbUtils.getSortsTypes() == SORT_BY_COLOR);
-        addAppAfterReset(activityName, sortNeeded);
+        //boolean sortNeeded = (DbUtils.getSortsTypes() == SORT_BY_COLOR);
+        addAppAfterReset(activityName, false);
     }
 
-    //  add a new app: generally called after reset
-    private void addAppAfterReset(String activityName, boolean sortNeeded) {
+    /**
+     * modified for issue 154
+     * function: add a new app: generally called after reset
+     * @param activityName same as defined in Apps constructor
+     * @param resetSize whether to reset the text size (new added)
+     * (@param sortNeeded is deleted)
+     */
+    private void addAppAfterReset(String activityName, boolean resetSize) {
         for (ListIterator<Apps> iterator = mAppsList.listIterator(); iterator.hasNext(); ) {
             Apps app = iterator.next();
             if (app.getActivityName().equalsIgnoreCase(activityName)) {
@@ -703,12 +709,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 boolean hide = app.isHidden();
                 boolean freezeSize = app.isSizeFrozen();
                 int appUpdateTime = app.getUpdateTime();
-                Apps newApp = new Apps(app.isShortcut(), activityName, appName, getCustomView(), color, DEFAULT_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts, appUpdateTime);
+                int size;
+                if(resetSize) {
+                    size = DEFAULT_TEXT_SIZE_NORMAL_APPS;
+                }else {
+                    size = DbUtils.getAppSize(activityName);
+                }
+                Apps newApp = new Apps(app.isShortcut(), activityName, appName, getCustomView(), color, size, hide, freezeSize, openingCounts, appUpdateTime);
 
                 //mAppsList.add(newApp);
                 iterator.add(newApp);
-                if (sortNeeded)
-                    sortApps(DbUtils.getSortsTypes());
+                //if (sortNeeded)
+                sortApps(DbUtils.getSortsTypes());
                 break;
             }
         }
