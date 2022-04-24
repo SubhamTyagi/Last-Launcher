@@ -41,7 +41,8 @@ public class Constants {
     public static final int MAX_PADDING_LEFT = 99;
     public static final int MAX_PADDING_RIGHT = 99;
     public static final int MAX_PADDING_TOP = 999;
-    public static final int MAX_PADDING_BOTTOM = 999;
+    public static final int MAX_PADDING_BOTTOM = 99;
+    public static final int MAX_PADDING_INTERVAL = 90;
     public static final int MIN_PADDING = 0;
     //TODO: Dynamic height
     public static int dynamicHeight = 20;

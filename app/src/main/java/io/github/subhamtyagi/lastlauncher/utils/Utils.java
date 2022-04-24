@@ -217,8 +217,6 @@ public class Utils {
 
     }
 
-
-
     public static int getColor() {
         Random random = new Random();
         int c = random.nextInt(4);

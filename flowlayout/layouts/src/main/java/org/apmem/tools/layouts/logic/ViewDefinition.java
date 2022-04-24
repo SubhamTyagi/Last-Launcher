@@ -130,7 +130,6 @@ public class ViewDefinition {
         this.rightMargin = rightMargin;
         this.bottomMargin = bottomMargin;
     }
-
     public int getInlineX() {
         return this.config.getOrientation() == CommonLogic.HORIZONTAL ? this.inlineStartLength : this.inlineStartThickness;
     }

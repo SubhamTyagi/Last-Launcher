@@ -12,6 +12,7 @@ android {
         versionName "0.19"
         //resConfigs "en", "de"
         buildConfigField "boolean", "enableColorSniffer", "false"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         debug {
@@ -73,9 +74,34 @@ dependencies {
     implementation 'com.github.promeg:tinypinyin:2.0.3' // Core lib of TinyPinyin, it is only 80KB.
 
     testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 }
+
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.1'
+
+        // NOTE: Do not place your application dependencies here; they belong
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        google()
+    }
+}
+
+
 
 static String getGitWorkingBranch() {
     try {
