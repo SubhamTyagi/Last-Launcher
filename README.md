@@ -36,7 +36,7 @@
 * [ ] Background colors.
 
 <h2 align="center"><b> Screenshots</b><h2>
- 
+
 | Home|Home|Home|Home|
 |:-:|:-:|:-:|:-:|
 | ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true "Home")| ![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true "Home")|![Home](/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png?raw=true )|
@@ -51,6 +51,7 @@
 * ### Android Libraries
   * [android-flowlayout](https://github.com/ApmeM/android-flowlayout) by [Artem.Votincev](https://github.com/ApmeM), License [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0)
   * [ColorSeekBar](https://github.com/rtugeek/ColorSeekBar) by [Jack Fu](https://github.com/rtugeek), License [WTFPL](http://www.wtfpl.net/)
+  * [TinyPinyin](https://github.com/promeG/TinyPinyin) by [promeG](https://github.com/promeG), License [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0)
 * ### Fonts 
   * [Raleway fonts](https://github.com/impallari/Raleway/) by [Pablo Impallari](https://github.com/impallari) License [SIL Open Font License, Version 1.1](http://scripts.sil.org/OFL)
 
@@ -58,16 +59,16 @@
 
       Last Launcher
       Copyright © 2019–2020 Shubham Tyagi
-
+    
      This program is free software: you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published by
      the Free Software Foundation, either version 3 of the License, or
      (at your option) any later version.
-
+    
      This program is distributed in the hope that it will be useful,
      but WITHOUT ANY WARRANTY; without even the implied warranty of
      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
      GNU General Public License for more details.
-
+    
      You should have received a copy of the GNU General Public License
      along with this program.  If not, see <https://www.gnu.org/licenses/>.
