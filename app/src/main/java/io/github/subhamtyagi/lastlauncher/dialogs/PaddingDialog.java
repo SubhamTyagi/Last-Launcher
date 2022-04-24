@@ -106,10 +106,6 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
         btnIntervalPlus.setOnLongClickListener(this);
         btnIntervalPlus.setOnClickListener(this);
 
-
-
-
-
         left = findViewById(R.id.tv_left_padding);
         right = findViewById(R.id.tv_right_padding);
         top = findViewById(R.id.tv_top_padding);
