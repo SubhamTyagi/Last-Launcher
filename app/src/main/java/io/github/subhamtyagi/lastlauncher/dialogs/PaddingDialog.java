@@ -174,6 +174,9 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
             case R.id.btn_interval_plus:
                 runner((TextView) button, interval, 2, Padding.INTERVAL);
                 break;
+            default:
+                runner((TextView) button, interval, 2, Padding.INTERVAL);
+                break;
 
         }
 
@@ -256,6 +259,13 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
                     intervalInt = MAX_PADDING_INTERVAL;
                 }
                 interval.setText(String.valueOf(intervalInt));
+            default:
+                intervalInt ++;
+                if(intervalInt > MAX_PADDING_INTERVAL){
+                    intervalInt = MAX_PADDING_INTERVAL;
+                }
+                interval.setText(String.valueOf(intervalInt));
+                break;
         }
         // apply all padding to home layout
         homeLayout.changeMargin(20 + intervalInt, 20 +intervalInt, 20, 20);
