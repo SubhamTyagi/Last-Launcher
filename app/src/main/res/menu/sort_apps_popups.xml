@@ -31,6 +31,10 @@
         android:title="@string/by_size" />
 
     <item
+            android:id="@+id/menu_sort_by_size_ascending"
+            android:title="@string/by_size_ascending" />
+
+    <item
         android:id="@+id/menu_sort_by_color"
         android:title="@string/by_color" />
 
