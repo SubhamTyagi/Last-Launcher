@@ -13,11 +13,15 @@ public class ConstantsTest {
         constantsUnderTest = new Constants();
     }
 
-
+    //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
     @Test
-    //CS304 Issue link:
-    public void testOnConstants() {
-        int a= Constants.SORT_BY_NAME_MODIFY;
-        Assert.assertEquals(1,a);
+    public void testSortBySize() {
+        Assert.assertEquals(Constants.SORT_BY_SIZE, 2);
+    }
+
+    //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
+    @Test
+    public void testSortByRecentOpen() {
+        Assert.assertEquals(Constants.SORT_BY_RECENT_OPEN, 7);
     }
 }
