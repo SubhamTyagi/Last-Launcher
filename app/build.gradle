@@ -2,16 +2,17 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31//CS304 Issue Link : https://github.com/SubhamTyagi/Last-Launcher/issue/142
 
     defaultConfig {
         applicationId "io.github.subhamtyagi.lastlauncher"
         minSdkVersion 14
-        targetSdkVersion 29
+        targetSdkVersion 30//CS304 Issue Link : https://github.com/SubhamTyagi/Last-Launcher/issue/142
         versionCode 19
         versionName "0.19"
         //resConfigs "en", "de"
         buildConfigField "boolean", "enableColorSniffer", "false"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         debug {
@@ -68,6 +69,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':flowlayout:layouts')
+    implementation 'androidx.appcompat:appcompat:1.3.0' //CS304 Issue Link : https://github.com/SubhamTyagi/Last-Launcher/issue/142
+    implementation 'com.google.android.material:material:1.5.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'//CS304 Issue Link : https://github.com/SubhamTyagi/Last-Launcher/issue/142
+
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 }
 

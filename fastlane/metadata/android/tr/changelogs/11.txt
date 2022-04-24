@@ -1,0 +1,13 @@
+*Beta sürüm 1*
+
+* Çok sayıda önizleme sürümünden sonra Last Launcher beta aşamasına girdi.
+
+* Bu Sürümdeki Yenilikler
+
+- Uygulama arama.
+- Performans iyileştirmeleri(başlangıç, sıralama ve rastgele renk).
+- APK boyutunda büyük azalma (23%).
+- Daha fazla bellek tüketimi azaltma.
+- Daha fazla Bellek sızıntısına neden olan Kısayollar ve PWA'larla ilgili hata düzeltmesi
+
+- Bu güncelleme, bu başlatıcıdan eski kısayolları kaldıracak, güncellemeden sonra yeniden eklemeniz gerek.

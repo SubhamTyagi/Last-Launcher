@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.NoActionBar">
+    <style name="AppBaseTheme" parent="Theme.MaterialComponents.DayNight"><!--changed to themes in materialComponents-->
         <item name="android:popupAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="android:listPreferredItemHeightSmall">40dp</item>
@@ -19,9 +19,9 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:textColor">#8F8C8C</item>
         <!--<item name="android:switchTextAppearance">#FF8F8C8C</item>-->
-        <item name="android:background">@android:color/black</item>
-        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/black</item>
-        <item name="android:navigationBarColor" tools:targetApi="21">@android:color/black</item>
+<!--        <item name="android:background">@android:color/black</item>-->
+<!--        <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/black</item>-->
+<!--        <item name="android:navigationBarColor" tools:targetApi="21">@android:color/black</item>-->
 
     </style>
 

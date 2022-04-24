@@ -1,0 +1,10 @@
+*Lançamento do Beta 8*
+
+* O que há de novo neste lançamento
+
+- Correção de erros para "Crashing o Launcher ao atualizar apps".
+- Correção de vazamento de memória
+
+* Mudanças nos códigos fonte do projeto.
+
+- Atualização de tradução.

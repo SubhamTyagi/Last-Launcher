@@ -1,0 +1,44 @@
+Last Launcher hızlı, basit, minimalist ve kişiselleştirilebilir bir Android başlatıcısıdır. En hızlı ve en basit kullanıcı deneyimini sunmayı hedefler.
+
+<p>
+*************************
+**Bu bir <font color="#FF6E40"><b>Beta sürümüdür***
+*************************
+</p>
+
+<h4>Bu uygulamayı <a href="https://hosted.weblate.org/projects/last-launcher">Weblate(https://hosted.weblate.org/projects/last-launcher)</a> üzerinden kendi diline çevir.</h4>
+
+<h2>Tasarı</h2>
+▶ Her zaman ücretsiz (ücretsiz ve özgür).
+▶ F-droid'e özel.
+
+<h2>🚀 Performans</h2>
+▶ Hızlıdan daha hızlı :)
+▶ 130KB'dan daha düşük hafif ve küçük APK boyutu.
+▶ Düşük bellek ve CPU kullanımı.
+
+<h2>💥 Özellikler</h2>
+▶ Uygulamalar arasında arama.
+▶ Kısayol ve PWA desteği.
+▶ Boyutlandırılabilir ve renklendirilebilir uygulama isimleri.
+▶ Birçok şekilde uygulamaları sıralama.
+▶ Özel yerleşim ve dolgu.
+▶ Rastgele renkler.
+▶ Çoklu tema.
+▶ Uygulamaları gizleme.
+▶ Uygulama boyutunu dondurma.
+▶ Başlatıcı verisini yedekleme/geri yükleme.
+▶ İkon ve widget yok <strike>(dezavantaj olabilir)</strike>.
+▶ Dahası için <font color="#FF6E40"><b>başlatıcıyı dene</b></font> ve farkı gör.
+
+<h2> Gizlilik<h2>
+▶ İnternet erişimi izni yok.
+▶ Depolama erişimi izni yok.
+▶ Tüm veriler cihazın özel deposunda saklanır ve hassas veriler basit bir algoritma ile şifrelenir.
+
+<h2>Navigasyon</h2>
+▶<font color="#FF6E40"> Başlatıcı ayarlarına erişmek için BOŞ BİR ALANA basılı tut.</font>
+▶<font color="#FF6E40"> Arama barına erişmek için SAĞA kaydır.</font>
+▶<font color="#FF6E40"> Arama barını gizlemek için Geri/Ev tuşuna basın veya ana ekranda SOLA kaydırın.</font>
+
+<h4>Bu uygulamayı <a href="https://hosted.weblate.org/projects/last-launcher">Weblate(https://hosted.weblate.org/projects/last-launcher)</a> üzerinden kendi diline çevir.</h4>

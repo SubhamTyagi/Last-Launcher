@@ -108,6 +108,8 @@ import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_RECENT_
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_SIZE;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_UPDATE_TIME;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * --------------------------------------------------------------------------
  * People can criticise me all the time they want,
@@ -124,13 +126,14 @@ import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_UPDATE_
  * Don’t just think, do it. Now it is you turn,  do it now, go fast and open pull request
  * -
  * ----------------------------------------------------------------------------
- * This Activity extends the api 14 Activity Class not latest AppCompatActivity
- * Reason: Small apk size
+ * This Activity extends AppCompatActivity to achieve changing theme with day/Night theme
+ *
+ *
  */
 @SuppressLint("NonConstantResourceId")
-public class LauncherActivity extends Activity implements View.OnClickListener,
+public class LauncherActivity extends AppCompatActivity implements View.OnClickListener,
         View.OnLongClickListener,
-        Gestures.OnSwipeListener {
+        Gestures.OnSwipeListener { //CS304 Issue Link : https://github.com/SubhamTyagi/Last-Launcher/issue/142
 
 
     //region Field declarations

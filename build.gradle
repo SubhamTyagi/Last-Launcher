@@ -21,3 +21,17 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
+
+apply plugin: 'checkstyle'
+checkstyle{
+    toolVersion = '10.1'
+    configFile = rootProject.file('config/checkstyle/checkstyle.xml')
+}
+task Checkstyle(type:Checkstyle){
+    source 'src/main/java'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+    classpath = rootProject.files()
+}

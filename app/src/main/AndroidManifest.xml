@@ -22,7 +22,8 @@
             android:excludeFromRecents="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true"><!--changed-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
