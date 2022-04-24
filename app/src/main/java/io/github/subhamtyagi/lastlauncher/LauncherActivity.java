@@ -109,6 +109,7 @@ import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_OPENING
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_RECENT_OPEN;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_SIZE;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_UPDATE_TIME;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_SIZE_ASENDING;
 
 /**
  * --------------------------------------------------------------------------
@@ -1291,6 +1292,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         }
 
+        /**This method is used to sort the APPS in the UI interface.
+         * We added logic to this method to sort the font in ascending order.
+         *
+         * @param integers ...
+         * @return null
+         */
         @Override
         protected Void doInBackground(final Integer... integers) {
             final int type = integers[0];
@@ -1303,6 +1310,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             ));
 
             switch (type) {
+                //Last-Launcher Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/155
+                case SORT_BY_SIZE_ASENDING:
+                    Collections.sort(mAppsList, (apps, t1) -> (-t1.getSize() + apps.getSize()));
+                    break;
                 case SORT_BY_SIZE://descending
                     Collections.sort(mAppsList, (apps, t1) -> (t1.getSize() - apps.getSize()));
                     break;

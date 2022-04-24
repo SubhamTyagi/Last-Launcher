@@ -169,6 +169,12 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         }
     }
 
+
+    /**This method triggers logic in the background by pressing some button in the Settings.
+     * We added logic to a new button to order it in ascending order of font size.
+     *
+     * @param view
+     */
     private void sortApps(View view) {
         Context context;
         // set theme
@@ -184,6 +190,11 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             cancel();
             switch (menuItem.getItemId()) {
+                //Last-Launcher Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/155
+                case R.id.menu_sort_by_size_ascending:
+                    launcherActivity.sortApps(Constants.SORT_BY_SIZE_ASENDING);
+                    System.out.println(123);
+                    break;
                 case R.id.menu_sort_by_name:
                     launcherActivity.sortApps(Constants.SORT_BY_NAME);
                     break;

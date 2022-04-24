@@ -33,6 +33,9 @@ public class Constants {
     public static final int SORT_BY_UPDATE_TIME = 6;
     public static final int SORT_BY_RECENT_OPEN = 7;
 
+    //Last-Launcher Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/155
+    public static final int SORT_BY_SIZE_ASENDING=8;
+
     public static final int RESTORE_REQUEST = 125;
     public static final int FONTS_REQUEST = 126;
     public static final int BACKUP_REQUEST = 128;

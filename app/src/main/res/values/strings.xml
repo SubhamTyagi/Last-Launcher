@@ -84,7 +84,9 @@
     <!--Sort Apps By: CUSTOM-->
     <string name="custom">Customs</string>
     <!--Sort Apps By: APP SIZE-->
-    <string name="by_size">Size</string>
+    <string name="by_size">Size Descending</string>
+    <!--Sort Apps By: APP SIZE -->
+    <string name="by_size_ascending">Size Ascending</string>
     <!--Sort Apps By: UPDATE TIME-->
     <string name="update_time">Update time</string>
     <!--Sort Apps IN : RECENTLY USED FIRST ORDER -->
