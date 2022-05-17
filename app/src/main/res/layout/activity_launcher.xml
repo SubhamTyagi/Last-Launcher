@@ -18,6 +18,14 @@
 
     </ScrollView>
 
+    <Button
+        android:id="@+id/back_to_main"
+        android:layout_width="match_parent"
+        android:layout_height="20pt"
+        android:text="back to main panel"
+        android:visibility="gone"
+        android:textSize="11pt"/>
+
     <EditText
         android:id="@+id/search_box"
         android:layout_width="200dp"
