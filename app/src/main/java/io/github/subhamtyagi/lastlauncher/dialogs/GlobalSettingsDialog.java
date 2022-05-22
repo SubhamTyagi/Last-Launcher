@@ -369,6 +369,16 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
 
     }
 
+    private void addAppSpacing() {
+        cancel();
+        launcherActivity.addAppSpacing();
+    }
+
+    private void minuAppSpacing() {
+        cancel();
+        launcherActivity.minusAppSpacint();
+    }
+
     private void fontSelection(View view) {
 
         Context context;
@@ -384,6 +394,14 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
 
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             switch (menuItem.getItemId()) {
+                case R.id.menu_add_spacing:
+                    addAppSpacing();
+                    launcherActivity.loadApps();
+                    break;
+                case R.id.menu_minus_spacing:
+                    minuAppSpacing();
+                    launcherActivity.loadApps();
+                    break;
                 case R.id.menu_choose_fonts:
                     setFonts();
                     break;

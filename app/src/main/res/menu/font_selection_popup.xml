@@ -25,4 +25,10 @@
     <item
         android:id="@+id/menu_choose_fonts"
         android:title="@string/select_fonts" />
+    <item
+            android:id="@+id/menu_add_spacing"
+            android:title="@string/add_app_spacing" />
+    <item
+            android:id="@+id/menu_minus_spacing"
+            android:title="@string/minus_app_spacing" />
 </menu>

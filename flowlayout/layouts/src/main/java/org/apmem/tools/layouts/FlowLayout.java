@@ -26,6 +26,18 @@ public class FlowLayout extends ViewGroup {
     List<LineDefinition> lines = new ArrayList<>();
     List<ViewDefinition> views = new ArrayList<>();
 
+    private double letterSpacingRate = 0;
+
+    public void addletterSpacingRate() {
+        letterSpacingRate += 0.1;
+    }
+
+    public void minusletterSpacingRate() {
+        if (letterSpacingRate>0) {
+            letterSpacingRate -= 0.1;
+        }
+    }
+
     public FlowLayout(Context context) {
         super(context);
         this.config = new ConfigDefinition();
@@ -86,7 +98,7 @@ public class FlowLayout extends ViewGroup {
             );
 
             ViewDefinition view = new ViewDefinition(this.config, child);
-            view.setWidth(child.getMeasuredWidth());
+            view.setWidth((int)(child.getMeasuredWidth()*(1+letterSpacingRate)));
             view.setHeight(child.getMeasuredHeight());
             view.setNewLine(lp.isNewLine());
             view.setGravity(lp.getGravity());
