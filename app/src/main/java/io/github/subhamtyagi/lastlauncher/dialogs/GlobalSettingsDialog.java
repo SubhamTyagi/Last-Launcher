@@ -89,6 +89,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         findViewById(R.id.settings_color_size).setOnClickListener(this);
         findViewById(R.id.settings_sort_app_by).setOnClickListener(this);
         findViewById(R.id.settings_restart_launcher).setOnClickListener(this);
+        findViewById(R.id.settings_exit).setOnClickListener(this);
 
         //TODO: remove this var
         TextView colorSniffer = findViewById(R.id.settings_color_sniffer);
@@ -164,6 +165,10 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                 break;
             case R.id.settings_restart_launcher:
                 launcherActivity.recreate();
+                break;
+                // same as upper code, when click it show exit confirm dialog
+            case R.id.settings_exit:
+                showExitDialog();
                 break;
 
         }
@@ -311,6 +316,14 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
     private void showThemeDialog() {
         cancel();
         new ThemeSelectorDialog(getContext(), launcherActivity).show();
+    }
+
+    /**
+     * show the exit confirm dialog
+     */
+    private void showExitDialog() {
+        cancel();
+        new ExitDialog(getContext(), launcherActivity).show();
     }
 
     private void defaultSettings() {
