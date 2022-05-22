@@ -77,7 +77,7 @@ public class FlowLayout extends ViewGroup {
 
   public void changeMargin(int leftMargin, int rightMargin, int topMargin, int bottomMargin) {
     for (ViewDefinition view : views) {
-      view.setMargins(leftMargin, rightMargin, topMargin, bottomMargin);
+      view.setMargins(leftMargin + 10, topMargin, rightMargin + 10, bottomMargin);
     }
   }
 
