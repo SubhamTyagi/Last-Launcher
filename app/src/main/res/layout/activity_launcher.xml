@@ -2,19 +2,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        >
 
         <org.apmem.tools.layouts.FlowLayout
             android:id="@+id/home_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|center_horizontal|center_vertical"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            />
 
     </ScrollView>
 

@@ -23,7 +23,7 @@ import java.util.List;
 public class FlowLayout extends ViewGroup {
 
     private final ConfigDefinition config;
-    List<LineDefinition> lines = new ArrayList<>();
+    List<LineDefinition> lines = new ArrayList<>(); //NOPMD - suppressed CommentDefaultAccessModifier - TODO explain reason for suppression
     List<ViewDefinition> views = new ArrayList<>();
 
     public FlowLayout(Context context) {
@@ -45,7 +45,7 @@ public class FlowLayout extends ViewGroup {
     }
 
     private void readStyleParameters(Context context, AttributeSet attributeSet) {
-        TypedArray a = context.obtainStyledAttributes(attributeSet, R.styleable.FlowLayout);
+        TypedArray a = context.obtainStyledAttributes(attributeSet, R.styleable.FlowLayout); //NOPMD - suppressed ShortVariable - TODO explain reason for suppression
         try {
             this.config.setOrientation(a.getInteger(R.styleable.FlowLayout_android_orientation, CommonLogic.HORIZONTAL));
             this.config.setMaxLines(a.getInteger(R.styleable.FlowLayout_maxLines, 0));
@@ -91,6 +91,7 @@ public class FlowLayout extends ViewGroup {
             view.setNewLine(lp.isNewLine());
             view.setGravity(lp.getGravity());
             view.setWeight(lp.getWeight());
+
             view.setMargins(lp.leftMargin, lp.topMargin, lp.rightMargin, lp.bottomMargin);
             views.add(view);
         }
@@ -124,16 +125,18 @@ public class FlowLayout extends ViewGroup {
         }
 
         /* need to take padding into account */
+
         int totalControlWidth = this.getPaddingLeft() + this.getPaddingRight();
         int totalControlHeight = this.getPaddingBottom() + this.getPaddingTop();
         if (this.config.getOrientation() == CommonLogic.HORIZONTAL) {
             totalControlWidth += contentLength;
-            totalControlHeight += contentThickness;
+            totalControlHeight += contentThickness; //NOPMD - suppressed UnusedAssignment - TODO explain reason for suppression
         } else {
             totalControlWidth += contentThickness;
             totalControlHeight += contentLength;
         }
-        this.setMeasuredDimension(resolveSize(totalControlWidth, widthMeasureSpec), resolveSize(totalControlHeight, heightMeasureSpec));
+        this.setMeasuredDimension(resolveSize(totalControlWidth, widthMeasureSpec), heightMeasureSpec);
+
     }
 
     private void applyPositionsToViews(LineDefinition line) {
@@ -161,11 +164,17 @@ public class FlowLayout extends ViewGroup {
                 View view = child.getView();
                 LayoutParams lp = (LayoutParams) view.getLayoutParams();
                 view.layout(
-                        this.getPaddingLeft() + line.getX() + child.getInlineX() + lp.leftMargin,
-                        this.getPaddingTop() + line.getY() + child.getInlineY() + lp.topMargin,
-                        this.getPaddingLeft() + line.getX() + child.getInlineX() + lp.leftMargin + child.getWidth(),
-                        this.getPaddingTop() + line.getY() + child.getInlineY() + lp.topMargin + child.getHeight()
+
+                        //this.getPaddingLeft() + line.getX() + child.getInlineX() - lp.leftMargin ,
+                        //this.getPaddingTop() + line.getY() + child.getInlineY() - lp.topMargin+150,
+                        //this.getPaddingLeft() + line.getX() + child.getInlineX() + lp.leftMargin + child.getWidth(),
+                        //this.getPaddingTop() + line.getY() + child.getInlineY() + lp.topMargin+ child.getHeight()+150
+                        this.config.getMaxLength()-this.getPaddingLeft() - line.getX() - child.getInlineX() - lp.leftMargin- child.getWidth(),
+                        this.config.getMaxThickness()+this.getPaddingTop() - line.getY() - child.getInlineY() - lp.topMargin- child.getHeight(),
+                        this.config.getMaxLength()+this.getPaddingLeft() - line.getX() - child.getInlineX() - lp.leftMargin ,
+                        this.config.getMaxThickness()+this.getPaddingTop() - line.getY() - child.getInlineY() - lp.topMargin
                 );
+
             }
         }
     }
