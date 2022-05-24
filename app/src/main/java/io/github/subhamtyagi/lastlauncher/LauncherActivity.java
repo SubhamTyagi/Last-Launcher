@@ -99,6 +99,7 @@ import static android.content.Intent.ACTION_PACKAGE_REPLACED;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.BACKUP_REQUEST;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.COLOR_SNIFFER_REQUEST;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_COLOR_FOR_APPS;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_MAX_TEXT_SIZE;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_TEXT_SIZE_NORMAL_APPS;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.DEFAULT_TEXT_SIZE_OFTEN_APPS;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.FONTS_REQUEST;
@@ -837,7 +838,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
                     int size = DbUtils.getAppSize(activity);
                     size += 2;
-                    apps.setSize(size);
+                    //CS304 Issue link : https://github.com/SubhamTyagi/Last-Launcher/issues/152
+                    if(size<=DEFAULT_MAX_TEXT_SIZE) {
+                        apps.setSize(size);
+                    }
                     if (DbUtils.getSortsTypes() == SORT_BY_SIZE) {
                         sortApps(SORT_BY_SIZE);
                     }
