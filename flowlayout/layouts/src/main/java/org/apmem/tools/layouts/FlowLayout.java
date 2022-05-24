@@ -75,9 +75,9 @@ public class FlowLayout extends ViewGroup {
    * @param bottomMargin the bottom margin of an APP's label.
    */
 
-  public void changeMargin(int leftMargin, int rightMargin, int topMargin, int bottomMargin) {
+  public void changeMargin(final int leftMargin, final int rightMargin, final int topMargin, final int bottomMargin) {
     for (ViewDefinition view : views) {
-      view.setMargins(leftMargin, rightMargin, topMargin, bottomMargin);
+      view.setMargins(leftMargin + 15, topMargin + 5, rightMargin + 15, bottomMargin + 5);
     }
   }
 
