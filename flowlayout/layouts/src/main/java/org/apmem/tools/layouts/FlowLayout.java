@@ -65,7 +65,7 @@ public class FlowLayout extends ViewGroup {
             a.recycle();
         }
     }
-    // add in https://github.com/SubhamTyagi/Last-Launcher/issues/172
+    // add in https://github.com/SubhamTyagi/Last-Launcher/issues/185
   /**
    * This method is used to change the margin between each APP's label.
    *
@@ -75,7 +75,7 @@ public class FlowLayout extends ViewGroup {
    * @param bottomMargin the bottom margin of an APP's label.
    */
 
-  public void changeMargin(int leftMargin, int rightMargin, int topMargin, int bottomMargin) {
+  public void changeMargin(final int leftMargin, final int rightMargin, final int topMargin, final int bottomMargin) {
     for (ViewDefinition view : views) {
       view.setMargins(leftMargin + 10, topMargin, rightMargin + 10, bottomMargin);
     }

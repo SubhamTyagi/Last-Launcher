@@ -74,6 +74,10 @@ dependencies {
     implementation 'com.github.promeg:tinypinyin:2.0.3' // Core lib of TinyPinyin, it is only 80KB.
 
     testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
 }
