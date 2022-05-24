@@ -169,6 +169,11 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         }
     }
 
+    /**This method is used to control the order of apps.
+     * The code block we added is to give the newly added buttons the ability to sort them by name.
+     *
+     * @param view
+     */
     private void sortApps(View view) {
         Context context;
         // set theme
