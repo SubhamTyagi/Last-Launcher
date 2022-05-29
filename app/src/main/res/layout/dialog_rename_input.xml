@@ -16,8 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-
-<EditText
+<io.github.subhamtyagi.lastlauncher.views.textview.MyEditText
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ed_input"
@@ -33,7 +32,8 @@
     android:textSelectHandle="@drawable/edit_text_select_handle"
     android:textSelectHandleLeft="@drawable/edit_text_select_handle"
     android:textSelectHandleRight="@drawable/edit_text_select_handle"
-    android:textIsSelectable="false"
+    android:textIsSelectable="true"
+    android:drawSelectorOnTop="true"
     android:textCursorDrawable="@drawable/cursor"
     android:background="@drawable/edit_text"
-    android:autofillHints="App Name"></EditText>
+    android:autofillHints="App Name" />
