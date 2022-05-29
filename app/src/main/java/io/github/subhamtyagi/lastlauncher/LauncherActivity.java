@@ -320,6 +320,25 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         PackageManager pm = getPackageManager();
         List<ResolveInfo> activities = pm.queryIntentActivities(startupIntent, 0);
 
+            
+        Iterator<ResolveInfo> iter = activities.iterator();
+        ResolveInfo rf;
+        String appname;
+        while(iter.hasNext()){
+            rf=iter.next();
+            String tempPackage = rf.activityInfo.packageName;
+            // activity name as com.example/com.example.MainActivity
+            String activity = rf + "/" + rf.activityInfo.name;
+            /// save the app original name so that we can use this later e.g if user change
+            /// the app name then we have the name in DB
+            //DbUtils.putAppOriginalName(activity, rf.loadLabel(pm).toString());
+            // check whether user set the custom app name for eg. long name to small name
+            appname = DbUtils.getAppName(activity, rf.loadLabel(pm).toString());
+            if(appname.equals("Last Launcher Dev")){
+                iter.remove();
+            }
+        }
+            
         // check whether our app list is already initialized if yes then clear this(when new app or shortcut installed)
         if (mAppsList != null) {
             mAppsList.clear();
