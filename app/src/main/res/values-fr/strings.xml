@@ -40,6 +40,8 @@
     <string name="restore">Restaurer</string>
     <string name="frozen_apps">Applis gelées</string>
     <string name="hidden_apps">Applis masquées</string>
+    <string name="hide_first_letter">Cacher la première lettre</string>
+    <string name="unhide_first_letter">Montrer la première lettre</string>
     <string name="unfreeze_size">Défiger la taille</string>
     <string name="hide">Masquer</string>
     <string name="freeze_size">Figer la taille</string>
