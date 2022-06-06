@@ -137,8 +137,21 @@ public class DbUtils {
         SpUtils.getInstance().putBoolean(activityName, value);
     }
 
+    public static void hideAppFirstLetter(String activityName, boolean value) {
+        activityName = activityName.replaceAll("\\.", "_") + "_first_letter_hidden";
+        SpUtils.getInstance().putBoolean(activityName, value);
+        System.out.println("PHIL SET " + activityName + " " + SpUtils.getInstance().getBoolean(activityName, false));
+    }
+
     public static boolean isAppFrozen(String activityName) {
         activityName = activityName.replaceAll("\\.", "_") + "_freeze";
+        return SpUtils.getInstance().getBoolean(activityName, false);
+
+    }
+
+    public static boolean isAppFirstLetterHidden(String activityName) {
+        activityName = activityName.replaceAll("\\.", "_") + "_first_letter_hidden";
+        System.out.println("PHIL " + activityName + " " + SpUtils.getInstance().getBoolean(activityName, false));
         return SpUtils.getInstance().getBoolean(activityName, false);
 
     }

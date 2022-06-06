@@ -47,6 +47,8 @@ public class Apps {
     private boolean isSizeFrozen;
     // is app hidden from home screen
     private boolean isAppHidden;
+    // is app first letter hidden
+    private boolean isFirstLetterHidden;
     //store how many time this app is opened by user
     // save this to DB. So launcher can sort the app based on this
     // in theory this is a tracking count which store how many time user opened this apps
@@ -75,7 +77,7 @@ public class Apps {
      * @param openingCounts how many time apps was opened before this addition
      * @param updateTime    update time of this app since epoch (use for sorting)
      */
-    public Apps(boolean isShortcut, String activity, String appName, AppTextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen, int openingCounts, int updateTime) {
+    public Apps(boolean isShortcut, String activity, String appName, AppTextView tv, int color, int size, boolean isAppHidden, boolean isSizeFrozen, boolean isFirstLetterHidden, int openingCounts, int updateTime) {
 
         this.isShortcut = isShortcut;
         this.textView = tv;
@@ -108,6 +110,7 @@ public class Apps {
         setSize(size);
         setAppHidden(isAppHidden);
         setFreeze(isSizeFrozen);
+        setHideFirstLetter(isFirstLetterHidden);
 
     }
 
@@ -121,6 +124,10 @@ public class Apps {
 
     public boolean isHidden() {
         return isAppHidden;
+    }
+
+    public boolean isFirstLetterHidden() {
+        return isFirstLetterHidden;
     }
 
     public void setAppHidden(boolean appHidden) {
@@ -144,6 +151,15 @@ public class Apps {
         DbUtils.freezeAppSize(activity, freezeSize);
     }
 
+    private String getShowName() {
+        return this.isFirstLetterHidden ? this.appName.substring(1) : this.appName;
+    }
+
+    public void setHideFirstLetter(boolean hideFirstLetter) {
+        this.isFirstLetterHidden = hideFirstLetter;
+        DbUtils.hideAppFirstLetter(activity, hideFirstLetter);
+        textView.setText(getShowName());
+    }
 
     public String getActivityName() {
         return activity;
@@ -155,7 +171,7 @@ public class Apps {
 
     public void setAppName(String appName) {
         this.appName = appName;
-        textView.setText(appName);
+        textView.setText(getShowName());
     }
 
     public AppTextView getTextView() {

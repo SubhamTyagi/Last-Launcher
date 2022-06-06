@@ -394,6 +394,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // whether app size is frozen
             boolean freeze = DbUtils.isAppFrozen(activity);
 
+            // whether app first letter is hidden
+            boolean hideFirstLetter = DbUtils.isAppFirstLetterHidden(activity);
+
             // this is a separate implementation of ColorSniffer app
             // if User set the color from external app like ColorSniffer
             // then use that colors
@@ -419,7 +422,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 updateTime = 0;
             }
             // save all and add this is to app list
-            mAppsList.add(new Apps(false, activity, appName, getCustomView(), color, textSize, hide, freeze, openingCounts, updateTime));
+            mAppsList.add(new Apps(false, activity, appName, getCustomView(), color, textSize, hide, freeze, hideFirstLetter, openingCounts, updateTime));
 
         }
 
@@ -465,11 +468,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 }
 
                 boolean sFreeze = DbUtils.isAppFrozen(sActivity);
+                boolean sHideFirstLetter = DbUtils.isAppFirstLetterHidden(sActivity);
                 int sOpeningCount = DbUtils.getOpeningCounts(sActivity);
 
                 // add this shortcut to list
                 // currently shortcut hide is disabled
-                mAppsList.add(new Apps(true, uri, sName, getCustomView(), sColor, sSize, false, sFreeze, sOpeningCount, 0));
+                mAppsList.add(new Apps(true, uri, sName, getCustomView(), sColor, sSize, false, sFreeze, sHideFirstLetter, sOpeningCount, 0));
 
             }
         }
@@ -622,6 +626,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             popupMenu.getMenu().findItem(R.id.menu_freeze_size).setTitle(R.string.unfreeze_size);
         }
 
+        // set proper item based on Db value
+        if (DbUtils.isAppFirstLetterHidden(activityName)) {
+            popupMenu.getMenu().findItem(R.id.menu_hide_first_letter).setTitle(R.string.unhide_first_letter);
+        }
+
         //disable some item for shortcut
         // and change the uninstall to remove
         if (view.isShortcut()) {
@@ -643,7 +652,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     changeColorSize(activityName, view);
                     break;
                 case R.id.menu_rename:
+                    unhideAppFirstLetter(activityName);
                     renameApp(activityName, view.getText().toString());
+                    break;
+                case R.id.menu_hide_first_letter:
+                    toggleHideAppFirstLetter(activityName);
                     break;
                 case R.id.menu_freeze_size:
                     freezeAppSize(activityName);
@@ -702,8 +715,9 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                 int openingCounts = DbUtils.getOpeningCounts(activityName);
                 boolean hide = app.isHidden();
                 boolean freezeSize = app.isSizeFrozen();
+                boolean hideFirstLetter = app.isFirstLetterHidden();
                 int appUpdateTime = app.getUpdateTime();
-                Apps newApp = new Apps(app.isShortcut(), activityName, appName, getCustomView(), color, DEFAULT_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts, appUpdateTime);
+                Apps newApp = new Apps(app.isShortcut(), activityName, appName, getCustomView(), color, DEFAULT_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, hideFirstLetter, openingCounts, appUpdateTime);
 
                 //mAppsList.add(newApp);
                 iterator.add(newApp);
@@ -723,6 +737,25 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             }
         }
 
+    }
+
+    // as method name suggest
+    private void toggleHideAppFirstLetter(String activityName) {
+        boolean b = DbUtils.isAppFirstLetterHidden(activityName);
+        for (Apps apps : mAppsList) {
+            if (activityName.equalsIgnoreCase(apps.getActivityName())) {
+                apps.setHideFirstLetter(!b);
+            }
+        }
+    }
+
+    // as method name suggest
+    private void unhideAppFirstLetter(String activityName) {
+        for (Apps apps : mAppsList) {
+            if (activityName.equalsIgnoreCase(apps.getActivityName())) {
+                apps.setHideFirstLetter(false);
+            }
+        }
     }
 
     // as method name suggest
@@ -1190,7 +1223,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     private void addShortcut(String uri, String appName) {
         if (mAppsList == null) return;
-        mAppsList.add(new Apps(true, uri, appName, getCustomView(), DbUtils.NULL_TEXT_COLOR, DEFAULT_TEXT_SIZE_NORMAL_APPS, false, false, 0, (int) System.currentTimeMillis() / 1000));
+        mAppsList.add(new Apps(true, uri, appName, getCustomView(), DbUtils.NULL_TEXT_COLOR, DEFAULT_TEXT_SIZE_NORMAL_APPS, false, false, false, 0, (int) System.currentTimeMillis() / 1000));
         shortcutUtils.addShortcut(new Shortcut(appName, uri));
         // Log.d(TAG, "addShortcut: shortcut name==" + appName);
         sortApps(DbUtils.getSortsTypes());

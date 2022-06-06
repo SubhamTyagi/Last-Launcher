@@ -32,6 +32,10 @@
         android:title="@string/rename" />
 
     <item
+        android:id="@+id/menu_hide_first_letter"
+        android:title="@string/hide_first_letter" />
+
+    <item
         android:id="@+id/menu_freeze_size"
         android:title="@string/freeze_size" />
     <item
