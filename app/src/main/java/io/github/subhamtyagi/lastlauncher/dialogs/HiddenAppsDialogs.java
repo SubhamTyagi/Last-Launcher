@@ -30,6 +30,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.adapters.UniversalAdapter;
@@ -38,11 +39,11 @@ import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
 public class HiddenAppsDialogs extends Dialog {
 
-    private final ArrayList<Apps> mAppsList;
+    private final List<Apps> mAppsList;
     private final Context context;
     ArrayList<Apps> hiddenApps = new ArrayList<>();
 
-    public HiddenAppsDialogs(Context context, ArrayList<Apps> appsList) {
+    public HiddenAppsDialogs(Context context, List<Apps> appsList) {
         super(context);
         this.context = context;
         mAppsList = appsList;
@@ -98,9 +99,11 @@ public class HiddenAppsDialogs extends Dialog {
 
 
     public int updateHiddenList() {
-        for (Apps apps : mAppsList) {
-            if (apps.isHidden()) {
-                hiddenApps.add(apps);
+        synchronized (mAppsList) {
+            for (Apps apps : mAppsList) {
+                if (apps.isHidden()) {
+                    hiddenApps.add(apps);
+                }
             }
         }
         return hiddenApps.size();

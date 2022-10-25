@@ -136,7 +136,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
 
     //region Field declarations
-    public static ArrayList<Apps> mAppsList;
+    public static List<Apps> mAppsList;
     // home layout
     private static FlowLayout mHomeLayout;
     // when search bar appears this will be true and show search result
@@ -333,7 +333,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         // Log.d(TAG, "loadApps: install shortcut sizes::" + installedShortcut);
         final int appsCount = activities.size();
 
-        mAppsList = new ArrayList<>(appsCount + installedShortcut);
+        mAppsList = Collections.synchronizedList(new ArrayList<>(appsCount + installedShortcut));
 
         // get the most used apps
         // a list of app that are popular on f-droid and some of my apps
@@ -686,30 +686,32 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     //  add a new app: generally called after reset
     private void addAppAfterReset(String activityName, boolean sortNeeded) {
-        for (ListIterator<Apps> iterator = mAppsList.listIterator(); iterator.hasNext(); ) {
-            Apps app = iterator.next();
-            if (app.getActivityName().equalsIgnoreCase(activityName)) {
-                iterator.remove();
-                //now add new App
-                int color;
-                if (DbUtils.isRandomColor()) {
-                    color = Utils.generateColorFromString(activityName);
-                } else {
-                    color = DbUtils.getAppsColorDefault();
-                }
-                String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
-                String appName = DbUtils.getAppName(activityName, appOriginalName);
-                int openingCounts = DbUtils.getOpeningCounts(activityName);
-                boolean hide = app.isHidden();
-                boolean freezeSize = app.isSizeFrozen();
-                int appUpdateTime = app.getUpdateTime();
-                Apps newApp = new Apps(app.isShortcut(), activityName, appName, getCustomView(), color, DEFAULT_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts, appUpdateTime);
+        synchronized (mAppsList) {
+            for (ListIterator<Apps> iterator = mAppsList.listIterator(); iterator.hasNext(); ) {
+                Apps app = iterator.next();
+                if (app.getActivityName().equalsIgnoreCase(activityName)) {
+                    iterator.remove();
+                    //now add new App
+                    int color;
+                    if (DbUtils.isRandomColor()) {
+                        color = Utils.generateColorFromString(activityName);
+                    } else {
+                        color = DbUtils.getAppsColorDefault();
+                    }
+                    String appOriginalName = DbUtils.getAppOriginalName(activityName, "");
+                    String appName = DbUtils.getAppName(activityName, appOriginalName);
+                    int openingCounts = DbUtils.getOpeningCounts(activityName);
+                    boolean hide = app.isHidden();
+                    boolean freezeSize = app.isSizeFrozen();
+                    int appUpdateTime = app.getUpdateTime();
+                    Apps newApp = new Apps(app.isShortcut(), activityName, appName, getCustomView(), color, DEFAULT_TEXT_SIZE_NORMAL_APPS, hide, freezeSize, openingCounts, appUpdateTime);
 
-                //mAppsList.add(newApp);
-                iterator.add(newApp);
-                if (sortNeeded)
-                    sortApps(DbUtils.getSortsTypes());
-                break;
+                    //mAppsList.add(newApp);
+                    iterator.add(newApp);
+                    if (sortNeeded)
+                        sortApps(DbUtils.getSortsTypes());
+                    break;
+                }
             }
         }
     }
@@ -717,9 +719,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // as method name suggest
     private void freezeAppSize(String activityName) {
         boolean b = DbUtils.isAppFrozen(activityName);
-        for (Apps apps : mAppsList) {
-            if (activityName.equalsIgnoreCase(apps.getActivityName())) {
-                apps.setFreeze(!b);
+        synchronized (mAppsList) {
+            for (Apps apps : mAppsList) {
+                if (activityName.equalsIgnoreCase(apps.getActivityName())) {
+                    apps.setFreeze(!b);
+                }
             }
         }
 
@@ -727,9 +731,11 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     // as method name suggest
     private void hideApp(String activityName) {
-        for (Apps apps : mAppsList) {
-            if (activityName.equalsIgnoreCase(apps.getActivityName())) {
-                apps.setAppHidden(true);
+        synchronized (mAppsList) {
+            for (Apps apps : mAppsList) {
+                if (activityName.equalsIgnoreCase(apps.getActivityName())) {
+                    apps.setAppHidden(true);
+                }
             }
         }
 
@@ -751,13 +757,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
     // this is called by RenameInput.class Dialog when user set the name and sort the apps
     public void onAppRenamed(String activityName, String appNewName) {
-        for (Apps app : mAppsList) {
-            if (app.getActivityName().equalsIgnoreCase(activityName)) {
-                app.setAppName(appNewName.trim());
-                if (SORT_BY_NAME == DbUtils.getSortsTypes()) {
-                    sortApps(SORT_BY_NAME);
+        synchronized (mAppsList) {
+            for (Apps app : mAppsList) {
+                if (app.getActivityName().equalsIgnoreCase(activityName)) {
+                    app.setAppName(appNewName.trim());
+                    if (SORT_BY_NAME == DbUtils.getSortsTypes()) {
+                        sortApps(SORT_BY_NAME);
+                    }
+                    break;
                 }
-                break;
             }
         }
     }
@@ -792,10 +800,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         int size = DbUtils.getAppSize(activityName);
         if (size == DbUtils.NULL_TEXT_SIZE) {
-            for (Apps apps : mAppsList) {
-                if (apps.getActivityName().equals(activityName)) {
-                    size = apps.getSize();
-                    break;
+            synchronized (mAppsList) {
+                for (Apps apps : mAppsList) {
+                    if (apps.getActivityName().equals(activityName)) {
+                        size = apps.getSize();
+                        break;
+                    }
                 }
             }
         }
@@ -818,36 +828,38 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             @Override
             public void run() {
                 super.run();*/
-        for (Apps apps : mAppsList) {
-            if (apps.getActivityName().equalsIgnoreCase(activity)) {
-                apps.increaseOpeningCounts();// save to Db that app is opened by user
-                recentlyUsedCounter++;
-                apps.setRecentUsedWeight(recentlyUsedCounter);
+        synchronized (mAppsList) {
+            for (Apps apps : mAppsList) {
+                if (apps.getActivityName().equalsIgnoreCase(activity)) {
+                    apps.increaseOpeningCounts();// save to Db that app is opened by user
+                    recentlyUsedCounter++;
+                    apps.setRecentUsedWeight(recentlyUsedCounter);
 
-                if (DbUtils.getSortsTypes() == SORT_BY_OPENING_COUNTS) {
-                    int counter = apps.getOpeningCounts();
-                    if (counter % 5 == 0) {
-                        sortApps(SORT_BY_OPENING_COUNTS);
+                    if (DbUtils.getSortsTypes() == SORT_BY_OPENING_COUNTS) {
+                        int counter = apps.getOpeningCounts();
+                        if (counter % 5 == 0) {
+                            sortApps(SORT_BY_OPENING_COUNTS);
+                        }
+                    } else if (DbUtils.getSortsTypes() == SORT_BY_RECENT_OPEN) {
+                        sortApps(SORT_BY_RECENT_OPEN);
                     }
-                } else if (DbUtils.getSortsTypes() == SORT_BY_RECENT_OPEN) {
-                    sortApps(SORT_BY_RECENT_OPEN);
+
+                    // increase the app view size if not frozen
+                    if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
+                        int size = DbUtils.getAppSize(activity);
+                        size += 2;
+                        if (size > 90) {
+                            size = 90;
+                        }
+                        apps.setSize(size);
+                        if (DbUtils.getSortsTypes() == SORT_BY_SIZE) {
+                            sortApps(SORT_BY_SIZE);
+                        }
+                    }
+
+
+                    break;
                 }
-
-                // increase the app view size if not frozen
-                if (!DbUtils.isSizeFrozen() && !DbUtils.isAppFrozen(activity)) {
-                    int size = DbUtils.getAppSize(activity);
-                    size += 2;
-                    if(size > 90){
-                        size = 90;
-                    }
-                    apps.setSize(size);
-                    if (DbUtils.getSortsTypes() == SORT_BY_SIZE) {
-                        sortApps(SORT_BY_SIZE);
-                    }
-                }
-
-
-                break;
             }
         }
         /*   }
@@ -1061,19 +1073,21 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         }
 
         // get each value as proposed by Color Sniffer App developer
-        for (Apps apps : mAppsList) {
-            TextView textView = apps.getTextView();
-            String appPackage = apps.getActivityName();
-            int color = bundle.getInt(appPackage);
-            if (color != DbUtils.NULL_TEXT_COLOR) {
-                textView.setTextColor(color);
-                DbUtils.putAppColorExternalSource(appPackage, color);
-                // DbUtils.putAppColor(appPackage, color);
-            } else if (defaultColorSet) {
-                //set default color
-                DbUtils.putAppColor(appPackage, DEFAULT_COLOR);
-                textView.setTextColor(DEFAULT_COLOR);
-            }//else do nothing theme default color will apply
+        synchronized (mAppsList) {
+            for (Apps apps : mAppsList) {
+                TextView textView = apps.getTextView();
+                String appPackage = apps.getActivityName();
+                int color = bundle.getInt(appPackage);
+                if (color != DbUtils.NULL_TEXT_COLOR) {
+                    textView.setTextColor(color);
+                    DbUtils.putAppColorExternalSource(appPackage, color);
+                    // DbUtils.putAppColor(appPackage, color);
+                } else if (defaultColorSet) {
+                    //set default color
+                    DbUtils.putAppColor(appPackage, DEFAULT_COLOR);
+                    textView.setTextColor(DEFAULT_COLOR);
+                }//else do nothing theme default color will apply
+            }
         }
     }
 
@@ -1117,16 +1131,18 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private void setAppsColorFromClipboard(Map<String, Integer> colorsAndId) {
         if (colorsAndId == null) return;
         DbUtils.externalSourceColor(true);
-        for (Apps apps : mAppsList) {
-            try {
-                TextView textView = apps.getTextView();
-                String s = apps.getActivityName();
-                Integer newColor = colorsAndId.get(s);
-                if (newColor == null) continue;
-                textView.setTextColor(newColor);
-                DbUtils.putAppColorExternalSource(s, newColor);
-            } catch (NullPointerException ignore) {
+        synchronized (mAppsList) {
+            for (Apps apps : mAppsList) {
+                try {
+                    TextView textView = apps.getTextView();
+                    String s = apps.getActivityName();
+                    Integer newColor = colorsAndId.get(s);
+                    if (newColor == null) continue;
+                    textView.setTextColor(newColor);
+                    DbUtils.putAppColorExternalSource(s, newColor);
+                } catch (NullPointerException ignore) {
 
+                }
             }
         }
     }
@@ -1242,29 +1258,31 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         @Override
         protected ArrayList<Apps> doInBackground(CharSequence... charSequences) {
             ArrayList<Apps> filteredApps = new ArrayList<>();
-            for (Apps app : mAppsList) {
-                if (charSequences[0].length() == 0) {
-                    filteredApps.add(app);
-                } else if (Utils.simpleFuzzySearch(charSequences[0], app.getAppName())) {
-                    filteredApps.add(app);
-                } else{
-                    // Support for searching non-ascii languages Apps using ascii characters.
-                    boolean isMatch = false;
-                    switch (mLocale.getLanguage()){
-                        case "zh":{
-                            // In case of Chinese, PinYin Search is supported.
-                            isMatch = PinYinSearchUtils.pinYinSimpleFuzzySearch(charSequences[0], app.getAppName());
-                            break;
-                        }
+            synchronized (mAppsList) {
+                for (Apps app : mAppsList) {
+                    if (charSequences[0].length() == 0) {
+                        filteredApps.add(app);
+                    } else if (Utils.simpleFuzzySearch(charSequences[0], app.getAppName())) {
+                        filteredApps.add(app);
+                    } else {
+                        // Support for searching non-ascii languages Apps using ascii characters.
+                        boolean isMatch = false;
+                        switch (mLocale.getLanguage()) {
+                            case "zh": {
+                                // In case of Chinese, PinYin Search is supported.
+                                isMatch = PinYinSearchUtils.pinYinSimpleFuzzySearch(charSequences[0], app.getAppName());
+                                break;
+                            }
 //                        You can add new non-ascii language search to be supported here.
 //                        case "xx":{
 //                            break;
 //                        }
-                        default:
-                            break;
+                            default:
+                                break;
+                        }
+                        if (isMatch)
+                            filteredApps.add(app);
                     }
-                    if (isMatch)
-                        filteredApps.add(app);
                 }
             }
             return filteredApps;
@@ -1283,15 +1301,15 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             // FlowLayoutManager.LayoutParams params = new FlowLayoutManager.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
             // params.setNewLine(true);
 
-            for (Apps app : mAppsList) {
-                AppTextView textView=app.getTextView();
-                if (textView.getParent()!=null){
-                    ( (ViewGroup)textView.getParent()).removeView(textView);
+            synchronized (mAppsList) {
+                for (Apps app : mAppsList) {
+                    AppTextView textView = app.getTextView();
+                    if (textView.getParent() != null) {
+                        ((ViewGroup) textView.getParent()).removeView(textView);
+                    }
+                    mHomeLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
                 }
-                mHomeLayout.addView(textView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             }
-
-
         }
 
         /**So this is where you sort your apps.
@@ -1305,61 +1323,63 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             final int type = integers[0];
             DbUtils.setAppsSortsType(type);
 
-            //sort the apps alphabetically
-            Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
-                    a.getAppName(),
-                    b.getAppName()
-            ));
+            synchronized (mAppsList) {
+                //sort the apps alphabetically
+                Collections.sort(mAppsList, (a, b) -> String.CASE_INSENSITIVE_ORDER.compare(
+                        a.getAppName(),
+                        b.getAppName()
+                ));
 
-            switch (type) {
-                case SORT_BY_SIZE://descending
-                    Collections.sort(mAppsList, (apps, t1) -> {
-                        //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
-                        if (apps.getSize() != t1.getSize()) {
-                            return t1.getSize() - apps.getSize();
-                        } else {
-                            return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
-                        }
-                    });
-                    break;
-                case SORT_BY_OPENING_COUNTS://descending
-                    Collections.sort(mAppsList, (apps, t1) -> {
-                        //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
-                        if (t1.getOpeningCounts() != apps.getOpeningCounts()) {
-                            return t1.getOpeningCounts() - apps.getOpeningCounts();
-                        }else {
-                            return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
-                        }
-                    });
-                    break;
-                case SORT_BY_COLOR:
-                    Collections.sort(mAppsList, (apps, t1) -> {
-                        float[] hsv = new float[3];
-                        Color.colorToHSV(apps.getColor(), hsv);
-                        float[] another = new float[3];
-                        Color.colorToHSV(t1.getColor(), another);
-                        for (int i = 0; i < 3; i++) {
-                            if (hsv[i] != another[i]) {
-                                return (hsv[i] < another[i]) ? -1 : 1;
+                switch (type) {
+                    case SORT_BY_SIZE://descending
+                        Collections.sort(mAppsList, (apps, t1) -> {
+                            //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
+                            if (apps.getSize() != t1.getSize()) {
+                                return t1.getSize() - apps.getSize();
+                            } else {
+                                return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
                             }
-                        }
-                        //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
-                        return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
-                    });
-                    break;
-                case SORT_BY_UPDATE_TIME://descending
-                    Collections.sort(mAppsList, (apps, t1) -> {
-                        //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
-                        if (t1.getUpdateTime()!=apps.getUpdateTime()){
-                            return t1.getUpdateTime() - apps.getUpdateTime();
-                        }else {
+                        });
+                        break;
+                    case SORT_BY_OPENING_COUNTS://descending
+                        Collections.sort(mAppsList, (apps, t1) -> {
+                            //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
+                            if (t1.getOpeningCounts() != apps.getOpeningCounts()) {
+                                return t1.getOpeningCounts() - apps.getOpeningCounts();
+                            }else {
+                                return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
+                            }
+                        });
+                        break;
+                    case SORT_BY_COLOR:
+                        Collections.sort(mAppsList, (apps, t1) -> {
+                            float[] hsv = new float[3];
+                            Color.colorToHSV(apps.getColor(), hsv);
+                            float[] another = new float[3];
+                            Color.colorToHSV(t1.getColor(), another);
+                            for (int i = 0; i < 3; i++) {
+                                if (hsv[i] != another[i]) {
+                                    return (hsv[i] < another[i]) ? -1 : 1;
+                                }
+                            }
+                            //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
                             return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
-                        }
-                    });
-                    break;
-                case SORT_BY_RECENT_OPEN://descending
-                    Collections.sort(mAppsList, (apps, t1) -> (t1.getRecentUsedWeight() - apps.getRecentUsedWeight()));
-                    break;
+                        });
+                        break;
+                    case SORT_BY_UPDATE_TIME://descending
+                        Collections.sort(mAppsList, (apps, t1) -> {
+                            //CS304 Issue link: https://github.com/SubhamTyagi/Last-Launcher/issues/162
+                            if (t1.getUpdateTime()!=apps.getUpdateTime()){
+                                return t1.getUpdateTime() - apps.getUpdateTime();
+                            }else {
+                                return -t1.getRecentUsedWeight() + apps.getRecentUsedWeight();
+                            }
+                        });
+                        break;
+                    case SORT_BY_RECENT_OPEN://descending
+                        Collections.sort(mAppsList, (apps, t1) -> (t1.getRecentUsedWeight() - apps.getRecentUsedWeight()));
+                        break;
+                }
             }
             return null;
         }
