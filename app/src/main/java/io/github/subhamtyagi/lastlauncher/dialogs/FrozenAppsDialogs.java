@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.adapters.UniversalAdapter;
@@ -36,12 +37,12 @@ import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
 public class FrozenAppsDialogs extends Dialog {
 
-    private final ArrayList<Apps> mAppsList;
+    private final List<Apps> mAppsList;
     private final Context context;
     ArrayList<Apps> frozenApps = new ArrayList<>();
     private ListView listView;
 
-    public FrozenAppsDialogs(Context context, ArrayList<Apps> appsList) {
+    public FrozenAppsDialogs(Context context, List<Apps> appsList) {
         super(context);
         this.context = context;
         mAppsList = appsList;
@@ -85,10 +86,12 @@ public class FrozenAppsDialogs extends Dialog {
     }
 
     public int updateFrozenList() {
-        // only show frozen app
-        for (Apps apps : mAppsList) {
-            if (apps.isSizeFrozen()) {
-                frozenApps.add(apps);
+        synchronized (mAppsList) {
+            // only show frozen app
+            for (Apps apps : mAppsList) {
+                if (apps.isSizeFrozen()) {
+                    frozenApps.add(apps);
+                }
             }
         }
         return frozenApps.size();

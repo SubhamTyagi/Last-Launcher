@@ -45,13 +45,13 @@ public class GlobalColorSizeDialog extends Dialog {
     private static final long DELAY = 100;
 
     private final Handler handler = new Handler();
-    private final ArrayList<Apps> mAppsList;
+    private final List<Apps> mAppsList;
     private final List<String> oftenApps = Utils.getOftenAppsList();
     private Runnable runnable;
     private int appSize;
     private int mColor;
 
-    public GlobalColorSizeDialog(Context context, ArrayList<Apps> appsList) {
+    public GlobalColorSizeDialog(Context context, List<Apps> appsList) {
         super(context);
         this.mAppsList = appsList;
     }
@@ -85,12 +85,14 @@ public class GlobalColorSizeDialog extends Dialog {
         colorSeekBar.setOnColorChangeListener((colorBarPosition, alphaBarPosition, color) -> {
             // set the color
             mColor = color;
-            for (Apps apps : mAppsList) {
-                // only change the color of app, which had not set yet
-                if (DbUtils.getAppColor(apps.getActivityName()) == DbUtils.NULL_TEXT_COLOR) {
-                    // change only the text view color
-                    // do not save the color of individuals apps
-                    apps.getTextView().setTextColor(color);
+            synchronized (mAppsList) {
+                for (Apps apps : mAppsList) {
+                    // only change the color of app, which had not set yet
+                    if (DbUtils.getAppColor(apps.getActivityName()) == DbUtils.NULL_TEXT_COLOR) {
+                        // change only the text view color
+                        // do not save the color of individuals apps
+                        apps.getTextView().setTextColor(color);
+                    }
                 }
             }
             // idea: save global color to Db
@@ -114,21 +116,22 @@ public class GlobalColorSizeDialog extends Dialog {
                 //   plus.setClickable(false);
 
             } else {
-
-                for (Apps apps : mAppsList) {
-                    int textSize = DbUtils.getAppSize(apps.getActivityName());
-                    // check if text size is null then set the size to default size
-                    // size is null(-1) when user installed this app
-                    if (textSize == DbUtils.NULL_TEXT_SIZE) {
-                        if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
-                            textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
-                        } else {
-                            textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
+                synchronized (mAppsList) {
+                    for (Apps apps : mAppsList) {
+                        int textSize = DbUtils.getAppSize(apps.getActivityName());
+                        // check if text size is null then set the size to default size
+                        // size is null(-1) when user installed this app
+                        if (textSize == DbUtils.NULL_TEXT_SIZE) {
+                            if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
+                                textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
+                            } else {
+                                textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
+                            }
+                            /// DbUtils.putAppSize(activity, textSize);
                         }
-                        /// DbUtils.putAppSize(activity, textSize);
-                    }
-                    apps.setSize(++textSize);
+                        apps.setSize(++textSize);
 
+                    }
                 }
             }
             size.setText(String.valueOf(appSize));
@@ -139,23 +142,22 @@ public class GlobalColorSizeDialog extends Dialog {
             if (appSize < DEFAULT_MIN_TEXT_SIZE) {
                 appSize = DEFAULT_MIN_TEXT_SIZE;
             } else {
+                synchronized (mAppsList) {
+                    for (Apps apps : mAppsList) {
+                        int textSize = DbUtils.getAppSize(apps.getActivityName());
+                        // check if text size is null then set the size to default size
+                        // size is null(-1) when user installed this app
+                        if (textSize == DbUtils.NULL_TEXT_SIZE) {
+                            if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
+                                textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
+                            } else {
+                                textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
+                            }
 
-
-                for (Apps apps : mAppsList) {
-                    int textSize = DbUtils.getAppSize(apps.getActivityName());
-                    // check if text size is null then set the size to default size
-                    // size is null(-1) when user installed this app
-                    if (textSize == DbUtils.NULL_TEXT_SIZE) {
-                        if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
-                            textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
-                        } else {
-                            textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
+                            /// DbUtils.putAppSize(activity, textSize);
                         }
-
-                        /// DbUtils.putAppSize(activity, textSize);
+                        apps.setSize(--textSize);
                     }
-                    apps.setSize(--textSize);
-
                 }
             }
             size.setText(String.valueOf(appSize));
@@ -175,21 +177,22 @@ public class GlobalColorSizeDialog extends Dialog {
                     appSize = DEFAULT_MAX_TEXT_SIZE;
                     //   plus.setClickable(false);
                 } else {
-                    for (Apps apps : mAppsList) {
-                        int textSize = DbUtils.getAppSize(apps.getActivityName());
-                        // check if text size is null then set the size to default size
-                        // size is null(-1) when user installed this app
-                        if (textSize == DbUtils.NULL_TEXT_SIZE) {
-                            if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
-                                textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
-                            } else {
-                                textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
+                    synchronized (mAppsList) {
+                        for (Apps apps : mAppsList) {
+                            int textSize = DbUtils.getAppSize(apps.getActivityName());
+                            // check if text size is null then set the size to default size
+                            // size is null(-1) when user installed this app
+                            if (textSize == DbUtils.NULL_TEXT_SIZE) {
+                                if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
+                                    textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
+                                } else {
+                                    textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
+                                }
+
+                                /// DbUtils.putAppSize(activity, textSize);
                             }
-
-                            /// DbUtils.putAppSize(activity, textSize);
+                            apps.setSize(++textSize);
                         }
-                        apps.setSize(++textSize);
-
                     }
                 }
                 size.setText(String.valueOf(appSize));
@@ -212,22 +215,22 @@ public class GlobalColorSizeDialog extends Dialog {
                 if (appSize < DEFAULT_MIN_TEXT_SIZE) {
                     appSize = DEFAULT_MIN_TEXT_SIZE;
                 } else {
+                    synchronized (mAppsList) {
+                        for (Apps apps : mAppsList) {
+                            int textSize = DbUtils.getAppSize(apps.getActivityName());
+                            // check if text size is null then set the size to default size
+                            // size is null(-1) when user installed this app
+                            if (textSize == DbUtils.NULL_TEXT_SIZE) {
+                                if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
+                                    textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
+                                } else {
+                                    textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
+                                }
 
-                    for (Apps apps : mAppsList) {
-                        int textSize = DbUtils.getAppSize(apps.getActivityName());
-                        // check if text size is null then set the size to default size
-                        // size is null(-1) when user installed this app
-                        if (textSize == DbUtils.NULL_TEXT_SIZE) {
-                            if (oftenApps.contains(apps.getActivityName().split("/")[0])) {
-                                textSize = DEFAULT_TEXT_SIZE_OFTEN_APPS;
-                            } else {
-                                textSize = DEFAULT_TEXT_SIZE_NORMAL_APPS;
+                                /// DbUtils.putAppSize(activity, textSize);
                             }
-
-                            /// DbUtils.putAppSize(activity, textSize);
+                            apps.setSize(--textSize);
                         }
-                        apps.setSize(--textSize);
-
                     }
                 }
                 size.setText(String.valueOf(appSize));
