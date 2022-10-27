@@ -61,6 +61,7 @@ public class DbUtils {
     private static final String GLOBAL_SIZE_ADDITION_EXTRA = "global_size_addition_extra";
     private static final String APPS_COLORS_DEFAULT = "apps_color_default";
     private static final String APPS_SORTS_TYPE = "apps_sorts_types";
+    private static final String APPS_SORTS_REVERSE_ORDER = "apps_sorts_reverse_order";
 
 
     public static void init(Context context) {
@@ -388,6 +389,13 @@ public class DbUtils {
         SpUtils.getInstance().putInt(APPS_SORTS_TYPE, type);
     }
 
+    public static boolean getAppSortReverseOrder() {
+        return SpUtils.getInstance().getBoolean(APPS_SORTS_REVERSE_ORDER, false);
+    }
+
+    public static void setAppSortReverseOrder(boolean reverseOrder) {
+        SpUtils.getInstance().putBoolean(APPS_SORTS_REVERSE_ORDER, reverseOrder);
+    }
 
     //  a simple ciphered counter: "opening counter" is a private thing
     // rest is on device security
