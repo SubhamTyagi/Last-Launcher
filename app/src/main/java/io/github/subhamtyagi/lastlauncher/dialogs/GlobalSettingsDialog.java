@@ -88,6 +88,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         findViewById(R.id.settings_padding).setOnClickListener(this);
         findViewById(R.id.settings_color_size).setOnClickListener(this);
         findViewById(R.id.settings_sort_app_by).setOnClickListener(this);
+        findViewById(R.id.settings_sort_app_reverse).setOnClickListener(this);
         findViewById(R.id.settings_restart_launcher).setOnClickListener(this);
 
         //TODO: remove this var
@@ -126,17 +127,20 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                 if (BuildConfig.enableColorSniffer)
                     showColorSnifferDialog();
                 else randomColor();
+                break;
             }
-            break;
-
             case R.id.settings_sort_app_by: {
                 sortApps(view);
                 break;
             }
+            case R.id.settings_sort_app_reverse: {
+                sortAppsReverseOrder();
+                break;
+            }
             case R.id.settings_color_size: {
                 showColorAndSizeDialog();
+                break;
             }
-            break;
             case R.id.settings_freeze_size:
                 freezeAppsSize();
                 break;
@@ -214,6 +218,12 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             return true;
         });
         popupMenu.show();
+    }
+
+    private void sortAppsReverseOrder() {
+        DbUtils.setAppSortReverseOrder(!DbUtils.getAppSortReverseOrder());
+        launcherActivity.sortApps(DbUtils.getSortsTypes());
+        cancel();
     }
 
     private void showColorAndSizeDialog() {

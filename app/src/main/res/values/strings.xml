@@ -75,6 +75,7 @@
 
     <string name="select_fonts">Select fonts</string>
     <string name="sort_apps_by">Sort Apps By</string>
+    <string name="sort_apps_reverse">Sort Apps Reverse Order</string>
     <!--Sort Apps By: NAME-->
     <string name="by_name">Name</string>
     <!--Sort Apps By: APP USAGE TIME-->

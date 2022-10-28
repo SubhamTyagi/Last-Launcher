@@ -483,7 +483,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
      * @param type sorting type
      */
     public void sortApps(final int type) {
-        new SortTask().execute(type);
+        new SortTask().execute(type, DbUtils.getAppSortReverseOrder() ? 1 : 0);
     }
 
     // the text view and set the various parameters
@@ -1321,6 +1321,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         @Override
         protected Void doInBackground(final Integer... integers) {
             final int type = integers[0];
+            final boolean reverseOrder = integers[1] == 1;
             DbUtils.setAppsSortsType(type);
 
             synchronized (mAppsList) {
@@ -1379,6 +1380,10 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
                     case SORT_BY_RECENT_OPEN://descending
                         Collections.sort(mAppsList, (apps, t1) -> (t1.getRecentUsedWeight() - apps.getRecentUsedWeight()));
                         break;
+                }
+
+                if (reverseOrder) {
+                    Collections.reverse(mAppsList);
                 }
             }
             return null;
