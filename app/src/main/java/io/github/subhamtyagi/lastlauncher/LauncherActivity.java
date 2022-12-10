@@ -136,7 +136,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
 
     //region Field declarations
-    public static List<Apps> mAppsList;
+    public final static List<Apps> mAppsList = Collections.synchronizedList(new ArrayList<>());
     // home layout
     private static FlowLayout mHomeLayout;
     // when search bar appears this will be true and show search result
@@ -332,8 +332,6 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         // Log.d(TAG, "loadApps: install shortcut sizes::" + installedShortcut);
         final int appsCount = activities.size();
-
-        mAppsList = Collections.synchronizedList(new ArrayList<>(appsCount + installedShortcut));
 
         // get the most used apps
         // a list of app that are popular on f-droid and some of my apps
