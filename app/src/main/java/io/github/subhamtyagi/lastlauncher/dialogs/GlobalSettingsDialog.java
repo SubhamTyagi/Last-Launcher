@@ -57,6 +57,7 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
     private final LauncherActivity launcherActivity;
     private final Context context;
     private TextView freezeSize;
+    private TextView dragApps;
 
     public GlobalSettingsDialog(Context context, LauncherActivity launcherActivity) {
         super(context);
@@ -88,8 +89,10 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         findViewById(R.id.settings_padding).setOnClickListener(this);
         findViewById(R.id.settings_color_size).setOnClickListener(this);
         findViewById(R.id.settings_sort_app_by).setOnClickListener(this);
-        findViewById(R.id.settings_sort_app_reverse).setOnClickListener(this);
         findViewById(R.id.settings_restart_launcher).setOnClickListener(this);
+
+        dragApps = findViewById(R.id.drag_apps);
+        dragApps.setOnClickListener(this);
 
         //TODO: remove this var
         TextView colorSniffer = findViewById(R.id.settings_color_sniffer);
@@ -105,13 +108,18 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         findViewById(R.id.settings_frozen_apps).setOnClickListener(this);
         findViewById(R.id.settings_hidden_apps).setOnClickListener(this);
 
-
         //reflect the DB value
         if (DbUtils.isSizeFrozen()) {
             freezeSize.setText(R.string.unfreeze_app_size);
-        } else
+        } else {
             freezeSize.setText(R.string.freeze_apps_size);
+        }
 
+        if (DbUtils.getEnableAppsDragging()) {
+            dragApps.setText(R.string.disable_apps_dragging);
+        } else {
+            dragApps.setText(R.string.enable_apps_dragging);
+        }
     }
 
     @Override
@@ -131,10 +139,6 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
             }
             case R.id.settings_sort_app_by: {
                 sortApps(view);
-                break;
-            }
-            case R.id.settings_sort_app_reverse: {
-                sortAppsReverseOrder();
                 break;
             }
             case R.id.settings_color_size: {
@@ -168,6 +172,9 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                 break;
             case R.id.settings_restart_launcher:
                 launcherActivity.recreate();
+                break;
+            case R.id.drag_apps:
+                toggleAppsDragging();
                 break;
 
         }
@@ -213,6 +220,9 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
                     break;
                 case R.id.menu_sort_by_recent_use:
                     launcherActivity.sortApps(Constants.SORT_BY_RECENT_OPEN);
+                    break;
+                case R.id.settings_sort_app_reverse:
+                    sortAppsReverseOrder();
                     break;
             }
             return true;
@@ -262,6 +272,17 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
 
     }
 
+    private void toggleAppsDragging() {
+        boolean appsDraggingEnabled = DbUtils.getEnableAppsDragging();
+        DbUtils.setEnableAppsDragging(!appsDraggingEnabled);
+
+        if (!appsDraggingEnabled) {
+            dragApps.setText(R.string.disable_apps_dragging);
+        } else {
+            dragApps.setText(R.string.enable_apps_dragging);
+        }
+    }
+
     private void randomColor() {
         boolean rColor = !DbUtils.isRandomColor();
         DbUtils.randomColor(rColor);
@@ -303,8 +324,9 @@ public class GlobalSettingsDialog extends Dialog implements View.OnClickListener
         DbUtils.freezeSize(!b);
         if (!b) {
             freezeSize.setText(R.string.unfreeze_app_size);
-        } else
+        } else {
             freezeSize.setText(R.string.freeze_apps_size);
+        }
     }
 
     private void frozenApps() {

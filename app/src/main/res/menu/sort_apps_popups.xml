@@ -44,4 +44,8 @@
         android:title="@string/recently_first" />
     <!--<item android:id="@+id/menu_sort_by_customs"
         android:title="@string/custom"/>-->
+
+    <item
+        android:id="@+id/settings_sort_app_reverse"
+        android:title="Reverse order" />
 </menu>

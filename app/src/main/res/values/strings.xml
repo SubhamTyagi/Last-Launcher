@@ -91,4 +91,6 @@
     <!--Sort Apps IN : RECENTLY USED FIRST ORDER -->
     <string name="recently_first">Recently first</string>
     <string name="restart_launcher">Restart Launcher</string>
+    <string name="enable_apps_dragging">Enable Dragging</string>
+    <string name="disable_apps_dragging">Disable Dragging</string>
 </resources>

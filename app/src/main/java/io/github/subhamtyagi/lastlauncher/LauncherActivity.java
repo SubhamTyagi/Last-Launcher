@@ -45,6 +45,7 @@ import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
 import android.view.ContextThemeWrapper;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -74,6 +75,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.github.subhamtyagi.lastlauncher.dialogs.ColorSizeDialog;
 import io.github.subhamtyagi.lastlauncher.dialogs.FrozenAppsDialogs;
@@ -132,6 +134,8 @@ import static io.github.subhamtyagi.lastlauncher.utils.Constants.SORT_BY_UPDATE_
 @SuppressLint("NonConstantResourceId")
 public class LauncherActivity extends Activity implements View.OnClickListener,
         View.OnLongClickListener,
+        View.OnDragListener,
+        View.OnTouchListener,
         Gestures.OnSwipeListener {
 
 
@@ -492,6 +496,8 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         AppTextView textView = new AppTextView(this);
         textView.setOnClickListener(this);
         textView.setOnLongClickListener(this);
+        textView.setOnTouchListener(this);
+        textView.setOnDragListener(this);
         textView.setPadding(10, 0, 4, -2);
         textView.setTypeface(mTypeface);
         return textView;
@@ -1221,6 +1227,162 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         // if (b)
         loadApps();
+    }
+
+    private int mCurrentDropTargetColor = 0;
+    private CharSequence mLastDropTarget = "";
+
+    @Override
+    public boolean onDrag(View v, DragEvent event) {
+        AppTextView dropTarget = (AppTextView) v;
+        AppTextView draggedItem = (AppTextView) event.getLocalState();
+
+        switch (event.getAction()) {
+            case DragEvent.ACTION_DRAG_STARTED:
+                if (mCurrentDropTargetColor == 0) {
+                    mCurrentDropTargetColor = draggedItem.getCurrentTextColor();
+                }
+                break;
+
+            case DragEvent.ACTION_DRAG_ENTERED:
+                if (dropTarget.getText() != mLastDropTarget) {
+                    mLastDropTarget = dropTarget.getText();
+
+                    String dropActivityName = (String) dropTarget.getTag();
+                    int currentTextColor;
+
+                    if (dropTarget.getText() == draggedItem.getText()) {
+                        currentTextColor = mCurrentDropTargetColor;
+                    } else {
+                        Apps appBeforeDropTarget = null;
+                        Apps dropTargetApp = null;
+
+                        synchronized (mAppsList) {
+                            for (Apps apps : mAppsList) {
+                                if (dropActivityName.equalsIgnoreCase(apps.getActivityName())) {
+                                    dropTargetApp = apps;
+                                    break;
+                                }
+
+                                appBeforeDropTarget = apps;
+                            }
+                        }
+
+                        if (dropTargetApp == null) {
+                            return true;
+                        }
+
+                        int appBeforeDropTargetColor = appBeforeDropTarget == null ? 0 : appBeforeDropTarget.getColor();
+                        float[] appBeforeDropTargetHsv = new float[3];
+                        int dropTargetColor = dropTargetApp.getColor();
+                        float[] dropTargetHsv = new float[3];
+
+                        Color.colorToHSV(appBeforeDropTargetColor, appBeforeDropTargetHsv);
+                        Color.colorToHSV(dropTargetColor, dropTargetHsv);
+
+                        float[] newHsv = new float[3];
+
+                        newHsv[0] = (appBeforeDropTargetHsv[0] + dropTargetHsv[0]) / 2;
+                        newHsv[1] = (appBeforeDropTargetHsv[1] + dropTargetHsv[1]) / 2;
+                        newHsv[2] = (appBeforeDropTargetHsv[2] + dropTargetHsv[2]) / 2;
+
+                        currentTextColor = Color.HSVToColor((Color.alpha(appBeforeDropTargetColor) + Color.alpha(dropTargetColor)) / 2, newHsv);
+                    }
+
+                    setColorOfDraggedView(draggedItem, currentTextColor);
+                }
+                break;
+
+            case DragEvent.ACTION_DROP:
+                if (dropTarget.getText() == draggedItem.getText()) {
+                    draggedItem.setTextColor(mCurrentDropTargetColor);
+                    mCurrentDropTargetColor = 0;
+                } else {
+                    DbUtils.putAppColor((String) draggedItem.getTag(), draggedItem.getCurrentTextColor());
+                    sortApps(DbUtils.getSortsTypes());
+                }
+                break;
+
+            case DragEvent.ACTION_DRAG_EXITED:
+                setColorOfDraggedView(draggedItem, mCurrentDropTargetColor);
+                break;
+        }
+
+        return true;
+    }
+
+    private void setColorOfDraggedView(AppTextView draggedItem, int currentTextColor) {
+        draggedItem.setTextColor(currentTextColor);
+
+        String draggedActivityName = (String) draggedItem.getTag();
+
+        synchronized (mAppsList) {
+            for (Apps apps : mAppsList) {
+                if (draggedActivityName.equalsIgnoreCase(apps.getActivityName())) {
+                    apps.setColor(currentTextColor);
+                    break;
+                }
+            }
+        }
+    }
+
+    private long touchDownTime = 0;
+    private float x = 0;
+    private float y = 0;
+    private final AtomicBoolean touchActionTriggered = new AtomicBoolean(false);
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        int sortType = DbUtils.getSortsTypes();
+
+        if (!DbUtils.getEnableAppsDragging() || sortType != SORT_BY_COLOR) {
+            return false;
+        }
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                touchDownTime = System.currentTimeMillis();
+                x = event.getX();
+                y = event.getY();
+                touchActionTriggered.set(false);
+
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        // ignored
+                    }
+
+                    if (touchActionTriggered.compareAndSet(false, true)) {
+                        runOnUiThread(() -> onLongClick(v));
+                    }
+                }).start();
+
+                return true;
+
+            case MotionEvent.ACTION_MOVE:
+                int historySize = event.getHistorySize();
+
+                if (historySize > 0 &&
+                        (Math.abs(x - event.getX()) > 5 || Math.abs(y - event.getY()) > 5)) {
+                    if (touchActionTriggered.compareAndSet(false, true)) {
+                        v.startDrag(null, new View.DragShadowBuilder(v), v, 0);
+                    }
+                }
+
+                return true;
+
+            case MotionEvent.ACTION_UP:
+                touchActionTriggered.set(true);
+
+                if (System.currentTimeMillis() - touchDownTime < 500) {
+                    v.performClick();
+                }
+
+                return true;
+        }
+
+        return false;
     }
 
     @Override
