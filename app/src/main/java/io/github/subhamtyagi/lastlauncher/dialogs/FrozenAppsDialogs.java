@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.github.subhamtyagi.lastlauncher.R;
@@ -94,6 +95,7 @@ public class FrozenAppsDialogs extends Dialog {
                 }
             }
         }
+        Collections.sort(frozenApps, (o1, o2) -> o1.getAppName().compareToIgnoreCase(o2.getAppName()));
         return frozenApps.size();
     }
 

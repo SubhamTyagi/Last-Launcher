@@ -500,7 +500,7 @@ public class ColorSeekBar extends View {
     }
 
     /**
-     * Set color,the mCachedColors must contains the specified color, if not ,invoke setColorBarPosition(0);
+     * Set color,the mCachedColors must contains the specified color, if not take the nearest
      *
      * @param color
      */
@@ -508,6 +508,23 @@ public class ColorSeekBar extends View {
         int withoutAlphaColor = Color.rgb(Color.red(color), Color.green(color), Color.blue(color));
         if (mInit) {
             int value = mCachedColors.indexOf(withoutAlphaColor);
+
+            if (value == -1) {
+                float[] hsv = new float[3];
+                Color.colorToHSV(color, hsv);
+
+                float[] cachedHsv = new float[3];
+
+                for (int i = 7; i < mCachedColors.size(); i++) {
+                    Color.colorToHSV(mCachedColors.get(i), cachedHsv);
+
+                    if (cachedHsv[0] < hsv[0]) {
+                        value = i;
+                        break;
+                    }
+                }
+            }
+
             setAlphaValue(Color.alpha(color));
             setColorBarPosition(value);
 

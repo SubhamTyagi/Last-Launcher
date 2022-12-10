@@ -62,6 +62,7 @@ public class DbUtils {
     private static final String APPS_COLORS_DEFAULT = "apps_color_default";
     private static final String APPS_SORTS_TYPE = "apps_sorts_types";
     private static final String APPS_SORTS_REVERSE_ORDER = "apps_sorts_reverse_order";
+    private static final String ENABLE_APPS_DRAGGING = "enable_apps_dragging";
 
 
     public static void init(Context context) {
@@ -395,6 +396,14 @@ public class DbUtils {
 
     public static void setAppSortReverseOrder(boolean reverseOrder) {
         SpUtils.getInstance().putBoolean(APPS_SORTS_REVERSE_ORDER, reverseOrder);
+    }
+
+    public static boolean getEnableAppsDragging() {
+        return SpUtils.getInstance().getBoolean(ENABLE_APPS_DRAGGING, false);
+    }
+
+    public static void setEnableAppsDragging(boolean enableAppsDragging) {
+        SpUtils.getInstance().putBoolean(ENABLE_APPS_DRAGGING, enableAppsDragging);
     }
 
     //  a simple ciphered counter: "opening counter" is a private thing
