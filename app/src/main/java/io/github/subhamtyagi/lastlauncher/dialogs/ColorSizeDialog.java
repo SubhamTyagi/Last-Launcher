@@ -90,14 +90,14 @@ public class ColorSizeDialog extends Dialog {
 
         size.setText(String.valueOf(appSize));
 
-
+        int TextViewMaxTextSize = 520/textView.getText().length();
         plus.setOnClickListener(view -> {
 
             // change=true;
             appSize++;
 
-            if (appSize >= DEFAULT_MAX_TEXT_SIZE) {
-                appSize = DEFAULT_MAX_TEXT_SIZE;
+            if (appSize >= DEFAULT_MAX_TEXT_SIZE || appSize >= TextViewMaxTextSize) {
+                appSize--;
                 //   plus.setClickable(false);
             }
 
@@ -127,8 +127,8 @@ public class ColorSizeDialog extends Dialog {
                 // change=true;
                 appSize++;
 
-                if (appSize >= DEFAULT_MAX_TEXT_SIZE) {
-                    appSize = DEFAULT_MAX_TEXT_SIZE;
+                if (appSize >= DEFAULT_MAX_TEXT_SIZE || appSize >= TextViewMaxTextSize) {
+                    appSize--;
                     //   plus.setClickable(false);
                 }
 
