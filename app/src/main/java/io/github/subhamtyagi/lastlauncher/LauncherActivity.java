@@ -44,6 +44,7 @@ import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.ArrayMap;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -157,6 +158,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     // gesture detector
     private Gestures detector;
     private ShortcutUtils shortcutUtils;
+    private static ArrayList<Apps> mAppsListCopy;
 
     private static final TextWatcher mTextWatcher= new TextWatcher() {
 
@@ -479,6 +481,38 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         sortApps(DbUtils.getSortsTypes());
     }
 
+    public void changeAppsList() {
+//        String[] strings = activity.split("/");
+//        Log.i("AAA", strings[0] + " " + strings[1]);
+//        try {
+//            final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+//            intent.setClassName(strings[0], strings[1]);
+//            intent.setComponent(new ComponentName(strings[0], strings[1]));
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(intent);
+//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            // tell the our db that app is opened
+//            appOpened(activity);
+//        } catch (Exception ignore) {
+//            //  Log.e(TAG, "onClick: exception:::" + ignore);
+//        }
+        mAppsListCopy.clear();
+        mAppsListCopy.addAll(mAppsList);
+        mAppsList.clear();
+        for (Apps app: mAppsListCopy) {
+            if (app.isHidden()) {
+                mAppsList.add(app);
+            }
+        }
+        loadApps();
+    }
+
+    public void onClickBack(View view) {
+        mAppsList.clear();
+        mAppsList.addAll(mAppsListCopy);
+        loadApps();
+    }
+
     /**
      * @param type sorting type
      */
@@ -528,6 +562,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             } else {
                 //Notes to me:if view store package and component name then this could reduce this splits
                 String[] strings = activity.split("/");
+                Log.i("AAA", strings[0] + " " + strings[1]);
                 try {
                     final Intent intent = new Intent(Intent.ACTION_MAIN, null);
                     intent.setClassName(strings[0], strings[1]);
