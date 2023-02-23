@@ -57,6 +57,7 @@ public class DbUtils {
     private static final String PADDING_LEFT = "padding_left";
     private static final String PADDING_RIGHT = "padding_right";
     private static final String PADDING_BOTTOM = "padding_bottom";
+    private static final String PADDING_INTERVAL = "padding interval";
 
     private static final String GLOBAL_SIZE_ADDITION_EXTRA = "global_size_addition_extra";
     private static final String APPS_COLORS_DEFAULT = "apps_color_default";
@@ -324,6 +325,14 @@ public class DbUtils {
 
     public static void setPaddingBottom(int padding) {
         SpUtils.getInstance().putInt(PADDING_BOTTOM, padding);
+    }
+
+    public static int getPaddingInterval() {
+        return SpUtils.getInstance().getInt(PADDING_INTERVAL, 0);
+    }
+
+    public static void setPaddingInterval(int padding) {
+        SpUtils.getInstance().putInt(PADDING_INTERVAL, padding);
     }
 
 

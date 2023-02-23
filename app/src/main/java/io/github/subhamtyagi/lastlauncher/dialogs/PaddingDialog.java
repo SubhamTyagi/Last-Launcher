@@ -32,6 +32,7 @@ import io.github.subhamtyagi.lastlauncher.R;
 import io.github.subhamtyagi.lastlauncher.utils.DbUtils;
 
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.MAX_PADDING_BOTTOM;
+import static io.github.subhamtyagi.lastlauncher.utils.Constants.MAX_PADDING_INTERVAL;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.MAX_PADDING_LEFT;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.MAX_PADDING_RIGHT;
 import static io.github.subhamtyagi.lastlauncher.utils.Constants.MAX_PADDING_TOP;
@@ -49,8 +50,10 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
     private TextView right;
     private TextView top;
     private TextView bottom;
+    private TextView interval;
 
-    private int topInt, leftInt, rightInt, bottomInt;
+
+    private int topInt, leftInt, rightInt, bottomInt, intervalInt;
 
     private Runnable runnable;
 
@@ -58,7 +61,6 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
         super(context);
         homeLayout = mHomeLayout;
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +82,11 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
         TextView btnBottomMinus = findViewById(R.id.btn_bottom_minus);
         btnBottomMinus.setOnLongClickListener(this);
         btnBottomMinus.setOnClickListener(this);
+
+        TextView btnIntervalMinus = findViewById(R.id.btn_interval_minus);
+        btnIntervalMinus.setOnLongClickListener(this);
+        btnIntervalMinus.setOnClickListener(this);
+
         TextView btnLeftPlus = findViewById(R.id.btn_left_plus);
         btnLeftPlus.setOnLongClickListener(this);
         btnLeftPlus.setOnClickListener(this);
@@ -95,20 +102,27 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
         btnBottomPlus.setOnLongClickListener(this);
         btnBottomPlus.setOnClickListener(this);
 
+        TextView btnIntervalPlus = findViewById(R.id.btn_interval_plus);
+        btnIntervalPlus.setOnLongClickListener(this);
+        btnIntervalPlus.setOnClickListener(this);
+
         left = findViewById(R.id.tv_left_padding);
         right = findViewById(R.id.tv_right_padding);
         top = findViewById(R.id.tv_top_padding);
         bottom = findViewById(R.id.tv_bottom_padding);
+        interval = findViewById(R.id.tv_interval_padding);
 
         leftInt = DbUtils.getPaddingLeft();
         rightInt = DbUtils.getPaddingRight();
         topInt = DbUtils.getPaddingTop();
         bottomInt = DbUtils.getPaddingBottom();
+        intervalInt = DbUtils.getPaddingInterval();
 
         left.setText(String.valueOf(leftInt));
         right.setText(String.valueOf(rightInt));
         top.setText(String.valueOf(topInt));
         bottom.setText(String.valueOf(bottomInt));
+        interval.setText(String.valueOf(intervalInt));
 
 
     }
@@ -123,6 +137,8 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
         DbUtils.setPaddingRight(rightInt);
         DbUtils.setPaddingTop(topInt);
         DbUtils.setPaddingBottom(bottomInt);
+        DbUtils.setPaddingInterval(intervalInt);
+
     }
 
     @Override
@@ -152,6 +168,16 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
             case R.id.btn_bottom_plus:
                 runner((TextView) button, bottom, 2, Padding.BOTTOM);
                 break;
+            case R.id.btn_interval_minus:
+                runner((TextView) button, interval, -2, Padding.INTERVAL);
+                break;
+            case R.id.btn_interval_plus:
+                runner((TextView) button, interval, 2, Padding.INTERVAL);
+                break;
+            default:
+                runner((TextView) button, interval, 2, Padding.INTERVAL);
+                break;
+
         }
 
         return true;
@@ -220,8 +246,29 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
                 }
                 bottom.setText(String.valueOf(bottomInt));
                 break;
+            case R.id.btn_interval_minus:
+                intervalInt--;
+                if(intervalInt < MIN_PADDING){
+                    intervalInt = MIN_PADDING;
+                }
+                interval.setText(String.valueOf(intervalInt));
+                break;
+            case R.id.btn_interval_plus:
+                intervalInt ++;
+                if(intervalInt > MAX_PADDING_INTERVAL){
+                    intervalInt = MAX_PADDING_INTERVAL;
+                }
+                interval.setText(String.valueOf(intervalInt));
+            default:
+                intervalInt ++;
+                if(intervalInt > MAX_PADDING_INTERVAL){
+                    intervalInt = MAX_PADDING_INTERVAL;
+                }
+                interval.setText(String.valueOf(intervalInt));
+                break;
         }
         // apply all padding to home layout
+        homeLayout.changeMargin(20 + intervalInt, 20 +intervalInt, 20, 20);
         homeLayout.setPadding(leftInt, topInt, rightInt, bottomInt);
     }
 
@@ -298,10 +345,24 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
                     }
                     view.setText(String.valueOf(bottomInt));
                     break;
+                case INTERVAL:
+                    intervalInt += step;
+                    if(step > 0){
+                        if(intervalInt > MAX_PADDING_INTERVAL){
+                            intervalInt = MAX_PADDING_INTERVAL;
+                        }
+                    }else{
+                        if(intervalInt < MIN_PADDING){
+                            intervalInt = MIN_PADDING;
+                        }
+                    }
+                    view.setText(String.valueOf(intervalInt));
+                    break;
             }
 
             // set the padding to home layout
             homeLayout.setPadding(leftInt, topInt, rightInt, bottomInt);
+            homeLayout.changeMargin(20 + intervalInt, 20 +intervalInt, 20, 20);
             // currently button is still pressed so again call this runnable
             handler.postDelayed(runnable, DELAY);
 
@@ -314,7 +375,7 @@ public class PaddingDialog extends Dialog implements View.OnLongClickListener, V
 
     //enums for better understanding
     private enum Padding {
-        LEFT, RIGHT, TOP, BOTTOM
+        LEFT, RIGHT, TOP, BOTTOM, INTERVAL
     }
 
 }
