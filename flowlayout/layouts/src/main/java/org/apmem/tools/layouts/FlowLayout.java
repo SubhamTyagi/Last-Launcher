@@ -25,7 +25,6 @@ public class FlowLayout extends ViewGroup {
     private final ConfigDefinition config;
     List<LineDefinition> lines = new ArrayList<>();
     List<ViewDefinition> views = new ArrayList<>();
-
     public FlowLayout(Context context) {
         super(context);
         this.config = new ConfigDefinition();
@@ -66,6 +65,21 @@ public class FlowLayout extends ViewGroup {
             a.recycle();
         }
     }
+    // add in https://github.com/SubhamTyagi/Last-Launcher/issues/172
+  /**
+   * This method is used to change the margin between each APP's label.
+   *
+   *  @param leftMargin the left margin of an APP's label.
+   * @param rightMargin the right margin of an APP's label.
+   * @param topMargin the top margin of an APP's label.
+   * @param bottomMargin the bottom margin of an APP's label.
+   */
+
+  public void changeMargin(final int leftMargin, final int rightMargin, final int topMargin, final int bottomMargin) {
+    for (ViewDefinition view : views) {
+      view.setMargins(leftMargin + 15, topMargin + 5, rightMargin + 15, bottomMargin + 5);
+    }
+  }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -91,7 +105,7 @@ public class FlowLayout extends ViewGroup {
             view.setNewLine(lp.isNewLine());
             view.setGravity(lp.getGravity());
             view.setWeight(lp.getWeight());
-            view.setMargins(lp.leftMargin, lp.topMargin, lp.rightMargin, lp.bottomMargin);
+            view.setMargins(lp.leftMargin + 15, lp.topMargin + 5, lp.rightMargin + 15, lp.bottomMargin + 5); // margin setting
             views.add(view);
         }
 
@@ -100,10 +114,8 @@ public class FlowLayout extends ViewGroup {
         this.config.setWidthMode(MeasureSpec.getMode(widthMeasureSpec));
         this.config.setHeightMode(MeasureSpec.getMode(heightMeasureSpec));
         this.config.setCheckCanFit(this.config.getLengthMode() != View.MeasureSpec.UNSPECIFIED);
-
         CommonLogic.fillLines(views, lines, config);
         CommonLogic.calculateLinesAndChildPosition(lines);
-
         int contentLength = 0;
         final int linesCount = lines.size();
         for (int i = 0; i < linesCount; i++) {
@@ -136,7 +148,7 @@ public class FlowLayout extends ViewGroup {
         this.setMeasuredDimension(resolveSize(totalControlWidth, widthMeasureSpec), resolveSize(totalControlHeight, heightMeasureSpec));
     }
 
-    private void applyPositionsToViews(LineDefinition line) {
+    public void applyPositionsToViews(LineDefinition line) {
         final List<ViewDefinition> childViews = line.getViews();
         final int childCount = childViews.size();
         for (int i = 0; i < childCount; i++) {
@@ -196,7 +208,6 @@ public class FlowLayout extends ViewGroup {
     protected LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
         return new LayoutParams(p);
     }
-
     private void drawDebugInfo(Canvas canvas, View child) {
         if (!isDebugDraw()) {
             return;
@@ -206,7 +217,6 @@ public class FlowLayout extends ViewGroup {
         Paint newLinePaint = this.createPaint(0xffff0000);
 
         LayoutParams lp = (LayoutParams) child.getLayoutParams();
-
         if (lp.rightMargin > 0) {
             float x = child.getRight();
             float y = child.getTop() + child.getHeight() / 2.0f;
@@ -238,7 +248,6 @@ public class FlowLayout extends ViewGroup {
             canvas.drawLine(x - 4.0f, y - lp.topMargin + 4.0f, x, y - lp.topMargin, childPaint);
             canvas.drawLine(x + 4.0f, y - lp.topMargin + 4.0f, x, y - lp.topMargin, childPaint);
         }
-
         if (lp.isNewLine()) {
             if (this.config.getOrientation() == CommonLogic.HORIZONTAL) {
                 float x = child.getLeft();
@@ -360,7 +369,6 @@ public class FlowLayout extends ViewGroup {
                 @ViewDebug.IntToString(from = Gravity.CENTER, to = "CENTER"),
                 @ViewDebug.IntToString(from = Gravity.FILL, to = "FILL")
         })
-
         private boolean newLine = false;
         private int gravity = Gravity.NO_GRAVITY;
         private float weight = -1.0f;

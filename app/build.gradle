@@ -12,6 +12,7 @@ android {
         versionName "0.19"
         //resConfigs "en", "de"
         buildConfigField "boolean", "enableColorSniffer", "false"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         debug {
