@@ -587,6 +587,14 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         return true;
     }
 
+    public void addAppSpacing() {
+        mHomeLayout.addletterSpacingRate();
+    }
+
+    public void minusAppSpacint() {
+        mHomeLayout.minusletterSpacingRate();
+    }
+
     private void showPopup(String activityName, AppTextView view) {
 
         Context context;

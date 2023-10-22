@@ -91,4 +91,6 @@
     <!--Sort Apps IN : RECENTLY USED FIRST ORDER -->
     <string name="recently_first">Recently first</string>
     <string name="restart_launcher">Restart Launcher</string>
+    <string name="add_app_spacing">Add app spacing</string>
+    <string name="minus_app_spacing">Minus app spacing</string>
 </resources>

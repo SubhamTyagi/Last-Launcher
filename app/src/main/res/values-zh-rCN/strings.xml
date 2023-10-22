@@ -56,4 +56,6 @@
     <string name="color_for_this_entry">颜色&amp;尺寸</string>
     <string name="action_settings">设置</string>
     <string name="restart_launcher">重启启动器</string>
+    <string name="add_app_spacing">增大应用间距</string>
+    <string name="minus_app_spacing">减小应用间距</string>
 </resources>
