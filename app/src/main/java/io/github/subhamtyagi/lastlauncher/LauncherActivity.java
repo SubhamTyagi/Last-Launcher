@@ -68,8 +68,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
@@ -158,6 +160,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
     private Gestures detector;
     private ShortcutUtils shortcutUtils;
 
+    private Thread thread;
     private static final TextWatcher mTextWatcher= new TextWatcher() {
 
         @Override
@@ -168,7 +171,7 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             //do here search
-           mSearchTask.execute(charSequence);
+            mSearchTask.execute(charSequence);
         }
 
         @Override
@@ -544,6 +547,42 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
 
         }
     }
+        class MyThread implements Runnable{
+        @Override
+        public void run(){
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    Thread.sleep(59900);
+                    Date date = new Date(System.currentTimeMillis());
+                    int hour = date.getHours();
+                    int minute = date.getMinutes();
+                    if(hour==12&&minute==29){
+                        backup();
+                    }
+                }
+            }
+            catch(InterruptedException e){
+            }
+
+        }
+    }
+
+    private void backup(){
+        Intent intentBackupFiles;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            intentBackupFiles = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        } else {
+            intentBackupFiles = new Intent(Intent.ACTION_GET_CONTENT);
+            ;
+        }
+        intentBackupFiles.addCategory(Intent.CATEGORY_OPENABLE);
+        intentBackupFiles.setType("*/*");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd_HHSS", Locale.getDefault());
+        df.format(new Date());
+        String date = df.format(new Date());
+        intentBackupFiles.putExtra(Intent.EXTRA_TITLE, "Backup_LastLauncher_" + date);
+        this.startActivityForResult(intentBackupFiles, BACKUP_REQUEST);
+    }
 
     @Override
     protected void onResume() {
@@ -557,11 +596,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
             sortApps(DbUtils.getSortsTypes());
         }
     }
-
+    @Override
+    protected void onStart(){
+        super.onStart();
+        thread = new Thread(new MyThread());
+        thread.start();
+    }
     @Override
     protected void onStop() {
         super.onStop();
-
+        thread.interrupt();
         if (dialogs != null) {
             dialogs.dismiss();
             dialogs = null;
