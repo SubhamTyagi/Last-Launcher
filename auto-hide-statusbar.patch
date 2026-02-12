@@ -1,0 +1,149 @@
+diff --git a/app/src/main/java/io/github/subhamtyagi/lastlauncher/LauncherActivity.java b/app/src/main/java/io/github/subhamtyagi/lastlauncher/LauncherActivity.java
+index 1234567..abcdefg 100644
+--- a/app/src/main/java/io/github/subhamtyagi/lastlauncher/LauncherActivity.java
++++ b/app/src/main/java/io/github/subhamtyagi/lastlauncher/LauncherActivity.java
+@@ -37,6 +37,8 @@ import android.os.AsyncTask;
+ import android.os.Build;
+ import android.os.Bundle;
++import android.os.Handler;
++import android.os.Looper;
+ import android.os.ParcelFileDescriptor;
+ import android.text.Editable;
+ import android.text.SpannableString;
+@@ -45,6 +47,7 @@ import android.text.style.ForegroundColorSpan;
+ import android.util.ArrayMap;
++import android.util.DisplayMetrics;
+ import android.view.ContextThemeWrapper;
+ import android.view.Gravity;
+ import android.view.MotionEvent;
+@@ -124,6 +127,19 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
+     private Gestures detector;
+     private ShortcutUtils shortcutUtils;
+ 
++    // ===== ADDED FOR AUTO-HIDE STATUSBAR =====
++    // Handler for delayed execution (hiding status bar)
++    private final Handler uiHandler = new Handler(Looper.getMainLooper());
++    private Runnable hideSystemBarsRunnable;
++    private static final long STATUS_BAR_SHOW_DURATION_MS = 2500L; // 2.5 seconds
++
++    // for detecting swipe down from top area of screen
++    private float touchStartY = -1f;
++    private int topSwipeAreaPx = -1;
++    private int minSwipeDistancePx = -1;
++    private static final int TOP_SWIPE_AREA_DP = 36;   // top swipe zone in dp
++    private static final int MIN_SWIPE_DISTANCE_DP = 50; // minimum vertical swipe in dp
++    // ===== END AUTO-HIDE STATUSBAR FIELDS =====
+ 
+     private static final TextWatcher mTextWatcher = new TextWatcher() {
+ 
+@@ -193,11 +209,42 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
+     @Override
+     public boolean dispatchTouchEvent(MotionEvent ev) {
+-        //pass touch event to detector
+-        detector.onTouchEvent(ev);
++        // ===== ADDED FOR AUTO-HIDE STATUSBAR =====
++        // Track touch start to recognize swipe down from top area
++        final int action = ev.getActionMasked();
++        switch (action) {
++            case MotionEvent.ACTION_DOWN:
++                touchStartY = ev.getY();
++                break;
++
++            case MotionEvent.ACTION_MOVE:
++                if (touchStartY >= 0 && touchStartY <= topSwipeAreaPx) {
++                    float dy = ev.getY() - touchStartY;
++                    if (dy > minSwipeDistancePx) {
++                        // swipe down from top area detected -> show status bar temporarily
++                        showSystemBarsTemporarily();
++                        // reset to avoid triggering multiple times on single swipe
++                        touchStartY = -1f;
++                    }
++                }
++                break;
++
++            case MotionEvent.ACTION_UP:
++            case MotionEvent.ACTION_CANCEL:
++                touchStartY = -1f;
++                break;
++        }
++        // ===== END AUTO-HIDE STATUSBAR =====
++
++        // pass touch event to detector
++        if (detector != null) {
++            detector.onTouchEvent(ev);
++        }
+         return super.dispatchTouchEvent(ev);
+     }
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -244,6 +291,16 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
+ 
+         //set padding ..
+         mHomeLayout.setPadding(DbUtils.getPaddingLeft(), DbUtils.getPaddingTop(), DbUtils.getPaddingRight(), DbUtils.getPaddingBottom());
++
++        // ===== ADDED FOR AUTO-HIDE STATUSBAR =====
++        // Initialize top swipe area and minimum swipe distance in pixels
++        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
++        float density = displayMetrics.density;
++        topSwipeAreaPx = (int) (TOP_SWIPE_AREA_DP * density + 0.5f);
++        minSwipeDistancePx = (int) (MIN_SWIPE_DISTANCE_DP * density + 0.5f);
++
++        // Hide system bars on startup
++        hideSystemBars();
++        // ===== END AUTO-HIDE STATUSBAR INIT =====
+ 
+         // ... rest of onCreate code ...
+     }
+@@ -251,6 +308,12 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
+     @Override
+     protected void onResume() {
+         super.onResume();
++        // ===== ADDED FOR AUTO-HIDE STATUSBAR =====
++        // Re-hide status bar when returning to launcher
++        hideSystemBars();
++        // ===== END AUTO-HIDE STATUSBAR =====
++
+         // ... rest of onResume code ...
+     }
+ 
+@@ -700,4 +763,35 @@ public class LauncherActivity extends Activity implements View.OnClickListener,
+         }
+     }
+ 
++    // ===== ADDED FOR AUTO-HIDE STATUSBAR METHODS =====
++    /**
++     * Hides status bar and navigation panel in immersive sticky mode.
++     * This makes the launcher occupy the full screen.
++     */
++    private void hideSystemBars() {
++        View decorView = getWindow().getDecorView();
++        int flags = View.SYSTEM_UI_FLAG_FULLSCREEN
++                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
++                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
++                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
++        decorView.setSystemUiVisibility(flags);
++    }
++
++    /**
++     * Shows status bar temporarily (for STATUS_BAR_SHOW_DURATION_MS milliseconds),
++     * then automatically hides it again.
++     * Called when user performs swipe down gesture from top of screen.
++     */
++    private void showSystemBarsTemporarily() {
++        // cancel any previously scheduled hide operation
++        uiHandler.removeCallbacks(hideSystemBarsRunnable);
++
++        View decorView = getWindow().getDecorView();
++        int flags = decorView.getSystemUiVisibility();
++        flags &= ~View.SYSTEM_UI_FLAG_FULLSCREEN;
++        decorView.setSystemUiVisibility(flags);
++
++        if (hideSystemBarsRunnable == null) {
++            hideSystemBarsRunnable = this::hideSystemBars;
++        }
++        uiHandler.postDelayed(hideSystemBarsRunnable, STATUS_BAR_SHOW_DURATION_MS);
++    }
++    // ===== END AUTO-HIDE STATUSBAR METHODS =====
+ }
